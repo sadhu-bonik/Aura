@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Secrets — each teammate drops their own copy into app/
+app/google-services.json
+*.keystore
+*.jks
