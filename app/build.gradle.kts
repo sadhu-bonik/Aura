@@ -69,6 +69,13 @@ dependencies {
     // Image loading
     implementation(libs.glide)
 
+    // Video playback
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
+
+    // ViewPager2 (vertical pager for feed)
+    implementation(libs.androidx.viewpager2)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

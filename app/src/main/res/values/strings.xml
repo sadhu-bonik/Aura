@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Aura2</string>
+
+    <!-- Video feed -->
+    <string name="feed_title">Feed</string>
+    <string name="feed_empty">No videos yet. Check back soon.</string>
+    <string name="feed_error">Couldn\'t load the feed. Pull down or try again later.</string>
+    <string name="feed_video_error">This video couldn\'t play.</string>
+    <string name="feed_creator_avatar">Creator avatar</string>
 </resources>
