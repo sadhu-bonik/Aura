@@ -18,3 +18,6 @@ local.properties
 app/google-services.json
 *.keystore
 *.jks
+
+# Debug assets — screenshots, layout inspector exports
+/debug-assets/

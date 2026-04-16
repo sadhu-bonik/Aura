@@ -3,6 +3,7 @@ package com.aura.app.ui.feed
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.aura.app.data.model.CreatorFeedEntry
 import com.aura.app.data.repository.PortfolioRepository
 import com.aura.app.data.repository.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,8 +25,17 @@ class VideoFeedViewModel(
             portfolioRepository.streamPublicVideos()
                 .catch { t -> _state.value = FeedUiState.Error(t.message ?: "Unknown error") }
                 .collect { items ->
-                    _state.value = if (items.isEmpty()) FeedUiState.Empty
-                    else FeedUiState.Content(items)
+                    if (items.isEmpty()) {
+                        _state.value = FeedUiState.Empty
+                    } else {
+                        val entries = items
+                            .groupBy { it.creatorId }
+                            .map { (creatorId, creatorItems) ->
+                                CreatorFeedEntry(creatorId, creatorItems)
+                            }
+                            .sortedByDescending { it.items.first().createdAt }
+                        _state.value = FeedUiState.Content(entries)
+                    }
                 }
         }
     }

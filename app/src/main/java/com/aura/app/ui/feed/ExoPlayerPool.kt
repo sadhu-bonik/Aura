@@ -7,7 +7,7 @@ import androidx.media3.exoplayer.ExoPlayer
  * Bounded pool of ExoPlayer instances. A vertical feed only needs a handful live at once
  * (current page plus neighbours pre-bound by ViewPager2), so we cap it and lazily grow.
  */
-class ExoPlayerPool(private val context: Context, private val maxSize: Int = 4) {
+class ExoPlayerPool(private val context: Context, private val maxSize: Int = 8) {
     private val available = ArrayDeque<ExoPlayer>()
     private var leased = 0
 
@@ -26,6 +26,10 @@ class ExoPlayerPool(private val context: Context, private val maxSize: Int = 4) 
         } else {
             player.release()
         }
+    }
+
+    fun warmUp(count: Int) {
+        repeat(count) { available.addLast(ExoPlayer.Builder(context).build()) }
     }
 
     fun releaseAll() {
