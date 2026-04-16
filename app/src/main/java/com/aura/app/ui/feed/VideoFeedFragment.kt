@@ -11,9 +11,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.aura.app.R
+import com.aura.app.data.model.PortfolioItem
 import kotlinx.coroutines.launch
 
 class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
@@ -24,7 +28,39 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
     private var loading: ProgressBar? = null
     private var message: TextView? = null
     private var adapter: CreatorPageAdapter? = null
-    private var playerPool: ExoPlayerPool? = null
+    private var player: ExoPlayer? = null
+    private var activeHolder: VideoPageViewHolder? = null
+    private var activeCreatorPosition = RecyclerView.NO_POSITION
+
+    private val activeVideoCallback = object : ActiveVideoCallback {
+        override fun attachPlayer(target: VideoPageViewHolder, item: PortfolioItem) {
+            val p = player ?: return
+            if (activeHolder === target) return
+            activeHolder?.onPlayerDetached()
+            p.stop()
+            p.clearMediaItems()
+            p.setMediaItem(MediaItem.fromUri(item.mediaUrl))
+            p.repeatMode = Player.REPEAT_MODE_ONE
+            p.playWhenReady = true
+            p.prepare()
+            target.onPlayerAttached(p)
+            activeHolder = target
+        }
+
+        override fun detachPlayer(target: VideoPageViewHolder) {
+            if (activeHolder === target) {
+                player?.stop()
+                player?.clearMediaItems()
+                target.onPlayerDetached()
+                activeHolder = null
+            }
+        }
+
+        override fun togglePlayback() {
+            val p = player ?: return
+            p.playWhenReady = !p.playWhenReady
+        }
+    }
 
     private val pageCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
@@ -42,12 +78,11 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
         loading = view.findViewById(R.id.feed_loading)
         message = view.findViewById(R.id.feed_message)
 
-        val pool = ExoPlayerPool(requireContext().applicationContext).also {
-            playerPool = it
-            it.warmUp(4)
-        }
-        val feedAdapter = CreatorPageAdapter(pool, viewModel.userRepository, viewLifecycleOwner.lifecycleScope)
-            .also { adapter = it }
+        player = ExoPlayer.Builder(requireContext().applicationContext).build()
+
+        val feedAdapter = CreatorPageAdapter(
+            activeVideoCallback, viewModel.userRepository, viewLifecycleOwner.lifecycleScope
+        ).also { adapter = it }
         pager?.adapter = feedAdapter
         pager?.offscreenPageLimit = 1
         pager?.registerOnPageChangeCallback(pageCallback)
@@ -96,12 +131,15 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
     private fun updateActiveCreator(selectedPosition: Int) {
         val pg = pager ?: return
         val recycler = pg.getChildAt(0) as? RecyclerView ?: return
+        val prev = activeCreatorPosition
+        activeCreatorPosition = selectedPosition
         for (i in 0 until recycler.childCount) {
             val holder = recycler.getChildViewHolder(recycler.getChildAt(i)) as? CreatorPageViewHolder
                 ?: continue
-            if (holder.bindingAdapterPosition == selectedPosition) {
+            val pos = holder.bindingAdapterPosition
+            if (pos == selectedPosition) {
                 holder.activate()
-            } else {
+            } else if (pos == prev || holder.isActive) {
                 holder.deactivate()
             }
         }
@@ -109,21 +147,12 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
 
     override fun onPause() {
         super.onPause()
-        deactivateAll()
+        player?.playWhenReady = false
     }
 
     override fun onResume() {
         super.onResume()
         pager?.let { updateActiveCreator(it.currentItem) }
-    }
-
-    private fun deactivateAll() {
-        val pg = pager ?: return
-        val recycler = pg.getChildAt(0) as? RecyclerView ?: return
-        for (i in 0 until recycler.childCount) {
-            (recycler.getChildViewHolder(recycler.getChildAt(i)) as? CreatorPageViewHolder)
-                ?.deactivate()
-        }
     }
 
     override fun onDestroyView() {
@@ -133,8 +162,10 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
         pager = null
         loading = null
         message = null
-        playerPool?.releaseAll()
-        playerPool = null
+        activeHolder?.onPlayerDetached()
+        activeHolder = null
+        player?.release()
+        player = null
         super.onDestroyView()
     }
 }

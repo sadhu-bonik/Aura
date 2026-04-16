@@ -19,7 +19,7 @@ import kotlinx.coroutines.withContext
 
 class CreatorPageViewHolder(
     itemView: View,
-    private val pool: ExoPlayerPool,
+    private val callback: ActiveVideoCallback,
     private val userRepository: UserRepository,
     private val scope: CoroutineScope,
 ) : RecyclerView.ViewHolder(itemView) {
@@ -32,7 +32,8 @@ class CreatorPageViewHolder(
     private var innerAdapter: ItemPageAdapter? = null
     private var creatorJob: Job? = null
     private var currentInnerPosition = 0
-    private var isActive = false
+    var isActive = false
+        private set
 
     private val layoutManager = LinearLayoutManager(
         itemView.context, LinearLayoutManager.HORIZONTAL, false
@@ -45,19 +46,18 @@ class CreatorPageViewHolder(
                 val snappedView = snapHelper.findSnapView(layoutManager) ?: return
                 val position = layoutManager.getPosition(snappedView)
                 if (position != currentInnerPosition) {
-                    if (isActive) {
-                        pauseInnerAt(currentInnerPosition)
-                        playInnerAt(position)
-                    }
                     currentInnerPosition = position
                     updateDots(position)
+                }
+                if (isActive) {
+                    activateCurrentInner()
                 }
             }
         }
     }
 
     fun bind(entry: CreatorFeedEntry) {
-        val adapter = ItemPageAdapter(pool).also { innerAdapter = it }
+        val adapter = ItemPageAdapter(callback).also { innerAdapter = it }
         itemsRecycler.layoutManager = layoutManager
         itemsRecycler.adapter = adapter
         if (itemsRecycler.onFlingListener == null) {
@@ -88,19 +88,12 @@ class CreatorPageViewHolder(
 
     fun activate() {
         isActive = true
-        playInnerAt(currentInnerPosition)
+        activateCurrentInner()
     }
 
     fun deactivate() {
         isActive = false
-        pauseInnerAt(currentInnerPosition)
-    }
-
-    fun releaseAllPlayers() {
-        for (i in 0 until itemsRecycler.childCount) {
-            (itemsRecycler.getChildViewHolder(itemsRecycler.getChildAt(i)) as? VideoPageViewHolder)
-                ?.releasePlayer()
-        }
+        findInnerHolder(currentInnerPosition)?.let { callback.detachPlayer(it) }
     }
 
     fun unbind() {
@@ -112,12 +105,12 @@ class CreatorPageViewHolder(
         creatorJob = null
     }
 
-    private fun playInnerAt(position: Int) {
-        itemsRecycler.post { findInnerHolder(position)?.play() }
-    }
-
-    private fun pauseInnerAt(position: Int) {
-        itemsRecycler.post { findInnerHolder(position)?.pause() }
+    private fun activateCurrentInner() {
+        itemsRecycler.post {
+            val holder = findInnerHolder(currentInnerPosition) ?: return@post
+            val item = innerAdapter?.currentList?.getOrNull(currentInnerPosition) ?: return@post
+            callback.attachPlayer(holder, item)
+        }
     }
 
     private fun findInnerHolder(position: Int): VideoPageViewHolder? {

@@ -8,13 +8,13 @@ import com.aura.app.R
 import com.aura.app.data.model.PortfolioItem
 
 class ItemPageAdapter(
-    private val pool: ExoPlayerPool,
+    private val callback: ActiveVideoCallback,
 ) : ListAdapter<PortfolioItem, VideoPageViewHolder>(DIFF) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoPageViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_video_page, parent, false)
-        return VideoPageViewHolder(view, pool)
+        return VideoPageViewHolder(view, callback)
     }
 
     override fun onBindViewHolder(holder: VideoPageViewHolder, position: Int) {
@@ -27,7 +27,7 @@ class ItemPageAdapter(
     }
 
     override fun onViewRecycled(holder: VideoPageViewHolder) {
-        holder.releasePlayer()
+        holder.onRecycled()
     }
 
     private companion object {
