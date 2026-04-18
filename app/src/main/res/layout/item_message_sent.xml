@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/space_md"
+    android:paddingVertical="@dimen/space_xs">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="@dimen/corner_radius_lg"
+        app:cardElevation="0dp"
+        app:layout_constraintWidth_default="wrap"
+        app:layout_constraintWidth_percent="0.75"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Media thumbnail (image or video) -->
+            <FrameLayout
+                android:id="@+id/frame_media"
+                android:layout_width="220dp"
+                android:layout_height="160dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv_media"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/content_description_avatar" />
+
+                <ImageView
+                    android:id="@+id/iv_play_overlay"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_play_overlay"
+                    android:contentDescription="@string/content_description_play"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+            <!-- File chip -->
+            <LinearLayout
+                android:id="@+id/ll_file"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="@dimen/space_md"
+                android:paddingVertical="@dimen/space_sm"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_file"
+                    android:contentDescription="@null"
+                    app:tint="@color/colorOnPrimary" />
+
+                <TextView
+                    android:id="@+id/tv_file_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_xs"
+                    android:maxLines="1"
+                    android:ellipsize="middle"
+                    android:maxWidth="160dp"
+                    android:textAppearance="@style/TextAppearance.Aura.BodyMedium"
+                    android:textColor="@color/colorOnPrimary" />
+            </LinearLayout>
+
+            <!-- Text content -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/space_md"
+                android:paddingTop="@dimen/space_sm"
+                android:paddingBottom="@dimen/space_xs">
+
+                <TextView
+                    android:id="@+id/tv_message_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Aura.BodyLarge"
+                    android:textColor="@color/colorOnPrimary"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_timestamp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/space_xs"
+                    android:textAppearance="@style/TextAppearance.Aura.LabelSmall"
+                    android:textColor="#AAFFFFFF" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
+
+    <!-- Top banner — tap to open campaign info -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_chat_banner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="@color/colorSurface"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/space_md"
+            android:paddingVertical="@dimen/space_sm">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="@dimen/icon_size_md"
+                android:layout_height="@dimen/icon_size_md"
+                android:src="@drawable/ic_close"
+                android:contentDescription="@string/content_description_close"
+                android:scaleType="centerInside"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_other_avatar"
+                android:layout_width="@dimen/avatar_sm"
+                android:layout_height="@dimen/avatar_sm"
+                android:layout_marginStart="@dimen/space_sm"
+                android:contentDescription="@string/content_description_avatar"
+                android:scaleType="centerCrop"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_back" />
+
+            <TextView
+                android:id="@+id/tv_other_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_sm"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.Aura.TitleMedium"
+                app:layout_constraintTop_toTopOf="@id/iv_other_avatar"
+                app:layout_constraintStart_toEndOf="@id/iv_other_avatar"
+                app:layout_constraintEnd_toStartOf="@id/iv_info" />
+
+            <TextView
+                android:id="@+id/tv_deal_title_banner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_sm"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.Aura.LabelSmall"
+                android:textColor="@color/colorTextSecondary"
+                app:layout_constraintTop_toBottomOf="@id/tv_other_name"
+                app:layout_constraintStart_toEndOf="@id/iv_other_avatar"
+                app:layout_constraintEnd_toStartOf="@id/iv_info" />
+
+            <ImageView
+                android:id="@+id/iv_info"
+                android:layout_width="@dimen/icon_size_md"
+                android:layout_height="@dimen/icon_size_md"
+                android:src="@drawable/ic_edit"
+                android:contentDescription="@string/content_description_info"
+                android:scaleType="centerInside"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Messages list -->
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/colorPrimary"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/cv_chat_banner"
+        app:layout_constraintBottom_toTopOf="@id/barrier_input"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/layout_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/cv_chat_banner"
+        app:layout_constraintBottom_toTopOf="@id/barrier_input"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/tv_empty_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Aura.TitleMedium"
+            android:text="@string/empty_chat_title" />
+
+        <TextView
+            android:id="@+id/tv_empty_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:textAppearance="@style/TextAppearance.Aura.BodyMedium"
+            android:textColor="@color/colorTextSecondary"
+            android:text="@string/empty_chat_subtitle" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_messages"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingVertical="@dimen/space_sm"
+        app:layout_constraintTop_toBottomOf="@id/cv_chat_banner"
+        app:layout_constraintBottom_toTopOf="@id/barrier_input"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Upload overlay -->
+    <FrameLayout
+        android:id="@+id/layout_upload_overlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#CC000000"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/cv_chat_banner"
+        app:layout_constraintBottom_toTopOf="@id/barrier_input"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ProgressBar
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:indeterminateTint="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_sm"
+                android:text="@string/label_uploading"
+                android:textAppearance="@style/TextAppearance.Aura.BodyMedium"
+                android:textColor="@color/colorOnBackground" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Input bar -->
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="ll_input_bar" />
+
+    <LinearLayout
+        android:id="@+id/ll_input_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorSurface"
+        android:paddingHorizontal="@dimen/space_sm"
+        android:paddingVertical="@dimen/space_xs"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_attach"
+            android:layout_width="@dimen/icon_size_xl"
+            android:layout_height="@dimen/icon_size_xl"
+            android:contentDescription="@string/content_description_attach"
+            app:icon="@drawable/ic_attach"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            style="@style/Widget.Material3.Button.IconButton"
+            app:iconTint="@color/colorTextSecondary" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="@dimen/space_xs"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxBackgroundColor="@color/colorSurfaceVariant"
+            app:boxCornerRadiusTopStart="@dimen/corner_radius_lg"
+            app:boxCornerRadiusTopEnd="@dimen/corner_radius_lg"
+            app:boxCornerRadiusBottomStart="@dimen/corner_radius_lg"
+            app:boxCornerRadiusBottomEnd="@dimen/corner_radius_lg"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_message"
+                android:textColor="@color/colorOnSurface"
+                android:textColorHint="@color/colorTextSecondary"
+                android:inputType="textMultiLine|textCapSentences"
+                android:maxLines="4"
+                android:minLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_send"
+            android:layout_width="@dimen/icon_size_xl"
+            android:layout_height="@dimen/icon_size_xl"
+            android:contentDescription="@string/content_description_send"
+            android:enabled="false"
+            app:icon="@drawable/ic_send"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            app:backgroundTint="@color/colorPrimary" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

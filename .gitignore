@@ -21,3 +21,6 @@ app/google-services.json
 
 # Debug assets — screenshots, layout inspector exports
 /debug-assets/
+
+# Claude Code local memory — not part of the project, do not commit
+/memory/

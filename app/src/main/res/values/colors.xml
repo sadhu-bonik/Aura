@@ -2,4 +2,23 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- UI Tokens — dark blue/purple theme (temp palette) -->
+    <color name="colorPrimary">#6C63FF</color>
+    <color name="colorPrimaryVariant">#4834D4</color>
+    <color name="colorSecondary">#48CAE4</color>
+    <color name="colorSecondaryVariant">#0096C7</color>
+    <color name="colorBackground">#0D0D1A</color>
+    <color name="colorSurface">#1A1A2E</color>
+    <color name="colorSurfaceVariant">#16213E</color>
+    <color name="colorOnBackground">#EEEEF5</color>
+    <color name="colorOnSurface">#EEEEF5</color>
+    <color name="colorTextSecondary">#9999AA</color>
+    <color name="colorTextDisabled">#55556A</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorSuccess">#00C896</color>
+    <color name="colorWarning">#FFB300</color>
+    <color name="colorError">#FF5252</color>
+    <color name="colorDivider">#2C2C3E</color>
+    <color name="colorMessageReceived">#252545</color>
 </resources>

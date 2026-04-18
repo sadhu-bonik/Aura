@@ -7,4 +7,55 @@
     <string name="feed_error">Couldn\'t load the feed. Pull down or try again later.</string>
     <string name="feed_video_error">This video couldn\'t play.</string>
     <string name="feed_creator_avatar">Creator avatar</string>
+
+    <!-- Active deals / DM window -->
+    <string name="title_active_deals">Active Deals</string>
+    <string name="empty_active_deals_title">No active deals yet</string>
+    <string name="empty_active_deals_subtitle">Accepted deals will appear here</string>
+    <string name="error_active_deals">Couldn\'t load deals. Tap to retry.</string>
+    <string name="label_completed">Completed</string>
+    <string name="menu_switch_to_brand">Switch to Brand</string>
+    <string name="menu_switch_to_creator">Switch to Creator</string>
+    <string name="toast_switched_to_brand">Now acting as Nova Studio (Brand)</string>
+    <string name="toast_switched_to_creator">Now acting as Alice Chen (Creator)</string>
+    <string name="label_deal_with">with %s</string>
+    <string name="label_no_messages">No messages yet</string>
+
+    <!-- Chat -->
+    <string name="hint_message">Message…</string>
+    <string name="btn_send">Send</string>
+    <string name="content_description_send">Send message</string>
+    <string name="content_description_attach">Add attachment</string>
+    <string name="content_description_avatar">Profile picture</string>
+    <string name="content_description_info">View campaign info</string>
+    <string name="content_description_play">Play video</string>
+    <string name="empty_chat_title">No messages yet</string>
+    <string name="empty_chat_subtitle">Start the conversation</string>
+    <string name="error_chat">Couldn\'t load messages. Tap to retry.</string>
+    <string name="error_send_message">Failed to send message</string>
+    <string name="error_chat_locked">Chat is locked — deal must be accepted first</string>
+    <string name="error_upload_failed">Upload failed. Please try again.</string>
+    <string name="label_uploading">Uploading…</string>
+
+    <!-- Attachment picker -->
+    <string name="btn_pick_media">Photo or Video</string>
+    <string name="btn_pick_file">File</string>
+
+    <!-- Campaign info bottom sheet -->
+    <string name="title_campaign_info">Campaign Info</string>
+    <string name="btn_view_profile">View Profile</string>
+    <string name="label_campaign_description">Campaign</string>
+    <string name="label_shared_media">Shared Media</string>
+    <string name="empty_shared_media">No media shared yet</string>
+    <string name="content_description_close">Close</string>
+    <string name="content_description_edit">Edit</string>
+    <string name="content_description_shared_media">Shared media thumbnail</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="hint_deal_title">Deal title</string>
+    <string name="hint_deal_description">Deal description</string>
+    <string name="error_save_deal">Failed to save changes</string>
+
+    <!-- Common -->
+    <string name="btn_retry">Retry</string>
 </resources>
