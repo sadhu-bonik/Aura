@@ -70,6 +70,12 @@ class VideoPageViewHolder(
 
         if (item.thumbnailUrl.isNotEmpty()) {
             Glide.with(thumbnail).load(item.thumbnailUrl).into(thumbnail)
+        } else if (item.mediaUrl.isNotEmpty()) {
+            Glide.with(thumbnail)
+                .asBitmap()
+                .load(item.mediaUrl)
+                .apply(com.bumptech.glide.request.RequestOptions().frame(1_000_000))
+                .into(thumbnail)
         } else {
             thumbnail.setImageDrawable(null)
         }
