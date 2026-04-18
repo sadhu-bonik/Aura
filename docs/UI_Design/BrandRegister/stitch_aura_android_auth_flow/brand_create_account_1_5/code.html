@@ -1,0 +1,219 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Aura - Brand Registration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#3c4a5e",
+                    "primary-fixed": "#6ffbbe",
+                    "primary-container": "#001c10",
+                    "surface-container-low": "#131b2e",
+                    "secondary-fixed-dim": "#b9c7e0",
+                    "on-error": "#690005",
+                    "outline": "#909097",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "primary": "#4edea3",
+                    "tertiary-fixed": "#ffddb8",
+                    "surface-container-highest": "#2d3449",
+                    "primary-fixed-dim": "#4edea3",
+                    "on-primary": "#003824",
+                    "inverse-surface": "#dae2fd",
+                    "tertiary": "#ffb95f",
+                    "on-tertiary-fixed": "#2a1700",
+                    "on-tertiary": "#472a00",
+                    "tertiary-container": "#251400",
+                    "surface": "#0b1326",
+                    "on-surface": "#dae2fd",
+                    "surface-dim": "#0b1326",
+                    "on-secondary-container": "#abb9d2",
+                    "on-primary-fixed": "#002113",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "surface-container-lowest": "#060e20",
+                    "surface-variant": "#2d3449",
+                    "surface-tint": "#4edea3",
+                    "outline-variant": "#45464d",
+                    "background": "#0b1326",
+                    "surface-container": "#171f33",
+                    "on-secondary-fixed-variant": "#3a485c",
+                    "on-secondary": "#233144",
+                    "on-surface-variant": "#c6c6cd",
+                    "on-primary-container": "#009365",
+                    "on-background": "#dae2fd",
+                    "secondary-fixed": "#d5e3fd",
+                    "surface-bright": "#31394d",
+                    "on-secondary-fixed": "#0d1c2f",
+                    "surface-container-high": "#222a3d",
+                    "on-primary-fixed-variant": "#005236",
+                    "error-container": "#93000a",
+                    "secondary": "#b9c7e0",
+                    "inverse-primary": "#006c49",
+                    "on-tertiary-container": "#b47300",
+                    "on-error-container": "#ffdad6",
+                    "inverse-on-surface": "#283044",
+                    "error": "#ffb4ab"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #0b1326; color: #dae2fd; }
+        .font-headline { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-header { background: rgba(11, 19, 38, 0.7); backdrop-filter: blur(20px); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 glass-header">
+<div class="flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant" style="">arrow_back</span>
+<span class="font-headline tracking-tight font-bold text-lg text-on-surface" style="">Step 1 of 5</span>
+</div>
+<span class="text-2xl font-extrabold tracking-tighter text-on-surface" style="">Aura</span>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-on-surface-variant" style="">close</span>
+</div>
+</div>
+<!-- Progress Bar Indicator -->
+<div class="w-full h-1 bg-surface-container">
+<div class="h-full bg-primary transition-all duration-500" style="width: 20%;"></div>
+</div>
+</header>
+<main class="flex-grow pt-24 pb-12 px-6 max-w-2xl mx-auto w-full">
+<!-- Onboarding Banner -->
+<section class="mb-10 p-6 rounded-xl bg-surface-container-low flex items-start gap-4 border-l-4 border-primary/40">
+<div class="p-2 rounded-full bg-primary-container">
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: &quot;FILL&quot; 1;">security</span>
+</div>
+<div>
+<h2 class="font-headline font-bold text-on-surface mb-1" style="">Secure Onboarding</h2>
+<p class="text-on-surface-variant text-sm leading-relaxed" style="">Your data is encrypted using military-grade protocols. We prioritize the safety of your brand identity and financial information.</p>
+</div>
+</section>
+<!-- Form Section -->
+<div class="space-y-8">
+<header>
+<h1 class="font-headline text-4xl font-extrabold tracking-tight mb-2" style="">Create Brand Account</h1>
+<p class="text-on-surface-variant" style="">Provide the foundational details for your Aura presence.</p>
+</header>
+<form class="space-y-6">
+<!-- Full Name -->
+<div class="space-y-1.5">
+<label class="block text-sm font-medium text-on-surface-variant ml-1" style="">Brand name</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-highest border-none rounded-lg p-4 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/50 transition-all" placeholder="e.g. Jonathan Aura" type="text">
+<div class="absolute bottom-0 left-0 h-0.5 w-0 bg-tertiary group-focus-within:w-full transition-all duration-300"></div>
+</div>
+</div>
+<!-- Email Address -->
+<div class="space-y-1.5">
+<label class="block text-sm font-medium text-on-surface-variant ml-1" style="">Company email address</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-highest border-none rounded-lg p-4 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/50 transition-all" placeholder="name@company.com" type="email">
+<div class="absolute bottom-0 left-0 h-0.5 w-0 bg-tertiary group-focus-within:w-full transition-all duration-300"></div>
+</div>
+</div>
+<!-- Phone Number -->
+<div class="space-y-1.5">
+<label class="block text-sm font-medium text-on-surface-variant ml-1" style="">Phone number</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-highest border-none rounded-lg p-4 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/50 transition-all" placeholder="+1 (555) 000-0000" type="tel">
+<div class="absolute bottom-0 left-0 h-0.5 w-0 bg-tertiary group-focus-within:w-full transition-all duration-300"></div>
+</div>
+</div>
+<!-- Password Field Group -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-1.5">
+<label class="block text-sm font-medium text-on-surface-variant ml-1" style="">Password</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-highest border-none rounded-lg p-4 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/50 transition-all" placeholder="••••••••" type="password">
+<div class="absolute bottom-0 left-0 h-0.5 w-0 bg-tertiary group-focus-within:w-full transition-all duration-300"></div>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="block text-sm font-medium text-on-surface-variant ml-1" style="">Confirm password</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-highest border-none rounded-lg p-4 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/50 transition-all" placeholder="••••••••" type="password">
+<div class="absolute bottom-0 left-0 h-0.5 w-0 bg-tertiary group-focus-within:w-full transition-all duration-300"></div>
+</div>
+</div>
+</div>
+<!-- Password Requirements -->
+<div class="flex flex-wrap gap-4 px-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">check_circle</span>
+<span class="text-xs text-on-surface-variant" style="">Min 8 chars</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-outline-variant" style="">circle</span>
+<span class="text-xs text-on-surface-variant" style="">1 Uppercase</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-outline-variant" style="">circle</span>
+<span class="text-xs text-on-surface-variant" style="">1 Number</span>
+</div>
+</div>
+<!-- Security Question Section -->
+<div class="pt-4 border-t border-outline-variant/15 space-y-6">
+<div class="space-y-1.5">
+<label class="block text-sm font-medium text-on-surface-variant ml-1" style="">Security question</label>
+<div class="relative">
+<select class="w-full bg-surface-container-highest border-none rounded-lg p-4 text-on-surface appearance-none focus:ring-2 focus:ring-primary/50 transition-all">
+<option>Select a recovery question</option>
+<option>What was your first pet's name?</option>
+<option>In what city were you born?</option>
+<option>What was your high school mascot?</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" style="">expand_more</span>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="block text-sm font-medium text-on-surface-variant ml-1" style="">Security answer</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-highest border-none rounded-lg p-4 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/50 transition-all" placeholder="Your answer" type="text">
+<div class="absolute bottom-0 left-0 h-0.5 w-0 bg-tertiary group-focus-within:w-full transition-all duration-300"></div>
+</div>
+</div>
+</div>
+</form>
+</div>
+<!-- Sticky Bottom Actions for Mobile -->
+<div class="mt-12 flex flex-col md:flex-row gap-4 items-center justify-between">
+<button class="w-full md:w-auto px-10 py-4 text-sm font-bold border border-outline-variant/15 text-on-surface rounded-full hover:bg-surface-container transition-colors active:scale-95 duration-150 order-2 md:order-1" style="">
+                Back
+            </button>
+<button class="w-full md:w-auto px-12 py-4 text-sm font-bold bg-gradient-to-br from-primary to-on-primary-container text-on-primary rounded-full hover:brightness-110 shadow-[0_0_32px_rgba(78,222,163,0.06)] transition-all active:scale-95 duration-150 order-1 md:order-2" style="">
+                Next Step
+            </button>
+</div>
+</main>
+<!-- Optional Visual Aesthetic Accent -->
+<div class="fixed bottom-0 right-0 -z-10 w-[500px] h-[500px] opacity-10 blur-[120px] rounded-full bg-primary pointer-events-none"></div>
+<div class="fixed top-20 left-0 -z-10 w-[300px] h-[300px] opacity-5 blur-[100px] rounded-full bg-tertiary pointer-events-none"></div>
+</body></html>

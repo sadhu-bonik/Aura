@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Creator Registration - Step 4: Portfolio Upload
+    Design ref: portfolio_upload_step_4_4/screen.png
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#B20B1326"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_app_bar_height"
+            app:navigationIcon="@android:drawable/ic_media_previous"
+            app:navigationIconTint="@color/colorOnSurface"
+            app:title="@string/creator_onboarding_title"
+            app:titleTextColor="@color/colorOnSurface">
+
+            <!-- Step badge in toolbar -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/space_md"
+                android:text="@string/creator_reg_step4_tag"
+                android:textColor="@color/colorPrimary"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:background="@color/colorPrimaryContainer"
+                android:paddingStart="@dimen/space_sm"
+                android:paddingEnd="@dimen/space_sm"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp" />
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/bottom_nav_height"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/space_lg"
+            android:paddingEnd="@dimen/space_lg"
+            android:paddingTop="@dimen/space_lg"
+            android:paddingBottom="@dimen/space_lg">
+
+            <!-- Hero section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/space_xl">
+
+                <TextView
+                    android:id="@+id/tv_step_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/creator_reg_step4_title"
+                    android:textColor="@color/colorOnSurface"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="-0.02"
+                    android:layout_marginBottom="@dimen/space_sm" />
+
+                <TextView
+                    android:id="@+id/tv_step_subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/creator_reg_step4_subtitle"
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="14sp"
+                    android:lineSpacingMultiplier="1.5" />
+            </LinearLayout>
+
+            <!-- Add Video card (primary upload area) -->
+            <FrameLayout
+                android:id="@+id/card_add_video"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/bg_card_glass"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginBottom="@dimen/space_md">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+
+                    <FrameLayout
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@color/colorSurfaceContainerHighest"
+                        android:layout_marginBottom="@dimen/space_md">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:src="@android:drawable/ic_input_add"
+                            android:tint="@color/colorPrimary"
+                            android:contentDescription="@string/cd_upload_video" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/creator_reg_add_video_title"
+                        android:textColor="@color/colorOnSurface"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="@dimen/space_sm" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/creator_reg_add_video_subtitle"
+                        android:textColor="@color/colorOnSurfaceVariant"
+                        android:textSize="13sp"
+                        android:gravity="center"
+                        android:layout_marginBottom="@dimen/space_sm" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/creator_reg_add_video_spec"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="11sp"
+                        android:alpha="0.6" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <!-- Video grid - sample slots (RecyclerView in production) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/space_lg">
+
+                <!-- Processing slot -->
+                <FrameLayout
+                    android:id="@+id/card_video_slot_1"
+                    android:layout_width="0dp"
+                    android:layout_height="160dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorSurfaceContainer"
+                    android:layout_marginEnd="@dimen/space_sm">
+
+                    <!-- Example content placeholder -->
+                    <ProgressBar
+                        android:id="@+id/pb_video_1"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:indeterminate="true"
+                        android:visibility="gone"
+                        android:indeterminateTint="@color/colorPrimary" />
+                </FrameLayout>
+
+                <!-- Another slot -->
+                <FrameLayout
+                    android:id="@+id/card_video_slot_2"
+                    android:layout_width="0dp"
+                    android:layout_height="160dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorSurfaceContainerHigh">
+                </FrameLayout>
+            </LinearLayout>
+
+            <!-- RecyclerView for uploaded videos (hidden in wireframe) -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_portfolio_videos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:nestedScrollingEnabled="false" />
+
+            <!-- Aura standard info card -->
+            <LinearLayout
+                android:id="@+id/layout_aura_standard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/space_md"
+                android:background="@drawable/bg_card_surface"
+                android:gravity="top">
+
+                <FrameLayout
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@color/colorTertiaryContainer"
+                    android:layout_marginEnd="@dimen/space_md">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:src="@android:drawable/star_big_on"
+                        android:tint="@color/colorTertiary"
+                        android:contentDescription="@null" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/creator_reg_aura_standard_title"
+                        android:textColor="@color/colorOnSurface"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/creator_reg_aura_standard_body"
+                        android:textColor="@color/colorOnSurfaceVariant"
+                        android:textSize="13sp"
+                        android:lineSpacingMultiplier="1.5" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Nav with Finish instead of Next -->
+    <LinearLayout
+        android:id="@+id/layout_bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_nav_height"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingStart="@dimen/space_lg"
+        android:paddingEnd="@dimen/space_lg"
+        android:background="@drawable/bg_bottom_nav"
+        android:layout_gravity="bottom">
+
+        <LinearLayout
+            android:id="@+id/btn_nav_back"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="@dimen/space_sm"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="@dimen/icon_size_md"
+                android:layout_height="@dimen/icon_size_md"
+                android:src="@android:drawable/ic_media_previous"
+                android:tint="@color/colorOnSurface"
+                android:alpha="0.6"
+                android:contentDescription="@string/cd_back_button" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nav_btn_back"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:alpha="0.6" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btn_nav_save_exit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="@dimen/space_sm"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="@dimen/icon_size_md"
+                android:layout_height="@dimen/icon_size_md"
+                android:src="@android:drawable/ic_menu_save"
+                android:tint="@color/colorOnSurface"
+                android:alpha="0.6"
+                android:contentDescription="@string/nav_btn_save_exit" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nav_btn_save_exit"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:alpha="0.6" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btn_nav_finish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingStart="@dimen/space_xl"
+            android:paddingEnd="@dimen/space_xl"
+            android:paddingTop="@dimen/space_sm"
+            android:paddingBottom="@dimen/space_sm"
+            android:background="@drawable/bg_button_primary_gradient"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nav_btn_finish"
+                android:textColor="@color/colorOnPrimary"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1" />
+
+            <ImageView
+                android:layout_width="@dimen/icon_size_sm"
+                android:layout_height="@dimen/icon_size_sm"
+                android:src="@android:drawable/ic_media_next"
+                android:tint="@color/colorOnPrimary"
+                android:layout_marginStart="@dimen/space_sm"
+                android:contentDescription="@null" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

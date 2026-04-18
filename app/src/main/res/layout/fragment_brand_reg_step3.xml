@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Brand Registration - Step 3: Company Verification
+    Design ref: brand_company_verification_updated/screen.png
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#B20B1326"
+        app:elevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_app_bar_height"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/space_lg"
+            android:paddingEnd="@dimen/space_lg">
+
+            <ImageView
+                android:id="@+id/iv_close"
+                android:layout_width="@dimen/icon_size_md"
+                android:layout_height="@dimen/icon_size_md"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:tint="@color/colorPrimary"
+                android:contentDescription="@string/cd_back_button"
+                android:layout_marginEnd="@dimen/space_md" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/app_name"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:letterSpacing="-0.03" />
+
+            <!-- PRO badge -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PRO"
+                android:textColor="@color/colorTertiary"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1"
+                android:paddingStart="@dimen/space_sm"
+                android:paddingEnd="@dimen/space_sm"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@color/colorTertiaryContainer" />
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/bottom_nav_height"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/space_lg"
+            android:paddingEnd="@dimen/space_lg"
+            android:paddingTop="@dimen/space_lg"
+            android:paddingBottom="@dimen/space_lg">
+
+            <!-- Progress indicator segmented -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/space_xl">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="@dimen/space_md">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Onboarding"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:textAllCaps="true"
+                            android:letterSpacing="0.15"
+                            android:layout_marginBottom="2dp" />
+
+                        <TextView
+                            android:id="@+id/tv_step_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/brand_reg_step3_verify_title"
+                            android:textColor="@color/colorOnSurface"
+                            android:textSize="26sp"
+                            android:textStyle="bold"
+                            android:letterSpacing="-0.02" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/brand_reg_step3_tag"
+                        android:textColor="@color/colorOnSurfaceVariant"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Segmented progress bar (5 segments) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:orientation="horizontal">
+
+                    <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/colorPrimary" android:layout_marginEnd="2dp" />
+                    <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/colorPrimary" android:layout_marginEnd="2dp" />
+                    <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/colorPrimary" android:layout_marginEnd="2dp" />
+                    <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/colorSurfaceContainerHighest" android:layout_marginEnd="2dp" />
+                    <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/colorSurfaceContainerHighest" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Entity Credentials section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/space_sm">
+
+                <View android:layout_width="32dp" android:layout_height="1dp" android:background="@color/colorPrimary" android:alpha="0.3" android:layout_marginEnd="@dimen/space_sm" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/brand_reg_step3_tag"
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:letterSpacing="0.2" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/space_lg">
+
+                <!-- Legal Business Name -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="@dimen/space_sm">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/brand_reg_step3_legal_name_label"
+                        android:textColor="@color/colorOnSurfaceVariant"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.08"
+                        android:layout_marginBottom="@dimen/space_sm"
+                        android:layout_marginStart="4dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_legal_name"
+                        style="@style/Widget.Aura.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_legal_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/input_height"
+                            android:hint="@string/brand_reg_step3_legal_name_hint"
+                            android:textColor="@color/colorOnSurface" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <!-- Representative Name -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/brand_reg_step3_rep_name_label"
+                        android:textColor="@color/colorOnSurfaceVariant"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.08"
+                        android:layout_marginBottom="@dimen/space_sm"
+                        android:layout_marginStart="4dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_rep_name"
+                        style="@style/Widget.Aura.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_rep_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/input_height"
+                            android:hint="@string/brand_reg_step3_rep_name_hint"
+                            android:textColor="@color/colorOnSurface" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Company email -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brand_reg_step3_company_email_label"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:letterSpacing="0.08"
+                android:layout_marginBottom="@dimen/space_sm"
+                android:layout_marginStart="4dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_company_email"
+                style="@style/Widget.Aura.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_xl">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_company_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/input_height"
+                    android:hint="@string/brand_reg_step3_company_email_hint"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Legal Documentation section label -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/space_md">
+
+                <View android:layout_width="32dp" android:layout_height="1dp" android:background="@color/colorPrimary" android:alpha="0.3" android:layout_marginEnd="@dimen/space_sm" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/brand_reg_step3_doc_section"
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:letterSpacing="0.2" />
+            </LinearLayout>
+
+            <!-- File upload zone -->
+            <FrameLayout
+                android:id="@+id/layout_file_upload"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:background="@drawable/bg_upload_zone"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginBottom="@dimen/space_xl">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+
+                    <FrameLayout
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@color/colorPrimaryContainer"
+                        android:layout_marginBottom="@dimen/space_md">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:src="@android:drawable/ic_menu_upload"
+                            android:tint="@color/colorPrimary"
+                            android:contentDescription="@null" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/brand_reg_step3_upload_title"
+                        android:textColor="@color/colorOnSurface"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/brand_reg_step3_upload_subtitle"
+                        android:textColor="@color/colorOnSurfaceVariant"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/space_md"
+                        android:paddingEnd="@dimen/space_md" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <!-- Social Presence section label -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/space_md">
+
+                <View android:layout_width="32dp" android:layout_height="1dp" android:background="@color/colorPrimary" android:alpha="0.3" android:layout_marginEnd="@dimen/space_sm" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/brand_reg_step3_social_section"
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:letterSpacing="0.2" />
+            </LinearLayout>
+
+            <!-- LinkedIn input row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="@dimen/space_md"
+                android:background="@drawable/bg_card_surface"
+                android:layout_marginBottom="@dimen/space_sm">
+
+                <FrameLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorSurfaceContainerHighest"
+                    android:layout_marginEnd="@dimen/space_md">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_md"
+                        android:layout_height="@dimen/icon_size_md"
+                        android:layout_gravity="center"
+                        android:src="@android:drawable/ic_menu_share"
+                        android:tint="@color/colorSecondary"
+                        android:contentDescription="@null" />
+                </FrameLayout>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_linkedin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/brand_reg_step3_linkedin_hint"
+                    android:textColor="@color/colorOnSurface"
+                    android:textColorHint="@color/colorOutline"
+                    android:textSize="13sp"
+                    android:inputType="textUri" />
+            </LinearLayout>
+
+            <!-- Twitter input row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="@dimen/space_md"
+                android:background="@drawable/bg_card_surface"
+                android:layout_marginBottom="@dimen/space_lg">
+
+                <FrameLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorSurfaceContainerHighest"
+                    android:layout_marginEnd="@dimen/space_md">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_md"
+                        android:layout_height="@dimen/icon_size_md"
+                        android:layout_gravity="center"
+                        android:src="@android:drawable/ic_menu_send"
+                        android:tint="@color/colorSecondary"
+                        android:contentDescription="@null" />
+                </FrameLayout>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_twitter"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/brand_reg_step3_twitter_hint"
+                    android:textColor="@color/colorOnSurface"
+                    android:textColorHint="@color/colorOutline"
+                    android:textSize="13sp"
+                    android:inputType="text" />
+            </LinearLayout>
+
+            <!-- Security protocol info card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/space_md"
+                android:background="@drawable/bg_card_surface"
+                android:layout_marginBottom="@dimen/space_lg">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="@dimen/space_sm">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_md"
+                        android:layout_height="@dimen/icon_size_md"
+                        android:src="@android:drawable/ic_lock_lock"
+                        android:tint="@color/colorTertiary"
+                        android:layout_marginEnd="@dimen/space_sm"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/brand_reg_security_protocol_title"
+                        android:textColor="@color/colorOnSurface"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.08" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/brand_reg_security_protocol_body"
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="12sp"
+                    android:lineSpacingMultiplier="1.5" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Custom bottom nav: just back and continue (wider continue) -->
+    <LinearLayout
+        android:id="@+id/layout_bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_nav_height"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingStart="@dimen/space_xl"
+        android:paddingEnd="@dimen/space_xl"
+        android:background="@drawable/bg_bottom_nav"
+        android:layout_gravity="bottom">
+
+        <FrameLayout
+            android:id="@+id/btn_nav_back"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_card_glass"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="@dimen/icon_size_md"
+                android:layout_height="@dimen/icon_size_md"
+                android:layout_gravity="center"
+                android:src="@android:drawable/ic_media_previous"
+                android:tint="@color/colorOnSurface"
+                android:alpha="0.6"
+                android:contentDescription="@string/cd_back_button" />
+        </FrameLayout>
+
+        <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/btn_nav_continue"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingStart="@dimen/space_xxl"
+            android:paddingEnd="@dimen/space_xxl"
+            android:background="@drawable/bg_button_primary_gradient"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Continue"
+                android:textColor="@color/colorOnPrimary"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:letterSpacing="0.08" />
+
+            <ImageView
+                android:layout_width="@dimen/icon_size_md"
+                android:layout_height="@dimen/icon_size_md"
+                android:src="@android:drawable/ic_media_next"
+                android:tint="@color/colorOnPrimary"
+                android:layout_marginStart="@dimen/space_sm"
+                android:contentDescription="@null" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

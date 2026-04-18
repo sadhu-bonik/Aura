@@ -12,8 +12,8 @@ class PortfolioRepository(
 ) {
     fun streamPublicVideos(limit: Long = 50L): Flow<List<PortfolioItem>> =
         firestore.collection(COLLECTION)
-            .whereEqualTo("mediaType", "video")
             .whereEqualTo("isPublic", true)
+            .whereEqualTo("mediaType", "video")
             .orderBy("createdAt", Query.Direction.DESCENDING)
             .limit(limit)
             .snapshots()

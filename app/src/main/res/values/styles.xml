@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme -->
+    <style name="Base.Theme.Aura2" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorPrimaryContainer">@color/colorPrimaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/colorOnPrimaryContainer</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="colorSecondaryContainer">@color/colorSecondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/colorOnSecondaryContainer</item>
+        <item name="colorTertiary">@color/colorTertiary</item>
+        <item name="colorOnTertiary">@color/colorOnTertiary</item>
+        <item name="colorTertiaryContainer">@color/colorTertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/colorOnTertiaryContainer</item>
+        <item name="colorError">@color/colorError</item>
+        <item name="colorOnError">@color/colorOnError</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+        <item name="colorOutline">@color/colorOutline</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+    </style>
+
+    <style name="Theme.Aura2" parent="Base.Theme.Aura2" />
+
+    <!-- ============================================================ -->
+    <!-- TEXT APPEARANCES                                             -->
+    <!-- ============================================================ -->
+
+    <style name="TextAppearance.Aura.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="android:textSize">32sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.Aura.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.Aura.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.Aura.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.Aura.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.Aura.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="TextAppearance.Aura.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textColor">@color/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="TextAppearance.Aura.LabelTertiary" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textColor">@color/colorTertiary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- ============================================================ -->
+    <!-- BUTTONS                                                      -->
+    <!-- ============================================================ -->
+
+    <style name="Widget.Aura.Button.Primary" parent="Widget.Material3.Button">
+        <item name="android:minHeight">52dp</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.Aura.BodyLarge</item>
+        <item name="android:textColor">@color/colorOnPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="cornerRadius">26dp</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="rippleColor">@color/colorOnPrimary</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+    <style name="Widget.Aura.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">52dp</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.Aura.BodyLarge</item>
+        <item name="android:textColor">@color/colorOnSurface</item>
+        <item name="cornerRadius">26dp</item>
+        <item name="strokeColor">@color/colorOutlineVariant</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+    <style name="Widget.Aura.Button.Text" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/colorOnSurfaceVariant</item>
+        <item name="android:textAppearance">@style/TextAppearance.Aura.BodyMedium</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+    <!-- ============================================================ -->
+    <!-- TEXT INPUTS                                                  -->
+    <!-- ============================================================ -->
+
+    <style name="Widget.Aura.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/colorSurfaceContainerHighest</item>
+        <item name="boxStrokeColor">@color/colorOutlineVariant</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="hintTextColor">@color/colorOnSurfaceVariant</item>
+        <item name="android:textColorHint">@color/colorOutline</item>
+        <item name="boxCornerRadiusTopStart">@dimen/corner_radius_sm</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/corner_radius_sm</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/corner_radius_sm</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/corner_radius_sm</item>
+    </style>
+
+    <!-- ============================================================ -->
+    <!-- CARDS                                                        -->
+    <!-- ============================================================ -->
+
+    <style name="Widget.Aura.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/colorSurfaceContainer</item>
+        <item name="cardCornerRadius">@dimen/corner_radius_md</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeColor">@color/colorOutlineVariant</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="contentPadding">@dimen/space_md</item>
+    </style>
+
+    <style name="Widget.Aura.Card.Glass" parent="Widget.Aura.Card">
+        <item name="cardBackgroundColor">@color/colorSurfaceContainerLow</item>
+        <item name="cardCornerRadius">@dimen/corner_radius_lg</item>
+        <item name="strokeColor">@color/colorOutlineVariant</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <style name="Widget.Aura.Card.Role.Selected" parent="Widget.Aura.Card.Glass">
+        <item name="strokeColor">@color/colorPrimary</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <!-- ============================================================ -->
+    <!-- TOP APP BAR                                                  -->
+    <!-- ============================================================ -->
+
+    <style name="Widget.Aura.TopAppBar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">#B20B1326</item>
+        <item name="titleTextColor">@color/colorOnSurface</item>
+        <item name="navigationIconTint">@color/colorPrimary</item>
+    </style>
+
+    <!-- ============================================================ -->
+    <!-- BOTTOM NAV BAR                                               -->
+    <!-- ============================================================ -->
+
+    <style name="Widget.Aura.BottomNavBar" parent="">
+        <item name="android:background">@color/colorSurfaceContainerLow</item>
+        <item name="android:paddingTop">@dimen/space_sm</item>
+        <item name="android:paddingBottom">@dimen/space_sm</item>
+    </style>
+
+    <!-- ============================================================ -->
+    <!-- CHIP                                                         -->
+    <!-- ============================================================ -->
+
+    <style name="Widget.Aura.Chip.Niche" parent="Widget.Material3.Chip.Filter">
+        <item name="chipBackgroundColor">@color/colorSurfaceContainerHighest</item>
+        <item name="chipStrokeColor">@color/colorOutlineVariant</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="android:textColor">@color/colorOnSurfaceVariant</item>
+        <item name="chipCornerRadius">50dp</item>
+    </style>
+
+    <style name="Widget.Aura.Chip.Niche.Selected" parent="Widget.Aura.Chip.Niche">
+        <item name="chipBackgroundColor">@color/colorPrimaryContainer</item>
+        <item name="chipStrokeColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <!-- ============================================================ -->
+    <!-- PROGRESS INDICATOR                                          -->
+    <!-- ============================================================ -->
+
+    <style name="Widget.Aura.ProgressBar" parent="Widget.Material3.LinearProgressIndicator">
+        <item name="trackColor">@color/colorSurfaceContainerHigh</item>
+        <item name="indicatorColor">@color/colorPrimary</item>
+        <item name="trackCornerRadius">4dp</item>
+        <item name="android:minHeight">6dp</item>
+    </style>
+
+</resources>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator Onboarding - Portfolio Upload</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#2d3449",
+                        "secondary": "#b9c7e0",
+                        "surface-container-high": "#222a3d",
+                        "tertiary": "#ffb95f",
+                        "tertiary-fixed": "#ffddb8",
+                        "surface-tint": "#4edea3",
+                        "primary-fixed-dim": "#4edea3",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "surface-container-lowest": "#060e20",
+                        "surface-variant": "#2d3449",
+                        "on-error": "#690005",
+                        "primary-container": "#001c10",
+                        "error-container": "#93000a",
+                        "surface": "#0b1326",
+                        "inverse-surface": "#dae2fd",
+                        "secondary-container": "#3c4a5e",
+                        "on-surface-variant": "#c6c6cd",
+                        "on-background": "#dae2fd",
+                        "tertiary-container": "#251400",
+                        "surface-container": "#171f33",
+                        "on-secondary-fixed": "#0d1c2f",
+                        "primary-fixed": "#6ffbbe",
+                        "error": "#ffb4ab",
+                        "primary": "#4edea3",
+                        "on-primary-fixed-variant": "#005236",
+                        "surface-bright": "#31394d",
+                        "on-tertiary-fixed": "#2a1700",
+                        "secondary-fixed-dim": "#b9c7e0",
+                        "inverse-primary": "#006c49",
+                        "on-tertiary-container": "#b47300",
+                        "on-tertiary": "#472a00",
+                        "on-secondary-container": "#abb9d2",
+                        "on-primary-container": "#009365",
+                        "outline-variant": "#45464d",
+                        "on-primary": "#003824",
+                        "inverse-on-surface": "#283044",
+                        "on-secondary-fixed-variant": "#3a485c",
+                        "secondary-fixed": "#d5e3fd",
+                        "surface-dim": "#0b1326",
+                        "on-surface": "#dae2fd",
+                        "on-primary-fixed": "#002113",
+                        "on-error-container": "#ffdad6",
+                        "background": "#0b1326",
+                        "outline": "#909097",
+                        "on-secondary": "#233144",
+                        "surface-container-low": "#131b2e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-shift-no-borders {
+            border: none !important;
+        }
+        body {
+            background-color: #0b1326;
+            color: #dae2fd;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body selection:bg-primary/30">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#0b1326]/70 backdrop-blur-xl flex items-center justify-between px-6 h-16 w-full tonal-shift-no-borders shadow-[0_0_32px_rgba(78,222,163,0.06)]">
+<div class="flex items-center gap-4">
+<button class="hover:bg-[#171f33] transition-colors scale-95 active:scale-90 transition-transform p-2 rounded-full text-[#dae2fd]">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-['Manrope'] font-bold tracking-tight text-[#dae2fd] text-lg">Creator Onboarding</h1>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-medium text-[#4edea3] bg-[#001c10] px-3 py-1 rounded-full">Step 4 of 4</span>
+<button class="hover:bg-[#171f33] transition-colors scale-95 active:scale-90 transition-transform p-2 rounded-full text-[#dae2fd]">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-5xl mx-auto">
+<!-- Hero Section -->
+<section class="mb-12">
+<h2 class="font-headline text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-on-surface">
+                Showcase your <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-on-primary-container">Mastery.</span>
+</h2>
+<p class="text-on-surface-variant text-lg leading-relaxed max-w-2xl">
+                Upload 1-10 videos highlighting your creative process. Our curators evaluate these for technical precision, storytelling, and visual impact.
+            </p>
+</section>
+<!-- Video Grid: Bento Style -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Add Video Action Card -->
+<div class="md:col-span-1 md:row-span-2 group relative bg-surface-container-high rounded-xl overflow-hidden cursor-pointer hover:bg-surface-container-highest transition-all duration-300 flex flex-col items-center justify-center p-8 min-h-[320px] shadow-[0_0_32px_rgba(78,222,163,0.03)] border border-outline-variant/10">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none"></div>
+<div class="w-16 h-16 rounded-full bg-surface-container-highest group-hover:scale-110 group-hover:bg-primary transition-all duration-300 flex items-center justify-center mb-6 shadow-xl">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary text-3xl" data-icon="add_circle">add_circle</span>
+</div>
+<div class="text-center">
+<h3 class="font-headline text-xl font-bold text-on-surface mb-2">Add Video</h3>
+<p class="text-on-surface-variant text-sm">Drag and drop or click to browse files</p>
+<p class="mt-4 text-xs text-primary/60 font-medium">MP4, MOV, HEVC up to 500MB</p>
+</div>
+</div>
+<!-- Uploaded Video Thumbnails -->
+<div class="group relative bg-surface-container rounded-xl overflow-hidden shadow-lg aspect-video md:aspect-square">
+<img class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" data-alt="cinematic close-up of high-end mechanical keyboard with glowing teal LEDs and sleek metallic finish in a dark room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrTnTEsHuSwFCUOzk8Agtgwe1W9I02fyGQaOD1rmpsLX-MkzYvHWZJMifgYMSgMX--RRE25ZMWOg2ItRvqDyv8oZr-KLd802KWghCT6IB7m_SPAxdEDgSgp90nHV3FWvGixE3hbY5sjSLllQOc4_HYTSH55g19y8m9uxnLDeo2UL0PpSTerELrPfIw2tuv0s0E8G5LhVEa0N36uC5OVuhvi4B7Y2w3FdisqKbxNcAUjVeW6IBiIdOR_VkLEF605jAu0ua1KoOMLJg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent opacity-80"></div>
+<div class="absolute top-4 right-4 bg-primary text-on-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
+                    LIVE
+                </div>
+<div class="absolute bottom-4 left-4 right-4">
+<p class="text-on-surface font-bold text-sm mb-1 truncate">Product_Reveal_01.mp4</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xs" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-xs text-on-surface-variant">Review Complete</span>
+</div>
+</div>
+</div>
+<div class="group relative bg-surface-container rounded-xl overflow-hidden shadow-lg aspect-video md:aspect-square">
+<img class="w-full h-full object-cover opacity-60" data-alt="dynamic shot of a professional camera rig on a gimbal with neon light reflections on the lens surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW-6R-352zg9cL7GxWYgWMzeEdcnupZ16v5EuaDRNrQ6UYWDv3VDrScVHvhxmzSEwQ0kFk4GSmubUY-DNjqTL7Pr73q9rWNUX1QQ3g1jU6gWBkq17N-vCMkK0eWKZhSBUij0WZQ2XMpVaW8qYMPYjYO-th5oRvMRTuI8pM_m878Lse8hPpD0bs9_Eeiv9Q9qO4Wl2As7SC3i-mUEiBo11Gq36alteGKNzY6DVHJkR6f-g9u-b9tuSxTcqlucqty11ZD9AxeyIzaUs"/>
+<div class="absolute inset-0 bg-surface/40 backdrop-blur-[2px] flex flex-col items-center justify-center p-6 text-center">
+<div class="w-12 h-12 rounded-full border-2 border-primary/20 border-t-primary animate-spin mb-4"></div>
+<p class="text-on-surface font-bold text-sm">Processing...</p>
+<p class="text-xs text-on-surface-variant mt-1">42% complete</p>
+</div>
+</div>
+<div class="md:col-span-2 group relative bg-surface-container-high rounded-xl overflow-hidden shadow-lg aspect-[21/9] md:aspect-auto">
+<img class="w-full h-full object-cover opacity-40" data-alt="overhead artistic shot of minimalist workspace with digital tablet and drawing stylus glowing in low light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHmyE_bY7qo-FLg5_iYukl6Yk7_pNaLllQH_MfudFSA7W2Mjv_26eGmUbfvGJAKoG9pA-441ae5staknyJqqa23hgTj1DY0U_x5W7OSYlT-vH0-mMlsDaQSc3Gt6avTo0Vai1wNcVRmL_5OevGziBuNqUG7GyHXV7DvojF2nd4wsUjIYoO1O98rFRPZ-U0ps4MSlcScgvxtGvOdCRIgMJ-wjpAk-fAnHCLWd3ycCuL0Ds_aVA-rOXg4UIIdnc6FepcufDF3BnwYfM"/>
+<div class="absolute inset-0 bg-gradient-to-r from-surface-container-lowest via-surface-container-lowest/40 to-transparent p-8 flex flex-col justify-end">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="warning">warning</span>
+<span class="text-tertiary font-bold text-xs tracking-wide">ACTION REQUIRED</span>
+</div>
+<h4 class="text-on-surface font-headline text-lg font-bold">Concept_Sketch_Final.mov</h4>
+<p class="text-on-surface-variant text-sm mt-1">Low resolution detected. High quality upload recommended for approval.</p>
+</div>
+</div>
+</div>
+<!-- Evaluation Helper Text -->
+<div class="mt-12 p-6 bg-surface-container-low rounded-xl border border-outline-variant/10 flex gap-6 items-start">
+<div class="bg-tertiary/10 p-3 rounded-full">
+<span class="material-symbols-outlined text-tertiary" data-icon="stars" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<div>
+<h5 class="font-headline font-bold text-on-surface mb-1">Aura Obsidian Standard</h5>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+                    Our curation team prioritizes videos that show deep technical competence and a unique visual voice. We typically review submissions within 24 hours. Your portfolio is your primary tool for securing premium creator contracts.
+                </p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-4 px-6 pb-safe bg-[#0b1326]/80 backdrop-blur-2xl z-50 rounded-t-[1.5rem] shadow-2xl">
+<!-- Back Action -->
+<button class="flex flex-col items-center justify-center text-[#dae2fd]/60 px-4 py-2 hover:text-[#4edea3] transition-all scale-98 active:scale-95 duration-200">
+<span class="material-symbols-outlined mb-1" data-icon="chevron_left">chevron_left</span>
+<span class="font-['Inter'] text-xs font-medium uppercase tracking-widest">Back</span>
+</button>
+<!-- Save Action -->
+<button class="flex flex-col items-center justify-center text-[#dae2fd]/60 px-4 py-2 hover:text-[#4edea3] transition-all scale-98 active:scale-95 duration-200">
+<span class="material-symbols-outlined mb-1" data-icon="save">save</span>
+<span class="font-['Inter'] text-xs font-medium uppercase tracking-widest">Save &amp; Exit</span>
+</button>
+<!-- Primary Action (Finish) -->
+<button class="flex flex-col items-center justify-center bg-gradient-to-br from-[#4edea3] to-[#009365] text-[#003824] rounded-full px-8 py-2 shadow-[0_0_24px_rgba(78,222,163,0.3)] transition-all scale-98 active:scale-95">
+<div class="flex items-center gap-2">
+<span class="font-['Inter'] text-xs font-bold uppercase tracking-widest">Finish Setup</span>
+<span class="material-symbols-outlined text-lg" data-icon="chevron_right">chevron_right</span>
+</div>
+</button>
+</nav>
+</body></html>
