@@ -33,11 +33,23 @@ class WelcomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val sessionManager = com.aura.app.utils.SessionManager(requireContext())
+        if (sessionManager.getUserId() != null) {
+            val navOptions = androidx.navigation.NavOptions.Builder()
+                .setPopUpTo(R.id.welcomeFragment, true)
+                .build()
+            findNavController().navigate(R.id.homeContainerFragment, null, navOptions)
+            return
+        }
+
         binding.btnContinue.setOnClickListener {
             val email = binding.etEmail.text?.toString()?.trim() ?: ""
             if (isValidEmail(email)) {
+                // Also store in RegistrationViewModel so same-session registration->login
+                // flows can still read it if needed.
                 registrationViewModel.email = email
-                findNavController().navigate(R.id.action_welcome_to_login)
+                val bundle = android.os.Bundle().apply { putString("email", email) }
+                findNavController().navigate(R.id.action_welcome_to_login, bundle)
             } else {
                 binding.tilEmail.error = "Please enter a valid email address"
             }

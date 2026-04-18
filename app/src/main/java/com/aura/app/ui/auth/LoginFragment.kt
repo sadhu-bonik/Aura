@@ -6,9 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.aura.app.R
 import com.aura.app.databinding.FragmentLoginBinding
+import kotlinx.coroutines.launch
 
 /** LoginFragment — Password entry screen. */
 class LoginFragment : Fragment() {
@@ -16,7 +20,7 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    private val authViewModel: AuthViewModel by activityViewModels()
+    private val authViewModel: AuthViewModel by activityViewModels { AuthViewModel.Factory() }
     private val registrationViewModel: RegistrationViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -29,18 +33,17 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set current email from registration state (passed from Welcome screen)
-        binding.tvUserEmailDisplay.text = registrationViewModel.email
+        // Resolve email: prefer the navArg passed by WelcomeFragment (covers returning users),
+        // fall back to registrationViewModel.email for same-session registration→login redirects.
+        val email = arguments?.getString("email").orEmpty().ifBlank { registrationViewModel.email }
+        binding.tvUserEmailDisplay.text = email
 
         setupObservers()
 
         binding.btnLogin.setOnClickListener {
+            binding.tilPassword.error = null
             val password = binding.etPassword.text?.toString() ?: ""
-            if (password.isNotBlank()) {
-                authViewModel.login(registrationViewModel.email, password)
-            } else {
-                binding.tilPassword.error = "Password cannot be empty"
-            }
+            authViewModel.loginUser(email, password, requireContext())
         }
 
         binding.btnCancel.setOnClickListener { findNavController().navigateUp() }
@@ -51,25 +54,43 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        authViewModel.loginSuccess.observe(viewLifecycleOwner) { success ->
-            if (success) {
-                findNavController().navigate(R.id.action_login_to_home)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                authViewModel.authState.collect { state ->
+                    when (state) {
+                        is AuthState.Idle -> {
+                            binding.btnLogin.isEnabled = true
+                            binding.btnLogin.alpha = 1.0f
+                        }
+                        is AuthState.Loading -> {
+                            binding.btnLogin.isEnabled = false
+                            binding.btnLogin.alpha = 0.5f
+                        }
+                        is AuthState.Success -> {
+                            // Reset state so re-entry to this screen doesn't re-trigger navigation
+                            authViewModel.resetState()
+                            if (!state.user.isProfileComplete) {
+                                if (state.user.role == "creator") {
+                                    findNavController().navigate(R.id.action_login_to_creator_step1)
+                                } else {
+                                    findNavController().navigate(R.id.action_login_to_brand_step1)
+                                }
+                            } else {
+                                findNavController().navigate(R.id.action_login_to_home)
+                            }
+                        }
+                        is AuthState.Error -> {
+                            binding.btnLogin.isEnabled = true
+                            binding.btnLogin.alpha = 1.0f
+                            binding.tilPassword.error = state.message
+                            // Reset so that screen rotation doesn't re-show the error snackbar
+                            authViewModel.resetState()
+                        }
+                    }
+                }
             }
-        }
-
-        authViewModel.error.observe(viewLifecycleOwner) { errorMsg ->
-            if (errorMsg != null) {
-                binding.tilPassword.error = errorMsg
-            }
-        }
-
-        authViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            binding.btnLogin.isEnabled = !isLoading
-            binding.btnLogin.alpha = if (isLoading) 0.5f else 1.0f
-            // TODO: Show a progress indicator
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -8,9 +8,11 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.aura.app.R
@@ -19,6 +21,7 @@ import kotlinx.coroutines.launch
 class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
 
     private val viewModel: VideoFeedViewModel by viewModels { VideoFeedViewModel.Factory() }
+    private val authViewModel: com.aura.app.ui.auth.AuthViewModel by activityViewModels { com.aura.app.ui.auth.AuthViewModel.Factory() }
 
     private var pager: ViewPager2? = null
     private var loading: ProgressBar? = null
@@ -56,6 +59,14 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { render(it) }
             }
+        }
+        
+        view.findViewById<View>(R.id.btn_logout).setOnClickListener {
+            authViewModel.logout(requireContext())
+            val navOptions = androidx.navigation.NavOptions.Builder()
+                .setPopUpTo(R.id.homeContainerFragment, true)
+                .build()
+            requireActivity().findNavController(R.id.nav_host_fragment).navigate(R.id.welcomeFragment, null, navOptions)
         }
     }
 

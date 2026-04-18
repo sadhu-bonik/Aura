@@ -51,7 +51,7 @@ class CreatorRegStep4Fragment : Fragment() {
         binding.btnNavBack.setOnClickListener { findNavController().navigateUp() }
         
         binding.btnNavFinish.setOnClickListener {
-            registrationViewModel.completeRegistration()
+            registrationViewModel.completeRegistration(requireContext())
         }
     }
 
@@ -68,7 +68,9 @@ class CreatorRegStep4Fragment : Fragment() {
         }
 
         registrationViewModel.error.observe(viewLifecycleOwner) { errorMsg ->
-            // TODO: Show Snackbar
+            if (errorMsg != null) {
+                android.widget.Toast.makeText(requireContext(), errorMsg, android.widget.Toast.LENGTH_LONG).show()
+            }
         }
     }
 

@@ -28,8 +28,13 @@ class CreatorRegStep3Fragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupAudienceDropdown()
 
-        // Pre-fill
-        binding.etCity.setText(registrationViewModel.location)
+        // Pre-fill location (stored as "City, State, Country")
+        if (registrationViewModel.location.isNotEmpty()) {
+            val parts = registrationViewModel.location.split(", ")
+            if (parts.size >= 1) binding.etCity.setText(parts[0])
+            if (parts.size >= 2) binding.etState.setText(parts[1])
+            if (parts.size >= 3) binding.etCountry.setText(parts[2])
+        }
         if (registrationViewModel.audienceRegion.isNotEmpty()) {
             binding.acvAudienceRegion.setText(registrationViewModel.audienceRegion, false)
         }
@@ -37,18 +42,40 @@ class CreatorRegStep3Fragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
         binding.layoutBottomNav.btnNavBack.setOnClickListener { findNavController().navigateUp() }
         binding.layoutBottomNav.btnNavNext.setOnClickListener {
-            // Save to ViewModel
-            registrationViewModel.location = binding.etCity.text.toString().trim()
-            registrationViewModel.audienceRegion = binding.acvAudienceRegion.text.toString()
+            val cityStr = binding.etCity.text.toString().trim()
+            val stateStr = binding.etState.text.toString().trim()
+            val countryStr = binding.etCountry.text.toString().trim()
+
+            var valid = true
+            if (cityStr.isBlank()) { binding.tilCity.error = "Required"; valid = false } else { binding.tilCity.error = null }
+            if (stateStr.isBlank()) { binding.tilState.error = "Required"; valid = false } else { binding.tilState.error = null }
+            if (countryStr.isBlank()) { binding.tilCountry.error = "Required"; valid = false } else { binding.tilCountry.error = null }
+
+            if (!valid) return@setOnClickListener
 
             // Collect selected chips
             val selectedNiches = mutableListOf<String>()
             for (i in 0 until binding.chipGroupNiches.childCount) {
-                val chip = binding.chipGroupNiches.getChildAt(i) as Chip
+                val chip = binding.chipGroupNiches.getChildAt(i) as? Chip ?: continue
                 if (chip.isChecked) {
                     selectedNiches.add(chip.text.toString())
                 }
             }
+
+            if (selectedNiches.isEmpty()) {
+                // To keep it simple, we could show a toast, but usually a UI hint is better. 
+                // We'll set an error on the audience region or just generic
+                return@setOnClickListener
+            }
+
+            // Deduplicate address parts
+            val parts = mutableListOf<String>()
+            parts.addAll(cityStr.split(",").map { it.trim() })
+            parts.addAll(stateStr.split(",").map { it.trim() })
+            parts.addAll(countryStr.split(",").map { it.trim() })
+            registrationViewModel.location = parts.filter { it.isNotBlank() }.distinct().joinToString(", ")
+
+            registrationViewModel.audienceRegion = binding.acvAudienceRegion.text.toString()
             registrationViewModel.niches = selectedNiches
 
             findNavController().navigate(R.id.action_creator_step3_to_step4)

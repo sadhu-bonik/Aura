@@ -30,10 +30,16 @@ Authoritative schema. Any change here must be announced in the team chat and ref
 | `role` | String | ✅ | `"creator"` or `"brand"` |
 | `displayName` | String | ✅ | |
 | `profileImageUrl` | String | | Storage URL |
+| `phone` | String | | |
+| `securityQuestion` | String | | Used for password recovery (client-side UX only) |
+| `securityAnswer` | String | | |
 | `createdAt` | Timestamp | ✅ | |
 | `lastActiveAt` | Timestamp | | |
 | `isProfileComplete` | Boolean | ✅ | Onboarding flag |
 | `fcmToken` | String | | For push notifications |
+
+> **Security note:** Passwords are managed exclusively by Firebase Auth. No password, hash,
+> or derived secret is ever stored in Firestore documents.
 
 ---
 

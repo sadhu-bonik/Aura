@@ -23,8 +23,14 @@ class StorageRepository(
      * Uploads a verification document and returns the download URL.
      */
     suspend fun uploadVerificationDoc(userId: String, uri: Uri): String {
-        val extension = uri.toString().substringAfterLast(".", "pdf")
-        val ref = storage.reference.child("users/$userId/verification_doc.$extension")
+        val extension = try {
+            uri.toString().substringAfterLast(".", "pdf").take(5)
+        } catch (e: Exception) {
+            "pdf"
+        }
+        // Normalize extension to avoid invalid characters (:, /, etc.)
+        val safeExtension = extension.filter { it.isLetterOrDigit() }.ifBlank { "bin" }
+        val ref = storage.reference.child("users/$userId/verification_doc.$safeExtension")
         ref.putFile(uri).await()
         return ref.downloadUrl.await().toString()
     }

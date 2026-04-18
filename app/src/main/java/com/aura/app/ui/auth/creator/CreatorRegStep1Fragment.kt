@@ -62,8 +62,19 @@ class CreatorRegStep1Fragment : Fragment() {
     private fun validateForm(): Boolean {
         var valid = true
         binding.tilFullName.error = null; binding.tilEmail.error = null; binding.tilPassword.error = null; binding.tilConfirmPassword.error = null
+        binding.tilPhone.error = null; binding.tilSecurityAnswer.error = null
+
         if (binding.etFullName.text.isNullOrBlank()) { binding.tilFullName.error = "Required"; valid = false }
         if (binding.etEmail.text.isNullOrBlank()) { binding.tilEmail.error = "Required"; valid = false }
+        if (binding.etPhone.text.isNullOrBlank()) { binding.tilPhone.error = "Required"; valid = false }
+        if (binding.etSecurityAnswer.text.isNullOrBlank()) { binding.tilSecurityAnswer.error = "Required"; valid = false }
+
+        val sq = binding.acvSecurityQuestion.text.toString()
+        if (sq.isBlank() || sq == getString(R.string.sq_placeholder)) {
+            // Usually we'd want a red outline on TextInputLayout, but standard simple validation here
+            valid = false
+        }
+
         val pw = binding.etPassword.text?.toString() ?: ""
         if (pw.length < 8) { binding.tilPassword.error = "Min 8 chars"; valid = false }
         if ((binding.etConfirmPassword.text?.toString() ?: "") != pw) { binding.tilConfirmPassword.error = "Passwords don't match"; valid = false }

@@ -79,8 +79,8 @@
     <string name="creator_reg_motto_helper">Summarize your creative essence in one powerful line.</string>
     <string name="creator_reg_bio_label">Bio/Description</string>
     <string name="creator_reg_bio_hint">Tell your story. Where does your inspiration come from?</string>
-    <string name="creator_reg_youtube_label">YouTube Channel</string>
-    <string name="creator_reg_youtube_hint">https://youtube.com/c/yourname</string>
+    <string name="creator_reg_instagram_label">Instagram Handle</string>
+    <string name="creator_reg_instagram_hint">@yourname</string>
     <string name="creator_reg_upload_portrait_label">Upload Portrait</string>
     <string name="creator_reg_portrait_spec">Recommended: 1080x1080px. High-resolution JPG or PNG.</string>
     <string name="creator_reg_pro_tip_title">Pro Tip</string>

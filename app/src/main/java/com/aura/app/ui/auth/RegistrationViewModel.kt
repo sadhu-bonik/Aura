@@ -5,16 +5,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aura.app.data.model.CreatorProfile
 import com.aura.app.data.model.User
-import com.aura.app.data.model.UserRole
 import com.aura.app.data.repository.AuthRepository
 import com.aura.app.data.repository.StorageRepository
 import com.aura.app.data.repository.UserRepository
 import kotlinx.coroutines.launch
 
 /**
- * RegistrationViewModel - Shared state for the multi-step registration process.
- * Holds temporary data until the final "Finish" button is pressed.
+ * RegistrationViewModel — shared state for the CREATOR multi-step registration flow.
+ *
+ * NOTE: Brand registration now has its own dedicated BrandRegistrationViewModel.
+ * This ViewModel only handles Creator registration.
+ *
+ * Passwords are passed directly to Firebase Auth and are NEVER stored in Firestore.
  */
 class RegistrationViewModel(
     private val authRepository: AuthRepository = AuthRepository(),
@@ -22,9 +26,9 @@ class RegistrationViewModel(
     private val storageRepository: StorageRepository = StorageRepository()
 ) : ViewModel() {
 
-    // Common State
-    private val _userRole = MutableLiveData<UserRole>(UserRole.CREATOR)
-    val userRole: LiveData<UserRole> = _userRole
+    // Role state (kept for RoleSelectionFragment compatibility)
+    private val _userRole = MutableLiveData<String>("creator")
+    val userRole: LiveData<String> = _userRole
 
     private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean> = _isLoading
@@ -35,54 +39,45 @@ class RegistrationViewModel(
     private val _registrationSuccess = MutableLiveData<Boolean>(false)
     val registrationSuccess: LiveData<Boolean> = _registrationSuccess
 
-    // Temporary data storage
+    // -------------------------------------------------------------------------
+    // Creator draft fields — filled across 4 steps
+    // -------------------------------------------------------------------------
     var email = ""
     var password = ""
     var fullName = ""
     var phone = ""
     var securityQuestion = ""
     var securityAnswer = ""
-    
-    // Media Uris
-    var profileImageUri: Uri? = null
-    var verificationDocUri: Uri? = null
-    var portfolioVideoUri: Uri? = null
-
-    // Brand specific
-    var brandName = ""
-    var brandMotto = ""
-    var brandBio = ""
-    var industryTags = listOf<String>()
-    var targetLocation = ""
-    var website = ""
-    var instagram = ""
-    var youtube = ""
 
     // Creator specific
     var creatorMotto = ""
     var creatorBio = ""
-    var youtubeLink = ""
+    var instagramHandle = ""
     var niches = listOf<String>()
     var location = ""
     var audienceRegion = ""
 
-    fun setUserRole(role: UserRole) {
+    // Media URIs (upload deferred — placeholders until Storage is wired)
+    var profileImageUri: Uri? = null
+    var portfolioVideoUri: Uri? = null
+
+    fun setUserRole(role: String) {
         _userRole.value = role
     }
 
     /**
-     * Finalizes the registration process:
+     * Finalizes creator registration:
      * 1. Creates Firebase Auth account
-     * 2. Uploads media (photo, doc, video)
-     * 3. Creates Firestore User profile
+     * 2. (Placeholder) Uploads media
+     * 3. Writes Firestore User + CreatorProfile documents
      */
-    fun completeRegistration() {
+    fun completeRegistration(context: android.content.Context) {
         viewModelScope.launch {
             _isLoading.value = true
             _error.value = null
 
             try {
-                // 1. Register with Firebase Auth
+                // 1. Firebase Auth
                 val authResult = authRepository.register(email, password)
                 if (authResult.isFailure) {
                     _error.value = authResult.exceptionOrNull()?.message ?: "Registration failed"
@@ -92,53 +87,45 @@ class RegistrationViewModel(
 
                 val userId = authResult.getOrThrow().uid
 
-                // 2. Upload Media
-                val profileUrl = profileImageUri?.let { storageRepository.uploadProfilePicture(userId, it) } ?: ""
-                val verificationUrl = verificationDocUri?.let { storageRepository.uploadVerificationDoc(userId, it) } ?: ""
-                val videoUrl = portfolioVideoUri?.let { storageRepository.uploadPortfolioVideo(userId, it) } ?: ""
+                // 2. Placeholder — Storage upload will go here when wired
+                val profileUrl = "" // TODO: storageRepository.uploadProfilePicture(userId, profileImageUri)
+                val videoUrl   = "" // TODO: storageRepository.uploadPortfolioVideo(userId, portfolioVideoUri)
 
-                // 3. Create Firestore User Profile
-                val userProfile = if (_userRole.value == UserRole.CREATOR) {
-                    User(
-                        userId = userId,
-                        email = email,
-                        role = UserRole.CREATOR,
-                        displayName = fullName,
-                        profileImageUrl = profileUrl,
-                        motto = creatorMotto,
-                        bio = creatorBio,
-                        niche = niches,
-                        location = location,
-                        audienceRegion = audienceRegion,
-                        portfolioVideoUrl = videoUrl
-                    )
-                } else {
-                    User(
-                        userId = userId,
-                        email = email,
-                        role = UserRole.BRAND,
-                        displayName = brandName,
-                        profileImageUrl = profileUrl,
-                        motto = brandMotto,
-                        bio = brandBio,
-                        companyName = brandName,
-                        phone = phone,
-                        verificationDocUrl = verificationUrl,
-                        website = website,
-                        instagram = instagram,
-                        youtube = youtube,
-                        industryTags = industryTags,
-                        targetLocation = targetLocation
-                    )
-                }
+                // 3. Firestore User document
+                val userProfile = User(
+                    userId = userId,
+                    email = email,
+                    role = "creator",
+                    displayName = fullName,
+                    profileImageUrl = profileUrl,
+                    phone = phone,
+                    securityQuestion = securityQuestion,
+                    securityAnswer = securityAnswer,
+                    isProfileComplete = true
+                )
 
-                val firestoreResult = userRepository.createUserProfile(userProfile)
+                val creatorProfile = CreatorProfile(
+                    userId = userId,
+                    motto = creatorMotto,
+                    bio = creatorBio,
+                    instagramHandle = instagramHandle,
+                    niche = niches.joinToString(", "),
+                    tags = niches,
+                    location = location
+                )
+
+                val firestoreResult = userRepository.setupNewUser(
+                    user = userProfile,
+                    creatorProfile = creatorProfile,
+                    brandProfile = null
+                )
+
                 if (firestoreResult.isSuccess) {
+                    com.aura.app.utils.SessionManager(context).saveUserId(userId)
                     _registrationSuccess.value = true
                 } else {
                     _error.value = firestoreResult.exceptionOrNull()?.message ?: "Failed to create profile"
                 }
-
             } catch (e: Exception) {
                 _error.value = e.message ?: "An unexpected error occurred"
             } finally {

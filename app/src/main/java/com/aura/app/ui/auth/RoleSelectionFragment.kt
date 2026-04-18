@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.aura.app.R
-import com.aura.app.data.model.UserRole
+
 import com.aura.app.databinding.FragmentRoleSelectionBinding
 
 /** RoleSelectionFragment — Creator or Brand role picker. */
@@ -34,17 +34,17 @@ class RoleSelectionFragment : Fragment() {
         }
 
         binding.cardCreator.setOnClickListener {
-            registrationViewModel.setUserRole(UserRole.CREATOR)
+            registrationViewModel.setUserRole("creator")
         }
 
         binding.cardBrand.setOnClickListener {
-            registrationViewModel.setUserRole(UserRole.BRAND)
+            registrationViewModel.setUserRole("brand")
         }
 
         binding.btnContinue.setOnClickListener {
             when (registrationViewModel.userRole.value) {
-                UserRole.CREATOR -> findNavController().navigate(R.id.action_role_to_creator_step1)
-                UserRole.BRAND -> findNavController().navigate(R.id.action_role_to_brand_step1)
+                "creator" -> findNavController().navigate(R.id.action_role_to_creator_step1)
+                "brand" -> findNavController().navigate(R.id.action_role_to_brand_step1)
                 else -> {}
             }
         }
@@ -52,15 +52,15 @@ class RoleSelectionFragment : Fragment() {
         binding.btnBack.setOnClickListener { findNavController().navigateUp() }
     }
 
-    private fun updateCardState(selected: UserRole) {
+    private fun updateCardState(selected: String) {
         binding.cardCreator.setBackgroundResource(
-            if (selected == UserRole.CREATOR) R.drawable.bg_card_role_selected else R.drawable.bg_card_glass
+            if (selected == "creator") R.drawable.bg_card_role_selected else R.drawable.bg_card_glass
         )
         binding.cardBrand.setBackgroundResource(
-            if (selected == UserRole.BRAND) R.drawable.bg_card_role_selected else R.drawable.bg_card_glass
+            if (selected == "brand") R.drawable.bg_card_role_selected else R.drawable.bg_card_glass
         )
-        binding.ivCreatorCheck.visibility = if (selected == UserRole.CREATOR) View.VISIBLE else View.GONE
-        binding.ivBrandCheck.visibility = if (selected == UserRole.BRAND) View.VISIBLE else View.GONE
+        binding.ivCreatorCheck.visibility = if (selected == "creator") View.VISIBLE else View.GONE
+        binding.ivBrandCheck.visibility = if (selected == "brand") View.VISIBLE else View.GONE
     }
 
 

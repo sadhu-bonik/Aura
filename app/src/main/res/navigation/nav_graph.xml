@@ -52,6 +52,14 @@
         <action
             android:id="@+id/action_login_to_forgot_password"
             app:destination="@id/forgotPasswordFragment" />
+
+        <action
+            android:id="@+id/action_login_to_creator_step1"
+            app:destination="@id/creatorRegStep1Fragment" />
+
+        <action
+            android:id="@+id/action_login_to_brand_step1"
+            app:destination="@id/brandRegStep1Fragment" />
     </fragment>
 
     <fragment
@@ -204,6 +212,12 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_brand_step4_to_home"
+            app:destination="@id/homeContainerFragment"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment

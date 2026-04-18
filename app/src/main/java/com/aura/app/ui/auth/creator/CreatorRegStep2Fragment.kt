@@ -38,7 +38,7 @@ class CreatorRegStep2Fragment : Fragment() {
         // Pre-fill
         binding.etMotto.setText(registrationViewModel.creatorMotto)
         binding.etBio.setText(registrationViewModel.creatorBio)
-        binding.etYoutube.setText(registrationViewModel.youtubeLink)
+        binding.etInstagram.setText(registrationViewModel.instagramHandle)
 
         binding.toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
         
@@ -49,9 +49,26 @@ class CreatorRegStep2Fragment : Fragment() {
         binding.layoutBottomNav.btnNavBack.setOnClickListener { findNavController().navigateUp() }
         binding.layoutBottomNav.btnNavNext.setOnClickListener {
             // Save to ViewModel
-            registrationViewModel.creatorMotto = binding.etMotto.text.toString().trim()
-            registrationViewModel.creatorBio = binding.etBio.text.toString().trim()
-            registrationViewModel.youtubeLink = binding.etYoutube.text.toString().trim()
+            val motto = binding.etMotto.text.toString().trim()
+            val bio = binding.etBio.text.toString().trim()
+
+            if (motto.isBlank()) {
+                binding.tilMotto.error = "Required"
+                return@setOnClickListener
+            } else {
+                binding.tilMotto.error = null
+            }
+
+            if (bio.isBlank()) {
+                binding.tilBio.error = "Required"
+                return@setOnClickListener
+            } else {
+                binding.tilBio.error = null
+            }
+
+            registrationViewModel.creatorMotto = motto
+            registrationViewModel.creatorBio = bio
+            registrationViewModel.instagramHandle = binding.etInstagram.text.toString().trim()
 
             findNavController().navigate(R.id.action_creator_step2_to_step3)
         }
