@@ -18,11 +18,9 @@ class ItemPageAdapter(
     }
 
     override fun onBindViewHolder(holder: VideoPageViewHolder, position: Int) {
-        val parent = holder.itemView.parent as? androidx.recyclerview.widget.RecyclerView
-        if (parent != null && parent.width > 0) {
-            holder.itemView.layoutParams.width = parent.width
-            holder.itemView.layoutParams.height = parent.height
-        }
+        val metrics = holder.itemView.context.resources.displayMetrics
+        holder.itemView.layoutParams.width = metrics.widthPixels
+        holder.itemView.layoutParams.height = metrics.heightPixels
         holder.bind(getItem(position))
     }
 

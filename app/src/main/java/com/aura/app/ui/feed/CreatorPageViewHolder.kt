@@ -48,6 +48,7 @@ class CreatorPageViewHolder(
                 if (position != currentInnerPosition) {
                     currentInnerPosition = position
                     updateDots(position)
+                    callback.onItemPositionChanged(bindingAdapterPosition, position)
                 }
                 if (isActive) {
                     activateCurrentInner()
