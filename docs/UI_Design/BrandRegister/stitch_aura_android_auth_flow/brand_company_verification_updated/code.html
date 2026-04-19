@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AURA | Verify Your Company</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "surface-container-lowest": "#060e20",
+                    "surface": "#0b1326",
+                    "on-tertiary-container": "#b47300",
+                    "on-error": "#690005",
+                    "on-surface": "#dae2fd",
+                    "error-container": "#93000a",
+                    "background": "#0b1326",
+                    "primary-container": "#001c10",
+                    "secondary-fixed-dim": "#b9c7e0",
+                    "on-error-container": "#ffdad6",
+                    "surface-dim": "#0b1326",
+                    "outline-variant": "#45464d",
+                    "outline": "#909097",
+                    "surface-container-highest": "#2d3449",
+                    "secondary-container": "#3c4a5e",
+                    "inverse-surface": "#dae2fd",
+                    "secondary-fixed": "#d5e3fd",
+                    "primary-fixed": "#6ffbbe",
+                    "on-tertiary-fixed": "#2a1700",
+                    "on-primary-fixed": "#002113",
+                    "inverse-primary": "#006c49",
+                    "surface-bright": "#31394d",
+                    "secondary": "#b9c7e0",
+                    "on-secondary": "#233144",
+                    "on-primary": "#003824",
+                    "inverse-on-surface": "#283044",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "on-primary-fixed-variant": "#005236",
+                    "tertiary-container": "#251400",
+                    "surface-variant": "#2d3449",
+                    "surface-container": "#171f33",
+                    "on-tertiary": "#472a00",
+                    "on-secondary-fixed-variant": "#3a485c",
+                    "on-secondary-fixed": "#0d1c2f",
+                    "on-primary-container": "#009365",
+                    "primary": "#4edea3",
+                    "tertiary-fixed": "#ffddb8",
+                    "tertiary": "#ffb95f",
+                    "error": "#ffb4ab",
+                    "on-surface-variant": "#c6c6cd",
+                    "on-secondary-container": "#abb9d2",
+                    "surface-container-low": "#131b2e",
+                    "primary-fixed-dim": "#4edea3",
+                    "on-background": "#dae2fd",
+                    "surface-tint": "#4edea3",
+                    "surface-container-high": "#222a3d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.5rem",
+                    "lg": "0.5rem",
+                    "xl": "1.5rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope", "sans-serif"],
+                    "body": ["Inter", "sans-serif"],
+                    "label": ["Inter", "sans-serif"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #2d3449; border-radius: 10px; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary/30">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 w-full z-50 bg-slate-950/70 backdrop-blur-xl flex items-center justify-between px-6 h-16 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-emerald-400 cursor-pointer active:scale-90 transition-transform" style="">close</span>
+<span class="text-lg tracking-[0.2em] font-black text-slate-100 font-['Manrope'] uppercase" style="">AURA</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="bg-tertiary-container text-tertiary text-[10px] font-bold px-2 py-0.5 rounded-full tracking-widest uppercase" style="">PRO</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-2xl mx-auto">
+<!-- Progress Indicator Section -->
+<div class="mb-10">
+<div class="flex justify-between items-end mb-4">
+<div>
+<p class="text-primary text-xs font-bold uppercase tracking-[0.2em] mb-1" style="">Onboarding</p>
+<h1 class="text-3xl font-headline font-extrabold tracking-tighter text-on-surface" style="">Verify Your Company</h1>
+</div>
+<div class="text-right">
+<span class="text-on-surface-variant font-headline font-bold text-sm" style="">Step 3 of 5</span>
+</div>
+</div>
+<!-- Editorial Progress Bar -->
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden flex gap-1">
+<div class="h-full bg-primary flex-1 rounded-full"></div>
+<div class="h-full bg-primary flex-1 rounded-full"></div>
+<div class="h-full bg-primary flex-1 rounded-full shadow-[0_0_8px_rgba(78,222,163,0.4)]"></div>
+<div class="h-full bg-surface-container-highest flex-1 rounded-full"></div>
+<div class="h-full bg-surface-container-highest flex-1 rounded-full"></div>
+</div>
+</div>
+<!-- Form Canvas -->
+<form class="space-y-8">
+<!-- Section: Core Identity -->
+<section class="space-y-6">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-8 h-[1px] bg-primary/30"></div>
+<h2 class="text-[10px] uppercase tracking-[0.3em] font-bold text-on-surface-variant" style="">Entity Credentials</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Legal Business Name -->
+<div class="group">
+<label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2 ml-1" style="">Legal Business Name</label>
+<div class="relative">
+<input class="w-full bg-surface-container-highest border-none rounded-lg px-4 py-3.5 text-on-surface placeholder:text-outline/50 focus:ring-2 focus:ring-inset focus:ring-primary/20 transition-all outline-none" placeholder="e.g. Aura Design Lab LLC" type="text"/>
+<div class="absolute bottom-0 left-0 h-[2px] w-0 group-focus-within:w-full bg-tertiary transition-all duration-300"></div>
+</div>
+</div>
+<!-- Representative Name -->
+<div class="group">
+<label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2 ml-1" style="">Representative Full Name</label>
+<div class="relative">
+<input class="w-full bg-surface-container-highest border-none rounded-lg px-4 py-3.5 text-on-surface placeholder:text-outline/50 focus:ring-2 focus:ring-inset focus:ring-primary/20 transition-all outline-none" placeholder="Johnathan Sterling" type="text"/>
+<div class="absolute bottom-0 left-0 h-[2px] w-0 group-focus-within:w-full bg-tertiary transition-all duration-300"></div>
+</div>
+</div>
+<!-- Company Email -->
+<div class="group">
+<label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2 ml-1" style="">Company Email</label>
+<div class="relative">
+<input class="w-full bg-surface-container-highest border-none rounded-lg px-4 py-3.5 text-on-surface placeholder:text-outline/50 focus:ring-2 focus:ring-inset focus:ring-primary/20 transition-all outline-none" placeholder="verify@aura.com" type="email"/>
+<div class="absolute bottom-0 left-0 h-[2px] w-0 group-focus-within:w-full bg-tertiary transition-all duration-300"></div>
+</div>
+</div>
+<!-- Website URL -->
+</div>
+</section>
+<!-- Section: Document Vault -->
+<section class="pt-4">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-8 h-[1px] bg-primary/30"></div>
+<h2 class="text-[10px] uppercase tracking-[0.3em] font-bold text-on-surface-variant" style="">Legal Documentation</h2>
+</div>
+<div class="relative group cursor-pointer">
+<input class="absolute inset-0 w-full h-full opacity-0 z-10 cursor-pointer" type="file"/>
+<div class="border-2 border-dashed border-outline-variant/30 rounded-xl p-10 flex flex-col items-center justify-center text-center bg-surface-container-low group-hover:bg-surface-container transition-colors">
+<div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl" style="">upload_file</span>
+</div>
+<h3 class="text-on-surface font-bold text-lg mb-1" style="">Business Registration</h3>
+<p class="text-on-surface-variant text-sm max-w-xs" style="">Upload your certification in PDF, JPG, or PNG format (Max 10MB)</p>
+</div>
+</div>
+</section>
+<!-- Section: Social Presence -->
+<section class="pt-4">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-8 h-[1px] bg-primary/30"></div>
+<h2 class="text-[10px] uppercase tracking-[0.3em] font-bold text-on-surface-variant" style="">Social Presence</h2>
+</div>
+<div class="space-y-4">
+<!-- LinkedIn -->
+<div class="flex items-center gap-4 bg-surface-container-low p-4 rounded-xl border border-outline-variant/10">
+<div class="bg-surface-container-highest p-3 rounded-lg text-secondary">
+<span class="material-symbols-outlined" style="">link</span>
+</div>
+<div class="flex-1">
+<input class="w-full bg-transparent border-none text-on-surface placeholder:text-outline/50 focus:ring-0 p-0 text-sm" placeholder="LinkedIn Profile URL" type="text"/>
+</div>
+</div>
+<!-- Twitter/X -->
+<div class="flex items-center gap-4 bg-surface-container-low p-4 rounded-xl border border-outline-variant/10">
+<div class="bg-surface-container-highest p-3 rounded-lg text-secondary">
+<span class="material-symbols-outlined" style="">alternate_email</span>
+</div>
+<div class="flex-1">
+<input class="w-full bg-transparent border-none text-on-surface placeholder:text-outline/50 focus:ring-0 p-0 text-sm" placeholder="Twitter/X Handle" type="text"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Asymmetric Informational Card -->
+<div class="relative overflow-hidden bg-gradient-to-br from-surface-container to-surface-container-low rounded-xl p-6 mt-8">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-tertiary/10 rounded-full blur-2xl"></div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-tertiary" style="">verified_user</span>
+<div>
+<h4 class="text-on-surface font-bold text-sm mb-1 uppercase tracking-wider" style="">Aura Security Protocol</h4>
+<p class="text-on-surface-variant text-xs leading-relaxed" style="">Verification ensures high-trust transactions within the marketplace. Your data is encrypted and only visible to our compliance curators.</p>
+</div>
+</div>
+</div>
+</form>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full px-8 py-6 flex justify-between items-center bg-slate-950/70 backdrop-blur-xl rounded-t-3xl shadow-[0_-8px_32px_rgba(78,222,163,0.06)] z-50">
+<!-- Back Button -->
+<button class="flex items-center justify-center text-slate-400 w-14 h-14 border border-slate-800/50 rounded-full hover:brightness-110 transition-all scale-98 active:scale-95" style="">
+<span class="material-symbols-outlined" style="">west</span>
+</button>
+<!-- Continue Button -->
+<button class="flex items-center justify-center bg-gradient-to-br from-emerald-400 to-emerald-700 text-slate-950 rounded-full w-48 h-14 font-headline font-bold text-sm uppercase tracking-widest hover:brightness-110 transition-all scale-98 active:scale-95 shadow-lg shadow-emerald-900/20" style="">
+            Continue
+            <span class="material-symbols-outlined ml-2 text-xl" style="">east</span>
+</button>
+</nav>
+<!-- Decorative Canvas Elements -->
+<div class="fixed top-0 right-0 -z-10 w-full h-full opacity-40 pointer-events-none">
+<div class="absolute top-[10%] right-[5%] w-[400px] h-[400px] bg-primary/5 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[20%] left-[-10%] w-[300px] h-[300px] bg-secondary/5 rounded-full blur-[100px]"></div>
+</div>
+</body></html>

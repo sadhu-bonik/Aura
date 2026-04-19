@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Welcome to Aura</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#222a3d",
+                    "on-tertiary-fixed": "#2a1700",
+                    "inverse-surface": "#dae2fd",
+                    "background": "#0b1326",
+                    "secondary-fixed-dim": "#b9c7e0",
+                    "secondary-fixed": "#d5e3fd",
+                    "on-tertiary": "#472a00",
+                    "outline-variant": "#45464d",
+                    "inverse-on-surface": "#283044",
+                    "on-background": "#dae2fd",
+                    "surface-container": "#171f33",
+                    "surface": "#0b1326",
+                    "surface-container-low": "#131b2e",
+                    "on-tertiary-container": "#b47300",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "surface-dim": "#0b1326",
+                    "surface-container-highest": "#2d3449",
+                    "surface-tint": "#4edea3",
+                    "on-surface": "#dae2fd",
+                    "on-primary-container": "#009365",
+                    "on-primary-fixed": "#002113",
+                    "surface-variant": "#2d3449",
+                    "tertiary": "#ffb95f",
+                    "on-surface-variant": "#c6c6cd",
+                    "secondary": "#b9c7e0",
+                    "on-primary-fixed-variant": "#005236",
+                    "surface-container-lowest": "#060e20",
+                    "on-secondary-fixed-variant": "#3a485c",
+                    "primary-container": "#001c10",
+                    "on-error-container": "#ffdad6",
+                    "primary-fixed": "#6ffbbe",
+                    "inverse-primary": "#006c49",
+                    "surface-bright": "#31394d",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed": "#ffddb8",
+                    "secondary-container": "#3c4a5e",
+                    "on-secondary-container": "#abb9d2",
+                    "on-secondary-fixed": "#0d1c2f",
+                    "on-secondary": "#233144",
+                    "primary-fixed-dim": "#4edea3",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "tertiary-container": "#251400",
+                    "primary": "#4edea3",
+                    "on-error": "#690005",
+                    "outline": "#909097",
+                    "on-primary": "#003824",
+                    "error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.5rem",
+                    "lg": "0.5rem",
+                    "xl": "1.5rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope", "sans-serif"],
+                    "body": ["Inter", "sans-serif"],
+                    "label": ["Inter", "sans-serif"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0b1326;
+            color: #dae2fd;
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+<!-- Subtle Background Texture -->
+<div class="absolute inset-0 pointer-events-none overflow-hidden">
+<div class="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] rounded-full bg-primary/5 blur-[120px]"></div>
+<div class="absolute top-[40%] -right-[15%] w-[50%] h-[50%] rounded-full bg-tertiary/5 blur-[100px]"></div>
+</div>
+<!-- Header / Brand (TopAppBar Shell Integration) -->
+<nav class="fixed top-0 w-full z-50 bg-[#0b1326]/70 backdrop-blur-xl flex items-center justify-between px-6 py-4">
+<div class="flex items-center gap-4">
+<span class="text-xl font-extrabold text-[#dae2fd] tracking-tighter font-headline" style="">Aura</span>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="w-full max-w-md px-6 z-10">
+<!-- Hero Section -->
+<div class="mb-12 text-center md:text-left">
+<h1 class="text-5xl font-extrabold text-on-surface font-headline tracking-tight leading-[1.1] mb-4" style="">
+                Welcome to Aura
+            </h1>
+<p class="text-lg text-on-surface-variant font-body leading-relaxed max-w-[280px] md:max-w-none mx-auto md:mx-0" style="">
+                Connect with brands and creators in a professional digital ecosystem.
+            </p>
+</div>
+<!-- Entry Form Section -->
+<div class="space-y-6">
+<div class="space-y-2">
+<label class="block text-xs font-medium text-on-surface-variant px-1" for="email" style="">Email Address</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-highest border-none rounded-lg p-4 text-on-surface placeholder:text-outline focus:ring-0 focus:outline-none transition-all" id="email" name="email" placeholder="name@example.com" type="email"/>
+<!-- Focus State Highlight (Gold highlight per DS) -->
+<div class="absolute bottom-0 left-0 right-0 h-[2px] bg-tertiary scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-b-lg"></div>
+</div>
+</div>
+<button class="w-full bg-gradient-to-br from-primary to-on-primary-container text-on-primary font-bold py-4 rounded-full flex items-center justify-center gap-2 shadow-[0_32px_32px_rgba(78,222,163,0.06)] active:scale-[0.98] brightness-110 transition-all" style="">
+<span class="" style="">Continue</span>
+<span class="material-symbols-outlined text-lg" style="">arrow_forward</span>
+</button>
+</div>
+<!-- Footnote / Social -->
+<div class="mt-12 text-center">
+<p class="text-sm text-outline font-body" style="">
+    Don't have an account? 
+    <a class="text-primary font-bold hover:underline ml-1 transition-all" href="#">Sign up</a>
+</p>
+</div>
+</main>
+<!-- Visual Element: Editorial Asymmetry -->
+<div class="hidden lg:block absolute right-[-5%] top-[15%] w-[400px] h-[600px] rounded-xl overflow-hidden opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
+<img alt="Abstract digital architecture" class="w-full h-full object-cover" data-alt="abstract architectural 3D render with flowing dark glass curves and subtle emerald green light reflections" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCS2KxmdPi3yEYIbIHLJ00EOx2VYiq_6zDQWzzgsKcg5J6yB_Kl7Xt2CDKEmAy3C3WHEF876nod5ivW34-MBZMq48K73914at01stol4yH30bDG9HA_GSEfwLHTc86K5NHoizoH1wppiRz2QmWO7jNrvIMh5C4bgp7OaSijiynhEPB3nGj4G58h7PdEUvXJGkAcG2c-2Rfwbz7eCbVsKelKn18E0dDhiOM0G5bjf1EwbQbtNvdW3dBQb82rNFGu_JQCU21U6NNxNhs" style=""/>
+</div>
+<!-- Bottom Interface Logic: Transactional Suppression -->
+<!-- Navigation shell is suppressed per "Transactional" rule for Login/Email entry screens -->
+</body></html>

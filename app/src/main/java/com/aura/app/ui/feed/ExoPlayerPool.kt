@@ -1,39 +1,159 @@
 package com.aura.app.ui.feed
 
 import android.content.Context
+import android.util.Log
+import androidx.annotation.OptIn
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.datasource.cache.CacheDataSource
+import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor
+import androidx.media3.datasource.cache.SimpleCache
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import java.io.File
 
-/**
- * Bounded pool of ExoPlayer instances. A vertical feed only needs a handful live at once
- * (current page plus neighbours pre-bound by ViewPager2), so we cap it and lazily grow.
- */
-class ExoPlayerPool(private val context: Context, private val maxSize: Int = 8) {
-    private val available = ArrayDeque<ExoPlayer>()
-    private var leased = 0
+@OptIn(UnstableApi::class)
+class ExoPlayerPool(context: Context) {
 
-    fun acquire(): ExoPlayer {
-        val player = available.removeFirstOrNull() ?: ExoPlayer.Builder(context).build()
-        leased++
+    private val appContext = context.applicationContext
+    private val cache = SimpleCache(
+        File(appContext.cacheDir, "video_cache"),
+        LeastRecentlyUsedCacheEvictor(CACHE_SIZE_BYTES),
+        androidx.media3.database.StandaloneDatabaseProvider(appContext)
+    )
+    private val players = List(POOL_SIZE) { createPlayer() }
+    private val assignments = arrayOfNulls<Assignment>(POOL_SIZE)
+
+    private data class Assignment(
+        val url: String,
+        var role: Role,
+        var timestamp: Long = System.nanoTime(),
+    )
+
+    private enum class Role { ACTIVE, NEXT_VERT, PREV_VERT }
+
+    val activePlayer: ExoPlayer?
+        get() {
+            for (i in assignments.indices) {
+                if (assignments[i]?.role == Role.ACTIVE) return players[i]
+            }
+            return null
+        }
+
+    fun activate(url: String): ExoPlayer {
+        for (i in assignments.indices) {
+            if (assignments[i]?.role == Role.ACTIVE) {
+                players[i].playWhenReady = false
+                assignments[i] = null
+            }
+        }
+
+        for (i in assignments.indices) {
+            if (assignments[i]?.url == url) {
+                assignments[i] = Assignment(url, Role.ACTIVE)
+                val player = players[i]
+                player.playWhenReady = true
+                Log.d(TAG, "activate REUSE: $url")
+                return player
+            }
+        }
+
+        val idx = stealSlot()
+        val player = players[idx]
+        player.stop()
+        player.clearMediaItems()
+        player.setMediaItem(MediaItem.fromUri(url))
+        player.repeatMode = Player.REPEAT_MODE_ONE
+        player.playWhenReady = true
+        player.prepare()
+        assignments[idx] = Assignment(url, Role.ACTIVE)
+        Log.d(TAG, "activate COLD: $url")
         return player
     }
 
-    fun release(player: ExoPlayer) {
-        leased--
-        player.stop()
-        player.clearMediaItems()
-        if (available.size + leased < maxSize) {
-            available.addLast(player)
-        } else {
-            player.release()
+    fun prewarmVertical(nextUrl: String?, prevUrl: String?) {
+        val targets = mapOf(Role.NEXT_VERT to nextUrl, Role.PREV_VERT to prevUrl)
+
+        for ((role, url) in targets) {
+            if (url == null) continue
+            if (assignments.any { it?.url == url }) continue
+
+            val idx = findSlotForPrewarm(role) ?: continue
+            val player = players[idx]
+            player.stop()
+            player.clearMediaItems()
+            player.setMediaItem(MediaItem.fromUri(url))
+            player.repeatMode = Player.REPEAT_MODE_ONE
+            player.playWhenReady = false
+            player.prepare()
+            assignments[idx] = Assignment(url, role)
+            Log.d(TAG, "prewarm $role: $url")
         }
     }
 
-    fun warmUp(count: Int) {
-        repeat(count) { available.addLast(ExoPlayer.Builder(context).build()) }
+    fun pauseAll() {
+        for (p in players) p.playWhenReady = false
     }
 
-    fun releaseAll() {
-        available.forEach { it.release() }
-        available.clear()
+    fun release() {
+        for (p in players) p.release()
+        assignments.fill(null)
+        cache.release()
+    }
+
+    private fun stealSlot(): Int {
+        for (i in assignments.indices) {
+            if (assignments[i] == null) return i
+        }
+        var oldest = -1
+        var oldestTime = Long.MAX_VALUE
+        for (i in assignments.indices) {
+            val a = assignments[i] ?: continue
+            if (a.role != Role.ACTIVE && a.timestamp < oldestTime) {
+                oldest = i
+                oldestTime = a.timestamp
+            }
+        }
+        if (oldest >= 0) {
+            players[oldest].stop()
+            assignments[oldest] = null
+            return oldest
+        }
+        players[0].stop()
+        assignments[0] = null
+        return 0
+    }
+
+    private fun findSlotForPrewarm(targetRole: Role): Int? {
+        for (i in assignments.indices) {
+            if (assignments[i]?.role == targetRole) {
+                players[i].stop()
+                assignments[i] = null
+                return i
+            }
+        }
+        for (i in assignments.indices) {
+            if (assignments[i] == null) return i
+        }
+        return null
+    }
+
+    private fun createPlayer(): ExoPlayer {
+        val cacheFactory = CacheDataSource.Factory()
+            .setCache(cache)
+            .setUpstreamDataSourceFactory(DefaultDataSource.Factory(appContext))
+        val mediaSourceFactory = DefaultMediaSourceFactory(appContext)
+            .setDataSourceFactory(cacheFactory)
+        return ExoPlayer.Builder(appContext)
+            .setMediaSourceFactory(mediaSourceFactory)
+            .build()
+    }
+
+    companion object {
+        private const val TAG = "ExoPlayerPool"
+        private const val POOL_SIZE = 3
+        private const val CACHE_SIZE_BYTES = 100L * 1024 * 1024
     }
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Aura2</string>
+    <string name="app_name">Aura</string>
 
     <!-- Video feed -->
     <string name="feed_title">Feed</string>
@@ -112,4 +112,222 @@
 
     <!-- Common -->
     <string name="btn_retry">Retry</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_explore">Explore</string>
+    <string name="nav_deals">Deals</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Feed action overlay -->
+    <string name="action_shortlist">Shortlist</string>
+    <string name="action_deal">Deal</string>
+    <string name="action_more">More</string>
+
+    <!-- Auth Flow -->
+    <string name="auth_welcome_title">Welcome to Aura</string>
+    <string name="auth_welcome_subtitle">Connect with brands and creators in a professional digital ecosystem.</string>
+    <string name="auth_email_label">Email Address</string>
+    <string name="auth_email_hint">name@example.com</string>
+    <string name="auth_continue_btn">Continue</string>
+    <string name="auth_sign_up_prompt">Don\'t have an account? \u0020</string>
+    <string name="auth_sign_up_link">Sign up</string>
+
+    <!-- Login -->
+    <string name="login_title">Aura</string>
+    <string name="login_subtitle">Enter your password to continue</string>
+    <string name="login_welcome_back">WELCOME BACK</string>
+    <string name="login_password_label">Password</string>
+    <string name="login_password_hint">••••••••</string>
+    <string name="login_forgot_password">Forgot Password?</string>
+    <string name="login_btn">Login</string>
+    <string name="login_cancel_btn">Cancel</string>
+    <string name="login_secure_access">Secure Access</string>
+
+    <!-- Forgot Password -->
+    <string name="forgot_password_title">Forgot Password?</string>
+    <string name="forgot_password_subtitle">No worries. Enter your details below to securely reset your access to Aura.</string>
+    <string name="forgot_password_email_label">Email Address</string>
+    <string name="forgot_password_security_question_label">Security Question</string>
+    <string name="forgot_password_security_question_placeholder">\"What was the name of your first childhood pet?\"</string>
+    <string name="forgot_password_security_answer_label">Your Answer</string>
+    <string name="forgot_password_reset_btn">Reset Password</string>
+    <string name="forgot_password_cancel_btn">Cancel</string>
+    <string name="forgot_password_secure_tag">Secure Recovery</string>
+
+    <!-- Role Selection -->
+    <string name="role_selection_title">Join Aura</string>
+    <string name="role_selection_subtitle">Choose how you want to use the platform</string>
+    <string name="role_creator_title">Creator</string>
+    <string name="role_creator_desc">For users who showcase content and want brand collaborations.</string>
+    <string name="role_creator_tag">Premium Access</string>
+    <string name="role_brand_title">Brand</string>
+    <string name="role_brand_desc">For businesses that want to discover creators and start campaigns.</string>
+    <string name="role_brand_tag">Scale Fast</string>
+    <string name="role_selection_continue_btn">Continue</string>
+    <string name="role_selection_back_btn">Back</string>
+    <string name="role_selection_note">Please note: Role selection is permanent after account creation.</string>
+
+    <!-- Creator Registration -->
+    <string name="creator_onboarding_title">Creator Onboarding</string>
+    <string name="creator_reg_step1_label">Identity Verification</string>
+    <string name="creator_reg_step1_title">Create Account</string>
+    <string name="creator_reg_step1_tag">Step 1 of 4</string>
+    <string name="creator_reg_full_name_label">Full Name</string>
+    <string name="creator_reg_full_name_hint">Enter your legal name</string>
+    <string name="creator_reg_email_label">Email Address</string>
+    <string name="creator_reg_email_hint">name@creator.com</string>
+    <string name="creator_reg_password_label">Password</string>
+    <string name="creator_reg_confirm_password_label">Confirm Password</string>
+    <string name="creator_reg_phone_label">Phone Number</string>
+    <string name="creator_reg_phone_hint">(555) 000-0000</string>
+    <string name="creator_reg_security_question_label">Security Question</string>
+    <string name="creator_reg_security_answer_label">Security Answer</string>
+    <string name="creator_reg_security_answer_hint">Your answer</string>
+    <string name="creator_reg_cancel_link">Cancel registration</string>
+    <string name="creator_reg_phone_prefix">+1</string>
+    <string name="creator_reg_password_hint">Min 8 chars, 1 upper, 1 number.</string>
+
+    <string name="creator_reg_step2_tag">Step 2 of 4</string>
+    <string name="creator_reg_step2_title">Profile Information</string>
+    <string name="creator_reg_motto_label">Motto/Headline *</string>
+    <string name="creator_reg_motto_hint">e.g. Architecting Digital Realities</string>
+    <string name="creator_reg_motto_helper">Summarize your creative essence in one powerful line.</string>
+    <string name="creator_reg_bio_label">Bio/Description</string>
+    <string name="creator_reg_bio_hint">Tell your story. Where does your inspiration come from?</string>
+    <string name="creator_reg_instagram_label">Instagram Handle</string>
+    <string name="creator_reg_instagram_hint">@yourname</string>
+    <string name="creator_reg_upload_portrait_label">Upload Portrait</string>
+    <string name="creator_reg_portrait_spec">Recommended: 1080x1080px. High-resolution JPG or PNG.</string>
+    <string name="creator_reg_pro_tip_title">Pro Tip</string>
+    <string name="creator_reg_pro_tip_body">Creators with authentic portrait photos see a 40% higher engagement rate on their portfolios.</string>
+
+    <string name="creator_reg_step3_tag">Step 3 of 4</string>
+    <string name="creator_reg_step3_title">Creator Details</string>
+    <string name="creator_reg_niche_title">Primary Niches</string>
+    <string name="creator_reg_niche_desc">Select the categories that best define your content. Brands use these tags to filter for specialized talent.</string>
+    <string name="creator_reg_location_title">Base Location</string>
+    <string name="creator_reg_city_label">City</string>
+    <string name="creator_reg_city_hint">e.g. San Francisco</string>
+    <string name="creator_reg_state_label">State / Province</string>
+    <string name="creator_reg_state_hint">e.g. CA</string>
+    <string name="creator_reg_country_label">Country</string>
+    <string name="creator_reg_country_hint">e.g. USA</string>
+    <string name="creator_reg_audience_title">Audience Focus</string>
+    <string name="creator_reg_audience_label">Primary Audience Region</string>
+
+    <string name="creator_reg_step4_tag">Step 4 of 4</string>
+    <string name="creator_reg_step4_title">Showcase your Mastery.</string>
+    <string name="creator_reg_step4_subtitle">Upload 1–10 videos highlighting your creative process. Our curators evaluate these for technical precision, storytelling, and visual impact.</string>
+    <string name="creator_reg_add_video_title">Add Video</string>
+    <string name="creator_reg_add_video_subtitle">Drag and drop or click to browse files</string>
+    <string name="creator_reg_add_video_spec">MP4, MOV, HEVC up to 500MB</string>
+    <string name="creator_reg_aura_standard_title">Aura Obsidian Standard</string>
+    <string name="creator_reg_aura_standard_body">Our curation team prioritizes videos that show deep technical competence and a unique visual voice. We typically review submissions within 24 hours.</string>
+
+    <!-- Bottom Nav buttons -->
+    <string name="nav_btn_back">Back</string>
+    <string name="nav_btn_save_exit">Save &amp; Exit</string>
+    <string name="nav_btn_next">Next</string>
+    <string name="nav_btn_finish">Finish Setup</string>
+
+    <!-- Brand Registration -->
+    <string name="brand_onboarding_title">Brand Onboarding</string>
+    <string name="brand_reg_step1_tag">Step 1 of 5</string>
+    <string name="brand_reg_step1_title">Create Brand Account</string>
+    <string name="brand_reg_step1_subtitle">Provide the foundational details for your Aura presence.</string>
+    <string name="brand_reg_secure_banner_title">Secure Onboarding</string>
+    <string name="brand_reg_secure_banner_body">Your data is encrypted using military-grade protocols. We prioritize the safety of your brand identity and financial information.</string>
+    <string name="brand_reg_name_label">Brand name</string>
+    <string name="brand_reg_name_hint">e.g. Nike, Tesla</string>
+    <string name="brand_reg_email_label">Company email address</string>
+    <string name="brand_reg_email_hint">name@company.com</string>
+    <string name="brand_reg_phone_label">Phone number</string>
+    <string name="brand_reg_phone_hint">+1 (555) 000-0000</string>
+    <string name="brand_reg_password_label">Password</string>
+    <string name="brand_reg_confirm_password_label">Confirm password</string>
+    <string name="brand_reg_security_question_label">Security question</string>
+    <string name="brand_reg_security_answer_label">Security answer</string>
+    <string name="brand_reg_security_answer_hint">Your answer</string>
+    <string name="brand_reg_password_req_length">Min 8 chars</string>
+    <string name="brand_reg_password_req_uppercase">1 Uppercase</string>
+    <string name="brand_reg_password_req_number">1 Number</string>
+    <string name="brand_reg_next_btn">Next Step</string>
+
+    <string name="brand_reg_step2_tag">Step 2 of 5</string>
+    <string name="brand_reg_step2_title">Brand Identity</string>
+    <string name="brand_reg_step2_subtitle">Define your brand identity and set the tone for your digital presence.</string>
+    <string name="brand_reg_logo_label">Brand Mark</string>
+    <string name="brand_reg_upload_logo_label">Upload Logo</string>
+    <string name="brand_reg_logo_spec">Recommended size: 512x512px. SVG or PNG preferred for transparency.</string>
+    <string name="brand_reg_motto_label">Brand Motto / Headline *</string>
+    <string name="brand_reg_motto_hint">e.g., Curating the future of digital architecture</string>
+    <string name="brand_reg_bio_label">Brand Narrative &amp; Bio</string>
+    <string name="brand_reg_bio_hint">Describe the soul of your brand, your values, and what makes your digital space unique…</string>
+    <string name="brand_reg_bio_char_limit">Max 1000 characters</string>
+    <string name="brand_reg_editorial_tip_title">Editorial Tip</string>
+    <string name="brand_reg_editorial_tip_body">Your narrative is the first thing users see. Focus on your core values and unique mission to build immediate trust.</string>
+    <string name="brand_reg_preview_mode">PREVIEW MODE</string>
+
+    <string name="brand_reg_step3_tag">Step 3 of 5</string>
+    <string name="brand_reg_step3_verify_title">Verify Your Company</string>
+    <string name="brand_reg_step3_legal_name_label">Legal Business Name</string>
+    <string name="brand_reg_step3_legal_name_hint">e.g. Aura Design Lab LLC</string>
+    <string name="brand_reg_step3_rep_name_label">Representative Full Name</string>
+    <string name="brand_reg_step3_rep_name_hint">Johnathan Sterling</string>
+    <string name="brand_reg_step3_company_email_label">Company Email</string>
+    <string name="brand_reg_step3_company_email_hint">verify@aura.com</string>
+    <string name="brand_reg_step3_doc_section">Legal Documentation</string>
+    <string name="brand_reg_step3_upload_title">Business Registration</string>
+    <string name="brand_reg_step3_upload_subtitle">Upload your certification in PDF, JPG, or PNG format (Max 10MB)</string>
+    <string name="brand_reg_step3_social_section">Social Presence</string>
+    <string name="brand_reg_step3_linkedin_hint">LinkedIn Profile URL</string>
+    <string name="brand_reg_step3_twitter_hint">Twitter/X Handle</string>
+    <string name="brand_reg_security_protocol_title">Aura Security Protocol</string>
+    <string name="brand_reg_security_protocol_body">Verification ensures high-trust transactions within the marketplace. Your data is encrypted and only visible to our compliance curators.</string>
+
+    <string name="brand_reg_step4_tag">Step 4 of 5</string>
+    <string name="brand_reg_step4_title">Define Your Market Presence</string>
+    <string name="brand_reg_step4_subtitle">Industry tags improve creator matching. Select the sectors that best represent your brand\'s core identity.</string>
+    <string name="brand_reg_industry_label">Industry Tags</string>
+    <string name="brand_reg_location_label">Target Location</string>
+    <string name="brand_reg_city_hint">City</string>
+    <string name="brand_reg_state_hint">Region / State</string>
+    <string name="brand_reg_country_hint">Country</string>
+
+    <string name="brand_reg_step5_tag">Step 5 of 5</string>
+    <string name="brand_reg_step5_final_label">Final Step</string>
+    <string name="brand_reg_step5_title">Launch your first campaign</string>
+    <string name="brand_reg_step5_subtitle">Define the soul of your project. This brief helps our creators match you with the right creative energy.</string>
+    <string name="brand_reg_campaign_name_label">Campaign Name</string>
+    <string name="brand_reg_campaign_name_hint">e.g., Summer Equinox 2024</string>
+    <string name="brand_reg_campaign_brief_label">Campaign Brief</string>
+    <string name="brand_reg_campaign_brief_hint">Describe the visual direction, key deliverables, and the emotional impact you want to achieve…</string>
+    <string name="brand_reg_add_campaign_btn">Add Another Campaign</string>
+    <string name="brand_reg_ai_matching">AI-assisted matching will begin once you finish setup.</string>
+
+    <!-- Accessibility -->
+    <string name="cd_back_button">Back</string>
+    <string name="cd_app_logo">Aura logo icon</string>
+    <string name="cd_toggle_password">Toggle password visibility</string>
+    <string name="cd_upload_photo">Upload profile photo</string>
+    <string name="cd_shield_icon">Shield security icon</string>
+    <string name="cd_fingerprint_icon">Fingerprint security icon</string>
+    <string name="cd_lock_icon">Lock security icon</string>
+    <string name="cd_user_avatar">User avatar</string>
+    <string name="cd_upload_video">Upload video</string>
+
+    <!-- Security Question options -->
+    <string name="sq_pet_name">What was your first pet\'s name?</string>
+    <string name="sq_mothers_maiden_name">What is your mother\'s maiden name?</string>
+    <string name="sq_birth_city">What city were you born in?</string>
+    <string name="sq_placeholder">Select a recovery question</string>
+    <string name="sq_high_school_mascot">What was your high school mascot?</string>
+
+    <!-- Audience region options -->
+    <string name="region_north_america">North America</string>
+    <string name="region_europe">Europe</string>
+    <string name="region_asia_pacific">Asia Pacific</string>
+    <string name="region_latin_america">Latin America</string>
+    <string name="region_mea">Middle East &amp; Africa</string>
 </resources>

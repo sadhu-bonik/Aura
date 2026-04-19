@@ -10,7 +10,7 @@ import com.aura.app.data.repository.UserRepository
 import kotlinx.coroutines.CoroutineScope
 
 class CreatorPageAdapter(
-    private val pool: ExoPlayerPool,
+    private val callback: ActiveVideoCallback,
     private val userRepository: UserRepository,
     private val scope: CoroutineScope,
 ) : ListAdapter<CreatorFeedEntry, CreatorPageViewHolder>(DIFF) {
@@ -18,7 +18,7 @@ class CreatorPageAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CreatorPageViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_creator_page, parent, false)
-        return CreatorPageViewHolder(view, pool, userRepository, scope)
+        return CreatorPageViewHolder(view, callback, userRepository, scope)
     }
 
     override fun onBindViewHolder(holder: CreatorPageViewHolder, position: Int) {
@@ -26,7 +26,6 @@ class CreatorPageAdapter(
     }
 
     override fun onViewRecycled(holder: CreatorPageViewHolder) {
-        holder.releaseAllPlayers()
         holder.unbind()
     }
 

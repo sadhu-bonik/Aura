@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:use_controller="false"
-        app:resize_mode="zoom" />
+        app:resize_mode="zoom"
+        app:surface_type="texture_view" />
 
     <ImageView
         android:id="@+id/thumbnail"

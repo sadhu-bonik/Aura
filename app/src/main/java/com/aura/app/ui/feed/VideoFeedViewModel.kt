@@ -33,7 +33,7 @@ class VideoFeedViewModel(
                             .map { (creatorId, creatorItems) ->
                                 CreatorFeedEntry(creatorId, creatorItems)
                             }
-                            .sortedByDescending { it.items.first().createdAt }
+                            .sortedByDescending { it.items.first().createdAt?.seconds ?: 0L }
                         _state.value = FeedUiState.Content(entries)
                     }
                 }

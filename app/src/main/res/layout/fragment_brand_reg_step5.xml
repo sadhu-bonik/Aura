@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Brand Registration - Step 5: Launch First Campaign (Final Step)
+    Design ref: brand_campaign_setup_4_4/screen.png
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#B20B1326"
+        app:elevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_app_bar_height"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/space_lg"
+            android:paddingEnd="@dimen/space_lg">
+
+            <ImageView
+                android:id="@+id/iv_close"
+                android:layout_width="@dimen/icon_size_md"
+                android:layout_height="@dimen/icon_size_md"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:tint="@color/colorPrimary"
+                android:contentDescription="@string/cd_back_button"
+                android:layout_marginEnd="@dimen/space_md" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/app_name"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Step 5 of 5 + small progress pill -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="end">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Progress"
+                    android:textColor="@color/colorOnSurface"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:letterSpacing="0.1"
+                    android:alpha="0.6" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/brand_reg_step5_tag"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="40dp"
+                android:layout_height="6dp"
+                android:background="@color/colorSurfaceContainer"
+                android:layout_marginStart="@dimen/space_sm">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorPrimary" />
+            </View>
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/bottom_nav_height"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/space_lg"
+            android:paddingEnd="@dimen/space_lg"
+            android:paddingTop="@dimen/space_xl"
+            android:paddingBottom="@dimen/space_xl">
+
+            <!-- Editorial Header -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/brand_reg_step5_final_label"
+                android:textColor="@color/colorOnTertiaryContainer"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:letterSpacing="0.12"
+                android:paddingStart="@dimen/space_sm"
+                android:paddingEnd="@dimen/space_sm"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@color/colorTertiaryContainer"
+                android:layout_marginBottom="@dimen/space_md" />
+
+            <TextView
+                android:id="@+id/tv_step_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brand_reg_step5_title"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                android:letterSpacing="-0.03"
+                android:layout_marginBottom="@dimen/space_md" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brand_reg_step5_subtitle"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="15sp"
+                android:lineSpacingMultiplier="1.5"
+                android:layout_marginBottom="@dimen/space_xl" />
+
+            <!-- Campaign Form Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/space_xl"
+                android:background="@drawable/bg_card_surface"
+                android:layout_marginBottom="@dimen/space_lg">
+
+                <!-- Campaign Name -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/space_lg">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/brand_reg_campaign_name_label"
+                        android:textColor="@color/colorSecondary"
+                        android:textSize="13sp"
+                        android:layout_marginBottom="@dimen/space_sm" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_campaign_name"
+                        style="@style/Widget.Aura.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_campaign_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/input_height"
+                            android:hint="@string/brand_reg_campaign_name_hint"
+                            android:textColor="@color/colorOnSurface" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <!-- Campaign Brief -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/space_lg">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/space_sm">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/brand_reg_campaign_brief_label"
+                            android:textColor="@color/colorSecondary"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/tv_char_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 / 2000"
+                            android:textColor="@color/colorOnSurfaceVariant"
+                            android:textSize="10sp"
+                            android:alpha="0.5" />
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_campaign_brief"
+                        style="@style/Widget.Aura.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_campaign_brief"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minLines="6"
+                            android:hint="@string/brand_reg_campaign_brief_hint"
+                            android:inputType="textMultiLine"
+                            android:gravity="top"
+                            android:textColor="@color/colorOnSurface" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <!-- Add Another Campaign link -->
+                <LinearLayout
+                    android:id="@+id/btn_add_campaign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <FrameLayout
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@color/colorSurfaceContainerHighest"
+                        android:layout_marginEnd="@dimen/space_sm">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size_sm"
+                            android:layout_height="@dimen/icon_size_sm"
+                            android:layout_gravity="center"
+                            android:src="@android:drawable/ic_input_add"
+                            android:tint="@color/colorPrimary"
+                            android:contentDescription="@null" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/brand_reg_add_campaign_btn"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Bento-style info bricks -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/space_lg">
+
+                <!-- Visual Identity bento (with image placeholder) -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="128dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:background="@color/colorSurfaceContainer"
+                    android:layout_marginEnd="@dimen/space_sm"
+                    android:gravity="bottom"
+                    android:padding="@dimen/space_sm">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Visual Identity"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.15" />
+                </LinearLayout>
+
+                <!-- AI matching info bento -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="128dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:background="@color/colorSurfaceContainerHigh"
+                    android:padding="@dimen/space_md">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_md"
+                        android:layout_height="@dimen/icon_size_md"
+                        android:src="@android:drawable/star_big_on"
+                        android:tint="@color/colorTertiary"
+                        android:layout_marginBottom="@dimen/space_sm"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/brand_reg_ai_matching"
+                        android:textColor="@color/colorOnSurfaceVariant"
+                        android:textSize="11sp"
+                        android:lineSpacingMultiplier="1.4" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Standardized Bottom Actions -->
+    <include
+        android:id="@+id/layout_bottom_nav"
+        layout="@layout/component_reg_bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_nav_height"
+        android:layout_gravity="bottom" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

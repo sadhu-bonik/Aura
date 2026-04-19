@@ -1,28 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- System defaults -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- UI Tokens — Midnight Ledger theme -->
+    <!-- Aura Brand Palette (from design files) -->
+    <color name="colorBackground">#0B1326</color>
+    <color name="colorSurface">#0B1326</color>
+    <color name="colorSurfaceDim">#0B1326</color>
+    <color name="colorSurfaceContainerLowest">#060E20</color>
+    <color name="colorSurfaceContainerLow">#131B2E</color>
+    <color name="colorSurfaceContainer">#171F33</color>
+    <color name="colorSurfaceContainerHigh">#222A3D</color>
+    <color name="colorSurfaceContainerHighest">#2D3449</color>
+    <color name="colorSurfaceBright">#31394D</color>
+    <color name="colorSurfaceVariant">#2D3449</color>
+
+    <!-- Primary / Green -->
+    <color name="colorPrimary">#4EDEA3</color>
+    <color name="colorPrimaryFixed">#6FFBBE</color>
+    <color name="colorPrimaryFixedDim">#4EDEA3</color>
+    <color name="colorPrimaryContainer">#001C10</color>
+    <color name="colorOnPrimary">#003824</color>
+    <color name="colorOnPrimaryContainer">#009365</color>
+    <color name="colorOnPrimaryFixed">#002113</color>
+    <color name="colorOnPrimaryFixedVariant">#005236</color>
+    <color name="colorInversePrimary">#006C49</color>
+
+    <!-- Secondary / Blue-Grey -->
+    <color name="colorSecondary">#B9C7E0</color>
+    <color name="colorSecondaryFixed">#D5E3FD</color>
+    <color name="colorSecondaryFixedDim">#B9C7E0</color>
+    <color name="colorSecondaryContainer">#3C4A5E</color>
+    <color name="colorOnSecondary">#233144</color>
+    <color name="colorOnSecondaryContainer">#ABB9D2</color>
+    <color name="colorOnSecondaryFixed">#0D1C2F</color>
+    <color name="colorOnSecondaryFixedVariant">#3A485C</color>
+
+    <!-- Tertiary / Amber -->
+    <color name="colorTertiary">#FFB95F</color>
+    <color name="colorTertiaryFixed">#FFDDB8</color>
+    <color name="colorTertiaryFixedDim">#FFB95F</color>
+    <color name="colorTertiaryContainer">#251400</color>
+    <color name="colorOnTertiary">#472A00</color>
+    <color name="colorOnTertiaryContainer">#B47300</color>
+    <color name="colorOnTertiaryFixed">#2A1700</color>
+    <color name="colorOnTertiaryFixedVariant">#653E00</color>
+
+    <!-- Surface / On Surface -->
+    <color name="colorOnBackground">#DAE2FD</color>
+    <color name="colorOnSurface">#DAE2FD</color>
+    <color name="colorOnSurfaceVariant">#C6C6CD</color>
+    <color name="colorInverseSurface">#DAE2FD</color>
+    <color name="colorInverseOnSurface">#283044</color>
+    <color name="colorSurfaceTint">#4EDEA3</color>
+
+    <!-- Outline -->
+    <color name="colorOutline">#909097</color>
+    <color name="colorOutlineVariant">#45464D</color>
+
+    <!-- Error -->
+    <color name="colorError">#FFB4AB</color>
+    <color name="colorErrorContainer">#93000A</color>
+    <color name="colorOnError">#690005</color>
+    <color name="colorOnErrorContainer">#FFDAD6</color>
+
+
+    <!-- Utility -->
+    <color name="colorDivider">#2C2C3E</color>
+    <color name="colorTextSecondary">#9999AA</color>
+    <!-- Decorative -->
+    <color name="colorBackgroundBlurPrimary">#1A4EDEA3</color>
+
     <color name="colorPrimary">#B1A1FF</color>
-    <color name="colorPrimaryVariant">#7757FA</color>
-    <color name="colorSecondary">#69F6B8</color>
-    <color name="colorSecondaryVariant">#58E7AB</color>
     <color name="colorBackground">#0B0E14</color>
-    <color name="colorSurface">#0B0E14</color>
-    <color name="colorSurfaceVariant">#22262F</color>
-    <color name="colorSurfaceContainer">#161A21</color>
-    <color name="colorSurfaceContainerHigh">#1C2028</color>
-    <color name="colorSurfaceContainerHighest">#22262F</color>
-    <color name="colorSurfaceContainerLow">#10131A</color>
-    <color name="colorOnBackground">#ECEDF6</color>
-    <color name="colorOnSurface">#ECEDF6</color>
-    <color name="colorTextSecondary">#A9ABB3</color>
-    <color name="colorTextDisabled">#52555C</color>
-    <color name="colorOnPrimary">#2F0095</color>
-    <color name="colorSuccess">#69F6B8</color>
-    <color name="colorWarning">#FFB300</color>
-    <color name="colorError">#FF6E84</color>
-    <color name="colorDivider">#45484F</color>
     <color name="colorMessageReceived">#22262F</color>
 </resources>

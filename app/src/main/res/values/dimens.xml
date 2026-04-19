@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Spacing -->
     <dimen name="space_xs">4dp</dimen>
     <dimen name="space_sm">8dp</dimen>
     <dimen name="space_md">16dp</dimen>
@@ -8,23 +7,20 @@
     <dimen name="space_xl">32dp</dimen>
     <dimen name="space_xxl">48dp</dimen>
 
-    <!-- Corner radii -->
     <dimen name="corner_radius_sm">8dp</dimen>
     <dimen name="corner_radius_md">12dp</dimen>
     <dimen name="corner_radius_lg">20dp</dimen>
+    <dimen name="corner_radius_xl">28dp</dimen>
     <dimen name="corner_radius_full">50dp</dimen>
 
-    <!-- Icon sizes -->
     <dimen name="icon_size_sm">20dp</dimen>
     <dimen name="icon_size_md">24dp</dimen>
     <dimen name="icon_size_lg">32dp</dimen>
     <dimen name="icon_size_xl">48dp</dimen>
 
-    <!-- Avatar sizes -->
-    <dimen name="avatar_sm">32dp</dimen>
+    <dimen name="btn_height">52dp</dimen> <dimen name="button_height">52dp</dimen> <dimen name="input_height">56dp</dimen>
+    <dimen name="top_app_bar_height">64dp</dimen>
+    <dimen name="bottom_nav_height">80dp</dimen> <dimen name="avatar_sm">32dp</dimen>
     <dimen name="avatar_md">48dp</dimen>
     <dimen name="avatar_lg">80dp</dimen>
-
-    <!-- Button height -->
-    <dimen name="btn_height">52dp</dimen>
-</resources>
+    <dimen name="avatar_xl">160dp</dimen> </resources>

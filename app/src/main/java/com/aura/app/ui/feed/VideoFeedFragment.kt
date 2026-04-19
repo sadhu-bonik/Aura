@@ -8,23 +8,61 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.aura.app.R
+import com.aura.app.data.model.CreatorFeedEntry
+import com.aura.app.data.model.PortfolioItem
 import kotlinx.coroutines.launch
 
 class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
 
     private val viewModel: VideoFeedViewModel by viewModels { VideoFeedViewModel.Factory() }
+    private val actionsViewModel: FeedActionsViewModel by viewModels { FeedActionsViewModel.Factory() }
+    private val authViewModel: com.aura.app.ui.auth.AuthViewModel by activityViewModels { com.aura.app.ui.auth.AuthViewModel.Factory() }
 
     private var pager: ViewPager2? = null
     private var loading: ProgressBar? = null
     private var message: TextView? = null
     private var adapter: CreatorPageAdapter? = null
-    private var playerPool: ExoPlayerPool? = null
+    private var pool: ExoPlayerPool? = null
+    private var activeHolder: VideoPageViewHolder? = null
+    private var activeCreatorPosition = RecyclerView.NO_POSITION
+    private var activeItemPosition = 0
+    private var currentEntries: List<CreatorFeedEntry> = emptyList()
+
+    private val activeVideoCallback = object : ActiveVideoCallback {
+        override fun attachPlayer(target: VideoPageViewHolder, item: PortfolioItem) {
+            val pool = pool ?: return
+            if (activeHolder === target) return
+            activeHolder?.onPlayerDetached()
+            val p = pool.activate(item.mediaUrl)
+            target.onPlayerAttached(p)
+            activeHolder = target
+            prewarmVertical()
+        }
+
+        override fun detachPlayer(target: VideoPageViewHolder) {
+            if (activeHolder === target) {
+                target.onPlayerDetached()
+                activeHolder = null
+            }
+        }
+
+        override fun togglePlayback() {
+            val p = pool?.activePlayer ?: return
+            p.playWhenReady = !p.playWhenReady
+        }
+
+        override fun onItemPositionChanged(creatorPosition: Int, itemPosition: Int) {
+            activeItemPosition = itemPosition
+        }
+    }
 
     private val pageCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
@@ -42,12 +80,13 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
         loading = view.findViewById(R.id.feed_loading)
         message = view.findViewById(R.id.feed_message)
 
-        val pool = ExoPlayerPool(requireContext().applicationContext).also {
-            playerPool = it
-            it.warmUp(4)
-        }
-        val feedAdapter = CreatorPageAdapter(pool, viewModel.userRepository, viewLifecycleOwner.lifecycleScope)
-            .also { adapter = it }
+        pool = ExoPlayerPool(requireContext().applicationContext)
+
+        FeedActionsOverlay(view, actionsViewModel, viewLifecycleOwner, this).setup()
+
+        val feedAdapter = CreatorPageAdapter(
+            activeVideoCallback, viewModel.userRepository, viewLifecycleOwner.lifecycleScope
+        ).also { adapter = it }
         pager?.adapter = feedAdapter
         pager?.offscreenPageLimit = 1
         pager?.registerOnPageChangeCallback(pageCallback)
@@ -56,6 +95,14 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { render(it) }
             }
+        }
+        
+        view.findViewById<View>(R.id.btn_logout).setOnClickListener {
+            authViewModel.logout(requireContext())
+            val navOptions = androidx.navigation.NavOptions.Builder()
+                .setPopUpTo(R.id.homeContainerFragment, true)
+                .build()
+            requireActivity().findNavController(R.id.nav_host_fragment).navigate(R.id.welcomeFragment, null, navOptions)
         }
     }
 
@@ -86,6 +133,7 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
                 loading?.visibility = View.GONE
                 message?.visibility = View.GONE
                 pager?.visibility = View.VISIBLE
+                currentEntries = state.entries
                 adapter?.submitList(state.entries) {
                     pager?.let { updateActiveCreator(it.currentItem) }
                 }
@@ -96,34 +144,42 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
     private fun updateActiveCreator(selectedPosition: Int) {
         val pg = pager ?: return
         val recycler = pg.getChildAt(0) as? RecyclerView ?: return
+        val prev = activeCreatorPosition
+        activeCreatorPosition = selectedPosition
+        activeItemPosition = 0
+        val creatorId = currentEntries.getOrNull(selectedPosition)?.creatorId
+        if (creatorId != null) actionsViewModel.setCurrentCreator(creatorId)
         for (i in 0 until recycler.childCount) {
             val holder = recycler.getChildViewHolder(recycler.getChildAt(i)) as? CreatorPageViewHolder
                 ?: continue
-            if (holder.bindingAdapterPosition == selectedPosition) {
+            val pos = holder.bindingAdapterPosition
+            if (pos == selectedPosition) {
                 holder.activate()
-            } else {
+            } else if (pos == prev || holder.isActive) {
                 holder.deactivate()
             }
         }
     }
 
+    private fun prewarmVertical() {
+        val pool = pool ?: return
+        val entries = currentEntries
+        val ci = activeCreatorPosition
+        if (ci < 0 || ci >= entries.size) return
+
+        val nextUrl = entries.getOrNull(ci + 1)?.items?.firstOrNull()?.mediaUrl
+        val prevUrl = entries.getOrNull(ci - 1)?.items?.firstOrNull()?.mediaUrl
+        pool.prewarmVertical(nextUrl, prevUrl)
+    }
+
     override fun onPause() {
         super.onPause()
-        deactivateAll()
+        pool?.pauseAll()
     }
 
     override fun onResume() {
         super.onResume()
         pager?.let { updateActiveCreator(it.currentItem) }
-    }
-
-    private fun deactivateAll() {
-        val pg = pager ?: return
-        val recycler = pg.getChildAt(0) as? RecyclerView ?: return
-        for (i in 0 until recycler.childCount) {
-            (recycler.getChildViewHolder(recycler.getChildAt(i)) as? CreatorPageViewHolder)
-                ?.deactivate()
-        }
     }
 
     override fun onDestroyView() {
@@ -133,8 +189,11 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
         pager = null
         loading = null
         message = null
-        playerPool?.releaseAll()
-        playerPool = null
+        activeHolder?.onPlayerDetached()
+        activeHolder = null
+        pool?.release()
+        pool = null
+        currentEntries = emptyList()
         super.onDestroyView()
     }
 }
