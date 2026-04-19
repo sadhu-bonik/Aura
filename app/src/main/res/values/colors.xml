@@ -5,7 +5,6 @@
     <color name="white">#FFFFFFFF</color>
 
     <!-- Aura Brand Palette (from design files) -->
-    <color name="colorBackground">#0B1326</color>
     <color name="colorSurface">#0B1326</color>
     <color name="colorSurfaceDim">#0B1326</color>
     <color name="colorSurfaceContainerLowest">#060E20</color>
@@ -17,7 +16,6 @@
     <color name="colorSurfaceVariant">#2D3449</color>
 
     <!-- Primary / Green -->
-    <color name="colorPrimary">#4EDEA3</color>
     <color name="colorPrimaryFixed">#6FFBBE</color>
     <color name="colorPrimaryFixedDim">#4EDEA3</color>
     <color name="colorPrimaryContainer">#001C10</color>
@@ -69,10 +67,16 @@
     <!-- Utility -->
     <color name="colorDivider">#2C2C3E</color>
     <color name="colorTextSecondary">#9999AA</color>
+
     <!-- Decorative -->
     <color name="colorBackgroundBlurPrimary">#1A4EDEA3</color>
 
     <color name="colorPrimary">#B1A1FF</color>
     <color name="colorBackground">#0B0E14</color>
     <color name="colorMessageReceived">#22262F</color>
+
+    <color name="colorSuccess">#69F6B8</color>
+    <color name="colorWarning">#FFB300</color>
+    <color name="colorSecondaryVariant">#58E7AB</color>
+    <color name="colorTextDisabled">#52555C</color>
 </resources>
