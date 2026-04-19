@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:getpushtoprod.substack.com)",
+      "Bash(git add *)",
+      "Bash(JAVA_HOME=\"/c/Program Files/Android/Android Studio/jbr\" ./gradlew assembleDebug)",
+      "WebSearch",
+      "WebFetch(domain:android-developers.googleblog.com)",
+      "WebFetch(domain:proandroiddev.com)",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}
