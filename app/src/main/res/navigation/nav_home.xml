@@ -3,30 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_home"
-    app:startDestination="@id/navigation_home">
-
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.aura.app.ui.feed.VideoFeedFragment"
-        android:label="Home"
-        tools:layout="@layout/fragment_video_feed" />
-
-    <fragment
-        android:id="@+id/navigation_discover"
-        android:name="com.aura.app.ui.main.DiscoverFragment"
-        android:label="Discover"
-        tools:layout="@layout/fragment_discover" />
-
-    <fragment
-        android:id="@+id/navigation_deals"
-        android:name="com.aura.app.ui.main.DealsFragment"
-        android:label="Deals"
-        tools:layout="@layout/fragment_deals" />
+    app:startDestination="@id/navigation_deals">
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.aura.app.ui.main.ProfileFragment"
-        android:label="Profile"
+        android:label="@string/tab_profile"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_deals"
+        android:name="com.aura.app.ui.chat.DealDashboardFragment"
+        android:label="@string/tab_deals"
+        tools:layout="@layout/fragment_deal_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_feed"
+        android:name="com.aura.app.ui.feed.VideoFeedFragment"
+        android:label="@string/tab_feed"
+        tools:layout="@layout/fragment_video_feed" />
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.aura.app.ui.main.DiscoverFragment"
+        android:label="@string/tab_search"
+        tools:layout="@layout/fragment_discover" />
 
 </navigation>

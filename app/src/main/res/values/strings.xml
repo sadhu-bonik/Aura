@@ -114,10 +114,10 @@
     <string name="btn_retry">Retry</string>
 
     <!-- Bottom navigation -->
-    <string name="nav_explore">Explore</string>
-    <string name="nav_deals">Deals</string>
-    <string name="nav_search">Search</string>
-    <string name="nav_profile">Profile</string>
+    <string name="tab_feed">Feed</string>
+    <string name="tab_search">Search</string>
+    <string name="tab_deals">Deals</string>
+    <string name="tab_profile">Profile</string>
 
     <!-- Feed action overlay -->
     <string name="action_shortlist">Shortlist</string>

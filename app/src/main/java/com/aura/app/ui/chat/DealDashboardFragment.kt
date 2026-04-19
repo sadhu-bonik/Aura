@@ -15,6 +15,7 @@ import com.aura.app.R
 import com.aura.app.databinding.FragmentDealDashboardBinding
 import com.aura.app.utils.Constants
 import com.aura.app.utils.StubSession
+import com.aura.app.utils.rootNavController
 import com.google.android.material.tabs.TabLayoutMediator
 
 class DealDashboardFragment : Fragment() {
@@ -65,7 +66,7 @@ class DealDashboardFragment : Fragment() {
         binding.tbDashboard.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_history -> {
-                    findNavController().navigate(R.id.action_dashboard_to_history)
+                    rootNavController().navigate(R.id.action_homeContainer_to_history)
                     true
                 }
                 R.id.action_switch_user -> {

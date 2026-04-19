@@ -237,22 +237,16 @@
     <!-- MAIN APP              -->
     <!-- ===================== -->
 
-    <!-- MAIN APP CONTAINER -->
     <fragment
         android:id="@+id/homeContainerFragment"
         android:name="com.aura.app.ui.main.HomeContainerFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_home_container" />
-
-    <fragment
-        android:id="@+id/dealDashboardFragment"
-        android:name="com.aura.app.ui.chat.DealDashboardFragment"
-        android:label="@string/title_deal_dashboard">
+        tools:layout="@layout/fragment_home_container">
         <action
-            android:id="@+id/action_dashboard_to_chat"
+            android:id="@+id/action_homeContainer_to_chat"
             app:destination="@id/chatFragment" />
         <action
-            android:id="@+id/action_dashboard_to_history"
+            android:id="@+id/action_homeContainer_to_history"
             app:destination="@id/dealHistoryFragment" />
     </fragment>
 

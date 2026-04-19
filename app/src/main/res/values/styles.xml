@@ -180,6 +180,14 @@
         <item name="android:paddingBottom">@dimen/space_sm</item>
     </style>
 
+    <style name="Widget.Aura.BottomNav.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/colorPrimary</item>
+        <item name="android:width">64dp</item>
+        <item name="android:height">32dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
+        <item name="marginHorizontal">8dp</item>
+    </style>
+
     <!-- ============================================================ -->
     <!-- CHIP                                                         -->
     <!-- ============================================================ -->

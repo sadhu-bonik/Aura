@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aura.app.R
 import com.aura.app.databinding.FragmentDealTabBinding
+import com.aura.app.utils.rootNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class NewDealsTabFragment : Fragment() {
@@ -61,8 +62,8 @@ class NewDealsTabFragment : Fragment() {
         dashboardViewModel.acceptEvent.observe(viewLifecycleOwner) { dealId ->
             if (dealId != null) {
                 dashboardViewModel.consumeAcceptEvent()
-                findNavController().navigate(
-                    R.id.action_dashboard_to_chat,
+                rootNavController().navigate(
+                    R.id.action_homeContainer_to_chat,
                     bundleOf("dealId" to dealId)
                 )
             }
