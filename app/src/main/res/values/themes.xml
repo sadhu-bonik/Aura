@@ -1,9 +1,3 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Aura2" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-    </style>
-
-    <style name="Theme.Aura2" parent="Base.Theme.Aura2" />
+    <!-- Theme definitions live in styles.xml. This file is intentionally a stub. -->
 </resources>

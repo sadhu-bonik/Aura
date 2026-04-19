@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#dae2fd",
+                        "on-tertiary-container": "#b47300",
+                        "surface-container-low": "#131b2e",
+                        "on-primary": "#003824",
+                        "surface": "#0b1326",
+                        "primary-container": "#001c10",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "secondary-container": "#3c4a5e",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#2d3449",
+                        "surface-bright": "#31394d",
+                        "on-secondary": "#233144",
+                        "on-primary-fixed": "#002113",
+                        "surface-container-lowest": "#060e20",
+                        "secondary": "#b9c7e0",
+                        "on-error-container": "#ffdad6",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed-variant": "#005236",
+                        "tertiary": "#ffb95f",
+                        "on-surface": "#dae2fd",
+                        "on-secondary-fixed-variant": "#3a485c",
+                        "surface-tint": "#4edea3",
+                        "primary": "#4edea3",
+                        "on-secondary-container": "#abb9d2",
+                        "inverse-surface": "#dae2fd",
+                        "surface-container-high": "#222a3d",
+                        "on-tertiary": "#472a00",
+                        "on-surface-variant": "#c6c6cd",
+                        "primary-fixed-dim": "#4edea3",
+                        "tertiary-container": "#251400",
+                        "surface-dim": "#0b1326",
+                        "secondary-fixed-dim": "#b9c7e0",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "on-tertiary-fixed": "#2a1700",
+                        "primary-fixed": "#6ffbbe",
+                        "outline-variant": "#45464d",
+                        "on-secondary-fixed": "#0d1c2f",
+                        "on-primary-container": "#009365",
+                        "secondary-fixed": "#d5e3fd",
+                        "inverse-on-surface": "#283044",
+                        "tertiary-fixed": "#ffddb8",
+                        "surface-container": "#171f33",
+                        "outline": "#909097",
+                        "on-error": "#690005",
+                        "inverse-primary": "#006c49",
+                        "background": "#0b1326",
+                        "surface-variant": "#2d3449"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0b1326;
+            color: #dae2fd;
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(19, 27, 46, 0.7);
+            backdrop-filter: blur(20px);
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #4edea3 0%, #009365 100%);
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-body selection:bg-primary selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#0b1326]/70 backdrop-blur-xl flex items-center justify-between px-6 h-16 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#dae2fd] cursor-pointer hover:opacity-80 transition-opacity scale-95 active:scale-90 transition-transform">close</span>
+<span class="text-xl font-bold tracking-tighter text-[#4edea3] font-headline">Aura</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-medium text-[#dae2fd]/60 font-label tracking-wider uppercase">Onboarding</span>
+</div>
+</header>
+<main class="flex-1 mt-16 pb-32 max-w-5xl mx-auto w-full px-6 pt-8">
+<!-- Progress Header -->
+<section class="mb-12">
+<div class="flex justify-between items-end mb-4">
+<div>
+<span class="text-tertiary font-semibold text-sm tracking-widest uppercase mb-2 block">Step 2 of 5</span>
+<h1 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tight text-on-background">Brand Identity</h1>
+</div>
+<div class="hidden md:flex gap-1 items-center pb-2">
+<div class="w-8 h-1.5 rounded-full bg-primary/20"></div>
+<div class="w-12 h-1.5 rounded-full bg-primary"></div>
+<div class="w-8 h-1.5 rounded-full bg-primary/20"></div>
+<div class="w-8 h-1.5 rounded-full bg-primary/20"></div>
+<div class="w-8 h-1.5 rounded-full bg-primary/20"></div>
+</div>
+</div>
+<p class="text-on-surface-variant max-w-2xl leading-relaxed">Define your brand identity and set the tone for your digital presence. This information will be displayed on your public profile.</p>
+</section>
+<!-- Form Canvas -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+<!-- Left Column: Media & Visuals -->
+<div class="lg:col-span-4 space-y-8">
+<div class="bg-surface-container-low rounded-xl p-8 flex flex-col items-center text-center">
+<h3 class="text-on-surface font-headline font-bold mb-6 w-full text-left">Brand Mark</h3>
+<div class="relative group cursor-pointer">
+<div class="w-40 h-40 rounded-full bg-surface-container-highest flex flex-col items-center justify-center border-2 border-dashed border-outline-variant/30 group-hover:border-primary/50 transition-colors">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant mb-2">add_a_photo</span>
+<span class="text-xs font-medium text-on-surface-variant">Upload Logo</span>
+</div>
+<div class="absolute inset-0 rounded-full bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<p class="mt-6 text-xs text-on-surface-variant/70 leading-relaxed">Recommended size: 512x512px. SVG or PNG preferred for transparency.</p>
+</div>
+<!-- Editorial Tip (Keeping as part of "Editorial Tip" request) -->
+<div class="bg-surface-container-low rounded-xl p-6">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-tertiary">lightbulb</span>
+<h4 class="text-sm font-bold text-on-surface font-headline">Editorial Tip</h4>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed">Your narrative is the first thing users see. Focus on your core values and unique mission to build immediate trust.</p>
+</div>
+</div>
+<!-- Right Column: Details -->
+<div class="lg:col-span-8 space-y-10">
+<!-- Brand Identity Section -->
+<div class="space-y-8">
+<h2 class="text-xl font-bold font-headline text-on-background flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">palette</span> Core Identity
+                    </h2>
+<!-- Motto/Headline -->
+<div class="group">
+<label class="block text-sm font-semibold text-on-surface mb-3 flex items-center gap-1">
+                            Brand Motto / Headline <span class="text-error text-lg">*</span>
+</label>
+<input class="w-full bg-surface-container-highest border-none rounded-lg p-4 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary/30 transition-all" placeholder="e.g., Curating the future of digital architecture" type="text"/>
+</div>
+<!-- Bio/Description -->
+<div class="group">
+<label class="block text-sm font-semibold text-on-surface mb-3">
+                            Brand Narrative &amp; Bio
+                        </label>
+<textarea class="w-full bg-surface-container-highest border-none rounded-lg p-4 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary/30 transition-all resize-none" placeholder="Describe the soul of your brand, your values, and what makes your digital space unique..." rows="6"></textarea>
+<div class="flex justify-end mt-2">
+<span class="text-[10px] text-on-surface-variant/50 uppercase tracking-widest">Max 1000 characters</span>
+</div>
+</div>
+</div>
+<!-- Preview Card -->
+<div class="relative overflow-hidden rounded-xl bg-surface-container-low p-8 border border-outline-variant/10">
+<div class="absolute top-0 right-0 p-4">
+<span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container text-[10px] font-bold rounded-full tracking-tighter">PREVIEW MODE</span>
+</div>
+<div class="flex flex-col md:flex-row gap-6 items-center md:items-start">
+<div class="w-20 h-20 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<img alt="abstract minimalist green and black geometric logo on dark background" class="w-full h-full object-cover opacity-50 grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD40FglKSihESuUlwrMcq4PQxDrBPruUaAbGQLJU7zjdakZ0TjbdJveV5U551fDtokHdIbsWlqt-8RtVPriWEebHEe9vRXqd2cQnZhzJwILUGdAVy_NDyZQ48IVfv8oi1nBNAv-w9ecjF3ocVT9vL-dv700iQFjecRytJTmBV2-Ufyqy-FFIH9iJDN9eX5Oy4imhGwLsUoeFpkv_Vhazpr990X2v9EwCAeoPWo7LV81ASohoEJyehSi0LTbJR1eWJTcZUYGVV8Hypw"/>
+</div>
+<div class="text-center md:text-left flex-1">
+<h2 class="text-2xl font-bold font-headline text-[#4edea3] mb-1">Aura</h2>
+<p class="text-sm font-medium text-on-surface italic opacity-60 mb-3">Add your motto above to see it here...</p>
+<div class="flex flex-wrap gap-2 justify-center md:justify-start">
+<div class="px-3 py-1 bg-surface-container-highest rounded-full text-[10px] text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">verified</span> Profile Setup
+                                </div>
+<div class="px-3 py-1 bg-surface-container-highest rounded-full text-[10px] text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">public</span> Web Ready
+                                </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-[#0b1326]/70 backdrop-blur-xl flex justify-around items-center px-4 py-4 pb-safe rounded-t-[1.5rem] shadow-[0_-4px_32px_rgba(78,222,163,0.06)]">
+<!-- Back Item -->
+<button class="flex flex-col items-center justify-center text-[#dae2fd]/60 hover:text-[#dae2fd] hover:bg-[#171f33] rounded-full px-4 py-2 transition-all scale-98 active:brightness-110">
+<span class="material-symbols-outlined">arrow_back</span>
+<span class="font-inter text-xs font-medium">Back</span>
+</button>
+<!-- Save & Exit -->
+<button class="flex flex-col items-center justify-center text-[#dae2fd]/60 hover:text-[#dae2fd] hover:bg-[#171f33] rounded-full px-4 py-2 transition-all scale-98 active:brightness-110">
+<span class="material-symbols-outlined">save</span>
+<span class="font-inter text-xs font-medium">Save &amp; Exit</span>
+</button>
+<!-- Next (Leads to verification) -->
+<button class="flex flex-col items-center justify-center bg-gradient-to-br from-[#4edea3] to-[#009365] text-[#003824] rounded-full px-8 py-2 transition-all scale-98 active:brightness-110 shadow-lg shadow-primary/10">
+<span class="material-symbols-outlined">arrow_forward</span>
+<span class="font-inter text-xs font-bold">Next</span>
+</button>
+</nav>
+</body></html>

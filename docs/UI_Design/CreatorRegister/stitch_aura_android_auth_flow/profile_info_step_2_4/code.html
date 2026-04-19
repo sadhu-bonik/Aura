@@ -1,0 +1,193 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Creator Onboarding - Profile Info</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#2d3449",
+                    "secondary": "#b9c7e0",
+                    "surface-container-high": "#222a3d",
+                    "tertiary": "#ffb95f",
+                    "tertiary-fixed": "#ffddb8",
+                    "surface-tint": "#4edea3",
+                    "primary-fixed-dim": "#4edea3",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "surface-container-lowest": "#060e20",
+                    "surface-variant": "#2d3449",
+                    "on-error": "#690005",
+                    "primary-container": "#001c10",
+                    "error-container": "#93000a",
+                    "surface": "#0b1326",
+                    "inverse-surface": "#dae2fd",
+                    "secondary-container": "#3c4a5e",
+                    "on-surface-variant": "#c6c6cd",
+                    "on-background": "#dae2fd",
+                    "tertiary-container": "#251400",
+                    "surface-container": "#171f33",
+                    "on-secondary-fixed": "#0d1c2f",
+                    "primary-fixed": "#6ffbbe",
+                    "error": "#ffb4ab",
+                    "primary": "#4edea3",
+                    "on-primary-fixed-variant": "#005236",
+                    "surface-bright": "#31394d",
+                    "on-tertiary-fixed": "#2a1700",
+                    "secondary-fixed-dim": "#b9c7e0",
+                    "inverse-primary": "#006c49",
+                    "on-tertiary-container": "#b47300",
+                    "on-tertiary": "#472a00",
+                    "on-secondary-container": "#abb9d2",
+                    "on-primary-container": "#009365",
+                    "outline-variant": "#45464d",
+                    "on-primary": "#003824",
+                    "inverse-on-surface": "#283044",
+                    "on-secondary-fixed-variant": "#3a485c",
+                    "secondary-fixed": "#d5e3fd",
+                    "surface-dim": "#0b1326",
+                    "on-surface": "#dae2fd",
+                    "on-primary-fixed": "#002113",
+                    "on-error-container": "#ffdad6",
+                    "background": "#0b1326",
+                    "outline": "#909097",
+                    "on-secondary": "#233144",
+                    "surface-container-low": "#131b2e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      body {
+        background-color: #0b1326;
+        color: #dae2fd;
+        font-family: 'Inter', sans-serif;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .tonal-shift-no-borders {
+        border: none !important;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#0b1326]/70 backdrop-blur-xl flex items-center justify-between px-6 h-16 w-full shadow-[0_0_32px_rgba(78,222,163,0.06)] tonal-shift-no-borders">
+<div class="flex items-center gap-4">
+<button class="text-[#4edea3] hover:bg-[#171f33] transition-colors p-2 rounded-full scale-95 active:scale-90 transition-transform" style="">
+<span class="material-symbols-outlined" style="">arrow_back</span>
+</button>
+<h1 class="font-['Manrope'] font-bold tracking-tight text-lg text-[#dae2fd]" style="">Creator Onboarding</h1>
+</div>
+<div class="flex items-center">
+<button class="text-[#dae2fd] hover:bg-[#171f33] transition-colors p-2 rounded-full scale-95 active:scale-90 transition-transform" style="">
+<span class="material-symbols-outlined" style="">more_vert</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-32 px-6 max-w-4xl mx-auto min-h-screen">
+<!-- Step Indicator -->
+<div class="mb-12">
+<div class="flex items-end justify-between mb-4">
+<div>
+<span class="text-tertiary font-headline font-extrabold text-sm tracking-[0.2em] uppercase" style="">Step 2 of 4</span>
+<h2 class="font-headline font-extrabold text-4xl mt-2 tracking-tight text-on-surface" style="">Profile Information</h2>
+</div>
+<div class="hidden md:block">
+<div class="h-1 w-48 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full w-1/2 bg-gradient-to-r from-primary to-on-primary-container"></div>
+</div>
+</div>
+</div>
+</div>
+<section class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+<!-- Left Column: Media & Visuals (Asymmetric Layout) -->
+<div class="md:col-span-4 space-y-8">
+<div class="relative group">
+<div class="aspect-square rounded-xl bg-surface-container-low flex flex-col items-center justify-center border-2 border-dashed border-outline-variant/15 hover:border-primary/40 transition-all cursor-pointer overflow-hidden group">
+<div class="absolute inset-0 opacity-10 bg-gradient-to-br from-primary to-transparent"></div>
+<span class="material-symbols-outlined text-5xl text-on-surface-variant mb-3" style="">add_a_photo</span>
+<span class="text-xs font-medium text-on-surface-variant uppercase tracking-widest" style="">Upload Portrait</span>
+<!-- Placeholder Overlay -->
+<img class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-20 transition-opacity" data-alt="High-end professional studio portrait lighting setup with soft shadows and dark moody aesthetic for a creator profile placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqY0BkgmAF0-7XM_-i1Q5LNv8xvBloqldfG3qrea3u6tFu-0w90okmNOwCsyyIfVGKFhGK9eVVsMKyAirRoGDRzrjcN9vW5DWSCVU4nV-UVRcGFaV-hcz56lDZeorx8omgAia94qRsSb3l5CsUL8KMyNvvdtOfYwCIvczYGpvFIwnXH65Fd7ZlLbhmNyPy2p_qZZWYJxj9KKyFCbNorcMQAolI8SGylyKdxI7JUkbfjxpcaLbDDI6n9QlVIXsuKjjXdChg9qLSbQI" style="">
+</div>
+<p class="text-[10px] text-on-surface-variant/60 mt-3 leading-relaxed" style="">Recommended: 1080x1080px. High-resolution JPG or PNG.</p>
+</div>
+<div class="p-6 rounded-xl bg-surface-container-low border border-outline-variant/5">
+<h3 class="font-headline font-bold text-tertiary text-xs tracking-widest uppercase mb-4" style="">Pro Tip</h3>
+<p class="text-sm text-secondary leading-relaxed" style="">Creators with authentic portrait photos see a 40% higher engagement rate on their portfolios.</p>
+</div>
+</div>
+<!-- Right Column: Form Fields -->
+<div class="md:col-span-8 space-y-10">
+<!-- Motto/Headline -->
+<div class="space-y-3">
+<label class="flex items-center gap-1 font-label font-semibold text-xs tracking-widest uppercase text-on-surface-variant" style="">
+                        Motto/Headline <span class="text-tertiary" style="">*</span>
+</label>
+<input class="w-full h-14 px-6 bg-surface-container-highest rounded-lg border-none text-on-surface placeholder:text-outline focus:ring-2 focus:ring-tertiary transition-all text-lg font-headline font-bold" placeholder="e.g. Architecting Digital Realities" type="text">
+<p class="text-[11px] text-outline italic" style="">Summarize your creative essence in one powerful line.</p>
+</div>
+<!-- Bio/Description -->
+<div class="space-y-3">
+<label class="font-label font-semibold text-xs tracking-widest uppercase text-on-surface-variant" style="">Bio/Description</label>
+<textarea class="w-full p-6 bg-surface-container-highest rounded-lg border-none text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary transition-all leading-relaxed" placeholder="Tell your story. Where does your inspiration come from?" rows="6"></textarea>
+</div>
+<!-- Social Link -->
+<div class="space-y-3">
+<label class="font-label font-semibold text-xs tracking-widest uppercase text-on-surface-variant" style="">YouTube Channel</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-on-surface-variant" style="">smart_display</span>
+<input class="w-full h-14 pl-12 pr-6 bg-surface-container-highest rounded-lg border-none text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary transition-all" placeholder="https://youtube.com/c/yourname" type="url">
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-4 px-6 pb-safe bg-[#0b1326]/80 backdrop-blur-2xl z-50 rounded-t-[1.5rem] shadow-2xl">
+<!-- Back Button -->
+<button class="flex flex-col items-center justify-center text-[#dae2fd]/60 px-4 py-2 hover:text-[#4edea3] transition-all scale-98 active:scale-95 duration-200" style="">
+<span class="material-symbols-outlined" style="">chevron_left</span>
+<span class="font-['Inter'] text-xs font-medium uppercase tracking-widest" style="">Back</span>
+</button>
+<!-- Save & Exit Button -->
+<button class="flex flex-col items-center justify-center text-[#dae2fd]/60 px-4 py-2 hover:text-[#4edea3] transition-all scale-98 active:scale-95 duration-200" style="">
+<span class="material-symbols-outlined" style="">save</span>
+<span class="font-['Inter'] text-xs font-medium uppercase tracking-widest" style="">Save &amp; Exit</span>
+</button>
+<!-- Next Button (Active) -->
+<button class="flex flex-col items-center justify-center bg-gradient-to-br from-[#4edea3] to-[#009365] text-[#003824] rounded-full px-8 py-2 shadow-[0_0_24px_rgba(78,222,163,0.3)] scale-98 active:scale-95 transition-all duration-200" style="">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">chevron_right</span>
+<span class="font-['Inter'] text-xs font-bold uppercase tracking-widest" style="">Next</span>
+</button>
+</nav>
+<!-- Background Accent Decals -->
+<div class="fixed top-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+<div class="fixed bottom-[-5%] left-[-5%] w-[30%] h-[30%] bg-tertiary/5 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+</body></html>

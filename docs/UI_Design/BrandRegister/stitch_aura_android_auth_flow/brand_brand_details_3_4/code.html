@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-background": "#dae2fd",
+                    "on-tertiary-container": "#b47300",
+                    "surface-container-low": "#131b2e",
+                    "on-primary": "#003824",
+                    "surface": "#0b1326",
+                    "primary-container": "#001c10",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "secondary-container": "#3c4a5e",
+                    "error-container": "#93000a",
+                    "surface-container-highest": "#2d3449",
+                    "surface-bright": "#31394d",
+                    "on-secondary": "#233144",
+                    "on-primary-fixed": "#002113",
+                    "surface-container-lowest": "#060e20",
+                    "secondary": "#b9c7e0",
+                    "on-error-container": "#ffdad6",
+                    "error": "#ffb4ab",
+                    "on-primary-fixed-variant": "#005236",
+                    "tertiary": "#ffb95f",
+                    "on-surface": "#dae2fd",
+                    "on-secondary-fixed-variant": "#3a485c",
+                    "surface-tint": "#4edea3",
+                    "primary": "#4edea3",
+                    "on-secondary-container": "#abb9d2",
+                    "inverse-surface": "#dae2fd",
+                    "surface-container-high": "#222a3d",
+                    "on-tertiary": "#472a00",
+                    "on-surface-variant": "#c6c6cd",
+                    "primary-fixed-dim": "#4edea3",
+                    "tertiary-container": "#251400",
+                    "surface-dim": "#0b1326",
+                    "secondary-fixed-dim": "#b9c7e0",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "on-tertiary-fixed": "#2a1700",
+                    "primary-fixed": "#6ffbbe",
+                    "outline-variant": "#45464d",
+                    "on-secondary-fixed": "#0d1c2f",
+                    "on-primary-container": "#009365",
+                    "secondary-fixed": "#d5e3fd",
+                    "inverse-on-surface": "#283044",
+                    "tertiary-fixed": "#ffddb8",
+                    "surface-container": "#171f33",
+                    "outline": "#909097",
+                    "on-error": "#690005",
+                    "inverse-primary": "#006c49",
+                    "background": "#0b1326",
+                    "surface-variant": "#2d3449"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary/30 selection:text-primary min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#0b1326]/70 backdrop-blur-xl flex items-center justify-between px-6 h-16 w-full">
+<div class="flex items-center gap-4">
+<button class="hover:opacity-80 transition-opacity scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[#4edea3]">close</span>
+</button>
+<span class="text-xl font-bold tracking-tighter text-[#4edea3] font-headline">Aura</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-medium text-secondary uppercase tracking-widest opacity-60">Onboarding</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-2xl mx-auto">
+<!-- Progress Indicator -->
+<div class="mb-12">
+<div class="flex items-center justify-between mb-4">
+<span class="text-label-sm font-medium text-secondary">Step 3 of 4</span>
+<span class="text-label-sm font-bold text-primary">75% Complete</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full w-3/4 bg-gradient-to-r from-primary to-on-primary-container transition-all duration-500"></div>
+</div>
+</div>
+<!-- Headline & Helper Text -->
+<section class="mb-12">
+<h1 class="text-4xl font-extrabold font-headline tracking-tight text-on-surface mb-4 leading-tight">Define Your <br/><span class="text-primary">Market Presence</span></h1>
+<p class="text-on-surface-variant leading-relaxed max-w-md">Industry tags improve creator matching. Select the sectors that best represent your brand's core identity.</p>
+</section>
+<!-- Industry Tags Selection -->
+<div class="mb-16">
+<label class="block text-sm font-semibold text-secondary mb-6 tracking-wide uppercase">Industry Tags</label>
+<div class="flex flex-wrap gap-3">
+<!-- Selectable Chips -->
+<button class="px-5 py-2.5 rounded-full border border-outline-variant/15 bg-surface-container-low text-on-surface hover:bg-surface-container transition-all flex items-center gap-2 group active:scale-95">
+                    Sportswear
+                </button>
+<button class="px-5 py-2.5 rounded-full bg-gradient-to-br from-primary to-on-primary-container text-on-primary font-bold shadow-[0_4px_16px_rgba(78,222,163,0.15)] flex items-center gap-2 scale-100 active:scale-95 transition-all">
+                    Consumer Tech
+                    <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant/15 bg-surface-container-low text-on-surface hover:bg-surface-container transition-all flex items-center gap-2 group active:scale-95">
+                    Food &amp; Beverage
+                </button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant/15 bg-surface-container-low text-on-surface hover:bg-surface-container transition-all flex items-center gap-2 group active:scale-95">
+                    Healthcare
+                </button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant/15 bg-surface-container-low text-on-surface hover:bg-surface-container transition-all flex items-center gap-2 group active:scale-95">
+                    Finance
+                </button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant/15 bg-surface-container-low text-on-surface hover:bg-surface-container transition-all flex items-center gap-2 group active:scale-95">
+                    Beauty &amp; Cosmetics
+                </button>
+</div>
+</div>
+<!-- Target Location Section -->
+<div class="space-y-8">
+<label class="block text-sm font-semibold text-secondary tracking-wide uppercase">Target Location</label>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- City Input -->
+<div class="relative group">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">location_city</span>
+<input class="w-full h-14 pl-12 pr-4 bg-surface-container-highest border-none rounded-lg text-on-surface placeholder:text-outline focus:ring-0 focus:border-b-2 focus:border-tertiary transition-all" placeholder="City" type="text"/>
+</div>
+<!-- Region/State Input -->
+<div class="relative group">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">map</span>
+<input class="w-full h-14 pl-12 pr-4 bg-surface-container-highest border-none rounded-lg text-on-surface placeholder:text-outline focus:ring-0 focus:border-b-2 focus:border-tertiary transition-all" placeholder="Region / State" type="text"/>
+</div>
+<!-- Country Input -->
+<div class="md:col-span-2 relative group">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">public</span>
+<input class="w-full h-14 pl-12 pr-4 bg-surface-container-highest border-none rounded-lg text-on-surface placeholder:text-outline focus:ring-0 focus:border-b-2 focus:border-tertiary transition-all" placeholder="Country" type="text"/>
+</div>
+</div>
+<!-- Visualization Bento Card -->
+<div class="mt-8 relative h-48 rounded-xl overflow-hidden bg-surface-container-low">
+<div class="absolute inset-0 opacity-40 mix-blend-luminosity">
+<img class="w-full h-full object-cover" data-alt="abstract stylized world map with glowing connection lines on a deep dark blue background representing global networking" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUdUpyUkBe-f_14zNZXXaPQ-XYTscGKoWvK5NLGj7ouwCw6VC0HK0vzibTqouq1ZgqhZBRARqMIlE7mX-2kpYUz3EAeXhyKw-uuNS_cTrTuUB-8y87NSgKXIX8Wm5klnxWQDGrGGR9E3e9q0Iakr9mdWBZX5hV-LpQ1g4sq-gihtBx7IdBN7OAyuAbWRPpCDQiuPjTyJOF4LaDOCvuZrSoIfKB2ucXyOM9KoMyEpsIRnRrPAK_fhoqOwKy16VMD7RTQV3IFsgQdOY"/>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+<div class="absolute bottom-4 left-6 flex items-center gap-3">
+<div class="p-2 bg-tertiary-container rounded-lg">
+<span class="material-symbols-outlined text-tertiary text-xl" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<div>
+<p class="text-xs font-bold text-tertiary uppercase tracking-tighter">Precision Target</p>
+<p class="text-sm text-on-surface font-medium">Aura uses geographic data to match local creators.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full bg-[#0b1326]/70 backdrop-blur-xl rounded-t-[1.5rem] flex justify-around items-center px-4 py-4 pb-safe z-50 shadow-[0_-4px_32px_rgba(78,222,163,0.06)]">
+<!-- Back -->
+<button class="flex flex-col items-center justify-center text-[#dae2fd]/60 hover:text-[#dae2fd] hover:bg-[#171f33] rounded-full transition-all px-4 py-1 active:scale-98">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+<span class="font-inter text-xs font-medium">Back</span>
+</button>
+<!-- Save & Exit (Treated as an active-styled priority in this state) -->
+<button class="flex flex-col items-center justify-center text-[#dae2fd]/60 hover:text-[#dae2fd] hover:bg-[#171f33] rounded-full transition-all px-4 py-1 active:scale-98">
+<span class="material-symbols-outlined" data-icon="save">save</span>
+<span class="font-inter text-xs font-medium">Save &amp; Exit</span>
+</button>
+<!-- Next (Primary Action Highlighted) -->
+<button class="flex flex-col items-center justify-center bg-gradient-to-br from-[#4edea3] to-[#009365] text-[#003824] rounded-full px-8 py-2.5 scale-98 active:brightness-110 transition-all shadow-[0_4px_24px_rgba(78,222,163,0.2)]">
+<div class="flex items-center gap-2">
+<span class="font-inter text-sm font-bold">Next</span>
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</button>
+</nav>
+</body></html>

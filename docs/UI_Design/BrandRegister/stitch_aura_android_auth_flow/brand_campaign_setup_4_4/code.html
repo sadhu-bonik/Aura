@@ -1,0 +1,198 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Aura - Campaign Setup</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-background": "#dae2fd",
+                    "on-tertiary-container": "#b47300",
+                    "surface-container-low": "#131b2e",
+                    "on-primary": "#003824",
+                    "surface": "#0b1326",
+                    "primary-container": "#001c10",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "secondary-container": "#3c4a5e",
+                    "error-container": "#93000a",
+                    "surface-container-highest": "#2d3449",
+                    "surface-bright": "#31394d",
+                    "on-secondary": "#233144",
+                    "on-primary-fixed": "#002113",
+                    "surface-container-lowest": "#060e20",
+                    "secondary": "#b9c7e0",
+                    "on-error-container": "#ffdad6",
+                    "error": "#ffb4ab",
+                    "on-primary-fixed-variant": "#005236",
+                    "tertiary": "#ffb95f",
+                    "on-surface": "#dae2fd",
+                    "on-secondary-fixed-variant": "#3a485c",
+                    "surface-tint": "#4edea3",
+                    "primary": "#4edea3",
+                    "on-secondary-container": "#abb9d2",
+                    "inverse-surface": "#dae2fd",
+                    "surface-container-high": "#222a3d",
+                    "on-tertiary": "#472a00",
+                    "on-surface-variant": "#c6c6cd",
+                    "primary-fixed-dim": "#4edea3",
+                    "tertiary-container": "#251400",
+                    "surface-dim": "#0b1326",
+                    "secondary-fixed-dim": "#b9c7e0",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "on-tertiary-fixed": "#2a1700",
+                    "primary-fixed": "#6ffbbe",
+                    "outline-variant": "#45464d",
+                    "on-secondary-fixed": "#0d1c2f",
+                    "on-primary-container": "#009365",
+                    "secondary-fixed": "#d5e3fd",
+                    "inverse-on-surface": "#283044",
+                    "tertiary-fixed": "#ffddb8",
+                    "surface-container": "#171f33",
+                    "outline": "#909097",
+                    "on-error": "#690005",
+                    "inverse-primary": "#006c49",
+                    "background": "#0b1326",
+                    "surface-variant": "#2d3449"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": [
+                            "Manrope"
+                    ],
+                    "body": [
+                            "Inter"
+                    ],
+                    "label": [
+                            "Inter"
+                    ]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0b1326;
+            color: #dae2fd;
+        }
+        .glass-panel {
+            background: rgba(11, 19, 38, 0.7);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body selection:bg-primary selection:text-on-primary min-h-screen pb-32">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#0b1326]/70 backdrop-blur-xl flex items-center justify-between px-6 h-16 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#4edea3] cursor-pointer scale-95 active:scale-90 transition-transform" data-icon="close" style="">close</span>
+<span class="text-xl font-bold tracking-tighter text-[#4edea3] font-manrope" style="">Aura</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex flex-col items-end">
+<span class="text-[10px] uppercase tracking-widest text-secondary/60 font-bold" style="">Progress</span>
+<span class="text-xs font-headline font-bold text-[#4edea3]" style="">Step 4 of 4</span>
+</div>
+<div class="w-12 h-1.5 bg-surface-container rounded-full overflow-hidden ml-2">
+<div class="w-full h-full bg-primary"></div>
+</div>
+</div>
+</nav>
+<main class="pt-24 px-6 max-w-2xl mx-auto">
+<!-- Editorial Header -->
+<header class="mb-12">
+<span class="inline-block px-3 py-1 rounded-full bg-tertiary-container text-on-tertiary-container text-[10px] font-bold uppercase tracking-wider mb-4" style="">
+                Final Step
+            </span>
+<h1 class="text-4xl md:text-5xl font-headline font-extrabold tracking-tight text-on-surface mb-4" style="">
+                Launch your first campaign
+            </h1>
+<p class="text-on-surface-variant text-lg leading-relaxed max-w-md" style="">
+                Define the soul of your project. This brief helps our creators match you with the right creative energy.
+            </p>
+</header>
+<!-- Campaign Form Card -->
+<div class="bg-surface-container-low rounded-xl p-8 mb-8">
+<div class="space-y-8">
+<!-- Input Group: Campaign Name -->
+<div class="group">
+<label class="block text-sm font-medium text-secondary mb-2 transition-colors group-focus-within:text-primary" for="campaign-name" style="">
+                        Campaign Name
+                    </label>
+<input class="w-full bg-surface-container-highest border-none rounded-lg p-4 text-on-surface placeholder:text-on-surface-variant/30 focus:ring-0 focus:border-b-2 focus:border-tertiary transition-all" id="campaign-name" placeholder="e.g., Summer Equinox 2024" type="text">
+</div>
+<!-- Input Group: Description -->
+<div class="group">
+<div class="flex justify-between items-end mb-2">
+<label class="block text-sm font-medium text-secondary transition-colors group-focus-within:text-primary" for="campaign-brief" style="">
+                            Campaign Brief
+                        </label>
+<span class="text-[10px] text-on-surface-variant/50 font-mono" style="">0 / 2000</span>
+</div>
+<textarea class="w-full bg-surface-container-highest border-none rounded-lg p-4 text-on-surface placeholder:text-on-surface-variant/30 focus:ring-0 focus:border-b-2 focus:border-tertiary transition-all resize-none" id="campaign-brief" placeholder="Describe the visual direction, key deliverables, and the emotional impact you want to achieve..." rows="6"></textarea>
+</div>
+<!-- Add Another Action -->
+<button class="flex items-center gap-3 text-primary font-bold text-sm hover:opacity-80 transition-opacity active:scale-95" style="">
+<div class="w-8 h-8 rounded-full border border-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="add" style="">add</span>
+</div>
+                    Add Another Campaign
+                </button>
+</div>
+</div>
+<!-- Featured Visual Element (Bento-style decor) -->
+<div class="grid grid-cols-2 gap-4">
+<div class="h-32 rounded-xl bg-surface-container overflow-hidden relative">
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent z-10"></div>
+<img class="w-full h-full object-cover" data-alt="abstract flowing 3D organic shapes with neon green and deep navy gradients, futuristic digital art style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3jdTYm_mmNH6QBbKiIVWjLIoPMS5Ccbo8NnksEaejmrxRjvTE6WD4AhFPnXy7drKm7Sv6BPHpQR2Ied6dqHhQg-Vl2fQq3p86XMvDiLeckhWdXf3gG9Q7ixhQ_0gJJ0RRGXYzzA9j5mpeOmcF4aUQxEjRqo_O8NZrJvWQWiKUVuDeQMhEcAvXUxQL3sQzoVoCk58JJ5PVhWMbmeiPM2g6KByPDXNq7GC-wGWMOCHCVqKrX_quZy4u5zBOm73-giVmWXnaA19o7po" style="">
+<div class="absolute bottom-3 left-3 z-20">
+<span class="text-[10px] font-bold text-primary tracking-widest uppercase" style="">Visual Identity</span>
+</div>
+</div>
+<div class="h-32 rounded-xl bg-surface-container-high flex flex-col justify-center px-4">
+<span class="material-symbols-outlined text-tertiary mb-2" data-icon="auto_awesome" style="">auto_awesome</span>
+<p class="text-xs text-on-surface-variant leading-tight" style="">AI-assisted matching will begin once you finish setup.</p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-4 pb-safe bg-[#0b1326]/70 backdrop-blur-xl z-50 rounded-t-[1.5rem] shadow-[0_-4px_32px_rgba(78,222,163,0.06)]">
+<!-- Back Button (Inactive state as per JSON logic) -->
+<button class="flex flex-col items-center justify-center text-[#dae2fd]/60 hover:text-[#dae2fd] transition-all hover:bg-[#171f33] rounded-full px-4 py-2 active:brightness-110 scale-98" style="">
+<span class="material-symbols-outlined mb-1" data-icon="arrow_back" style="">arrow_back</span>
+<span class="font-inter text-xs font-medium" style="">Back</span>
+</button>
+<!-- Save & Exit (Inactive state) -->
+<button class="flex flex-col items-center justify-center text-[#dae2fd]/60 hover:text-[#dae2fd] transition-all hover:bg-[#171f33] rounded-full px-4 py-2 active:brightness-110 scale-98" style="">
+<span class="material-symbols-outlined mb-1" data-icon="save" style="">save</span>
+<span class="font-inter text-xs font-medium" style="">Save &amp; Exit</span>
+</button>
+<!-- Finish Setup (Active state - Logic: Final step maps to primary action) -->
+<button class="flex flex-col items-center justify-center bg-gradient-to-br from-[#4edea3] to-[#009365] text-[#003824] rounded-full px-6 py-2 transition-all active:brightness-110 scale-98 shadow-lg shadow-primary/20" style="">
+<span class="material-symbols-outlined mb-1" data-icon="arrow_forward" style="">arrow_forward</span>
+<span class="font-inter text-xs font-bold" style="">Finish Setup</span>
+</button>
+</nav>
+</body></html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aura - Join the Ecosystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#dae2fd",
+                        "inverse-on-surface": "#283044",
+                        "secondary-container": "#3c4a5e",
+                        "surface-container": "#171f33",
+                        "primary": "#4edea3",
+                        "on-error": "#690005",
+                        "outline-variant": "#45464d",
+                        "surface-bright": "#31394d",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "on-primary": "#003824",
+                        "on-secondary": "#233144",
+                        "surface-container-lowest": "#060e20",
+                        "surface-container-high": "#222a3d",
+                        "background": "#0b1326",
+                        "outline": "#909097",
+                        "on-primary-container": "#009365",
+                        "surface-dim": "#0b1326",
+                        "inverse-surface": "#dae2fd",
+                        "primary-container": "#001c10",
+                        "on-secondary-container": "#abb9d2",
+                        "error": "#ffb4ab",
+                        "surface-variant": "#2d3449",
+                        "tertiary": "#ffb95f",
+                        "surface-container-low": "#131b2e",
+                        "on-tertiary": "#472a00",
+                        "surface-container-highest": "#2d3449",
+                        "secondary-fixed": "#d5e3fd",
+                        "primary-fixed-dim": "#4edea3",
+                        "inverse-primary": "#006c49",
+                        "tertiary-fixed": "#ffddb8",
+                        "surface": "#0b1326",
+                        "on-surface-variant": "#c6c6cd",
+                        "primary-fixed": "#6ffbbe",
+                        "on-tertiary-fixed": "#2a1700",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "secondary-fixed-dim": "#b9c7e0",
+                        "on-secondary-fixed-variant": "#3a485c",
+                        "on-tertiary-container": "#b47300",
+                        "on-error-container": "#ffdad6",
+                        "surface-tint": "#4edea3",
+                        "on-surface": "#dae2fd",
+                        "on-secondary-fixed": "#0d1c2f",
+                        "on-primary-fixed-variant": "#005236",
+                        "on-primary-fixed": "#002113",
+                        "secondary": "#b9c7e0",
+                        "error-container": "#93000a",
+                        "tertiary-container": "#251400"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: linear-gradient(135deg, rgba(23, 31, 51, 0.4) 0%, rgba(19, 27, 46, 0.4) 100%);
+            backdrop-filter: blur(20px);
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #4edea3 0%, #009365 100%);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .role-card-active {
+            box-shadow: 0 0 32px rgba(78, 222, 163, 0.08);
+            border: 1px solid rgba(78, 222, 163, 0.2);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body min-h-screen flex flex-col items-center selection:bg-primary/30">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#0b1326]/70 backdrop-blur-md">
+<div class="flex items-center justify-between px-6 py-4 w-full">
+<button class="text-[#4edea3] hover:bg-[#171f33] transition-colors rounded-full p-2 active:scale-95 transition-all duration-200">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline font-bold tracking-tight text-xl text-[#4edea3]">Aura</h1>
+<button class="text-[#4edea3] hover:bg-[#171f33] transition-colors rounded-full p-2 active:scale-95 transition-all duration-200">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</header>
+<main class="w-full max-w-md px-6 pt-32 pb-12 flex-1 flex flex-col">
+<!-- Headline Section -->
+<div class="mb-12">
+<h2 class="font-headline text-[3.5rem] font-extrabold tracking-tighter leading-none mb-4 bg-gradient-to-br from-on-surface to-secondary bg-clip-text text-transparent">
+                Join Aura
+            </h2>
+<p class="font-body text-secondary text-lg font-medium leading-relaxed max-w-[280px]">
+                Choose how you want to use the platform
+            </p>
+</div>
+<!-- Role Selection Grid -->
+<div class="space-y-6 flex-1">
+<!-- Creator Card -->
+<div class="group relative">
+<div class="glass-card rounded-xl p-8 transition-all duration-300 hover:bg-surface-container-high cursor-pointer role-card-active">
+<div class="flex items-start justify-between mb-6">
+<div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="bg-primary/20 p-1.5 rounded-full">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<h3 class="font-headline text-2xl font-bold mb-2">Creator</h3>
+<p class="font-body text-on-surface-variant leading-relaxed">
+                        For users who showcase content and want brand collaborations.
+                    </p>
+<div class="mt-4 flex items-center gap-2">
+<span class="inline-block w-2 h-2 rounded-full bg-primary"></span>
+<span class="text-xs font-semibold uppercase tracking-widest text-primary/80">Premium Access</span>
+</div>
+</div>
+</div>
+<!-- Brand Card -->
+<div class="group relative">
+<div class="glass-card rounded-xl p-8 transition-all duration-300 hover:bg-surface-container-high border border-outline-variant/15 cursor-pointer">
+<div class="flex items-start justify-between mb-6">
+<div class="w-14 h-14 rounded-full bg-tertiary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-3xl" data-icon="business_center">business_center</span>
+</div>
+</div>
+<h3 class="font-headline text-2xl font-bold mb-2">Brand</h3>
+<p class="font-body text-on-surface-variant leading-relaxed">
+                        For businesses that want to discover creators and start campaigns.
+                    </p>
+<div class="mt-4 flex items-center gap-2 opacity-50">
+<span class="inline-block w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="text-xs font-semibold uppercase tracking-widest text-tertiary">Scale Fast</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="mt-12 space-y-6">
+<div class="flex flex-col gap-4">
+<button class="primary-gradient text-on-primary font-bold py-4 px-8 rounded-full text-lg shadow-[0_0_32px_rgba(78,222,163,0.06)] active:scale-98 transition-all hover:brightness-110">
+                    Continue
+                </button>
+<button class="text-secondary font-bold py-4 px-8 rounded-full text-lg border border-outline-variant/15 active:scale-98 transition-all hover:bg-surface-container">
+                    Back
+                </button>
+</div>
+<div class="flex items-center gap-3 p-4 bg-surface-container-low rounded-xl border-l-2 border-tertiary">
+<span class="material-symbols-outlined text-tertiary text-xl" data-icon="info">info</span>
+<p class="text-xs font-medium text-on-surface-variant leading-snug">
+                    Please note: Role selection is permanent after account creation.
+                </p>
+</div>
+</div>
+</main>
+<!-- Visual Embellishment (Asymmetric Background Elements) -->
+<div class="fixed top-[-10%] right-[-10%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10"></div>
+<div class="fixed bottom-[5%] left-[-20%] w-[600px] h-[600px] bg-tertiary/5 rounded-full blur-[150px] -z-10"></div>
+</body></html>
