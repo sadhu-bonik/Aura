@@ -7,6 +7,21 @@
     <fragment
         android:id="@+id/videoFeedFragment"
         android:name="com.aura.app.ui.feed.VideoFeedFragment"
-        android:label="@string/feed_title" />
+        android:label="@string/nav_explore" />
+
+    <fragment
+        android:id="@+id/dealsFragment"
+        android:name="com.aura.app.ui.deals.DealsFragment"
+        android:label="@string/nav_deals" />
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.aura.app.ui.search.SearchFragment"
+        android:label="@string/nav_search" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.aura.app.ui.profile.ProfileFragment"
+        android:label="@string/nav_profile" />
 
 </navigation>

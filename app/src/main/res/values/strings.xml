@@ -7,4 +7,15 @@
     <string name="feed_error">Couldn\'t load the feed. Pull down or try again later.</string>
     <string name="feed_video_error">This video couldn\'t play.</string>
     <string name="feed_creator_avatar">Creator avatar</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_explore">Explore</string>
+    <string name="nav_deals">Deals</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Feed action overlay -->
+    <string name="action_shortlist">Shortlist</string>
+    <string name="action_deal">Deal</string>
+    <string name="action_more">More</string>
 </resources>

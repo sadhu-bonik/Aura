@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
 
     private val viewModel: VideoFeedViewModel by viewModels { VideoFeedViewModel.Factory() }
+    private val actionsViewModel: FeedActionsViewModel by viewModels { FeedActionsViewModel.Factory() }
 
     private var pager: ViewPager2? = null
     private var loading: ProgressBar? = null
@@ -78,6 +79,8 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
 
         pool = ExoPlayerPool(requireContext().applicationContext)
 
+        FeedActionsOverlay(view, actionsViewModel, viewLifecycleOwner, this).setup()
+
         val feedAdapter = CreatorPageAdapter(
             activeVideoCallback, viewModel.userRepository, viewLifecycleOwner.lifecycleScope
         ).also { adapter = it }
@@ -133,6 +136,8 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
         val prev = activeCreatorPosition
         activeCreatorPosition = selectedPosition
         activeItemPosition = 0
+        val creatorId = currentEntries.getOrNull(selectedPosition)?.creatorId
+        if (creatorId != null) actionsViewModel.setCurrentCreator(creatorId)
         for (i in 0 until recycler.childCount) {
             val holder = recycler.getChildViewHolder(recycler.getChildAt(i)) as? CreatorPageViewHolder
                 ?: continue
