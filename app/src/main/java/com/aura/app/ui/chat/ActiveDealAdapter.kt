@@ -22,34 +22,29 @@ class ActiveDealAdapter(
 
         fun bind(item: ActiveDealItem) {
             val deal = item.deal
+            val ctx = binding.root.context
 
             binding.tvDealTitle.text = deal.title
-            val ctx = binding.root.context
             binding.tvOtherPartyName.text = ctx.getString(
                 R.string.label_deal_with,
                 item.otherUser?.displayName ?: "—"
             )
 
-            binding.tvLastMessage.text = item.lastMessage?.let {
-                when (it.mediaType) {
-                    "image" -> ctx.getString(R.string.label_no_messages).let { "Photo" }
-                    "video" -> "Video"
-                    "file" -> it.fileName.ifEmpty { "File" }
-                    else -> it.content.ifEmpty { ctx.getString(R.string.label_no_messages) }
-                }
-            } ?: ctx.getString(R.string.label_no_messages)
+            binding.tvLastMessage.text = deal.lastMessageText.ifBlank {
+                ctx.getString(R.string.label_no_messages)
+            }
 
             binding.viewUnreadDot.isVisible = item.unreadCount > 0
 
-            item.lastMessage?.sentAt?.toDate()?.let { date ->
-                val fmt = SimpleDateFormat("h:mm a", Locale.getDefault())
-                binding.tvTimestamp.text = fmt.format(date)
+            deal.lastMessageTime?.toDate()?.let { date ->
+                binding.tvTimestamp.text = SimpleDateFormat("h:mm a", Locale.getDefault()).format(date)
             }
 
             Glide.with(binding.ivAvatar)
                 .load(item.otherUser?.profileImageUrl)
                 .circleCrop()
-                .placeholder(R.drawable.ic_launcher_foreground)
+                .placeholder(R.drawable.bg_avatar_placeholder)
+                .fallback(R.drawable.bg_avatar_placeholder)
                 .into(binding.ivAvatar)
 
             binding.chipStatus.visibility = View.GONE
@@ -71,4 +66,3 @@ class ActiveDealAdapter(
             oldItem == newItem
     }
 }
-

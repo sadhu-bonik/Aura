@@ -15,4 +15,10 @@ data class Deal(
     val createdAt: Timestamp? = null,
     val updatedAt: Timestamp? = null,
     val completedAt: Timestamp? = null,
+    val lastMessageText: String = "",
+    val lastMessageTime: Timestamp? = null,
+    val unreadCounts: Map<String, Long> = emptyMap(),
+    val completionRequestedBy: String = "",
+    val cancelledBy: String = "",
+    val cancelReason: String = "",
 )

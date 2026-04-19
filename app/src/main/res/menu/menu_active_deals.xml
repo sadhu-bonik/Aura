@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_switch_user"
-        android:title="@string/menu_switch_to_brand"
+        android:title="Switch user"
         app:showAsAction="never" />
 
 </menu>

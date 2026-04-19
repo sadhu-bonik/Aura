@@ -80,10 +80,51 @@ class DealRepository(
         ).await()
     }
 
-    suspend fun cancelDeal(dealId: String): Result<Unit> = runCatching {
+    suspend fun cancelDeal(dealId: String, cancelledBy: String = "", reason: String = ""): Result<Unit> = runCatching {
         deals.document(dealId).update(
             mapOf(
                 "status" to Constants.STATUS_CANCELLED,
+                "cancelledBy" to cancelledBy,
+                "cancelReason" to reason,
+                "chatUnlocked" to true,
+                "updatedAt" to Timestamp.now(),
+            )
+        ).await()
+    }
+
+    suspend fun requestCompletion(dealId: String, initiatorId: String): Result<Unit> = runCatching {
+        deals.document(dealId).update(
+            mapOf(
+                "completionRequestedBy" to initiatorId,
+                "updatedAt" to Timestamp.now(),
+            )
+        ).await()
+    }
+
+    suspend fun confirmCompletion(dealId: String): Result<Unit> = runCatching {
+        firestore.runTransaction { tx ->
+            val ref = deals.document(dealId)
+            val snap = tx.get(ref)
+            check(snap.getString("completionRequestedBy")?.isNotEmpty() == true) {
+                "No completion request pending"
+            }
+            tx.update(
+                ref,
+                mapOf(
+                    "status" to Constants.STATUS_COMPLETED,
+                    "completedAt" to Timestamp.now(),
+                    "completionRequestedBy" to "",
+                    "chatUnlocked" to true,
+                    "updatedAt" to Timestamp.now(),
+                )
+            )
+        }.await()
+    }
+
+    suspend fun declineCompletion(dealId: String): Result<Unit> = runCatching {
+        deals.document(dealId).update(
+            mapOf(
+                "completionRequestedBy" to "",
                 "updatedAt" to Timestamp.now(),
             )
         ).await()

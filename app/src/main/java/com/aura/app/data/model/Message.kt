@@ -12,5 +12,6 @@ data class Message(
     val mediaType: String = "",  // "", "image", "video", "file"
     val fileName: String = "",   // populated for mediaType == "file"
     val isRead: Boolean = false,
+    val isSystem: Boolean = false,
     val sentAt: Timestamp? = null,
 )

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_completion_request_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/space_md"
+    android:layout_marginBottom="@dimen/space_sm"
+    android:visibility="gone"
+    app:cardBackgroundColor="@color/colorSurfaceContainerHigh"
+    app:cardCornerRadius="@dimen/corner_radius_lg"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/colorDivider"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/space_md">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/space_md">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_handshake"
+                android:background="@drawable/bg_circle_primary_tint"
+                android:padding="8dp"
+                app:tint="@color/colorPrimary"
+                android:contentDescription="@null" />
+
+            <TextView
+                android:id="@+id/tv_completion_prompt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/space_md"
+                android:text="@string/completion_prompt"
+                android:textAppearance="@style/TextAppearance.Aura.BodyMedium" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_completion_yes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/space_xs"
+                android:text="@string/btn_yes"
+                android:textColor="@color/colorBackground"
+                app:backgroundTint="@color/colorSuccess"
+                app:cornerRadius="@dimen/corner_radius_full" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_completion_no"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/space_xs"
+                android:text="@string/btn_no"
+                android:textColor="@color/colorTextSecondary"
+                app:backgroundTint="@color/colorSurfaceContainerHighest"
+                app:strokeColor="@color/colorDivider"
+                app:cornerRadius="@dimen/corner_radius_full" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

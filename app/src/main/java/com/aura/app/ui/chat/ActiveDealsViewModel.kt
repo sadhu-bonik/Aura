@@ -5,17 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aura.app.data.repository.DealRepository
-import com.aura.app.data.repository.MessageRepository
 import com.aura.app.data.repository.UserRepository
 import com.aura.app.utils.Constants
-import com.aura.app.utils.StubData
+import com.aura.app.utils.StubSession
+import com.aura.app.utils.StubState
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class ActiveDealsViewModel(
     private val dealRepository: DealRepository = DealRepository(),
-    private val messageRepository: MessageRepository = MessageRepository(),
     private val userRepository: UserRepository = UserRepository(),
 ) : ViewModel() {
 
@@ -28,48 +27,36 @@ class ActiveDealsViewModel(
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> = _error
 
+    private var loadJob: Job? = null
+
     fun load(userId: String, role: String) {
+        loadJob?.cancel()
         _isLoading.value = true
         _error.value = null
 
         if (Constants.USE_STUBS) {
-            val activeDeals = StubData.deals.filter {
-                it.chatUnlocked && it.status == Constants.STATUS_ACCEPTED
-            }
-            viewModelScope.launch {
-                val itemFlows = activeDeals.map { deal ->
-                    val otherUserId = if (role == Constants.ROLE_CREATOR) deal.brandId else deal.creatorId
-                    val otherUser = userRepository.getUserLite(otherUserId)
-                    combine(
-                        messageRepository.streamLastMessage(deal.dealId),
-                        messageRepository.streamUnreadCount(deal.dealId, userId),
-                    ) { last, unread ->
-                        ActiveDealItem(deal, otherUser, last, unread)
+            loadJob = viewModelScope.launch {
+                StubState.dealsFlow.collect { deals ->
+                    val activeDeals = deals.filter {
+                        it.chatUnlocked && it.status == Constants.STATUS_ACCEPTED &&
+                        (it.creatorId == userId || it.brandId == userId)
                     }
-                }
-
-                if (itemFlows.isEmpty()) {
-                    _items.value = emptyList()
+                    val items = activeDeals.map { deal ->
+                        val otherUserId = if (role == Constants.ROLE_CREATOR) deal.brandId else deal.creatorId
+                        val otherUser = userRepository.getUserLite(otherUserId)
+                        val unreadCount = (deal.unreadCounts[userId] ?: 0L).toInt()
+                        ActiveDealItem(deal, otherUser, unreadCount)
+                    }.sortedByDescending {
+                        it.deal.lastMessageTime?.seconds ?: it.deal.updatedAt?.seconds ?: 0L
+                    }
+                    _items.value = items
                     _isLoading.value = false
-                    return@launch
                 }
-
-                combine(itemFlows) { it.toList() }
-                    .catch { e ->
-                        _error.value = e.message
-                        _isLoading.value = false
-                    }
-                    .collect { list ->
-                        _items.value = list.sortedByDescending {
-                            it.lastMessage?.sentAt?.seconds ?: it.deal.updatedAt?.seconds ?: 0L
-                        }
-                        _isLoading.value = false
-                    }
             }
             return
         }
 
-        viewModelScope.launch {
+        loadJob = viewModelScope.launch {
             val dealsFlow = if (role == Constants.ROLE_CREATOR) {
                 dealRepository.getDealsForCreator(userId)
             } else {
@@ -88,7 +75,10 @@ class ActiveDealsViewModel(
                     val items = activeDeals.map { deal ->
                         val otherUserId = if (role == Constants.ROLE_CREATOR) deal.brandId else deal.creatorId
                         val otherUser = userRepository.getUserLite(otherUserId)
-                        ActiveDealItem(deal, otherUser, null, 0)
+                        val unreadCount = (deal.unreadCounts[userId] ?: 0L).toInt()
+                        ActiveDealItem(deal, otherUser, unreadCount)
+                    }.sortedByDescending {
+                        it.deal.lastMessageTime?.seconds ?: it.deal.updatedAt?.seconds ?: 0L
                     }
                     _items.value = items
                     _isLoading.value = false

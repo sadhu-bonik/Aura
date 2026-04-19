@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aura.app.R
 import com.aura.app.databinding.FragmentActiveDealsBinding
-import com.aura.app.utils.Constants
 import com.aura.app.utils.StubSession
 
 class ActiveDealsFragment : Fragment() {
@@ -49,13 +48,12 @@ class ActiveDealsFragment : Fragment() {
         updateSwitchMenuTitle()
         binding.tbActiveDeals.setOnMenuItemClickListener { menuItem ->
             if (menuItem.itemId == R.id.action_switch_user) {
-                StubSession.switchRole()
-                val msg = if (StubSession.role() == Constants.ROLE_BRAND) {
-                    getString(R.string.toast_switched_to_brand)
-                } else {
-                    getString(R.string.toast_switched_to_creator)
-                }
-                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                StubSession.switchToNext()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.toast_switched_to_user, StubSession.displayName()),
+                    Toast.LENGTH_SHORT
+                ).show()
                 updateSwitchMenuTitle()
                 viewModel.load(StubSession.userId(), StubSession.role())
                 true
@@ -92,11 +90,7 @@ class ActiveDealsFragment : Fragment() {
 
     private fun updateSwitchMenuTitle() {
         val item = binding.tbActiveDeals.menu.findItem(R.id.action_switch_user) ?: return
-        item.title = if (StubSession.role() == Constants.ROLE_CREATOR) {
-            getString(R.string.menu_switch_to_brand)
-        } else {
-            getString(R.string.menu_switch_to_creator)
-        }
+        item.title = getString(R.string.menu_switch_to_user, StubSession.nextUserDisplayName())
     }
 
     override fun onDestroyView() {

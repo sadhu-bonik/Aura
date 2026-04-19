@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Deal Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {},
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        "headline": ["Public Sans"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body { font-family: 'Public Sans', sans-serif; background-color: #020617; }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-slate-950 border-b border-slate-800 docked full-width top-0 fixed top-0 left-0 right-0 z-50">
+<div class="flex items-center justify-between px-4 h-16 w-full max-w-full">
+<div class="flex items-center gap-3">
+<button class="p-2 text-slate-400 hover:bg-slate-900 transition-colors active:scale-95 transition-transform duration-150 rounded-full">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-sans antialiased text-lg font-bold text-slate-100">Deals</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-slate-400 hover:bg-slate-900 transition-colors active:scale-95 transition-transform duration-150 rounded-full">
+<span class="material-symbols-outlined">history</span>
+</button>
+</div>
+</div>
+</header>
+<main class="pt-16 pb-24">
+<!-- Tabs -->
+<div class="bg-slate-950 px-4 pt-4 border-b border-slate-900/50 sticky top-16 z-40">
+<div class="flex gap-8">
+<button class="pb-3 text-emerald-400 border-b-2 border-emerald-500 font-bold text-sm tracking-tight active:scale-95 transition-all">
+                    Active Deals
+                </button>
+<button class="pb-3 text-slate-500 font-semibold text-sm tracking-tight hover:text-slate-300 active:scale-95 transition-all">
+                    New Deals
+                </button>
+</div>
+</div>
+<!-- Content Area: List of Active Deals -->
+<div class="max-w-2xl mx-auto px-4 py-6 space-y-3">
+<!-- Deal Card 1 -->
+<div class="bg-slate-900/40 p-4 rounded-xl shadow-sm border border-slate-800 flex items-start gap-4 hover:bg-slate-900/60 transition-colors cursor-pointer group relative">
+<div class="relative flex-shrink-0">
+<img class="w-14 h-14 rounded-full object-cover border border-slate-700" data-alt="Professional minimalist logo of Nova Studio on a clean circular background with modern aesthetics" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlYoye7QiF-2Hhv9aDwBqim3wDMLuo7trfbzgBgxSs6JG4Zk5fYdyOlVjr1q569Qgfpfc-Wj5TWhFWEibXep88SmLRElKdLVXf63mk8dU3mPAIxPrH9gPB5OtlIRoveDr-b9HG4hf6tr7TJ5DzfUlEr9FeP0jaDmT8XItlzo8nlB7wfu3oyOqgTW7GHue5fTiwZsIPqjaW5T6_qnoWniYfP_B_znidG3KneluRVdETiW5-De2pw91sg_4uEB-Hx64nNnpOn8plHnk"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-0.5">
+<h3 class="text-white font-bold text-base truncate">Nova Studio</h3>
+<div class="flex flex-col items-end gap-1.5">
+<span class="text-[11px] text-slate-500 font-medium">1:50 PM</span>
+<div class="w-2.5 h-2.5 bg-emerald-500 rounded-full"></div>
+</div>
+</div>
+<p class="text-sm text-emerald-400 font-medium mb-1">
+                        with <span class="text-slate-300">Summer Collection Drop</span>
+</p>
+<p class="text-sm text-slate-400 truncate pr-4">
+                        Just sent over the revised contract for the August campaign. Please take a look when...
+                    </p>
+</div>
+</div>
+<!-- Deal Card 2 -->
+<div class="bg-slate-900/40 p-4 rounded-xl shadow-sm border border-slate-800 flex items-start gap-4 hover:bg-slate-900/60 transition-colors cursor-pointer group relative">
+<div class="relative flex-shrink-0">
+<img class="w-14 h-14 rounded-full object-cover border border-slate-700" data-alt="Abstract brand logo with vibrant colors for Peak Performance sportswear on circular frame" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQYKeH4wtux6djFWskkhw2U98yVGbpyG0HqqVjb27gM-Pi4-aV2qBMAV1h4V3AuGDQ054nzLkFR_hNYQ3nlq9-lzB1wPn9N8iPA_0wXmkbQI_JN6PDN9Jb4c81dwdjXsBz7FL3P6wIRQQkfjQk12xG4ZI_s9iztT9OXDcrZN6lrGVF10EXx2Nk084nG5Qq4rr4mfYHR5I8Cayac4RQ0lZiO17vv7LHkOVa8j8s73Eb1Sg-QnxbroMryV8WknYN3dxWwMaKACgoRdE"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-0.5">
+<h3 class="text-white font-bold text-base truncate">Peak Performance</h3>
+<div class="flex flex-col items-end gap-1.5">
+<span class="text-[11px] text-slate-500 font-medium">11:24 AM</span>
+<div class="w-2.5 h-2.5 bg-emerald-500 rounded-full"></div>
+</div>
+</div>
+<p class="text-sm text-emerald-400 font-medium mb-1">
+                        with <span class="text-slate-300">Q4 Athletic Gear Launch</span>
+</p>
+<p class="text-sm text-slate-400 truncate pr-4">
+                        The moodboards look fantastic. The team is really excited about the direction for...
+                    </p>
+</div>
+</div>
+<!-- Deal Card 3 -->
+<div class="bg-slate-900/40 p-4 rounded-xl shadow-sm border border-slate-800 flex items-start gap-4 hover:bg-slate-900/60 transition-colors cursor-pointer group relative">
+<div class="relative flex-shrink-0">
+<img class="w-14 h-14 rounded-full object-cover border border-slate-700" data-alt="Elegant cosmetic brand logo for Luminous Beauty with gold accents on soft pastel circle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCubj8aNHWemQxTpbQWtbLgnKWkyzQZKngZYMkaHvLF0kInYT9pk7B7cX3VwUKd8rE2go4_0My5pm2mTn5Tua9MQeO6uMqfP-0F64_DhJ4VUJ5pC-s4lQLDcRrbSnw9C-8-Sh94IMDAFC-kadOpK0i4xGDOxhhUJ1zGPMEmxagVtGBYUgBnZi2RSlzRgWVNUUMTPNxuwDb1pbh_ElMJDOiLVDYQYJTL-McOYCf-oFTkRp1hLWxq5xX79IlOx2SCLta8Veigxn9huss"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-0.5">
+<h3 class="text-white font-bold text-base truncate">Luminous Beauty</h3>
+<div class="flex flex-col items-end gap-1.5">
+<span class="text-[11px] text-slate-500 font-medium">Yesterday</span>
+</div>
+</div>
+<p class="text-sm text-emerald-400 font-medium mb-1">
+                        with <span class="text-slate-300">Skincare Routine Reel</span>
+</p>
+<p class="text-sm text-slate-400 truncate pr-4">
+                        Great work on the last batch of deliverables. We've seen a 15% increase in...
+                    </p>
+</div>
+</div>
+<!-- Deal Card 4 -->
+<div class="bg-slate-900/40 p-4 rounded-xl shadow-sm border border-slate-800 flex items-start gap-4 hover:bg-slate-900/60 transition-colors cursor-pointer group relative">
+<div class="relative flex-shrink-0">
+<img class="w-14 h-14 rounded-full object-cover border border-slate-700" data-alt="Modern tech agency logo for Echo Design with geometric blue shapes in a circle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2LB5A5SLRuIqPvD0zBNiNa868EhqLBTq9yuS8zFGwqMq_hXs6lWS57xsz80C2QxJL4dPX2WflvZqXwAI7CT4yNxP5iDxdAeRVNMux_zgIeW1t4RCBh71RgvHVXZAyYwgvwfT0AGi4vBgMoGJszODy2BRfcnZgXspENfqpRYy52ptklSeV9SG-X5X6M1QcoNw2uiBA6IAsP5obNHbB_Bsqz71IDsNUvnDR_EyDsCwfDnnrYgNAWjwk2gFDN-LYPeKx_IjHll3vDQM"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-0.5">
+<h3 class="text-white font-bold text-base truncate">Echo Design</h3>
+<div class="flex flex-col items-end gap-1.5">
+<span class="text-[11px] text-slate-500 font-medium">Tue</span>
+</div>
+</div>
+<p class="text-sm text-emerald-400 font-medium mb-1">
+                        with <span class="text-slate-300">Portfolio Refresh 2024</span>
+</p>
+<p class="text-sm text-slate-400 truncate pr-4">
+                        Let's schedule a call for Thursday to discuss the final branding assets...
+                    </p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Exactly like SCREEN_31) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 pb-safe bg-slate-950/80 backdrop-blur-md shadow-lg border-t border-slate-800">
+<!-- Profile Tab -->
+<a class="flex flex-col items-center justify-center text-slate-500 px-4 py-1.5 transition-transform duration-150 active:scale-95 hover:text-emerald-500" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[11px] font-medium leading-none mt-1">Profile</span>
+</a>
+<!-- Deal Dashboard (Active) -->
+<a class="flex flex-col items-center justify-center bg-emerald-900/30 text-emerald-300 rounded-xl px-4 py-1.5 transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">handshake</span>
+<span class="text-[11px] font-medium leading-none mt-1">Deals</span>
+</a>
+<!-- Feed Tab -->
+<a class="flex flex-col items-center justify-center text-slate-500 px-4 py-1.5 transition-transform duration-150 active:scale-95 hover:text-emerald-500" href="#">
+<span class="material-symbols-outlined">rss_feed</span>
+<span class="text-[11px] font-medium leading-none mt-1">Feed</span>
+</a>
+<!-- Search Tab -->
+<a class="flex flex-col items-center justify-center text-slate-500 px-4 py-1.5 transition-transform duration-150 active:scale-95 hover:text-emerald-500" href="#">
+<span class="material-symbols-outlined">search</span>
+<span class="text-[11px] font-medium leading-none mt-1">Search</span>
+</a>
+</nav>
+</body></html>

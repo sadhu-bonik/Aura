@@ -14,10 +14,26 @@
     <string name="empty_active_deals_subtitle">Accepted deals will appear here</string>
     <string name="error_active_deals">Couldn\'t load deals. Tap to retry.</string>
     <string name="label_completed">Completed</string>
-    <string name="menu_switch_to_brand">Switch to Brand</string>
-    <string name="menu_switch_to_creator">Switch to Creator</string>
-    <string name="toast_switched_to_brand">Now acting as Nova Studio (Brand)</string>
-    <string name="toast_switched_to_creator">Now acting as Alice Chen (Creator)</string>
+    <string name="menu_switch_to_user">Switch to %s</string>
+    <string name="toast_switched_to_user">Now acting as %s</string>
+
+    <!-- Deal Dashboard -->
+    <string name="title_deal_dashboard">Deals</string>
+    <string name="tab_active_deals">Active Deals</string>
+    <string name="tab_new_deals">New Deals</string>
+    <string name="tab_sent_deals">Sent Deals</string>
+    <string name="empty_new_deals">No new offers yet</string>
+    <string name="empty_sent_deals">No deals sent yet</string>
+    <string name="title_deal_history">Deal History</string>
+    <string name="tab_completed_deals">Completed</string>
+    <string name="tab_past_deals">Past</string>
+    <string name="empty_completed_deals">No completed deals yet</string>
+    <string name="empty_past_deals">No past deals</string>
+    <string name="chip_status_declined">Declined</string>
+    <string name="chip_status_cancelled">Cancelled</string>
+    <string name="chip_status_expired">Expired</string>
+    <string name="content_description_history">Deal history</string>
+    <string name="content_description_chevron">View deal details</string>
     <string name="label_deal_with">with %s</string>
     <string name="label_no_messages">No messages yet</string>
 
@@ -55,6 +71,44 @@
     <string name="hint_deal_title">Deal title</string>
     <string name="hint_deal_description">Deal description</string>
     <string name="error_save_deal">Failed to save changes</string>
+
+    <!-- Deal actions -->
+    <string name="btn_accept_deal">Accept</string>
+    <string name="btn_reject_deal">Decline</string>
+    <string name="btn_complete_deal">Mark as Complete</string>
+
+    <!-- Deal actions — cancel + complete -->
+    <string name="btn_cancel_deal">Cancel Deal</string>
+    <string name="btn_waiting_response">Waiting for response…</string>
+    <string name="helper_waiting_response">Waiting for other party to agree.</string>
+    <string name="dialog_cancel_reason_title">Cancel this deal?</string>
+    <string name="hint_cancel_reason">Reason for cancellation…</string>
+
+    <!-- Deal actions — reject confirm dialog -->
+    <string name="dialog_reject_title">Decline this offer?</string>
+    <string name="dialog_reject_body">Once declined, this deal moves to history and can\'t be restored.</string>
+    <string name="btn_decline">Decline</string>
+
+    <!-- Completion request banner -->
+    <string name="completion_prompt">The other party wants to complete this deal. Do you agree?</string>
+    <string name="btn_yes">Yes</string>
+    <string name="btn_no">No</string>
+
+    <!-- System messages in chat -->
+    <string name="system_msg_completion_requested">COMPLETION REQUEST TRIGGERED</string>
+    <string name="system_msg_completion_declined">COMPLETION REQUEST DECLINED</string>
+    <string name="system_msg_deal_completed">DEAL COMPLETED</string>
+    <string name="system_msg_deal_cancelled">%1$s cancelled the deal — \"%2$s\"</string>
+
+    <!-- Conversation closed footer -->
+    <string name="conversation_closed_title">CONVERSATION CLOSED</string>
+    <string name="conversation_closed_cancelled_by_other">You can no longer send messages to this thread because the deal was cancelled by the counterparty.</string>
+    <string name="conversation_closed_cancelled_by_self">You can no longer send messages to this thread because you cancelled this deal.</string>
+    <string name="conversation_closed_completed">You can no longer send messages to this thread because the deal has been completed.</string>
+    <string name="conversation_closed_pending">Chat opens once the deal is accepted.</string>
+
+    <!-- Past deal history footer -->
+    <string name="label_end_of_past_history">End of past deals history</string>
 
     <!-- Common -->
     <string name="btn_retry">Retry</string>

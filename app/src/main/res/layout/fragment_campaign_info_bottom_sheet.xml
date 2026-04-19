@@ -118,7 +118,7 @@
             app:layout_constraintBottom_toBottomOf="@id/tv_campaign_title"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Deal title edit field (hidden until edit mode) -->
+        <!-- Deal title edit field -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_title"
             android:layout_width="0dp"
@@ -163,7 +163,7 @@
             app:layout_constraintTop_toTopOf="@id/tv_campaign_description"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Description edit field (hidden until edit mode) -->
+        <!-- Description edit field -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_description"
             android:layout_width="0dp"
@@ -262,6 +262,96 @@
             android:text="@string/empty_shared_media"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/tv_shared_media_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Reason section (shows for expired, cancelled, rejected) -->
+        <TextView
+            android:id="@+id/tv_reason_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_md"
+            android:layout_marginHorizontal="@dimen/space_md"
+            android:textAppearance="@style/TextAppearance.Aura.LabelLarge"
+            android:textColor="@color/colorTextSecondary"
+            android:text="Closure Reason"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/divider_2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_reason_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:layout_marginHorizontal="@dimen/space_md"
+            android:textAppearance="@style/TextAppearance.Aura.BodyMedium"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tv_reason_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Barrier sits at the bottom of whichever media view or reason is visible -->
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_media_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="rv_shared_media,tv_empty_media,tv_reason_text" />
+
+        <!-- Action buttons: stacked vertically, visible when deal is ACCEPTED -->
+        <LinearLayout
+            android:id="@+id/ll_deal_actions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_lg"
+            android:layout_marginHorizontal="@dimen/space_md"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/barrier_media_bottom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- Cancel Deal — dark bg with red X -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel_deal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_height"
+                android:text="@string/btn_cancel_deal"
+                app:icon="@drawable/ic_close"
+                app:iconTint="@color/colorError"
+                app:iconGravity="textStart"
+                app:backgroundTint="@color/colorSurfaceVariant"
+                app:cornerRadius="@dimen/corner_radius_md" />
+
+            <!-- Complete Deal — filled primary with check icon -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_complete_deal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_height"
+                android:layout_marginTop="@dimen/space_sm"
+                android:text="@string/btn_complete_deal"
+                app:icon="@drawable/ic_check_circle"
+                app:iconTint="@color/colorOnPrimary"
+                app:iconGravity="textStart"
+                app:backgroundTint="@color/colorPrimary"
+                app:cornerRadius="@dimen/corner_radius_md" />
+
+        </LinearLayout>
+
+        <!-- Waiting for response helper (Party A sees this after requesting completion) -->
+        <TextView
+            android:id="@+id/tv_waiting_helper"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_md"
+            android:layout_marginHorizontal="@dimen/space_md"
+            android:text="@string/helper_waiting_response"
+            android:textAppearance="@style/TextAppearance.Aura.BodySmall"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/barrier_media_bottom"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

@@ -2,12 +2,33 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/activeDealsFragment">
+    app:startDestination="@id/dealDashboardFragment">
 
     <fragment
         android:id="@+id/videoFeedFragment"
         android:name="com.aura.app.ui.feed.VideoFeedFragment"
         android:label="@string/feed_title" />
+
+    <fragment
+        android:id="@+id/dealDashboardFragment"
+        android:name="com.aura.app.ui.chat.DealDashboardFragment"
+        android:label="@string/title_deal_dashboard">
+        <action
+            android:id="@+id/action_dashboard_to_chat"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_dashboard_to_history"
+            app:destination="@id/dealHistoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dealHistoryFragment"
+        android:name="com.aura.app.ui.chat.DealHistoryFragment"
+        android:label="@string/title_deal_history">
+        <action
+            android:id="@+id/action_history_to_chat"
+            app:destination="@id/chatFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/activeDealsFragment"

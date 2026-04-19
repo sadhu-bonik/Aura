@@ -3,6 +3,7 @@ package com.aura.app.data.repository
 import com.aura.app.data.model.Message
 import com.aura.app.utils.Constants
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.snapshots
 import kotlinx.coroutines.flow.Flow
@@ -24,22 +25,6 @@ class MessageRepository(
                     .sortedBy { it.sentAt }
             }
 
-    fun streamLastMessage(dealId: String): Flow<Message?> =
-        messages.whereEqualTo("dealId", dealId)
-            .snapshots()
-            .map { snap ->
-                snap.documents
-                    .mapNotNull { it.toObject(Message::class.java)?.copy(messageId = it.id) }
-                    .maxByOrNull { it.sentAt?.seconds ?: 0L }
-            }
-
-    fun streamUnreadCount(dealId: String, receiverId: String): Flow<Int> =
-        messages.whereEqualTo("dealId", dealId)
-            .whereEqualTo("receiverId", receiverId)
-            .whereEqualTo("isRead", false)
-            .snapshots()
-            .map { it.size() }
-
     suspend fun sendMessage(
         dealId: String,
         senderId: String,
@@ -51,10 +36,13 @@ class MessageRepository(
         val chatUnlocked = dealSnap.getBoolean("chatUnlocked") ?: false
         check(chatUnlocked) { "Chat is locked — deal must be accepted first" }
 
-        val ref = messages.document()
-        ref.set(
-            Message(
-                messageId = ref.id,
+        val msgRef = messages.document()
+        val dealRef = deals.document(dealId)
+        val preview = content.ifBlank { mediaPreview(mediaUrl, "text", "") }
+
+        firestore.batch().apply {
+            set(msgRef, Message(
+                messageId = msgRef.id,
                 dealId = dealId,
                 senderId = senderId,
                 receiverId = receiverId,
@@ -63,8 +51,14 @@ class MessageRepository(
                 mediaType = "text",
                 isRead = false,
                 sentAt = Timestamp.now(),
-            )
-        ).await()
+            ))
+            update(dealRef, mapOf(
+                "lastMessageText" to preview,
+                "lastMessageTime" to FieldValue.serverTimestamp(),
+                "unreadCounts.$receiverId" to FieldValue.increment(1),
+                "updatedAt" to FieldValue.serverTimestamp(),
+            ))
+        }.commit().await()
     }
 
     suspend fun sendMessageDirect(
@@ -73,15 +67,41 @@ class MessageRepository(
         receiverId: String,
         content: String,
     ): Result<Unit> = runCatching {
-        val ref = messages.document()
-        ref.set(
+        val msgRef = messages.document()
+        // Stub deals don't exist in Firestore — just write the message doc directly.
+        msgRef.set(
             Message(
-                messageId = ref.id,
+                messageId = msgRef.id,
                 dealId = dealId,
                 senderId = senderId,
                 receiverId = receiverId,
                 content = content,
                 mediaType = "text",
+                isRead = false,
+                sentAt = Timestamp.now(),
+            )
+        ).await()
+    }
+
+    suspend fun sendMediaMessageDirect(
+        dealId: String,
+        senderId: String,
+        receiverId: String,
+        downloadUrl: String,
+        mediaType: String,
+        fileName: String = "",
+    ): Result<Unit> = runCatching {
+        val msgRef = messages.document()
+        msgRef.set(
+            Message(
+                messageId = msgRef.id,
+                dealId = dealId,
+                senderId = senderId,
+                receiverId = receiverId,
+                content = "",
+                mediaUrl = downloadUrl,
+                mediaType = mediaType,
+                fileName = fileName,
                 isRead = false,
                 sentAt = Timestamp.now(),
             )
@@ -96,10 +116,13 @@ class MessageRepository(
         mediaType: String,
         fileName: String = "",
     ): Result<Unit> = runCatching {
-        val ref = messages.document()
-        ref.set(
-            Message(
-                messageId = ref.id,
+        val msgRef = messages.document()
+        val dealRef = deals.document(dealId)
+        val preview = mediaPreview(downloadUrl, mediaType, fileName)
+
+        firestore.batch().apply {
+            set(msgRef, Message(
+                messageId = msgRef.id,
                 dealId = dealId,
                 senderId = senderId,
                 receiverId = receiverId,
@@ -109,8 +132,14 @@ class MessageRepository(
                 fileName = fileName,
                 isRead = false,
                 sentAt = Timestamp.now(),
-            )
-        ).await()
+            ))
+            update(dealRef, mapOf(
+                "lastMessageText" to preview,
+                "lastMessageTime" to FieldValue.serverTimestamp(),
+                "unreadCounts.$receiverId" to FieldValue.increment(1),
+                "updatedAt" to FieldValue.serverTimestamp(),
+            ))
+        }.commit().await()
     }
 
     suspend fun getSharedMedia(dealId: String): List<Message> = runCatching {
@@ -123,6 +152,21 @@ class MessageRepository(
             .sortedBy { it.sentAt }
     }.getOrDefault(emptyList())
 
+    suspend fun sendSystemMessage(dealId: String, text: String): Result<Unit> = runCatching {
+        val msgRef = messages.document()
+        msgRef.set(
+            Message(
+                messageId = msgRef.id,
+                dealId = dealId,
+                senderId = "system",
+                receiverId = "",
+                content = text,
+                isSystem = true,
+                sentAt = Timestamp.now(),
+            )
+        ).await()
+    }
+
     suspend fun markMessagesAsRead(dealId: String, currentUserId: String): Result<Unit> = runCatching {
         val unread = messages
             .whereEqualTo("dealId", dealId)
@@ -133,6 +177,14 @@ class MessageRepository(
 
         val batch = firestore.batch()
         unread.documents.forEach { batch.update(it.reference, "isRead", true) }
+        batch.update(deals.document(dealId), "unreadCounts.$currentUserId", 0)
         batch.commit().await()
+    }
+
+    private fun mediaPreview(url: String, mediaType: String, fileName: String): String = when (mediaType) {
+        "image" -> "Photo"
+        "video" -> "Video"
+        "file" -> fileName.ifBlank { "File" }
+        else -> url.ifBlank { "" }
     }
 }
