@@ -208,5 +208,25 @@
         <item name="trackCornerRadius">4dp</item>
         <item name="android:minHeight">6dp</item>
     </style>
+    <style name="TextAppearance.Aura.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorOnBackground</item>
+    </style>
+    <style name="TextAppearance.Aura.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorOnBackground</item>
+    </style>
+    <style name="TextAppearance.Aura.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorOnBackground</item>
+    </style>
+    <style name="TextAppearance.Aura.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorTextSecondary</item>
+    </style>
+    <style name="TextAppearance.Aura.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorOnBackground</item>
+    </style>
 
 </resources>

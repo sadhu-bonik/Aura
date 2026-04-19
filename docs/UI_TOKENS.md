@@ -10,22 +10,25 @@ Dark theme by default.
 
 | Token | Hex | Usage |
 |---|---|---|
-| `colorPrimary` | `#7C4DFF` | Primary actions, active state |
-| `colorPrimaryVariant` | `#6200EA` | Pressed state, gradients |
-| `colorSecondary` | `#FF6D00` | Accents, notifications, badges |
-| `colorSecondaryVariant` | `#E65100` | Pressed accent |
-| `colorBackground` | `#0F0F14` | App background |
-| `colorSurface` | `#1C1C27` | Cards, sheets, dialogs |
-| `colorSurfaceVariant` | `#252535` | Input fields, secondary surfaces |
-| `colorOnBackground` | `#EEEEF5` | Primary text on background |
-| `colorOnSurface` | `#EEEEF5` | Primary text on cards |
-| `colorTextSecondary` | `#9999AA` | Subtitles, placeholders |
-| `colorTextDisabled` | `#55556A` | Disabled text |
-| `colorOnPrimary` | `#FFFFFF` | Text/icons on primary |
-| `colorSuccess` | `#00C896` | Accepted / success |
+| `colorPrimary` | `#B1A1FF` | Primary actions, active state |
+| `colorPrimaryVariant` | `#7757FA` | Pressed state, gradients |
+| `colorSecondary` | `#69F6B8` | Accents, active deals indicator |
+| `colorSecondaryVariant` | `#58E7AB` | Pressed accent |
+| `colorBackground` | `#0B0E14` | App background |
+| `colorSurface` | `#0B0E14` | Cards, sheets, dialogs base |
+| `colorSurfaceVariant` | `#22262F` | Input fields, received messages |
+| `colorSurfaceContainer` | `#161A21` | secondary surfaces |
+| `colorSurfaceContainerHigh` | `#1C2028` | elevated elements |
+| `colorSurfaceContainerHighest`| `#22262F` | highlighted elevated elements |
+| `colorOnBackground` | `#ECEDF6` | Primary text on background |
+| `colorOnSurface` | `#ECEDF6` | Primary text on cards |
+| `colorTextSecondary` | `#A9ABB3` | Subtitles, placeholders |
+| `colorTextDisabled` | `#52555C` | Disabled text |
+| `colorOnPrimary` | `#2F0095` | Text/icons on primary |
+| `colorSuccess` | `#69F6B8` | Accepted / success |
 | `colorWarning` | `#FFB300` | Pending / caution |
-| `colorError` | `#FF5252` | Error / rejected |
-| `colorDivider` | `#2C2C3E` | Dividers, strokes |
+| `colorError` | `#FF6E84` | Error / rejected |
+| `colorDivider` | `#45484F` | Dividers, strokes |
 
 ---
 

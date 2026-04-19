@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorSurface">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/space_xxl">
+
+        <!-- Drag handle -->
+        <View
+            android:id="@+id/v_drag_handle"
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="@dimen/space_sm"
+            android:background="@color/colorDivider"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Close button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:layout_marginEnd="@dimen/space_sm"
+            android:contentDescription="@string/content_description_close"
+            style="@style/Widget.Material3.Button.IconButton"
+            app:icon="@drawable/ic_close"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Profile image -->
+        <ImageView
+            android:id="@+id/iv_profile_photo"
+            android:layout_width="@dimen/avatar_lg"
+            android:layout_height="@dimen/avatar_lg"
+            android:layout_marginTop="@dimen/space_lg"
+            android:contentDescription="@string/content_description_avatar"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toBottomOf="@id/v_drag_handle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_sm"
+            android:textAppearance="@style/TextAppearance.Aura.TitleLarge"
+            app:layout_constraintTop_toBottomOf="@id/iv_profile_photo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_view_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_sm"
+            android:text="@string/btn_view_profile"
+            android:enabled="false"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:layout_constraintTop_toBottomOf="@id/tv_profile_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Divider 1 -->
+        <View
+            android:id="@+id/divider_1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/space_lg"
+            android:background="@color/colorDivider"
+            app:layout_constraintTop_toBottomOf="@id/btn_view_profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Campaign section label -->
+        <TextView
+            android:id="@+id/tv_campaign_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_md"
+            android:layout_marginHorizontal="@dimen/space_md"
+            android:textAppearance="@style/TextAppearance.Aura.LabelLarge"
+            android:textColor="@color/colorTextSecondary"
+            android:text="@string/label_campaign_description"
+            app:layout_constraintTop_toBottomOf="@id/divider_1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Deal title row (display) -->
+        <TextView
+            android:id="@+id/tv_campaign_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:layout_marginStart="@dimen/space_md"
+            android:textAppearance="@style/TextAppearance.Aura.TitleMedium"
+            app:layout_constraintTop_toBottomOf="@id/tv_campaign_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_edit_title" />
+
+        <ImageView
+            android:id="@+id/iv_edit_title"
+            android:layout_width="@dimen/icon_size_sm"
+            android:layout_height="@dimen/icon_size_sm"
+            android:layout_marginEnd="@dimen/space_md"
+            android:src="@drawable/ic_edit"
+            android:contentDescription="@string/content_description_edit"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="@id/tv_campaign_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_campaign_title"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Deal title edit field -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:layout_marginHorizontal="@dimen/space_md"
+            android:visibility="gone"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:layout_constraintTop_toBottomOf="@id/tv_campaign_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_deal_title"
+                android:inputType="textCapSentences" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Description display -->
+        <TextView
+            android:id="@+id/tv_campaign_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:layout_marginStart="@dimen/space_md"
+            android:textAppearance="@style/TextAppearance.Aura.BodyMedium"
+            android:textColor="@color/colorTextSecondary"
+            app:layout_constraintTop_toBottomOf="@id/tv_campaign_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_edit_description" />
+
+        <ImageView
+            android:id="@+id/iv_edit_description"
+            android:layout_width="@dimen/icon_size_sm"
+            android:layout_height="@dimen/icon_size_sm"
+            android:layout_marginEnd="@dimen/space_md"
+            android:src="@drawable/ic_edit"
+            android:contentDescription="@string/content_description_edit"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="@id/tv_campaign_description"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Description edit field -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:layout_marginHorizontal="@dimen/space_md"
+            android:visibility="gone"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:layout_constraintTop_toBottomOf="@id/til_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_deal_description"
+                android:inputType="textMultiLine|textCapSentences"
+                android:minLines="2"
+                android:maxLines="4" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Save / Cancel buttons (hidden until edit mode) -->
+        <LinearLayout
+            android:id="@+id/ll_edit_actions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_sm"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/til_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_cancel"
+                style="@style/Widget.Material3.Button.TextButton" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_save_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_sm"
+                android:text="@string/btn_save" />
+        </LinearLayout>
+
+        <!-- Divider 2 -->
+        <View
+            android:id="@+id/divider_2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/space_lg"
+            android:background="@color/colorDivider"
+            app:layout_constraintTop_toBottomOf="@id/tv_campaign_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Shared media -->
+        <TextView
+            android:id="@+id/tv_shared_media_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_md"
+            android:layout_marginHorizontal="@dimen/space_md"
+            android:textAppearance="@style/TextAppearance.Aura.LabelLarge"
+            android:textColor="@color/colorTextSecondary"
+            android:text="@string/label_shared_media"
+            app:layout_constraintTop_toBottomOf="@id/divider_2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_shared_media"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_sm"
+            android:layout_marginHorizontal="@dimen/space_md"
+            android:orientation="horizontal"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/tv_shared_media_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_empty_media"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_sm"
+            android:textAppearance="@style/TextAppearance.Aura.BodyMedium"
+            android:textColor="@color/colorTextSecondary"
+            android:text="@string/empty_shared_media"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tv_shared_media_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Reason section (shows for expired, cancelled, rejected) -->
+        <TextView
+            android:id="@+id/tv_reason_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_md"
+            android:layout_marginHorizontal="@dimen/space_md"
+            android:textAppearance="@style/TextAppearance.Aura.LabelLarge"
+            android:textColor="@color/colorTextSecondary"
+            android:text="Closure Reason"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/divider_2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_reason_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:layout_marginHorizontal="@dimen/space_md"
+            android:textAppearance="@style/TextAppearance.Aura.BodyMedium"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tv_reason_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Barrier sits at the bottom of whichever media view or reason is visible -->
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_media_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="rv_shared_media,tv_empty_media,tv_reason_text" />
+
+        <!-- Action buttons: stacked vertically, visible when deal is ACCEPTED -->
+        <LinearLayout
+            android:id="@+id/ll_deal_actions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_lg"
+            android:layout_marginHorizontal="@dimen/space_md"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/barrier_media_bottom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- Cancel Deal — dark bg with red X -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel_deal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_height"
+                android:text="@string/btn_cancel_deal"
+                app:icon="@drawable/ic_close"
+                app:iconTint="@color/colorError"
+                app:iconGravity="textStart"
+                app:backgroundTint="@color/colorSurfaceVariant"
+                app:cornerRadius="@dimen/corner_radius_md" />
+
+            <!-- Complete Deal — filled primary with check icon -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_complete_deal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_height"
+                android:layout_marginTop="@dimen/space_sm"
+                android:text="@string/btn_complete_deal"
+                app:icon="@drawable/ic_check_circle"
+                app:iconTint="@color/colorOnPrimary"
+                app:iconGravity="textStart"
+                app:backgroundTint="@color/colorPrimary"
+                app:cornerRadius="@dimen/corner_radius_md" />
+
+        </LinearLayout>
+
+        <!-- Waiting for response helper (Party A sees this after requesting completion) -->
+        <TextView
+            android:id="@+id/tv_waiting_helper"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_md"
+            android:layout_marginHorizontal="@dimen/space_md"
+            android:text="@string/helper_waiting_response"
+            android:textAppearance="@style/TextAppearance.Aura.BodySmall"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/barrier_media_bottom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

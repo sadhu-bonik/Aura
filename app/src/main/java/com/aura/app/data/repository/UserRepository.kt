@@ -2,6 +2,8 @@ package com.aura.app.data.repository
 
 import com.aura.app.data.model.User
 import com.aura.app.data.model.UserLite
+import com.aura.app.utils.Constants
+import com.aura.app.utils.StubData
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import java.util.concurrent.ConcurrentHashMap
@@ -110,6 +112,7 @@ class UserRepository(
     }
 
     suspend fun getUserLite(userId: String): UserLite? {
+        if (Constants.USE_STUBS) return StubData.users[userId]
         cache[userId]?.let { return it }
         return try {
             val doc = firestore.collection(COLLECTION).document(userId).get().await()

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {},
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {},
+            "fontFamily": {
+                    "headline": ["Public Sans"],
+                    "body": ["Public Sans"],
+                    "label": ["Public Sans"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0B0E14;
+            color: #ECEDF6;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden">
+<!-- TopAppBar Fragment from JSON -->
+<header class="flex items-center justify-between px-6 h-20 w-full bg-[#10131A] shadow-none border-none docked-top z-40">
+<div class="flex items-center gap-4">
+<div class="relative w-10 h-10 rounded-full overflow-hidden border border-[#B1A1FF]/20">
+<img alt="Nova Studio Avatar" class="w-full h-full object-cover" data-alt="Cinematic portrait of a professional studio head in a moody, dark setting with soft purple backlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5u_yZe408NwBgZeRJvoRrfdMwpmH0-rNsEQc3VRdEGmQE2AqYYblf1C_U7za-wB3DI31h63xrnTOJK_PWj5GMK0P2LU76TrE4SHwYHYcRuHgDSnhtlwYmE_YdCPBL2UKynDOmKbzeRQGBmS1E7cYfEf0m_0g4AxS3V0nXxfFh4MlQi2qa-e7FIM1YLxfjOSvGVm5IU7My-9yoRYDXFv2TsTD8xGB2kvosUcyTG0jyLoMmwnrAh0NQ5BBoMrlrx5z1crd9eoPQHQQ"/>
+</div>
+<div class="flex flex-col">
+<span class="font-['Inter'] font-semibold tracking-tight text-[#ECEDF6] text-sm leading-tight">Nova Studio</span>
+<span class="text-[11px] text-[#A9ABB3] font-medium uppercase tracking-widest">Summer Collection Drop</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 text-[#A9ABB3] hover:bg-[#22262F] transition-colors rounded-full">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 text-[#B1A1FF] hover:bg-[#22262F] transition-colors rounded-full">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</header>
+<!-- Chat Canvas -->
+<main class="flex-1 overflow-y-auto px-4 py-6 space-y-6 bg-gradient-to-b from-[#0B0E14] to-[#12141C]">
+<!-- Date Divider -->
+<div class="flex justify-center">
+<span class="px-3 py-1 bg-[#1A1D26] text-[#A9ABB3] text-[10px] font-bold rounded-full uppercase tracking-widest">August 14, 2023</span>
+</div>
+<!-- Partner Message (Left) -->
+<div class="flex items-end gap-2 max-w-[85%]">
+<div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Close-up of a studio brand logo with minimalist aesthetic and neon purple accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3PJiriBh4acsUBf_EeSFnudfSQ99Ov4pCwBMF6MkyOoEnKm7uX8zDR749lb4HZ_2VU4QwuOJURzB3hCsmt4c9pjagejhz_zr5vAo7kuhUxclvSGTUeuQf2pTQnNl7j2AY6JbpwpUWdyQRFDyXIcSJJ1hywy8YiJsNYCew5UVK85LL48g3qG2jvtJE7HvywDOTp7O4miSlYhTgqHRPHV-fQYDiADOU0eHSzq8AEmq9WGZBOKWqTsQdM7CQHP2c3eCDZgArHOGZxm4"/>
+</div>
+<div class="space-y-1">
+<div class="bg-[#1C1F26] text-[#ECEDF6] p-4 rounded-2xl rounded-bl-none border border-white/5 shadow-xl">
+<p class="text-sm font-body leading-relaxed">Hey there! We just reviewed the final proofs for the Summer Collection. Everything looks spectacular.</p>
+</div>
+<span class="text-[10px] text-[#A9ABB3] px-1 uppercase">10:42 AM</span>
+</div>
+</div>
+<!-- User Message (Right) -->
+<div class="flex flex-col items-end space-y-1 ml-auto max-w-[85%]">
+<div class="bg-[#B1A1FF] text-[#0B0E14] p-4 rounded-2xl rounded-br-none shadow-[0_0_20px_rgba(177,161,255,0.2)]">
+<p class="text-sm font-semibold font-body leading-relaxed">That's great news! I'm really happy with the color grading on the outdoor shots.</p>
+</div>
+<div class="flex items-center gap-1 px-1">
+<span class="text-[10px] text-[#A9ABB3] uppercase">10:45 AM</span>
+<span class="material-symbols-outlined text-[12px] text-[#B1A1FF]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Deal Media Attachment -->
+<div class="flex flex-col items-end space-y-2 ml-auto max-w-[70%]">
+<div class="rounded-2xl overflow-hidden border-2 border-[#B1A1FF]/30 relative group shadow-2xl">
+<img class="w-full h-64 object-cover" data-alt="High-end fashion photography of a summer collection piece on a minimalist light grey background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCphmriwYQRLIlG3xVUP-7oljYO7OrBEjAoKquWdXElcG9h6qb7lPsy73x2o6r5mazkaE4oWuPbwbokjL27EUueAlfxn1BOoBfxMbhH56mVEg_bpXk1aHCBfavvbxcPZ37s7maigvlpJ60PiQ0DozaScSlFf45QTbDRLVMR2OXONrmjxCYiFdfylsGSe2QNwQFNb8Bz1v4c3mbOAimwhxym_LzPaE3VBx7HU8WSkXDirAAnLU8xxRy0RnSTjK9ko3u7wuPmOfiNqPU"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-white text-sm">image</span>
+<span class="text-xs font-bold text-white uppercase tracking-tighter">Final_Asset_01.jpg</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Partner Message (Left) -->
+<div class="flex items-end gap-2 max-w-[85%] pt-2">
+<div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Studio portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAX4JNUhKCjF7gcW3DIa2tTV-_piRPmNL9BrnfXC5HzYCuMcX5bPxe1QE9Obt68zHmJ6-qRanOCKJoJfWJVauQGLWpHRjAbjr68zeGu5UGCHsYcGZK8C8R1G9-DrFe_MjfvznQ111DRSMnXBIRcnT_9mBvMUyrQChY_9jlHM44RXq6c6m9K8pL3uzoxdIK-xBjkKpjeGP-Mej2lRC1rLOLXnEVnIgLJ4cY0W9jRRQi-Y-VVrCqwWRe97ZeE0RsIj70QLL8veu2iKo"/>
+</div>
+<div class="space-y-1">
+<div class="bg-[#1C1F26] text-[#ECEDF6] p-4 rounded-2xl rounded-bl-none border border-white/5">
+<p class="text-sm font-body leading-relaxed">Confirmed. Payment has been released through Midnight Ledger. Pleasure doing business with you!</p>
+</div>
+<span class="text-[10px] text-[#A9ABB3] px-1 uppercase">11:15 AM</span>
+</div>
+</div>
+<!-- Completion Indicator -->
+<div class="flex flex-col items-center py-8">
+<div class="w-16 h-16 rounded-full bg-[#B1A1FF]/10 flex items-center justify-center mb-4 border border-[#B1A1FF]/20">
+<span class="material-symbols-outlined text-[#B1A1FF] text-3xl" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<h3 class="text-[#ECEDF6] font-bold text-lg tracking-tight">Deal Completed</h3>
+<p class="text-[#A9ABB3] text-xs font-medium uppercase tracking-[0.2em] mt-1">Status: Finalized &amp; Paid</p>
+</div>
+</main>
+<!-- Read-Only Banner -->
+<footer class="relative z-50">
+<!-- Subtle gradient overlap for visual depth -->
+<div class="h-12 bg-gradient-to-t from-[#161A21] to-transparent w-full absolute -top-12 pointer-events-none"></div>
+<div class="bg-[#161A21]/90 backdrop-blur-2xl px-6 py-8 flex flex-col items-center text-center space-y-4 border-t border-white/5">
+<div class="bg-[#B1A1FF]/10 px-4 py-2 rounded-full border border-[#B1A1FF]/20 flex items-center gap-2">
+<span class="material-symbols-outlined text-[#B1A1FF] text-sm">lock_clock</span>
+<span class="text-[#B1A1FF] text-[10px] font-bold uppercase tracking-[0.15em]">Conversation Closed</span>
+</div>
+<p class="text-[#A9ABB3] text-sm font-medium leading-relaxed max-w-xs">
+                You can no longer send messages to this thread because the deal has been completed.
+            </p>
+</div>
+</footer>
+</body></html>

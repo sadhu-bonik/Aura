@@ -244,4 +244,56 @@
         android:label="Home"
         tools:layout="@layout/fragment_home_container" />
 
+    <fragment
+        android:id="@+id/dealDashboardFragment"
+        android:name="com.aura.app.ui.chat.DealDashboardFragment"
+        android:label="@string/title_deal_dashboard">
+        <action
+            android:id="@+id/action_dashboard_to_chat"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_dashboard_to_history"
+            app:destination="@id/dealHistoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dealHistoryFragment"
+        android:name="com.aura.app.ui.chat.DealHistoryFragment"
+        android:label="@string/title_deal_history">
+        <action
+            android:id="@+id/action_history_to_chat"
+            app:destination="@id/chatFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/activeDealsFragment"
+        android:name="com.aura.app.ui.chat.ActiveDealsFragment"
+        android:label="@string/title_active_deals">
+        <action
+            android:id="@+id/action_activeDealsFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.aura.app.ui.chat.ChatFragment"
+        android:label="@string/title_active_deals">
+        <argument
+            android:name="dealId"
+            app:argType="string"
+            android:defaultValue="" />
+        <action
+            android:id="@+id/action_chatFragment_to_videoPlayerFragment"
+            app:destination="@id/videoPlayerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/videoPlayerFragment"
+        android:name="com.aura.app.ui.chat.VideoPlayerFragment"
+        android:label="Video">
+        <argument
+            android:name="videoUrl"
+            app:argType="string" />
+    </fragment>
+
 </navigation>
