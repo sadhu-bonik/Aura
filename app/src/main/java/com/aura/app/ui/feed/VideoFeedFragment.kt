@@ -22,13 +22,14 @@ import kotlinx.coroutines.launch
 
 class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
 
-    private val viewModel: VideoFeedViewModel by viewModels { VideoFeedViewModel.Factory() }
+    private val viewModel: VideoFeedViewModel by viewModels { VideoFeedViewModel.Factory(requireContext()) }
     private val actionsViewModel: FeedActionsViewModel by viewModels { FeedActionsViewModel.Factory() }
     private val authViewModel: com.aura.app.ui.auth.AuthViewModel by activityViewModels { com.aura.app.ui.auth.AuthViewModel.Factory() }
 
     private var pager: ViewPager2? = null
     private var loading: ProgressBar? = null
     private var message: TextView? = null
+    private var refreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout? = null
     private var adapter: CreatorPageAdapter? = null
     private var pool: ExoPlayerPool? = null
     private var activeHolder: VideoPageViewHolder? = null
@@ -79,6 +80,11 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
         pager = view.findViewById(R.id.video_pager)
         loading = view.findViewById(R.id.feed_loading)
         message = view.findViewById(R.id.feed_message)
+        refreshLayout = view.findViewById(R.id.feed_refresh)
+
+        refreshLayout?.setOnRefreshListener {
+            viewModel.loadCreatorFeed()
+        }
 
         pool = ExoPlayerPool(requireContext().applicationContext)
 
@@ -93,7 +99,12 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { render(it) }
+                viewModel.state.collect { state ->
+                    if (state !is FeedUiState.Loading) {
+                        refreshLayout?.isRefreshing = false
+                    }
+                    render(state)
+                }
             }
         }
         
@@ -125,7 +136,7 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
                 loading?.visibility = View.GONE
                 pager?.visibility = View.GONE
                 message?.apply {
-                    text = getString(R.string.feed_error)
+                    text = state.message
                     visibility = View.VISIBLE
                 }
             }
