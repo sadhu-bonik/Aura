@@ -15,6 +15,7 @@
 local.properties
 
 # Secrets — each teammate drops their own copy into app/
+scripts/serviceAccountKey.json
 app/google-services.json
 *.keystore
 *.jks
