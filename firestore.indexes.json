@@ -4,7 +4,7 @@
       "collectionGroup": "portfolioItems",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "isPublic", "order": "ASCENDING" },
+        { "fieldPath": "public", "order": "ASCENDING" },
         { "fieldPath": "mediaType", "order": "ASCENDING" },
         { "fieldPath": "createdAt", "order": "DESCENDING" }
       ]

@@ -75,8 +75,9 @@ dependencies {
     implementation(libs.androidx.media3.datasource)
     implementation(libs.androidx.media3.database)
 
-    // ViewPager2 (vertical pager for feed)
+    // ViewPager2 and Swipe Refresh (vertical pager for feed)
     implementation(libs.androidx.viewpager2)
+    implementation(libs.androidx.swiperefreshlayout)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
