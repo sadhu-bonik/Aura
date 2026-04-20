@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.aura.app.R
@@ -60,6 +61,12 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
             p.playWhenReady = !p.playWhenReady
         }
 
+        override fun onCreatorProfileClicked(creatorId: String) {
+            val bundle = android.os.Bundle().apply { putString("creatorId", creatorId) }
+            // Navigate within the home graph so back-stack is preserved
+            findNavController().navigate(R.id.action_feed_to_creator_profile, bundle)
+        }
+
         override fun onItemPositionChanged(creatorPosition: Int, itemPosition: Int) {
             activeItemPosition = itemPosition
         }
@@ -90,9 +97,7 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
 
         FeedActionsOverlay(view, actionsViewModel, viewLifecycleOwner, this).setup()
 
-        val feedAdapter = CreatorPageAdapter(
-            activeVideoCallback, viewModel.userRepository, viewLifecycleOwner.lifecycleScope
-        ).also { adapter = it }
+        val feedAdapter = CreatorPageAdapter(activeVideoCallback).also { adapter = it }
         pager?.adapter = feedAdapter
         pager?.offscreenPageLimit = 1
         pager?.registerOnPageChangeCallback(pageCallback)

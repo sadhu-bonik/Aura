@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.aura.app.data.model.CreatorProfile
 import com.aura.app.data.model.PortfolioItem
 import com.aura.app.data.model.User
 import com.aura.app.data.repository.PortfolioRepository
@@ -24,7 +25,9 @@ sealed class ProfileUiState {
     data object Loading : ProfileUiState()
     data class Success(
         val user: User,
-        val portfolio: List<PortfolioItem> = emptyList()
+        val creatorProfile: CreatorProfile? = null,
+        val portfolio: List<PortfolioItem> = emptyList(),
+        val isOwner: Boolean = true
     ) : ProfileUiState()
     data class Error(val message: String) : ProfileUiState()
 }
@@ -61,30 +64,67 @@ class ProfileViewModel(
         const val MAX_DURATION_SEC = 60L
     }
 
-    init {
-        loadProfile()
-    }
-
-    fun loadProfile() {
+    fun loadProfile(creatorId: String? = null) {
         viewModelScope.launch {
             _state.value = ProfileUiState.Loading
-            val userId = sessionManager.getUserId()
-            if (userId == null) {
+            val currentUserId = sessionManager.getUserId()
+            if (currentUserId == null) {
                 _state.value = ProfileUiState.Error("Not signed in")
                 return@launch
             }
 
-            val user = userRepository.getUserProfile(userId)
+            val targetId = creatorId ?: currentUserId
+            val isOwner = targetId == currentUserId
+
+            val user = userRepository.getUserProfile(targetId)
             if (user == null) {
                 _state.value = ProfileUiState.Error("Could not load profile")
                 return@launch
             }
 
-            // Show the user info immediately, then stream portfolio items
-            _state.value = ProfileUiState.Success(user, emptyList())
+            // Fetch creator profile if user is a creator
+            var creatorProfile: CreatorProfile? = null
+            if (user.role == "creator") {
+                creatorProfile = userRepository.getCreatorProfile(targetId)
+            }
 
-            portfolioRepository.getCreatorPortfolio(userId).collect { portfolio ->
-                _state.value = ProfileUiState.Success(user, portfolio)
+            // Show the user info immediately, then stream portfolio items
+            _state.value = ProfileUiState.Success(user, creatorProfile, emptyList(), isOwner)
+
+            portfolioRepository.getCreatorPortfolio(targetId).collect { portfolio ->
+                _state.value = ProfileUiState.Success(user, creatorProfile, portfolio, isOwner)
+            }
+        }
+    }
+
+    /**
+     * Uploads a new profile picture and updates the user's Firestore document.
+     */
+    fun uploadProfilePicture(uri: Uri) {
+        viewModelScope.launch {
+            _uploadEvent.emit(UploadEvent.Started)
+            try {
+                val userId = sessionManager.getUserId()
+                if (userId == null) {
+                    _uploadEvent.emit(UploadEvent.Failure("Not signed in"))
+                    return@launch
+                }
+
+                _uploadEvent.emit(UploadEvent.Progress("Uploading image..."))
+                val downloadUrl = storageRepository.uploadProfilePicture(userId, uri)
+
+                _uploadEvent.emit(UploadEvent.Progress("Updating profile..."))
+                val updateResult = userRepository.updateUserPartial(userId, mapOf("profileImageUrl" to downloadUrl))
+
+                if (updateResult.isSuccess) {
+                    _uploadEvent.emit(UploadEvent.Success)
+                    // Reload profile to reflect new image
+                    loadProfile()
+                } else {
+                    _uploadEvent.emit(UploadEvent.Failure("Failed to update profile"))
+                }
+            } catch (e: Exception) {
+                _uploadEvent.emit(UploadEvent.Failure("Upload failed: ${e.message}"))
             }
         }
     }
@@ -101,7 +141,8 @@ class ProfileViewModel(
     fun uploadPortfolioVideo(
         videoUri: Uri,
         mimeType: String,
-        fileName: String,
+        title: String,
+        description: String,
         durationSec: Long,
     ) {
         if (isUploading) return // prevent double-tap
@@ -159,12 +200,13 @@ class ProfileViewModel(
                 val portfolioItem = PortfolioItem(
                     itemId = itemId,
                     creatorId = userId,
-                    title = fileName,
+                    title = title,
+                    description = description,
                     mediaUrl = uploadResult.downloadUrl,
                     mediaType = "video",
                     storagePath = uploadResult.storagePath,
                     mimeType = mimeType,
-                    originalFileName = fileName,
+                    originalFileName = title,
                     public = true,
                     createdAt = Timestamp.now(),
                 )

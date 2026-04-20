@@ -57,6 +57,7 @@ class WelcomeFragment : Fragment() {
 
 
         binding.tvSignUpLink.setOnClickListener {
+            registrationViewModel.resetDraft()
             findNavController().navigate(R.id.action_welcome_to_role_selection)
         }
     }

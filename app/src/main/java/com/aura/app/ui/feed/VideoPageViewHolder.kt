@@ -21,7 +21,6 @@ class VideoPageViewHolder(
     private val playerView: PlayerView = itemView.findViewById(R.id.player_view)
     private val thumbnail: ImageView = itemView.findViewById(R.id.thumbnail)
     private val errorLabel: TextView = itemView.findViewById(R.id.error_label)
-    private val itemTitle: TextView = itemView.findViewById(R.id.item_title)
     private val playPauseIndicator: ImageView = itemView.findViewById(R.id.play_pause_indicator)
 
     var boundItem: PortfolioItem? = null
@@ -65,7 +64,6 @@ class VideoPageViewHolder(
         retryCount = 0
         errorLabel.visibility = View.GONE
         thumbnail.visibility = View.VISIBLE
-        itemTitle.text = item.title
         playerView.player = null
 
         if (item.thumbnailUrl.isNotEmpty()) {

@@ -60,6 +60,18 @@ class UserRepository(
     }
 
     /**
+     * Retrieves a creator profile from Firestore.
+     */
+    suspend fun getCreatorProfile(userId: String): com.aura.app.data.model.CreatorProfile? {
+        return try {
+            val doc = firestore.collection("creatorProfiles").document(userId).get().await()
+            doc.toObject(com.aura.app.data.model.CreatorProfile::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    /**
      * Retrieves a complete user profile from Firestore by email.
      */
     suspend fun getUserByEmail(email: String): User? {
@@ -115,10 +127,18 @@ class UserRepository(
         if (Constants.USE_STUBS) return StubData.users[userId]
         cache[userId]?.let { return it }
         return try {
-            val doc = firestore.collection(COLLECTION).document(userId).get().await()
-            val user = doc.toObject(UserLite::class.java) ?: return null
-            cache[userId] = user
-            user
+            val user = getUserProfile(userId) ?: return null
+            val resolvedName = user.displayName.takeIf { it.isNotBlank() }
+                ?: user.email.substringBefore("@").takeIf { it.isNotBlank() }
+                ?: "Unknown Creator"
+
+            val lite = UserLite(
+                userId = user.userId,
+                displayName = resolvedName,
+                profileImageUrl = user.profileImageUrl
+            )
+            cache[userId] = lite
+            lite
         } catch (e: Exception) {
             null
         }

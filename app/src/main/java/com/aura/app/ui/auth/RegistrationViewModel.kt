@@ -65,6 +65,21 @@ class RegistrationViewModel(
         _userRole.value = role
     }
 
+    fun resetRegistrationSuccess() {
+        _registrationSuccess.value = false
+    }
+
+    /** Call this when the user begins a new registration flow so stale draft data never leaks. */
+    fun resetDraft() {
+        email = ""; password = ""; fullName = ""; phone = ""
+        securityQuestion = ""; securityAnswer = ""
+        creatorMotto = ""; creatorBio = ""; instagramHandle = ""
+        niches = listOf(); location = ""; audienceRegion = ""
+        profileImageUri = null; portfolioVideoUri = null
+        _registrationSuccess.value = false
+        _error.value = null
+    }
+
     /**
      * Finalizes creator registration:
      * 1. Creates Firebase Auth account
@@ -111,7 +126,8 @@ class RegistrationViewModel(
                     instagramHandle = instagramHandle,
                     niche = niches.joinToString(", "),
                     tags = niches,
-                    location = location
+                    location = location,
+                    isProfileComplete = true
                 )
 
                 val firestoreResult = userRepository.setupNewUser(

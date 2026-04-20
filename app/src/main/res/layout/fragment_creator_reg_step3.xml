@@ -141,66 +141,7 @@
                     android:id="@+id/chip_group_niches"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:singleSelection="false">
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_tech"
-                        style="@style/Widget.Aura.Chip.Niche"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tech"
-                        android:checked="true" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_fitness"
-                        style="@style/Widget.Aura.Chip.Niche"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fitness" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_beauty"
-                        style="@style/Widget.Aura.Chip.Niche"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Beauty" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_gaming"
-                        style="@style/Widget.Aura.Chip.Niche"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Gaming"
-                        android:checked="true" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_travel"
-                        style="@style/Widget.Aura.Chip.Niche"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Travel" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_fashion"
-                        style="@style/Widget.Aura.Chip.Niche"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fashion" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_food"
-                        style="@style/Widget.Aura.Chip.Niche"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Food" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_lifestyle"
-                        style="@style/Widget.Aura.Chip.Niche"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Lifestyle" />
-                </com.google.android.material.chip.ChipGroup>
+                    app:singleSelection="false" />
             </LinearLayout>
 
             <!-- Location section -->

@@ -33,56 +33,81 @@ class PortfolioRepository(
             }
 
     /**
-     * Builds the creator discovery feed by fetching the latest public videos.
+     * Builds the creator discovery feed using a Creator-First strategy:
      *
-     * 1. Fetches the newest public video portfolio items
-     * 2. Groups them by creatorId to support horizontal scrolling
-     * 3. Returns a list of CreatorFeedEntry for vertical paging
-     *
-     * This approach ensures the newest uploads appear at the top and horizontal
-     * scrolling works as intended.
+     * 1. Query `users` collection for all users with role == "creator" (excluding self)
+     *    OR use a pre-ranked list of creator IDs provided by [rankedCreatorIds].
+     * 2. For each discovered creatorId, query `portfolioItems` where creatorId matches.
+     * 3. Group items by creator → each entry = one vertical page.
      */
     suspend fun getDiscoveryFeed(
         excludeUserId: String,
         maxCreators: Int = 20,
+        rankedCreatorIds: List<String>? = null
     ): List<CreatorFeedEntry> {
-        // Fetch all public video items without orderBy to avoid index requirements
-        val snapshot = try {
-            firestore.collection(COLLECTION)
-                .whereEqualTo("public", true)
-                .whereEqualTo("mediaType", "video")
-                .get()
-                .await()
-        } catch (e: Exception) {
-            return emptyList()
+        // Step 1: Determine which creators to fetch
+        val creatorIds = if (rankedCreatorIds != null) {
+            rankedCreatorIds
+        } else {
+            try {
+                val snapshot = firestore.collection("users")
+                    .whereEqualTo("role", "creator")
+                    .get()
+                    .await()
+                snapshot.documents
+                    .mapNotNull { it.getString("userId") ?: it.id.takeIf { id -> id.isNotBlank() } }
+                    .filter { it != excludeUserId && it.isNotBlank() }
+            } catch (e: Exception) {
+                return emptyList()
+            }
         }
 
-        val targetItems = snapshot.documents
-            .mapNotNull { it.toObject(PortfolioItem::class.java) }
-            .filter { item ->
-                val isValid = item.mediaType == "video" &&
-                              item.public &&
-                              item.creatorId.isNotBlank() &&
-                              item.creatorId != excludeUserId &&
-                              !item.creatorId.contains("testCreator") &&
-                              item.mediaUrl.isNotBlank() &&
-                              item.storagePath.isNotBlank() &&
-                              item.itemId.isNotBlank()
+        if (creatorIds.isEmpty()) return emptyList()
 
-                if (!isValid) {
-                    println("Feed: Skipped invalid/legacy item (ID=${item.itemId}, creatorId=${item.creatorId}, public=${item.public}, mediaType=${item.mediaType})")
-                }
-                isValid
+        // Step 2: For each creator, fetch their public portfolio videos
+        val allItems = mutableListOf<PortfolioItem>()
+        val batches = creatorIds.chunked(30)
+        for (batch in batches) {
+            try {
+                val snapshot = firestore.collection(COLLECTION)
+                    .whereIn("creatorId", batch)
+                    .whereEqualTo("public", true)
+                    .whereEqualTo("mediaType", "video")
+                    .get()
+                    .await()
+                snapshot.documents
+                    .mapNotNull { it.toObject(PortfolioItem::class.java) }
+                    .filter { item ->
+                        item.mediaUrl.isNotBlank() &&
+                        item.itemId.isNotBlank() &&
+                        item.creatorId.isNotBlank()
+                    }
+                    .also { allItems.addAll(it) }
+            } catch (e: Exception) {
+                // skip failed batches
             }
-            .sortedByDescending { it.createdAt?.seconds ?: 0L }
+        }
 
-        if (targetItems.isEmpty()) return emptyList()
+        if (allItems.isEmpty()) return emptyList()
 
-        // Group by creator and take the limit
-        return targetItems
+        // Step 3: Group by creatorId, sort videos within each group newest-first
+        val grouped = allItems
             .groupBy { it.creatorId }
-            .map { (creatorId, items) -> CreatorFeedEntry(creatorId, items) }
-            .take(maxCreators)
+            .map { (creatorId, items) ->
+                CreatorFeedEntry(
+                    creatorId = creatorId,
+                    items = items.sortedByDescending { it.createdAt?.seconds ?: 0L }
+                )
+            }
+
+        // Step 4: Sort creator groups. 
+        // If we have ranked IDs, we MUST maintain that specific order.
+        // Otherwise, sort by most recent video.
+        return if (rankedCreatorIds != null) {
+            grouped.sortedBy { entry -> rankedCreatorIds.indexOf(entry.creatorId) }
+        } else {
+            grouped.sortedByDescending { it.items.first().createdAt?.seconds ?: 0L }
+        }.take(maxCreators)
     }
 
     /**

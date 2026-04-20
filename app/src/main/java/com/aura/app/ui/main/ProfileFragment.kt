@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.aura.app.adapters.PortfolioAdapter
 import com.aura.app.databinding.FragmentProfileBinding
@@ -58,6 +59,18 @@ class ProfileFragment : Fragment() {
                 viewModel.state.collect { state -> render(state) }
             }
         }
+
+        val creatorId = arguments?.getString("creatorId")
+
+        // Back button: visible when viewing someone else's profile (viewer mode)
+        if (creatorId != null) {
+            binding.btnBack.visibility = View.VISIBLE
+            binding.btnBack.setOnClickListener { findNavController().popBackStack() }
+        } else {
+            binding.btnBack.visibility = View.GONE
+        }
+
+        viewModel.loadProfile(creatorId)
     }
 
     private fun setupRecyclerView() {
@@ -71,7 +84,12 @@ class ProfileFragment : Fragment() {
         binding.btnAddPortfolio.setOnClickListener {
             AddVideoBottomSheet().show(childFragmentManager, AddVideoBottomSheet.TAG)
         }
+        binding.btnEditProfile.setOnClickListener {
+            findNavController().navigate(com.aura.app.R.id.action_profile_to_editProfile)
+        }
     }
+
+
 
     private fun setupBottomSheetListener() {
         childFragmentManager.setFragmentResultListener(
@@ -85,6 +103,21 @@ class ProfileFragment : Fragment() {
                 AddVideoBottomSheet.ACTION_CAMERA -> {
                     Toast.makeText(requireContext(), "Camera recording coming soon", Toast.LENGTH_SHORT).show()
                 }
+            }
+        }
+
+        childFragmentManager.setFragmentResultListener(
+            ConfirmVideoUploadBottomSheet.REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val uriStr = bundle.getString(ConfirmVideoUploadBottomSheet.RESULT_KEY_URI)
+            val title = bundle.getString(ConfirmVideoUploadBottomSheet.RESULT_KEY_TITLE) ?: ""
+            val desc = bundle.getString(ConfirmVideoUploadBottomSheet.RESULT_KEY_DESC) ?: ""
+            val mime = bundle.getString(ConfirmVideoUploadBottomSheet.RESULT_KEY_MIME) ?: ""
+            val duration = bundle.getLong(ConfirmVideoUploadBottomSheet.RESULT_KEY_DURATION)
+
+            if (uriStr != null) {
+                viewModel.uploadPortfolioVideo(Uri.parse(uriStr), mime, title, desc, duration)
             }
         }
     }
@@ -148,13 +181,13 @@ class ProfileFragment : Fragment() {
         // --- Original file name ---
         val fileName = queryFileName(uri) ?: "video_${System.currentTimeMillis()}.mp4"
 
-        // Hand off to ViewModel
-        viewModel.uploadPortfolioVideo(
-            videoUri = uri,
-            mimeType = mimeType,
+        // Show standard input bottom sheet natively preventing automatic actions.
+        ConfirmVideoUploadBottomSheet.newInstance(
+            uri = uri.toString(),
             fileName = fileName,
-            durationSec = durationSec,
-        )
+            mimeType = mimeType,
+            durationSec = durationSec
+        ).show(childFragmentManager, ConfirmVideoUploadBottomSheet.TAG)
     }
 
     /** Reads the display name from content:// URIs via the OpenableColumns cursor. */
@@ -183,16 +216,54 @@ class ProfileFragment : Fragment() {
             is ProfileUiState.Success -> {
                 val user = state.user
                 binding.tvProfileName.text = user.displayName.ifBlank { user.email }
-                binding.tvProfileBio.text = user.role.replaceFirstChar { it.uppercase() }
+                
+                val headlineText = state.creatorProfile?.niche
+                    ?.takeIf { it.isNotBlank() }
+                    ?: user.role.replaceFirstChar { it.uppercase() }
+                binding.tvProfileHeadline.text = headlineText
+
+                val bioText = state.creatorProfile?.bio
+                    ?.takeIf { it.isNotBlank() }
+                    ?: "No bio added yet"
+                binding.tvProfileBio.text = bioText
+
+                // Safe stats fallback
+                binding.tvStatsFollowers.text = state.creatorProfile?.followerCount?.toString() ?: "0"
+                binding.tvStatsDeals.text = state.creatorProfile?.completedDeals?.toString() ?: "0"
+                binding.tvStatsRating.text = state.creatorProfile?.averageRating?.toString() ?: "0.0"
+
+                binding.btnEditProfile.visibility =
+                    if (state.isOwner) View.VISIBLE else View.GONE
 
                 binding.btnAddPortfolio.visibility =
-                    if (user.role == "creator") View.VISIBLE else View.GONE
+                    if (state.isOwner && user.role == "creator") View.VISIBLE else View.GONE
 
                 if (user.profileImageUrl.isNotEmpty()) {
                     Glide.with(this)
                         .load(user.profileImageUrl)
                         .centerCrop()
-                        .into(binding.ivProfilePic)
+                        .into(binding.ivCoverImage)
+                } else {
+                    binding.ivCoverImage.setBackgroundResource(com.aura.app.R.color.colorSurfaceContainerHigh)
+                }
+
+                // Tags Binding
+                if (state.creatorProfile?.tags.isNullOrEmpty()) {
+                    binding.tvTagsLabel.visibility = View.GONE
+                    binding.cgTags.visibility = View.GONE
+                } else {
+                    binding.tvTagsLabel.visibility = View.VISIBLE
+                    binding.cgTags.visibility = View.VISIBLE
+                    binding.cgTags.removeAllViews()
+                    state.creatorProfile?.tags?.forEach { tag ->
+                        val chip = com.google.android.material.chip.Chip(requireContext())
+                        chip.text = tag
+                        chip.isClickable = false
+                        chip.isCheckable = false
+                        chip.setChipBackgroundColorResource(com.aura.app.R.color.colorSurfaceVariant)
+                        chip.setTextColor(requireContext().getColor(com.aura.app.R.color.colorOnSurface))
+                        binding.cgTags.addView(chip)
+                    }
                 }
 
                 portfolioAdapter.submitList(state.portfolio)

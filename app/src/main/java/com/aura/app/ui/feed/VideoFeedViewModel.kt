@@ -5,9 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.aura.app.data.model.CreatorFeedEntry
+import com.aura.app.data.repository.CreatorRankingRepository
 import com.aura.app.data.repository.PortfolioRepository
 import com.aura.app.data.repository.UserRepository
 import com.aura.app.utils.SessionManager
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -15,6 +18,7 @@ import kotlinx.coroutines.launch
 class VideoFeedViewModel(
     private val portfolioRepository: PortfolioRepository,
     val userRepository: UserRepository,
+    private val rankingRepository: CreatorRankingRepository,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
 
@@ -31,14 +35,13 @@ class VideoFeedViewModel(
     }
 
     /**
-     * Loads the creator discovery feed.
+     * Loads the creator discovery feed with ranking.
      *
-     * Two-step Firestore flow:
-     * 1. Query `users` where role == "creator", exclude current user
-     * 2. For each creator, query their public video `portfolioItems`
-     *
-     * Result: List<CreatorFeedEntry> where each entry = one vertical page
-     * containing that creator's videos for horizontal scrolling.
+     * Workflow:
+     * 1. Get current logged-in creator profile.
+     * 2. Compute similarity ranking (niche tags) against other creators.
+     * 3. Fetch portfolio items for the ranked IDs in order.
+     * 4. Pre-resolve identity metadata (name/avatar).
      */
     fun loadCreatorFeed() {
         viewModelScope.launch {
@@ -51,15 +54,39 @@ class VideoFeedViewModel(
             }
 
             try {
+                // Step 1: Fetch current user profile for niche tags
+                val viewerProfile = userRepository.getCreatorProfile(currentUserId)
+                val viewerTags = viewerProfile?.tags ?: emptyList()
+
+                // Step 2: Get ranked creator IDs based on similarity
+                val rankedIds = rankingRepository.getRankedCreatorIds(
+                    currentUserId = currentUserId,
+                    currentUserTags = viewerTags,
+                    maxCreators = INITIAL_CREATOR_COUNT
+                )
+
+                // Step 3: Fetch feed content for these specific creators
                 val entries = portfolioRepository.getDiscoveryFeed(
                     excludeUserId = currentUserId,
                     maxCreators = INITIAL_CREATOR_COUNT,
+                    rankedCreatorIds = rankedIds
                 )
 
-                _state.value = if (entries.isEmpty()) {
+                // Step 4: Pre-resolve creator name + avatar concurrently
+                val resolved = entries.map { entry ->
+                    async {
+                        val user = runCatching { userRepository.getUserLite(entry.creatorId) }.getOrNull()
+                        entry.copy(
+                            creatorName = user?.displayName?.takeIf { it.isNotBlank() } ?: "Unknown Creator",
+                            creatorProfileImageUrl = user?.profileImageUrl ?: ""
+                        )
+                    }
+                }.awaitAll()
+
+                _state.value = if (resolved.isEmpty()) {
                     FeedUiState.Empty
                 } else {
-                    FeedUiState.Content(entries)
+                    FeedUiState.Content(resolved)
                 }
             } catch (e: Exception) {
                 _state.value = FeedUiState.Error(e.message ?: "Failed to load feed")
@@ -101,6 +128,7 @@ class VideoFeedViewModel(
             VideoFeedViewModel(
                 portfolioRepository = PortfolioRepository(),
                 userRepository = UserRepository(),
+                rankingRepository = CreatorRankingRepository(),
                 sessionManager = SessionManager(context),
             ) as T
     }

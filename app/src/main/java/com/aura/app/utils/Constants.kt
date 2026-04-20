@@ -36,5 +36,5 @@ object Constants {
     const val STUB_USER_ROLE = ROLE_CREATOR
 
     // Flip to false to use real Firestore
-    const val USE_STUBS = true
+    const val USE_STUBS = false
 }

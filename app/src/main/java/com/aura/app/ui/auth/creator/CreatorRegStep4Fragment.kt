@@ -58,6 +58,7 @@ class CreatorRegStep4Fragment : Fragment() {
     private fun setupObservers() {
         registrationViewModel.registrationSuccess.observe(viewLifecycleOwner) { success ->
             if (success) {
+                registrationViewModel.resetRegistrationSuccess()
                 findNavController().navigate(R.id.action_creator_finish_to_home)
             }
         }

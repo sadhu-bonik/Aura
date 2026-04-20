@@ -6,19 +6,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.aura.app.R
 import com.aura.app.data.model.CreatorFeedEntry
-import com.aura.app.data.repository.UserRepository
-import kotlinx.coroutines.CoroutineScope
 
 class CreatorPageAdapter(
     private val callback: ActiveVideoCallback,
-    private val userRepository: UserRepository,
-    private val scope: CoroutineScope,
 ) : ListAdapter<CreatorFeedEntry, CreatorPageViewHolder>(DIFF) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CreatorPageViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_creator_page, parent, false)
-        return CreatorPageViewHolder(view, callback, userRepository, scope)
+        return CreatorPageViewHolder(view, callback)
     }
 
     override fun onBindViewHolder(holder: CreatorPageViewHolder, position: Int) {

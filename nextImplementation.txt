@@ -1,0 +1,14 @@
+I have implemented the creator-side discovery feed ranking system for Aura. The feed now intelligently ranks creators based on their niche similarity to the logged-in user, ensuring the most relevant content appears first.
+
+Key Implementation Details:
+Similarity Scoring: I created the NicheMatcher utility to normalize tags and compute the overlap between the viewer and candidate creators.
+Ranking Repository: The new CreatorRankingRepository handles fetching all candidate profiles, scoring them based on tag overlap, and sorting them with a multi-tiered priority:
+Shared Tags: Creators with at least one shared tag always come first.
+Overlap Count: More shared tags = higher rank.
+Content Volume: Equal overlap is resolved by the creator's portfolioCount.
+Recency: Tie-break based on the updatedAt timestamp.
+Feed Fetching: PortfolioRepository was refactored to accept this ranked list, ensuring the vertical UI pages maintain the exact order computed by the ranking engine.
+UI Integration: The VideoFeedViewModel now orchestrates the entire flow—from fetching your profile tags to ranking and loading the final content.
+I've added detailed debug logs with the tag CreatorRanking so you can monitor the scoring and final sorted order in Real-time. For a full breakdown of the changes, please see the 
+walkthrough.md
+.

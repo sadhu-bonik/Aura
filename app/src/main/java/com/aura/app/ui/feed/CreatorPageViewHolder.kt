@@ -9,28 +9,23 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.aura.app.R
 import com.aura.app.data.model.CreatorFeedEntry
-import com.aura.app.data.repository.UserRepository
 import com.bumptech.glide.Glide
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CreatorPageViewHolder(
     itemView: View,
     private val callback: ActiveVideoCallback,
-    private val userRepository: UserRepository,
-    private val scope: CoroutineScope,
 ) : RecyclerView.ViewHolder(itemView) {
 
     private val itemsRecycler: RecyclerView = itemView.findViewById(R.id.items_recycler)
     private val creatorAvatar: ImageView = itemView.findViewById(R.id.creator_avatar)
     private val creatorName: TextView = itemView.findViewById(R.id.creator_name)
     private val dotIndicator: LinearLayout = itemView.findViewById(R.id.dot_indicator)
+    private val creatorInfoContainer: View = itemView.findViewById(R.id.creator_info_container)
+    private val videoDescription: TextView = itemView.findViewById(R.id.tv_video_description)
+    private val videoTitle: TextView = itemView.findViewById(R.id.tv_video_title)
 
     private var innerAdapter: ItemPageAdapter? = null
-    private var creatorJob: Job? = null
+    private var currentEntry: CreatorFeedEntry? = null
     private var currentInnerPosition = 0
     var isActive = false
         private set
@@ -48,6 +43,7 @@ class CreatorPageViewHolder(
                 if (position != currentInnerPosition) {
                     currentInnerPosition = position
                     updateDots(position)
+                    updateVideoMetadata(position)
                     callback.onItemPositionChanged(bindingAdapterPosition, position)
                 }
                 if (isActive) {
@@ -58,6 +54,7 @@ class CreatorPageViewHolder(
     }
 
     fun bind(entry: CreatorFeedEntry) {
+        currentEntry = entry
         val adapter = ItemPageAdapter(callback).also { innerAdapter = it }
         itemsRecycler.layoutManager = layoutManager
         itemsRecycler.adapter = adapter
@@ -68,23 +65,23 @@ class CreatorPageViewHolder(
         adapter.submitList(entry.items)
         currentInnerPosition = 0
 
-        creatorName.text = ""
+        // Bind pre-resolved creator identity (no Firestore call needed here)
+        creatorName.text = entry.creatorName.ifBlank { "Unknown Creator" }
         creatorAvatar.setImageDrawable(null)
-        creatorJob?.cancel()
-        creatorJob = scope.launch {
-            val user = withContext(Dispatchers.IO) {
-                runCatching { userRepository.getUserLite(entry.creatorId) }.getOrNull()
-            } ?: return@launch
-            creatorName.text = user.displayName
-            if (user.profileImageUrl.isNotEmpty()) {
-                Glide.with(creatorAvatar)
-                    .load(user.profileImageUrl)
-                    .circleCrop()
-                    .into(creatorAvatar)
-            }
+        if (entry.creatorProfileImageUrl.isNotEmpty()) {
+            Glide.with(creatorAvatar)
+                .load(entry.creatorProfileImageUrl)
+                .circleCrop()
+                .into(creatorAvatar)
+        }
+
+        // Navigate to creator profile on tap
+        creatorInfoContainer.setOnClickListener {
+            callback.onCreatorProfileClicked(entry.creatorId)
         }
 
         setupDots(entry.items.size)
+        updateVideoMetadata(0)
     }
 
     fun activate() {
@@ -102,8 +99,27 @@ class CreatorPageViewHolder(
         snapHelper.attachToRecyclerView(null)
         itemsRecycler.adapter = null
         innerAdapter = null
-        creatorJob?.cancel()
-        creatorJob = null
+        currentEntry = null
+    }
+
+    private fun updateVideoMetadata(position: Int) {
+        val item = currentEntry?.items?.getOrNull(position)
+
+        val desc = item?.description?.trim() ?: ""
+        if (desc.isEmpty()) {
+            videoDescription.visibility = View.GONE
+        } else {
+            videoDescription.text = desc
+            videoDescription.visibility = View.VISIBLE
+        }
+
+        val title = item?.title?.trim() ?: ""
+        if (title.isEmpty()) {
+            videoTitle.visibility = View.GONE
+        } else {
+            videoTitle.text = title
+            videoTitle.visibility = View.VISIBLE
+        }
     }
 
     private fun activateCurrentInner() {

@@ -18,5 +18,7 @@ data class CreatorProfile(
     val isAvailable: Boolean = true,
     val minimumDealBudget: Long = 0,
     val location: String = "",
+    val portfolioCount: Int = 0,
+    val isProfileComplete: Boolean = false,
     val updatedAt: Timestamp = Timestamp.now()
 )
