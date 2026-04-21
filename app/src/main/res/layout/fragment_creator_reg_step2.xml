@@ -97,7 +97,9 @@
                     android:focusable="true"
                     android:layout_marginBottom="@dimen/space_sm">
 
+                    <!-- Default prompt (hidden after photo is selected) -->
                     <LinearLayout
+                        android:id="@+id/layout_photo_prompt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -122,6 +124,16 @@
                             android:textAllCaps="true"
                             android:letterSpacing="0.1" />
                     </LinearLayout>
+
+                    <!-- Photo preview (shown after photo is selected) -->
+                    <ImageView
+                        android:id="@+id/iv_profile_photo_preview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone"
+                        android:contentDescription="@string/cd_photo_preview" />
+
                 </FrameLayout>
 
                 <TextView

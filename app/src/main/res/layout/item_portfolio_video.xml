@@ -30,4 +30,20 @@
         app:layout_constraintEnd_toEndOf="@id/iv_thumbnail"
         app:tint="@color/white" />
 
+    <!-- Delete/remove button — shown only when the adapter sets visibility to VISIBLE -->
+    <ImageButton
+        android:id="@+id/btn_delete"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="4dp"
+        android:padding="3dp"
+        android:src="@drawable/ic_close"
+        android:tint="@color/white"
+        android:background="@color/colorSurfaceContainerHighest"
+        android:alpha="0.9"
+        android:visibility="gone"
+        android:contentDescription="@string/cd_remove_video"
+        app:layout_constraintEnd_toEndOf="@id/iv_thumbnail"
+        app:layout_constraintTop_toTopOf="@id/iv_thumbnail" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

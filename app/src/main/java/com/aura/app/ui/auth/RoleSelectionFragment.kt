@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import android.widget.Toast
 import com.aura.app.R
-
 import com.aura.app.databinding.FragmentRoleSelectionBinding
 
 /** RoleSelectionFragment — Creator or Brand role picker. */
@@ -45,7 +45,7 @@ class RoleSelectionFragment : Fragment() {
             when (registrationViewModel.userRole.value) {
                 "creator" -> findNavController().navigate(R.id.action_role_to_creator_step1)
                 "brand" -> findNavController().navigate(R.id.action_role_to_brand_step1)
-                else -> {}
+                else -> Toast.makeText(requireContext(), "Please select a role to continue", Toast.LENGTH_SHORT).show()
             }
         }
 

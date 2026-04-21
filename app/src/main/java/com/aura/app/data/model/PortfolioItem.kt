@@ -15,4 +15,5 @@ data class PortfolioItem(
     val originalFileName: String = "",
     val public: Boolean = false,
     val createdAt: Timestamp? = null,
+    val updatedAt: Timestamp? = null,
 )

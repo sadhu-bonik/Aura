@@ -142,49 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/space_xxl"
                 app:singleSelection="false">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_sportswear"
-                    style="@style/Widget.Aura.Chip.Niche"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sportswear" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_consumer_tech"
-                    style="@style/Widget.Aura.Chip.Niche"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Consumer Tech"
-                    android:checked="true" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_food_beverage"
-                    style="@style/Widget.Aura.Chip.Niche"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Food &amp; Beverage" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_healthcare"
-                    style="@style/Widget.Aura.Chip.Niche"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Healthcare" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_finance"
-                    style="@style/Widget.Aura.Chip.Niche"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Finance" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_beauty_cosmetics"
-                    style="@style/Widget.Aura.Chip.Niche"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Beauty &amp; Cosmetics" />
+                <!-- Chips populated programmatically from CreatorNicheTags.NICHE_TAGS -->
             </com.google.android.material.chip.ChipGroup>
 
             <!-- Target Location section -->

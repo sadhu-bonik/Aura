@@ -141,6 +141,7 @@
                     android:layout_marginBottom="@dimen/space_md">
 
                     <LinearLayout
+                        android:id="@+id/layout_logo_prompt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -162,6 +163,14 @@
                             android:textColor="@color/colorOnSurfaceVariant"
                             android:textSize="12sp" />
                     </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_logo_preview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone"
+                        android:contentDescription="@string/cd_upload_photo" />
                 </FrameLayout>
 
                 <TextView

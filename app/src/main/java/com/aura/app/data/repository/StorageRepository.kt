@@ -62,6 +62,25 @@ class StorageRepository(
     }
 
     /**
+     * Uploads a verification document and returns download URL + storage path.
+     * Mirrors uploadVerificationDoc() but returns UploadResult for callers that
+     * need the storage path (e.g. brand registration).
+     */
+    suspend fun uploadVerificationDocResult(userId: String, uri: Uri): UploadResult {
+        val extension = try {
+            uri.toString().substringAfterLast(".", "pdf").take(5)
+        } catch (e: Exception) {
+            "pdf"
+        }
+        val safeExtension = extension.filter { it.isLetterOrDigit() }.ifBlank { "bin" }
+        val path = "users/$userId/verification_doc.$safeExtension"
+        val ref = storage.reference.child(path)
+        ref.putFile(uri).await()
+        val downloadUrl = ref.downloadUrl.await().toString()
+        return UploadResult(downloadUrl = downloadUrl, storagePath = path)
+    }
+
+    /**
      * Deletes a file in Firebase Storage by its path. Used for rollback on
      * Firestore write failure.
      */

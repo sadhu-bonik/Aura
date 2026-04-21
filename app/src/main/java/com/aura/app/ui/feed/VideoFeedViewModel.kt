@@ -54,9 +54,13 @@ class VideoFeedViewModel(
             }
 
             try {
-                // Step 1: Fetch current user profile for niche tags
-                val viewerProfile = userRepository.getCreatorProfile(currentUserId)
-                val viewerTags = viewerProfile?.tags ?: emptyList()
+                // Step 1: Resolve viewer tags — use industryTags for brands, niche tags for creators
+                val userProfile = userRepository.getUserProfile(currentUserId)
+                val viewerTags: List<String> = if (userProfile?.role == "brand") {
+                    userRepository.getBrandProfile(currentUserId)?.industryTags ?: emptyList()
+                } else {
+                    userRepository.getCreatorProfile(currentUserId)?.tags ?: emptyList()
+                }
 
                 // Step 2: Get ranked creator IDs based on similarity
                 val rankedIds = rankingRepository.getRankedCreatorIds(

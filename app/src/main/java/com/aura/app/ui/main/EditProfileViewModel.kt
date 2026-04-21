@@ -1,13 +1,16 @@
 package com.aura.app.ui.main
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.aura.app.data.model.BrandProfile
 import com.aura.app.data.model.CreatorProfile
 import com.aura.app.data.model.User
 import com.aura.app.data.repository.StorageRepository
 import com.aura.app.data.repository.UserRepository
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +18,11 @@ import kotlinx.coroutines.launch
 
 sealed class EditProfileUiState {
     object Loading : EditProfileUiState()
-    data class Success(val user: User, val creatorProfile: CreatorProfile?) : EditProfileUiState()
+    data class Success(
+        val user: User,
+        val creatorProfile: CreatorProfile? = null,
+        val brandProfile: BrandProfile? = null,
+    ) : EditProfileUiState()
     data class Error(val message: String) : EditProfileUiState()
 }
 
@@ -52,7 +59,12 @@ class EditProfileViewModel(
                 return@launch
             }
             val creatorProfile = if (user.role == "creator") userRepository.getCreatorProfile(uid) else null
-            _state.value = EditProfileUiState.Success(user, creatorProfile)
+            val brandProfile = if (user.role == "brand") {
+                userRepository.getBrandProfile(uid).also {
+                    Log.d(TAG, "loadProfile brand → bio='${it?.bio}' industryTags=${it?.industryTags}")
+                }
+            } else null
+            _state.value = EditProfileUiState.Success(user, creatorProfile, brandProfile)
         }
     }
 
@@ -63,6 +75,8 @@ class EditProfileViewModel(
             return
         }
 
+        val currentRole = (_state.value as? EditProfileUiState.Success)?.user?.role
+
         viewModelScope.launch {
             _event.value = EditProfileEvent.Saving
             try {
@@ -72,7 +86,7 @@ class EditProfileViewModel(
                     updatedImageUrl = storageRepository.uploadProfilePicture(uid, uri)
                 }
 
-                // Update User
+                // Update User display name / photo
                 val userUpdates = mutableMapOf<String, Any>()
                 if (name.isNotBlank()) userUpdates["displayName"] = name
                 updatedImageUrl?.let { userUpdates["profileImageUrl"] = it }
@@ -80,14 +94,32 @@ class EditProfileViewModel(
                     userRepository.updateUserPartial(uid, userUpdates)
                 }
 
-                // Update Creator Profile
-                val creatorUpdates = mapOf(
-                    "bio" to bio,
-                    "niche" to selectedTags.joinToString(", "),
-                    "tags" to selectedTags,
-                    "isProfileComplete" to true
-                )
-                userRepository.updateCreatorProfilePartial(uid, creatorUpdates)
+                if (currentRole == "brand") {
+                    // Route brand edits to brandProfiles collection.
+                    // isProfileComplete requires motto (from registration, never cleared here)
+                    // AND at least 1 industry tag — recomputed on every save.
+                    val isComplete = selectedTags.isNotEmpty()
+                    val brandUpdates = mapOf(
+                        "bio" to bio,
+                        "industryTags" to selectedTags,
+                        "brandName" to name,
+                        "updatedAt" to Timestamp.now(),
+                    )
+                    Log.d(TAG, "saveProfile brand payload → $brandUpdates isComplete=$isComplete")
+                    userRepository.updateBrandProfilePartial(uid, brandUpdates)
+                    // Mirror completion flag and display name in the users/{uid} doc
+                    userUpdates["isProfileComplete"] = isComplete
+                } else {
+                    // Creator profile update
+                    val creatorUpdates = mapOf(
+                        "bio" to bio,
+                        "niche" to selectedTags.joinToString(", "),
+                        "tags" to selectedTags,
+                        "isProfileComplete" to true,
+                    )
+                    Log.d(TAG, "saveProfile creator payload → $creatorUpdates")
+                    userRepository.updateCreatorProfilePartial(uid, creatorUpdates)
+                }
 
                 _event.value = EditProfileEvent.SaveSuccess
 
@@ -105,5 +137,9 @@ class EditProfileViewModel(
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return EditProfileViewModel(UserRepository(), StorageRepository()) as T
         }
+    }
+
+    companion object {
+        private const val TAG = "EditProfileViewModel"
     }
 }

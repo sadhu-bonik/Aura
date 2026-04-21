@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.aura.app.R
 import com.aura.app.databinding.FragmentCreatorRegStep2Binding
 import com.aura.app.ui.auth.RegistrationViewModel
+import com.bumptech.glide.Glide
 
 class CreatorRegStep2Fragment : Fragment() {
     private var _binding: FragmentCreatorRegStep2Binding? = null
@@ -21,9 +22,7 @@ class CreatorRegStep2Fragment : Fragment() {
     private val photoPickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
             registrationViewModel.profileImageUri = it
-            // Update UI to show selected image
-            // In a real app, we'd use Glide/Coil to show the URI in an ImageView
-            // For now, let's just show a success hint or update the upload zone
+            showPhotoPreview()
         }
     }
 
@@ -34,21 +33,23 @@ class CreatorRegStep2Fragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
-        // Pre-fill
+
+        // Pre-fill text fields from ViewModel draft
         binding.etMotto.setText(registrationViewModel.creatorMotto)
         binding.etBio.setText(registrationViewModel.creatorBio)
         binding.etInstagram.setText(registrationViewModel.instagramHandle)
 
+        // Restore photo preview if already selected (e.g. after rotation)
+        if (registrationViewModel.profileImageUri != null) showPhotoPreview()
+
         binding.toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
-        
-        binding.layoutPhotoUpload.setOnClickListener { 
+
+        binding.layoutPhotoUpload.setOnClickListener {
             photoPickerLauncher.launch("image/*")
         }
 
         binding.layoutBottomNav.btnNavBack.setOnClickListener { findNavController().navigateUp() }
         binding.layoutBottomNav.btnNavNext.setOnClickListener {
-            // Save to ViewModel
             val motto = binding.etMotto.text.toString().trim()
             val bio = binding.etBio.text.toString().trim()
 
@@ -72,6 +73,16 @@ class CreatorRegStep2Fragment : Fragment() {
 
             findNavController().navigate(R.id.action_creator_step2_to_step3)
         }
+    }
+
+    private fun showPhotoPreview() {
+        val uri = registrationViewModel.profileImageUri ?: return
+        binding.layoutPhotoPrompt.visibility = View.GONE
+        binding.ivProfilePhotoPreview.visibility = View.VISIBLE
+        Glide.with(this)
+            .load(uri)
+            .centerCrop()
+            .into(binding.ivProfilePhotoPreview)
     }
 
     override fun onDestroyView() { super.onDestroyView(); _binding = null }

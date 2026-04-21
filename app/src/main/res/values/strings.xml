@@ -330,4 +330,16 @@
     <string name="region_asia_pacific">Asia Pacific</string>
     <string name="region_latin_america">Latin America</string>
     <string name="region_mea">Middle East &amp; Africa</string>
+
+    <!-- Portfolio / media action dialogs -->
+    <string name="dialog_remove_video_title">Remove this video?</string>
+    <string name="dialog_remove_video_message">This will permanently delete the video from your portfolio.</string>
+    <string name="dialog_confirm_photo_title">Use this photo?</string>
+    <string name="dialog_confirm_photo_message">Upload this as your new profile picture?</string>
+    <string name="btn_remove">Remove</string>
+    <string name="btn_upload">Upload</string>
+    <string name="toast_portfolio_video_required">Add at least one portfolio video to finish setup.</string>
+    <string name="toast_portfolio_full">Portfolio is full (10 videos max). Remove one first.</string>
+    <string name="cd_remove_video">Remove video</string>
+    <string name="cd_photo_preview">Profile photo preview</string>
 </resources>

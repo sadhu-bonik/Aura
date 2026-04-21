@@ -1,5 +1,6 @@
 package com.aura.app.data.repository
 
+import android.util.Log
 import com.aura.app.data.model.User
 import com.aura.app.data.model.UserLite
 import com.aura.app.utils.Constants
@@ -60,6 +61,20 @@ class UserRepository(
     }
 
     /**
+     * Updates Brand fields in brandProfiles schema.
+     */
+    suspend fun updateBrandProfilePartial(userId: String, updates: Map<String, Any>): Result<Unit> {
+        Log.d(TAG, "updateBrandProfilePartial → uid=$userId payload=$updates")
+        return try {
+            firestore.collection("brandProfiles").document(userId).update(updates).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.e(TAG, "updateBrandProfilePartial failed: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    /**
      * Retrieves a creator profile from Firestore.
      */
     suspend fun getCreatorProfile(userId: String): com.aura.app.data.model.CreatorProfile? {
@@ -67,6 +82,23 @@ class UserRepository(
             val doc = firestore.collection("creatorProfiles").document(userId).get().await()
             doc.toObject(com.aura.app.data.model.CreatorProfile::class.java)
         } catch (e: Exception) {
+            null
+        }
+    }
+
+    /**
+     * Retrieves a brand profile from Firestore.
+     */
+    suspend fun getBrandProfile(userId: String): com.aura.app.data.model.BrandProfile? {
+        return try {
+            val doc = firestore.collection("brandProfiles").document(userId).get().await()
+            val raw = doc.data
+            Log.d(TAG, "getBrandProfile raw snapshot for $userId: $raw")
+            val profile = doc.toObject(com.aura.app.data.model.BrandProfile::class.java)
+            Log.d(TAG, "getBrandProfile parsed → bio='${profile?.bio}' industryTags=${profile?.industryTags}")
+            profile
+        } catch (e: Exception) {
+            Log.e(TAG, "getBrandProfile failed for $userId: ${e.message}")
             null
         }
     }
@@ -146,6 +178,7 @@ class UserRepository(
 
     private companion object {
         const val COLLECTION = "users"
+        const val TAG = "UserRepository"
     }
 }
 

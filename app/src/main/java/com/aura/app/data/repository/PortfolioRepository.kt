@@ -162,6 +162,19 @@ class PortfolioRepository(
         }
     }
 
+    /**
+     * Deletes a portfolio item document from Firestore.
+     * Storage file deletion (best-effort rollback) is handled by the caller.
+     */
+    suspend fun deletePortfolioItem(itemId: String): Result<Unit> {
+        return try {
+            firestore.collection(COLLECTION).document(itemId).delete().await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     companion object {
         const val COLLECTION = "portfolioItems"
     }

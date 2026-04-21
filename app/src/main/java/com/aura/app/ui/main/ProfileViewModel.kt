@@ -5,6 +5,8 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import android.util.Log
+import com.aura.app.data.model.BrandProfile
 import com.aura.app.data.model.CreatorProfile
 import com.aura.app.data.model.PortfolioItem
 import com.aura.app.data.model.User
@@ -26,6 +28,7 @@ sealed class ProfileUiState {
     data class Success(
         val user: User,
         val creatorProfile: CreatorProfile? = null,
+        val brandProfile: BrandProfile? = null,
         val portfolio: List<PortfolioItem> = emptyList(),
         val isOwner: Boolean = true
     ) : ProfileUiState()
@@ -62,6 +65,7 @@ class ProfileViewModel(
     companion object {
         const val MAX_PORTFOLIO_ITEMS = 10
         const val MAX_DURATION_SEC = 60L
+        private const val TAG = "ProfileViewModel"
     }
 
     fun loadProfile(creatorId: String? = null) {
@@ -82,17 +86,25 @@ class ProfileViewModel(
                 return@launch
             }
 
-            // Fetch creator profile if user is a creator
+            // Fetch role-specific profile
             var creatorProfile: CreatorProfile? = null
-            if (user.role == "creator") {
-                creatorProfile = userRepository.getCreatorProfile(targetId)
+            var brandProfile: BrandProfile? = null
+            when (user.role) {
+                "creator" -> {
+                    creatorProfile = userRepository.getCreatorProfile(targetId)
+                    Log.d(TAG, "loadProfile creator → bio='${creatorProfile?.bio}' tags=${creatorProfile?.tags}")
+                }
+                "brand" -> {
+                    brandProfile = userRepository.getBrandProfile(targetId)
+                    Log.d(TAG, "loadProfile brand → bio='${brandProfile?.bio}' industryTags=${brandProfile?.industryTags}")
+                }
             }
 
             // Show the user info immediately, then stream portfolio items
-            _state.value = ProfileUiState.Success(user, creatorProfile, emptyList(), isOwner)
+            _state.value = ProfileUiState.Success(user, creatorProfile, brandProfile, emptyList(), isOwner)
 
             portfolioRepository.getCreatorPortfolio(targetId).collect { portfolio ->
-                _state.value = ProfileUiState.Success(user, creatorProfile, portfolio, isOwner)
+                _state.value = ProfileUiState.Success(user, creatorProfile, brandProfile, portfolio, isOwner)
             }
         }
     }
@@ -232,6 +244,30 @@ class ProfileViewModel(
                 _uploadEvent.emit(UploadEvent.Failure(e.message ?: "Upload failed"))
             } finally {
                 isUploading = false
+            }
+        }
+    }
+
+    /**
+     * Removes a portfolio item: deletes the Storage file (best-effort) then the
+     * Firestore document. The snapshot listener in loadProfile() auto-refreshes the UI.
+     */
+    fun deletePortfolioItem(item: PortfolioItem) {
+        viewModelScope.launch {
+            _uploadEvent.emit(UploadEvent.Started)
+            try {
+                // Best-effort Storage deletion — don't fail the whole operation if it errors
+                if (item.storagePath.isNotBlank()) {
+                    runCatching { storageRepository.deleteFile(item.storagePath) }
+                }
+                val result = portfolioRepository.deletePortfolioItem(item.itemId)
+                if (result.isSuccess) {
+                    _uploadEvent.emit(UploadEvent.Success)
+                } else {
+                    _uploadEvent.emit(UploadEvent.Failure("Failed to remove video"))
+                }
+            } catch (e: Exception) {
+                _uploadEvent.emit(UploadEvent.Failure("Remove failed: ${e.message}"))
             }
         }
     }

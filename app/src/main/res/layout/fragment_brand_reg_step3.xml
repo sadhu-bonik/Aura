@@ -298,6 +298,7 @@
                 android:layout_marginBottom="@dimen/space_xl">
 
                 <LinearLayout
+                    android:id="@+id/layout_file_prompt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -338,6 +339,20 @@
                         android:paddingStart="@dimen/space_md"
                         android:paddingEnd="@dimen/space_md" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_file_selected"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:padding="@dimen/space_sm"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:ellipsize="middle"
+                    android:singleLine="true"
+                    android:visibility="gone" />
             </FrameLayout>
 
             <!-- Social Presence section label -->

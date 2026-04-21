@@ -13,10 +13,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.aura.app.R
 import com.aura.app.databinding.FragmentEditProfileBinding
 import com.aura.app.utils.CreatorNicheTags
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 class EditProfileFragment : Fragment() {
@@ -33,9 +35,17 @@ class EditProfileFragment : Fragment() {
     private val imagePickerLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        uri?.let {
-            selectedImageUri = it
-            Glide.with(this).load(it).centerCrop().into(binding.ivEditPhoto)
+        uri?.let { chosen ->
+            // Show confirmation before committing the photo change
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.dialog_confirm_photo_title)
+                .setMessage(R.string.dialog_confirm_photo_message)
+                .setPositiveButton(R.string.btn_upload) { _, _ ->
+                    selectedImageUri = chosen
+                    Glide.with(this).load(chosen).centerCrop().into(binding.ivEditPhoto)
+                }
+                .setNegativeButton(R.string.btn_cancel, null)
+                .show()
         }
     }
 
@@ -67,15 +77,17 @@ class EditProfileFragment : Fragment() {
         binding.btnSave.setOnClickListener {
             val name = binding.etName.text.toString()
             val bio = binding.etBio.text.toString()
-            
+
             val selectedTags = mutableListOf<String>()
             for (i in 0 until binding.cgNicheTags.childCount) {
                 val chip = binding.cgNicheTags.getChildAt(i) as? Chip ?: continue
                 if (chip.isChecked) selectedTags.add(chip.text.toString())
             }
 
+            val isBrand = (viewModel.state.value as? EditProfileUiState.Success)?.user?.role == "brand"
             if (selectedTags.isEmpty()) {
-                Toast.makeText(requireContext(), "Select at least 1 specialty tag", Toast.LENGTH_SHORT).show()
+                val msg = if (isBrand) "Select at least 1 industry tag" else "Select at least 1 specialty tag"
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -133,31 +145,49 @@ class EditProfileFragment : Fragment() {
 
     private fun populateForm(state: EditProfileUiState.Success) {
         val user = state.user
-        val profile = state.creatorProfile
+        val isBrand = user.role == "brand"
 
-        // Only prefill if the fields haven't been touched to prevent overriding during config changes
+        // Bio and tags: source depends on role
+        val bio = if (isBrand) state.brandProfile?.bio ?: "" else state.creatorProfile?.bio ?: ""
+        val activeTags: List<String> = if (isBrand) {
+            state.brandProfile?.industryTags ?: emptyList()
+        } else {
+            state.creatorProfile?.tags ?: emptyList()
+        }
+
+        // Only prefill if fields haven't been touched (guards against config-change overwrites)
         if (binding.etName.text.isNullOrBlank()) {
             binding.etName.setText(user.displayName.ifBlank { user.email })
         }
-        
+
         if (binding.etBio.text.isNullOrBlank()) {
-            binding.etBio.setText(profile?.bio ?: "")
+            binding.etBio.setText(bio)
+        }
+
+        // Update label to reflect role-appropriate copy
+        binding.tvNicheLabel.text = if (isBrand) {
+            "Industry Tags (Select at least 1)"
+        } else {
+            "Specialties (Select 1–5)"
         }
 
         if (binding.cgNicheTags.childCount == 0) {
-            val activeTags = profile?.tags ?: emptyList()
             CreatorNicheTags.NICHE_TAGS.forEach { niche ->
                 val chip = Chip(requireContext()).apply {
                     text = niche
                     isCheckable = true
                     isChecked = activeTags.contains(niche)
-                    setOnCheckedChangeListener { buttonView, isChecked ->
-                        val selectedCount = (0 until binding.cgNicheTags.childCount).count {
-                            (binding.cgNicheTags.getChildAt(it) as? Chip)?.isChecked == true
-                        }
-                        if (isChecked && selectedCount > 5) {
-                            buttonView.isChecked = false
-                            Toast.makeText(requireContext(), "You can pick up to 5 specialties", Toast.LENGTH_SHORT).show()
+                    if (!isBrand) {
+                        setOnCheckedChangeListener { buttonView, checked ->
+                            if (checked) {
+                                val selectedCount = (0 until binding.cgNicheTags.childCount).count {
+                                    (binding.cgNicheTags.getChildAt(it) as? Chip)?.isChecked == true
+                                }
+                                if (selectedCount > 5) {
+                                    buttonView.isChecked = false
+                                    Toast.makeText(requireContext(), "You can pick up to 5 specialties", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
                     }
                 }

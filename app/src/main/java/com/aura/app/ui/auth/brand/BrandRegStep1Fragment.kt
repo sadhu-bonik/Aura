@@ -129,6 +129,13 @@ class BrandRegStep1Fragment : Fragment() {
             binding.tilConfirmPassword.error = "Passwords do not match"; valid = false
         }
 
+        val sq = binding.acvSecurityQuestion.text.toString()
+        if (sq.isBlank() || sq == getString(R.string.sq_placeholder)) {
+            binding.tilSecurityQuestion.error = "Please select a security question"; valid = false
+        } else {
+            binding.tilSecurityQuestion.error = null
+        }
+
         if (binding.etSecurityAnswer.text.isNullOrBlank()) {
             binding.tilSecurityAnswer.error = "Required"; valid = false
         }
