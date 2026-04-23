@@ -75,7 +75,7 @@
     <!-- Deal actions -->
     <string name="btn_accept_deal">Accept</string>
     <string name="btn_reject_deal">Decline</string>
-    <string name="btn_complete_deal">Mark as Complete</string>
+    <string name="btn_complete_deal">Complete Deal</string>
 
     <!-- Deal actions — cancel + complete -->
     <string name="btn_cancel_deal">Cancel Deal</string>
@@ -102,7 +102,7 @@
 
     <!-- Conversation closed footer -->
     <string name="conversation_closed_title">CONVERSATION CLOSED</string>
-    <string name="conversation_closed_cancelled_by_other">You can no longer send messages to this thread because the deal was cancelled by the counterparty.</string>
+    <string name="conversation_closed_cancelled_by_other">You can no longer send messages to this thread because the deal was cancelled by %1$s.</string>
     <string name="conversation_closed_cancelled_by_self">You can no longer send messages to this thread because you cancelled this deal.</string>
     <string name="conversation_closed_completed">You can no longer send messages to this thread because the deal has been completed.</string>
     <string name="conversation_closed_pending">Chat opens once the deal is accepted.</string>
@@ -230,6 +230,16 @@
     <string name="nav_btn_save_exit">Save &amp; Exit</string>
     <string name="nav_btn_next">Next</string>
     <string name="nav_btn_finish">Finish Setup</string>
+
+    <!-- Reviews -->
+    <string name="review_step1_title">What would you rate their aura?</string>
+    <string name="review_step2_title">Write them a message</string>
+    <string name="review_step2_subtitle">This will appear on %1$s\'s profile</string>
+    <string name="review_done_button">Done</string>
+    <string name="review_comment_hint">Add a message (optional)</string>
+    <string name="review_success_snackbar">Aura rating saved!</string>
+    <string name="review_aura_reviewed_badge">Aura Reviewed</string>
+    <string name="chip_review_required">Review</string>
 
     <!-- Brand Registration -->
     <string name="brand_onboarding_title">Brand Onboarding</string>

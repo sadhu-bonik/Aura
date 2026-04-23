@@ -59,6 +59,7 @@ class DealDashboardViewModel(
         _isLoading.value = true
 
         if (Constants.USE_STUBS) {
+            StubState.expireStaleDeals()
             loadJob = viewModelScope.launch {
                 StubState.dealsFlow.collect { deals ->
                     val filtered = deals.filter { it.creatorId == userId || it.brandId == userId }
@@ -126,8 +127,15 @@ class DealDashboardViewModel(
                 }
                 deal.status == Constants.STATUS_PENDING ->
                     new.add(DealOfferItem(deal, otherUser))
-                deal.status == Constants.STATUS_COMPLETED ->
-                    completed.add(DealOfferItem(deal, otherUser))
+                deal.status == Constants.STATUS_COMPLETED -> {
+                    val hasReviewed = if (userId == deal.creatorId) deal.creatorReviewedAt != null
+                                      else deal.brandReviewedAt != null
+                    if (hasReviewed) completed.add(DealOfferItem(deal, otherUser))
+                    else {
+                        val unread = (deal.unreadCounts[userId] ?: 0L).toInt()
+                        active.add(ActiveDealItem(deal, otherUser, unread))
+                    }
+                }
                 deal.status in listOf(
                     Constants.STATUS_REJECTED,
                     Constants.STATUS_CANCELLED,

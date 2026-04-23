@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aura.app.R
 import com.aura.app.databinding.ItemActiveDealBinding
+import com.aura.app.utils.Constants
 import com.bumptech.glide.Glide
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -47,7 +48,15 @@ class ActiveDealAdapter(
                 .fallback(R.drawable.bg_avatar_placeholder)
                 .into(binding.ivAvatar)
 
-            binding.chipStatus.visibility = View.GONE
+            if (deal.status == Constants.STATUS_COMPLETED) {
+                binding.chipStatus.visibility = View.VISIBLE
+                binding.chipStatus.text = ctx.getString(R.string.chip_review_required)
+                binding.chipStatus.setBackgroundResource(R.drawable.chip_status_accepted)
+                binding.chipStatus.setTextColor(ctx.getColor(R.color.colorPrimary))
+                binding.viewUnreadDot.isVisible = false
+            } else {
+                binding.chipStatus.visibility = View.GONE
+            }
 
             binding.root.setOnClickListener { onDealClick(item) }
         }

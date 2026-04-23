@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,7 +27,10 @@ class ChatFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ChatViewModel by viewModels()
+    private val reviewViewModel: ReviewViewModel by activityViewModels()
     private lateinit var messageAdapter: MessageAdapter
+
+    private var hasShownReviewPrompt = false
 
     private val dealId: String by lazy { arguments?.getString("dealId") ?: "" }
 
@@ -160,6 +164,11 @@ class ChatFragment : Fragment() {
             )
             binding.rvMessages.adapter = messageAdapter
             viewModel.chatItems.value?.let { items -> messageAdapter.submitList(items) }
+
+            viewModel.deal.value?.let { deal ->
+                val isClosed = deal.status in setOf(Constants.STATUS_COMPLETED, Constants.STATUS_CANCELLED)
+                if (isClosed) updateClosedSubtitle(deal)
+            }
         }
 
         viewModel.deal.observe(viewLifecycleOwner) { deal ->
@@ -170,16 +179,20 @@ class ChatFragment : Fragment() {
             binding.includeConversationClosed.root.isVisible = isClosed
 
             if (isClosed) {
-                val myId = StubSession.userId()
-                val subtitle = when {
-                    deal.status == Constants.STATUS_COMPLETED ->
-                        getString(R.string.conversation_closed_completed)
-                    deal.cancelledBy == myId ->
-                        getString(R.string.conversation_closed_cancelled_by_self)
-                    else ->
-                        getString(R.string.conversation_closed_cancelled_by_other)
+                updateClosedSubtitle(deal)
+            }
+
+            if (deal.status == Constants.STATUS_COMPLETED && !hasShownReviewPrompt) {
+                val alreadyReviewed = reviewViewModel.reviewsByDealId.value.containsKey(deal.dealId)
+                if (!alreadyReviewed) {
+                    hasShownReviewPrompt = true
+                    reviewViewModel.markReviewPromptShown(deal.dealId)
+                    val otherParty = viewModel.otherUser.value
+                    if (otherParty != null) {
+                        ReviewFlow.newInstance(deal.dealId, otherParty.userId, otherParty.displayName, otherParty.profileImageUrl)
+                            .show(childFragmentManager, "review_flow")
+                    }
                 }
-                binding.includeConversationClosed.tvClosedSubtitle.text = subtitle
             }
         }
 
@@ -211,6 +224,21 @@ class ChatFragment : Fragment() {
                 binding.rvMessages.isVisible = false
             }
         }
+    }
+
+    private fun updateClosedSubtitle(deal: com.aura.app.data.model.Deal) {
+        val myId = StubSession.userId()
+        val subtitle = when {
+            deal.status == Constants.STATUS_COMPLETED ->
+                getString(R.string.conversation_closed_completed)
+            deal.cancelledBy == myId ->
+                getString(R.string.conversation_closed_cancelled_by_self)
+            else -> {
+                val name = viewModel.otherUser.value?.displayName ?: "the other party"
+                getString(R.string.conversation_closed_cancelled_by_other, name)
+            }
+        }
+        binding.includeConversationClosed.tvClosedSubtitle.text = subtitle
     }
 
     override fun onDestroyView() {

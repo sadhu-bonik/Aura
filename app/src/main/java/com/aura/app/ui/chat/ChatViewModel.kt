@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.aura.app.R
 import com.aura.app.data.model.Deal
 import com.aura.app.data.model.Message
 import com.aura.app.data.model.UserLite
@@ -175,11 +176,13 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                     dealRepository.confirmCompletion(dealId)
                 }
             } else {
+                val systemText = getApplication<Application>().getString(R.string.system_msg_completion_declined)
                 if (Constants.USE_STUBS) {
                     StubState.clearCompletionRequest(dealId)
                 } else {
                     dealRepository.declineCompletion(dealId)
                 }
+                messageRepository.sendSystemMessage(dealId, systemText)
             }
         }
     }

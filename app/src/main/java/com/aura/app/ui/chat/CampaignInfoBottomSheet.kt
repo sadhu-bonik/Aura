@@ -174,7 +174,9 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
                     }
                     Constants.STATUS_CANCELLED -> {
                         val byMe = deal.cancelledBy == myId
-                        val baseText = "Cancelled by ${if (byMe) "you" else "other party"}"
+                        val cancellerName = if (byMe) "you"
+                            else viewModel.otherParty.value?.displayName ?: "the other party"
+                        val baseText = "Cancelled by $cancellerName"
                         if (deal.cancelReason.isNotBlank()) {
                             "$baseText because \"${deal.cancelReason}\""
                         } else {
@@ -201,6 +203,18 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
                 .load(user?.profileImageUrl)
                 .circleCrop()
                 .into(binding.ivProfilePhoto)
+
+            val deal = viewModel.deal.value ?: return@observe
+            val myId = StubSession.userId()
+            if (deal.status == Constants.STATUS_CANCELLED && deal.cancelledBy != myId && binding.tvReasonText.isVisible) {
+                val name = user?.displayName ?: "the other party"
+                val baseText = "Cancelled by $name"
+                binding.tvReasonText.text = if (deal.cancelReason.isNotBlank()) {
+                    "$baseText because \"${deal.cancelReason}\""
+                } else {
+                    "$baseText."
+                }
+            }
         }
 
         viewModel.sharedMedia.observe(viewLifecycleOwner) { messages ->

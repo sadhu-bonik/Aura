@@ -144,6 +144,19 @@ class DealRepository(
         ).await()
     }
 
+    suspend fun markUserReviewed(dealId: String, userId: String): Result<Unit> = runCatching {
+        val snap = deals.document(dealId).get().await()
+        val deal = snap.toObject(Deal::class.java)?.copy(dealId = snap.id)
+            ?: error("Deal not found")
+        val field = if (deal.creatorId == userId) "creatorReviewedAt" else "brandReviewedAt"
+        deals.document(dealId).update(
+            mapOf(
+                field to Timestamp.now(),
+                "updatedAt" to Timestamp.now(),
+            )
+        ).await()
+    }
+
     // Checks if a pending deal is older than 7 days and marks it expired locally.
     // The Firestore write is fire-and-forget; the returned deal reflects the new status.
     private fun expireIfStale(deal: Deal): Deal {

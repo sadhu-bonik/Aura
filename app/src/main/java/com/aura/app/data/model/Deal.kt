@@ -21,4 +21,6 @@ data class Deal(
     val completionRequestedBy: String = "",
     val cancelledBy: String = "",
     val cancelReason: String = "",
+    val creatorReviewedAt: com.google.firebase.Timestamp? = null,
+    val brandReviewedAt: com.google.firebase.Timestamp? = null,
 )

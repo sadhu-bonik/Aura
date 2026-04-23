@@ -122,5 +122,24 @@ object StubData {
             createdAt = ts(20000),
             updatedAt = ts(19000),
         ),
+        // stub_deal_007 — COMPLETED deal (needed to test review UI)
+        Deal(
+            dealId = "stub_deal_007",
+            creatorId = CREATOR_ID,
+            brandId = BRAND_ID_NOVA,
+            title = "Summer Collection Drop",
+            description = "Promote our new summer line across your social channels.",
+            status = Constants.STATUS_COMPLETED,
+            chatUnlocked = true,
+            completedAt = Timestamp(Date(System.currentTimeMillis() - 7 * 86400 * 1000L)),
+            updatedAt = Timestamp.now(),
+            createdAt = Timestamp(Date(System.currentTimeMillis() - 14 * 86400 * 1000L)),
+        )
     )
+
+    val mutableCreatorRatings: MutableMap<String, Pair<Double, Long>> = mutableMapOf()
+
+    fun updateCreatorRating(userId: String, newAvg: Double, newCount: Long) {
+        mutableCreatorRatings[userId] = Pair(newAvg, newCount)
+    }
 }

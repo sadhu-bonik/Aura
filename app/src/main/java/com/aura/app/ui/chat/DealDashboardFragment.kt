@@ -11,6 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 import com.aura.app.R
 import com.aura.app.databinding.FragmentDealDashboardBinding
 import com.aura.app.utils.Constants
@@ -24,6 +28,7 @@ class DealDashboardFragment : Fragment() {
     private val binding get() = _binding!!
 
     val viewModel: DealDashboardViewModel by viewModels()
+    private val reviewViewModel: ReviewViewModel by activityViewModels()
 
     private var mediator: TabLayoutMediator? = null
 
@@ -87,6 +92,16 @@ class DealDashboardFragment : Fragment() {
         viewModel.hasNewPendingForCreator.observe(viewLifecycleOwner) { hasPending ->
             val newDealsTab = binding.tabLayout.getTabAt(1)
             newDealsTab?.customView?.findViewById<View>(R.id.view_tab_dot)?.isVisible = hasPending
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            reviewViewModel.pendingReviewDeal.filterNotNull().collect { deal ->
+                reviewViewModel.markReviewPromptShown(deal.dealId)
+                val otherPartyId = if (StubSession.role() == Constants.ROLE_CREATOR) deal.brandId else deal.creatorId
+                val otherParty = com.aura.app.utils.StubData.users[otherPartyId] ?: return@collect
+                ReviewFlow.newInstance(deal.dealId, otherPartyId, otherParty.displayName, otherParty.profileImageUrl)
+                    .show(childFragmentManager, "review_flow")
+            }
         }
     }
 

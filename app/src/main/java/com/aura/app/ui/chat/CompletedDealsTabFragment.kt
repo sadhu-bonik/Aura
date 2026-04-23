@@ -10,6 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import com.aura.app.R
 import com.aura.app.databinding.FragmentDealTabBinding
 
@@ -19,6 +21,7 @@ class CompletedDealsTabFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val historyViewModel: DealHistoryViewModel by viewModels({ requireParentFragment() })
+    private val reviewViewModel: ReviewViewModel by viewModels({ requireParentFragment() })
     private lateinit var adapter: DealOfferAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -55,6 +58,12 @@ class CompletedDealsTabFragment : Fragment() {
             adapter.submitList(items)
             binding.rvDeals.isVisible = items.isNotEmpty()
             binding.layoutEmpty.isVisible = items.isEmpty() && historyViewModel.isLoading.value == false
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            reviewViewModel.reviewsByDealId.collect { map ->
+                adapter.setReviewsData(true, map)
+            }
         }
     }
 
