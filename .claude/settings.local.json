@@ -11,7 +11,8 @@
       "Bash(./gradlew assembleDebug)",
       "Bash(./gradlew compileDebugKotlin)",
       "Bash(grep -v \"Registration\\\\|BrandReg\\\\|BrandProfile\\\\.kt$\")",
-      "Bash(xargs cat *)"
+      "Bash(xargs cat *)",
+      "Bash(xargs ls *)"
     ]
   }
 }

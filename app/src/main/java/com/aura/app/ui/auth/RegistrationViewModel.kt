@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aura.app.BuildConfig
 import com.aura.app.data.model.CreatorProfile
 import com.aura.app.data.model.PortfolioItem
 import com.aura.app.data.model.User
@@ -12,6 +13,7 @@ import com.aura.app.data.repository.AuthRepository
 import com.aura.app.data.repository.PortfolioRepository
 import com.aura.app.data.repository.StorageRepository
 import com.aura.app.data.repository.UserRepository
+import com.aura.app.data.repository.YouTubeRepository
 import com.aura.app.utils.SessionManager
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.launch
@@ -25,7 +27,8 @@ class RegistrationViewModel(
     private val authRepository: AuthRepository = AuthRepository(),
     private val userRepository: UserRepository = UserRepository(),
     private val storageRepository: StorageRepository = StorageRepository(),
-    private val portfolioRepository: PortfolioRepository = PortfolioRepository()
+    private val portfolioRepository: PortfolioRepository = PortfolioRepository(),
+    private val youtubeRepository: YouTubeRepository = YouTubeRepository(apiKey = BuildConfig.YOUTUBE_API_KEY)
 ) : ViewModel() {
 
     private val _userRole = MutableLiveData<String>("creator")
@@ -56,7 +59,7 @@ class RegistrationViewModel(
 
     var creatorMotto = ""
     var creatorBio = ""
-    var instagramHandle = ""
+    var youtubeHandle = ""
     var niches = listOf<String>()
     var location = ""
     var audienceRegion = ""
@@ -92,7 +95,7 @@ class RegistrationViewModel(
     fun resetDraft() {
         email = ""; password = ""; fullName = ""; phone = ""
         securityQuestion = ""; securityAnswer = ""
-        creatorMotto = ""; creatorBio = ""; instagramHandle = ""
+        creatorMotto = ""; creatorBio = ""; youtubeHandle = ""
         niches = listOf(); location = ""; audienceRegion = ""
         profileImageUri = null
         portfolioVideoUris.clear()
@@ -195,7 +198,7 @@ class RegistrationViewModel(
                     userId = userId,
                     motto = creatorMotto,
                     bio = creatorBio,
-                    instagramHandle = instagramHandle,
+                    youtubeHandle = youtubeHandle,
                     niche = niches.joinToString(", "),
                     tags = niches,
                     location = location,
@@ -214,12 +217,20 @@ class RegistrationViewModel(
                     return@launch
                 }
 
-                // Step 5 — Save portfolio item metadata (best-effort; storage already has the files)
+                // Step 5 — YouTube analytics (non-fatal; enriches profile but never blocks registration)
+                if (youtubeHandle.isNotBlank()) {
+                    val analytics = youtubeRepository.fetchAndScore(youtubeHandle)
+                    if (analytics != null) {
+                        userRepository.updateCreatorProfilePartial(userId, analytics.toFirestoreMap())
+                    }
+                }
+
+                // Step 7 — Save portfolio item metadata (best-effort; storage already has the files)
                 for (item in successfulItems) {
                     portfolioRepository.savePortfolioItem(item)
                 }
 
-                // Step 6 — Persist session
+                // Step 8 — Persist session
                 SessionManager(context).saveUserId(userId)
 
                 if (failedIndices.isNotEmpty()) {

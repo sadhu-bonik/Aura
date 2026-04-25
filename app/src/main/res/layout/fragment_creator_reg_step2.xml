@@ -245,11 +245,11 @@
                     android:textColor="@color/colorOnSurface" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Instagram -->
+            <!-- YouTube -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/creator_reg_instagram_label"
+                android:text="@string/creator_reg_youtube_label"
                 android:textColor="@color/colorOnSurfaceVariant"
                 android:textSize="11sp"
                 android:textStyle="bold"
@@ -258,19 +258,19 @@
                 android:layout_marginBottom="@dimen/space_sm" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_instagram"
+                android:id="@+id/til_youtube"
                 style="@style/Widget.Aura.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/space_lg"
-                app:startIconDrawable="@android:drawable/ic_menu_camera"
+                app:startIconDrawable="@drawable/ic_feed_play"
                 app:startIconTint="@color/colorOnSurfaceVariant">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_instagram"
+                    android:id="@+id/et_youtube"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/input_height"
-                    android:hint="@string/creator_reg_instagram_hint"
+                    android:hint="@string/creator_reg_youtube_hint"
                     android:inputType="text"
                     android:textColor="@color/colorOnSurface" />
             </com.google.android.material.textfield.TextInputLayout>

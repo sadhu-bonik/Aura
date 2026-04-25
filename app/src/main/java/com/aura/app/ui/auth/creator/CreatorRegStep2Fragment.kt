@@ -37,7 +37,7 @@ class CreatorRegStep2Fragment : Fragment() {
         // Pre-fill text fields from ViewModel draft
         binding.etMotto.setText(registrationViewModel.creatorMotto)
         binding.etBio.setText(registrationViewModel.creatorBio)
-        binding.etInstagram.setText(registrationViewModel.instagramHandle)
+        binding.etYoutube.setText(registrationViewModel.youtubeHandle)
 
         // Restore photo preview if already selected (e.g. after rotation)
         if (registrationViewModel.profileImageUri != null) showPhotoPreview()
@@ -69,7 +69,7 @@ class CreatorRegStep2Fragment : Fragment() {
 
             registrationViewModel.creatorMotto = motto
             registrationViewModel.creatorBio = bio
-            registrationViewModel.instagramHandle = binding.etInstagram.text.toString().trim()
+            registrationViewModel.youtubeHandle = binding.etYoutube.text.toString().trim()
 
             findNavController().navigate(R.id.action_creator_step2_to_step3)
         }

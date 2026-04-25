@@ -18,6 +18,8 @@ fragmentKtx = "1.8.5"
 media3 = "1.5.1"
 viewpager2 = "1.1.0"
 swiperefreshlayout = "1.1.0"
+retrofit = "2.11.0"
+gson = "2.11.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -47,6 +49,9 @@ androidx-media3-datasource = { group = "androidx.media3", name = "media3-datasou
 androidx-media3-database = { group = "androidx.media3", name = "media3-database", version.ref = "media3" }
 androidx-viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewpager2" }
 androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
