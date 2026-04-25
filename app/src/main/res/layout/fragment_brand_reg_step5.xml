@@ -69,7 +69,7 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <View
+            <FrameLayout
                 android:layout_width="40dp"
                 android:layout_height="6dp"
                 android:background="@color/colorSurfaceContainer"
@@ -79,7 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/colorPrimary" />
-            </View>
+            </FrameLayout>
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 

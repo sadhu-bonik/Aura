@@ -76,7 +76,11 @@ class CreatorRegStep1Fragment : Fragment() {
         }
 
         val pw = binding.etPassword.text?.toString() ?: ""
-        if (pw.length < 8) { binding.tilPassword.error = "Min 8 chars"; valid = false }
+        when {
+            pw.length < 8 -> { binding.tilPassword.error = "Min 8 characters"; valid = false }
+            !pw.any { it.isUpperCase() } -> { binding.tilPassword.error = "Need 1 uppercase letter"; valid = false }
+            !pw.any { it.isDigit() } -> { binding.tilPassword.error = "Need 1 number"; valid = false }
+        }
         if ((binding.etConfirmPassword.text?.toString() ?: "") != pw) { binding.tilConfirmPassword.error = "Passwords don't match"; valid = false }
         return valid
     }

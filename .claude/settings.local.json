@@ -7,7 +7,12 @@
       "WebSearch",
       "WebFetch(domain:android-developers.googleblog.com)",
       "WebFetch(domain:proandroiddev.com)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(./gradlew assembleDebug)",
+      "Bash(./gradlew compileDebugKotlin)",
+      "Bash(grep -v \"Registration\\\\|BrandReg\\\\|BrandProfile\\\\.kt$\")",
+      "Bash(xargs cat *)",
+      "Bash(xargs ls *)"
     ]
   }
 }

@@ -1,28 +1,33 @@
 package com.aura.app.ui.auth.brand
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.aura.app.R
 import com.aura.app.databinding.FragmentBrandRegStep2Binding
+import com.bumptech.glide.Glide
 
-/**
- * BrandRegStep2Fragment — Brand Identity: Motto + Bio
- *
- * Sends: motto, bio
- * Calls: vm.submitStep2() → saves to brandProfiles/{uid}
- * Navigates: on stepSaved(2) → brand_step3
- */
 class BrandRegStep2Fragment : Fragment() {
 
     private var _binding: FragmentBrandRegStep2Binding? = null
     private val binding get() = _binding!!
 
     private val vm: BrandRegistrationViewModel by activityViewModels { BrandRegistrationViewModel.Factory() }
+
+    private val imagePickerLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            vm.logoUri = it
+            showLogoPreview(it)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -34,8 +39,9 @@ class BrandRegStep2Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         prefillFields()
-        setupObservers()
         setupClickListeners()
+        // Restore preview on rotation
+        vm.logoUri?.let { showLogoPreview(it) }
     }
 
     private fun prefillFields() {
@@ -43,15 +49,17 @@ class BrandRegStep2Fragment : Fragment() {
         binding.etBio.setText(vm.bio)
     }
 
-    private fun setupObservers() {
-        // No loading state on Step 2 — navigation is instant (no network call until Step 5)
+    private fun showLogoPreview(uri: Uri) {
+        binding.layoutLogoPrompt.visibility = View.GONE
+        binding.ivLogoPreview.visibility = View.VISIBLE
+        Glide.with(this).load(uri).centerCrop().into(binding.ivLogoPreview)
     }
 
     private fun setupClickListeners() {
         binding.ivClose.setOnClickListener { findNavController().navigateUp() }
 
         binding.layoutLogoUpload.setOnClickListener {
-            // TODO: implement logo upload with Firebase Storage
+            imagePickerLauncher.launch("image/*")
         }
 
         binding.layoutBottomNav.btnNavBack.setOnClickListener {
@@ -61,7 +69,6 @@ class BrandRegStep2Fragment : Fragment() {
         binding.layoutBottomNav.btnNavNext.setOnClickListener {
             if (!validateForm()) return@setOnClickListener
 
-            // Save to ViewModel draft — no Firebase call here
             vm.motto = binding.etMotto.text.toString().trim()
             vm.bio = binding.etBio.text.toString().trim()
 
@@ -70,17 +77,12 @@ class BrandRegStep2Fragment : Fragment() {
     }
 
     private fun validateForm(): Boolean {
-        var valid = true
         binding.tilMotto.error = null
-        binding.tilBio.error = null
-
         if (binding.etMotto.text.isNullOrBlank()) {
-            binding.tilMotto.error = "Required"; valid = false
+            binding.tilMotto.error = "Required"
+            return false
         }
-        if (binding.etBio.text.isNullOrBlank()) {
-            binding.tilBio.error = "Required"; valid = false
-        }
-        return valid
+        return true
     }
 
     override fun onDestroyView() { super.onDestroyView(); _binding = null }

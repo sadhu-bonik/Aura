@@ -18,6 +18,14 @@ sealed class AuthState {
     data class Error(val message: String) : AuthState()
 }
 
+sealed class EmailCheckState {
+    data object Idle : EmailCheckState()
+    data object Loading : EmailCheckState()
+    data object Exists : EmailCheckState()
+    data object New : EmailCheckState()
+    data class Error(val message: String) : EmailCheckState()
+}
+
 /**
  * AuthViewModel - Handles login, logout, and session-status checks.
  *
@@ -32,6 +40,21 @@ class AuthViewModel(
 
     private val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
     val authState: StateFlow<AuthState> = _authState.asStateFlow()
+
+    private val _emailCheckState = MutableStateFlow<EmailCheckState>(EmailCheckState.Idle)
+    val emailCheckState: StateFlow<EmailCheckState> = _emailCheckState.asStateFlow()
+
+    fun checkEmail(email: String) {
+        viewModelScope.launch {
+            _emailCheckState.value = EmailCheckState.Loading
+            val user = try { userRepository.getUserByEmail(email) } catch (e: Exception) { null }
+            _emailCheckState.value = if (user != null) EmailCheckState.Exists else EmailCheckState.New
+        }
+    }
+
+    fun resetEmailCheck() {
+        _emailCheckState.value = EmailCheckState.Idle
+    }
 
     /**
      * Signs in a user via Firebase Auth and loads their Firestore profile.

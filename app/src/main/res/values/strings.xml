@@ -195,8 +195,8 @@
     <string name="creator_reg_motto_helper">Summarize your creative essence in one powerful line.</string>
     <string name="creator_reg_bio_label">Bio/Description</string>
     <string name="creator_reg_bio_hint">Tell your story. Where does your inspiration come from?</string>
-    <string name="creator_reg_instagram_label">Instagram Handle</string>
-    <string name="creator_reg_instagram_hint">@yourname</string>
+    <string name="creator_reg_youtube_label">YouTube Channel</string>
+    <string name="creator_reg_youtube_hint">@MrBeast</string>
     <string name="creator_reg_upload_portrait_label">Upload Portrait</string>
     <string name="creator_reg_portrait_spec">Recommended: 1080x1080px. High-resolution JPG or PNG.</string>
     <string name="creator_reg_pro_tip_title">Pro Tip</string>
@@ -340,4 +340,16 @@
     <string name="region_asia_pacific">Asia Pacific</string>
     <string name="region_latin_america">Latin America</string>
     <string name="region_mea">Middle East &amp; Africa</string>
+
+    <!-- Portfolio / media action dialogs -->
+    <string name="dialog_remove_video_title">Remove this video?</string>
+    <string name="dialog_remove_video_message">This will permanently delete the video from your portfolio.</string>
+    <string name="dialog_confirm_photo_title">Use this photo?</string>
+    <string name="dialog_confirm_photo_message">Upload this as your new profile picture?</string>
+    <string name="btn_remove">Remove</string>
+    <string name="btn_upload">Upload</string>
+    <string name="toast_portfolio_video_required">Add at least one portfolio video to finish setup.</string>
+    <string name="toast_portfolio_full">Portfolio is full (10 videos max). Remove one first.</string>
+    <string name="cd_remove_video">Remove video</string>
+    <string name="cd_photo_preview">Profile photo preview</string>
 </resources>

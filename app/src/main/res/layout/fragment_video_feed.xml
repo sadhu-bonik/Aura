@@ -4,11 +4,18 @@
     android:layout_height="match_parent"
     android:background="@android:color/black">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/video_pager"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/feed_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" />
+        android:layout_height="match_parent">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/video_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <!-- Temporary Logout Button -->
     <Button

@@ -9,7 +9,22 @@
         android:id="@+id/navigation_profile"
         android:name="com.aura.app.ui.main.ProfileFragment"
         android:label="@string/tab_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="creatorId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_profile_to_editProfile"
+            app:destination="@id/navigation_edit_profile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_edit_profile"
+        android:name="com.aura.app.ui.main.EditProfileFragment"
+        android:label="Edit Profile"
+        tools:layout="@layout/fragment_edit_profile" />
 
     <fragment
         android:id="@+id/navigation_deals"
@@ -21,7 +36,25 @@
         android:id="@+id/navigation_feed"
         android:name="com.aura.app.ui.feed.VideoFeedFragment"
         android:label="@string/tab_feed"
-        tools:layout="@layout/fragment_video_feed" />
+        tools:layout="@layout/fragment_video_feed">
+        <action
+            android:id="@+id/action_feed_to_creator_profile"
+            app:destination="@id/navigation_creator_public_profile" />
+    </fragment>
+
+    <!-- Separate destination for viewing another creator's profile from the feed.
+         Lives on the feed back stack so the back button works correctly. -->
+    <fragment
+        android:id="@+id/navigation_creator_public_profile"
+        android:name="com.aura.app.ui.main.ProfileFragment"
+        android:label="Creator Profile"
+        tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="creatorId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_search"

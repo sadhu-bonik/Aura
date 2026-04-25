@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.aura.app.R
 import com.aura.app.databinding.FragmentCreatorRegStep3Binding
 import com.aura.app.ui.auth.RegistrationViewModel
+import com.aura.app.utils.CreatorNicheTags
 import com.google.android.material.chip.Chip
 
 class CreatorRegStep3Fragment : Fragment() {
@@ -27,6 +29,7 @@ class CreatorRegStep3Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupAudienceDropdown()
+        setupNicheChips()
 
         // Pre-fill location (stored as "City, State, Country")
         if (registrationViewModel.location.isNotEmpty()) {
@@ -63,8 +66,7 @@ class CreatorRegStep3Fragment : Fragment() {
             }
 
             if (selectedNiches.isEmpty()) {
-                // To keep it simple, we could show a toast, but usually a UI hint is better. 
-                // We'll set an error on the audience region or just generic
+                Toast.makeText(requireContext(), "Please select at least one niche", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -85,6 +87,28 @@ class CreatorRegStep3Fragment : Fragment() {
     private fun setupAudienceDropdown() {
         val regions = listOf(getString(R.string.region_north_america), getString(R.string.region_europe), getString(R.string.region_asia_pacific), getString(R.string.region_latin_america), getString(R.string.region_mea))
         binding.acvAudienceRegion.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, regions))
+    }
+
+    private fun setupNicheChips() {
+        binding.chipGroupNiches.removeAllViews()
+        CreatorNicheTags.NICHE_TAGS.forEach { niche ->
+            val chip = Chip(requireContext()).apply {
+                text = niche
+                isCheckable = true
+                isChecked = registrationViewModel.niches.contains(niche)
+                setOnCheckedChangeListener { buttonView, isChecked ->
+                    // Enforce max 5 selections
+                    val selectedCount = (0 until binding.chipGroupNiches.childCount).count {
+                        (binding.chipGroupNiches.getChildAt(it) as? Chip)?.isChecked == true
+                    }
+                    if (isChecked && selectedCount > 5) {
+                        buttonView.isChecked = false
+                        Toast.makeText(requireContext(), "You can select up to 5 niches", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            binding.chipGroupNiches.addView(chip)
+        }
     }
 
     override fun onDestroyView() { super.onDestroyView(); _binding = null }

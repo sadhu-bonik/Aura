@@ -97,7 +97,9 @@
                     android:focusable="true"
                     android:layout_marginBottom="@dimen/space_sm">
 
+                    <!-- Default prompt (hidden after photo is selected) -->
                     <LinearLayout
+                        android:id="@+id/layout_photo_prompt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -122,6 +124,16 @@
                             android:textAllCaps="true"
                             android:letterSpacing="0.1" />
                     </LinearLayout>
+
+                    <!-- Photo preview (shown after photo is selected) -->
+                    <ImageView
+                        android:id="@+id/iv_profile_photo_preview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone"
+                        android:contentDescription="@string/cd_photo_preview" />
+
                 </FrameLayout>
 
                 <TextView
@@ -233,11 +245,11 @@
                     android:textColor="@color/colorOnSurface" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Instagram -->
+            <!-- YouTube -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/creator_reg_instagram_label"
+                android:text="@string/creator_reg_youtube_label"
                 android:textColor="@color/colorOnSurfaceVariant"
                 android:textSize="11sp"
                 android:textStyle="bold"
@@ -246,19 +258,19 @@
                 android:layout_marginBottom="@dimen/space_sm" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_instagram"
+                android:id="@+id/til_youtube"
                 style="@style/Widget.Aura.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/space_lg"
-                app:startIconDrawable="@android:drawable/ic_menu_camera"
+                app:startIconDrawable="@drawable/ic_feed_play"
                 app:startIconTint="@color/colorOnSurfaceVariant">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_instagram"
+                    android:id="@+id/et_youtube"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/input_height"
-                    android:hint="@string/creator_reg_instagram_hint"
+                    android:hint="@string/creator_reg_youtube_hint"
                     android:inputType="text"
                     android:textColor="@color/colorOnSurface" />
             </com.google.android.material.textfield.TextInputLayout>

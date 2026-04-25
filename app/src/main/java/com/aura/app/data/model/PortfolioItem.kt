@@ -10,6 +10,10 @@ data class PortfolioItem(
     val mediaUrl: String = "",
     val mediaType: String = "",
     val thumbnailUrl: String = "",
-    val isPublic: Boolean = false,
+    val storagePath: String = "",
+    val mimeType: String = "",
+    val originalFileName: String = "",
+    val public: Boolean = false,
     val createdAt: Timestamp? = null,
+    val updatedAt: Timestamp? = null,
 )

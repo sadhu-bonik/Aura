@@ -1,53 +1,284 @@
 package com.aura.app.ui.main
 
 import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import android.util.Log
+import com.aura.app.data.model.BrandProfile
+import com.aura.app.data.model.CreatorProfile
+import com.aura.app.data.model.PortfolioItem
 import com.aura.app.data.model.User
+import com.aura.app.data.repository.PortfolioRepository
+import com.aura.app.data.repository.StorageRepository
 import com.aura.app.data.repository.UserRepository
 import com.aura.app.utils.SessionManager
+import com.google.firebase.Timestamp
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 sealed class ProfileUiState {
     data object Loading : ProfileUiState()
-    data class Success(val user: User) : ProfileUiState()
+    data class Success(
+        val user: User,
+        val creatorProfile: CreatorProfile? = null,
+        val brandProfile: BrandProfile? = null,
+        val portfolio: List<PortfolioItem> = emptyList(),
+        val isOwner: Boolean = true
+    ) : ProfileUiState()
     data class Error(val message: String) : ProfileUiState()
 }
 
+/** One-shot events surfaced to the Fragment via SharedFlow. */
+sealed class UploadEvent {
+    data object Started : UploadEvent()
+    data class Progress(val message: String) : UploadEvent()
+    data object Success : UploadEvent()
+    data class Failure(val message: String) : UploadEvent()
+}
+
 /**
- * ProfileViewModel - Loads and exposes the signed-in user's Firestore profile.
+ * ProfileViewModel - Loads the signed-in user's profile and handles portfolio uploads.
  */
 class ProfileViewModel(
     private val userRepository: UserRepository = UserRepository(),
+    private val portfolioRepository: PortfolioRepository = PortfolioRepository(),
+    private val storageRepository: StorageRepository = StorageRepository(),
     private val sessionManager: SessionManager,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
     val state: StateFlow<ProfileUiState> = _state.asStateFlow()
 
-    init {
-        loadProfile()
+    private val _uploadEvent = MutableSharedFlow<UploadEvent>()
+    val uploadEvent: SharedFlow<UploadEvent> = _uploadEvent.asSharedFlow()
+
+    /** Guards against double-tap uploads. */
+    private var isUploading = false
+
+    companion object {
+        const val MAX_PORTFOLIO_ITEMS = 10
+        const val MAX_DURATION_SEC = 60L
+        private const val TAG = "ProfileViewModel"
     }
 
-    fun loadProfile() {
+    fun loadProfile(creatorId: String? = null) {
         viewModelScope.launch {
             _state.value = ProfileUiState.Loading
-            val userId = sessionManager.getUserId()
-            if (userId == null) {
+            val currentUserId = sessionManager.getUserId()
+            if (currentUserId == null) {
                 _state.value = ProfileUiState.Error("Not signed in")
                 return@launch
             }
-            val user = userRepository.getUserProfile(userId)
-            _state.value = if (user != null) {
-                ProfileUiState.Success(user)
-            } else {
-                ProfileUiState.Error("Could not load profile")
+
+            val targetId = creatorId ?: currentUserId
+            val isOwner = targetId == currentUserId
+
+            val user = userRepository.getUserProfile(targetId)
+            if (user == null) {
+                _state.value = ProfileUiState.Error("Could not load profile")
+                return@launch
+            }
+
+            // Fetch role-specific profile
+            var creatorProfile: CreatorProfile? = null
+            var brandProfile: BrandProfile? = null
+            when (user.role) {
+                "creator" -> {
+                    creatorProfile = userRepository.getCreatorProfile(targetId)
+                    Log.d(TAG, "loadProfile creator → bio='${creatorProfile?.bio}' tags=${creatorProfile?.tags}")
+                }
+                "brand" -> {
+                    brandProfile = userRepository.getBrandProfile(targetId)
+                    Log.d(TAG, "loadProfile brand → bio='${brandProfile?.bio}' industryTags=${brandProfile?.industryTags}")
+                }
+            }
+
+            // Show the user info immediately, then stream portfolio items
+            _state.value = ProfileUiState.Success(user, creatorProfile, brandProfile, emptyList(), isOwner)
+
+            portfolioRepository.getCreatorPortfolio(targetId).collect { portfolio ->
+                _state.value = ProfileUiState.Success(user, creatorProfile, brandProfile, portfolio, isOwner)
             }
         }
+    }
+
+    /**
+     * Uploads a new profile picture and updates the user's Firestore document.
+     */
+    fun uploadProfilePicture(uri: Uri) {
+        viewModelScope.launch {
+            _uploadEvent.emit(UploadEvent.Started)
+            try {
+                val userId = sessionManager.getUserId()
+                if (userId == null) {
+                    _uploadEvent.emit(UploadEvent.Failure("Not signed in"))
+                    return@launch
+                }
+
+                _uploadEvent.emit(UploadEvent.Progress("Uploading image..."))
+                val downloadUrl = storageRepository.uploadProfilePicture(userId, uri)
+
+                _uploadEvent.emit(UploadEvent.Progress("Updating profile..."))
+                val updateResult = userRepository.updateUserPartial(userId, mapOf("profileImageUrl" to downloadUrl))
+
+                if (updateResult.isSuccess) {
+                    _uploadEvent.emit(UploadEvent.Success)
+                    // Reload profile to reflect new image
+                    loadProfile()
+                } else {
+                    _uploadEvent.emit(UploadEvent.Failure("Failed to update profile"))
+                }
+            } catch (e: Exception) {
+                _uploadEvent.emit(UploadEvent.Failure("Upload failed: ${e.message}"))
+            }
+        }
+    }
+
+    /**
+     * Full upload pipeline: validate → upload to Storage → save metadata to Firestore.
+     * If the Firestore write fails, the Storage file is rolled back (deleted).
+     *
+     * @param videoUri      Content URI from the device picker
+     * @param mimeType      MIME type reported by ContentResolver (e.g. "video/mp4")
+     * @param fileName      Original file name from the device
+     * @param durationSec   Duration extracted via MediaMetadataRetriever
+     */
+    fun uploadPortfolioVideo(
+        videoUri: Uri,
+        mimeType: String,
+        title: String,
+        description: String,
+        durationSec: Long,
+    ) {
+        if (isUploading) return // prevent double-tap
+
+        viewModelScope.launch {
+            isUploading = true
+            _uploadEvent.emit(UploadEvent.Started)
+
+            try {
+                // --- Validate auth ---
+                val userId = sessionManager.getUserId()
+                if (userId == null) {
+                    _uploadEvent.emit(UploadEvent.Failure("Not signed in"))
+                    return@launch
+                }
+
+                // --- Validate MIME ---
+                if (!mimeType.startsWith("video/")) {
+                    _uploadEvent.emit(UploadEvent.Failure("Only video files are allowed"))
+                    return@launch
+                }
+
+                // --- Validate duration ---
+                if (durationSec > MAX_DURATION_SEC) {
+                    _uploadEvent.emit(
+                        UploadEvent.Failure("Video is too long (${durationSec}s). Max is ${MAX_DURATION_SEC}s.")
+                    )
+                    return@launch
+                }
+
+                // --- Validate portfolio size ---
+                _uploadEvent.emit(UploadEvent.Progress("Checking portfolio limit…"))
+                val currentCount = portfolioRepository.getPortfolioCount(userId)
+                if (currentCount >= MAX_PORTFOLIO_ITEMS) {
+                    _uploadEvent.emit(
+                        UploadEvent.Failure("Portfolio is full ($MAX_PORTFOLIO_ITEMS videos max). Remove a video first.")
+                    )
+                    return@launch
+                }
+
+                // --- Upload to Firebase Storage ---
+                _uploadEvent.emit(UploadEvent.Progress("Uploading video…"))
+                val itemId = portfolioRepository.generateItemId()
+                val extension = extensionFromMime(mimeType)
+
+                val uploadResult = storageRepository.uploadPortfolioVideo(
+                    userId = userId,
+                    itemId = itemId,
+                    uri = videoUri,
+                    extension = extension,
+                )
+
+                // --- Save metadata to Firestore ---
+                _uploadEvent.emit(UploadEvent.Progress("Saving portfolio data…"))
+                val portfolioItem = PortfolioItem(
+                    itemId = itemId,
+                    creatorId = userId,
+                    title = title,
+                    description = description,
+                    mediaUrl = uploadResult.downloadUrl,
+                    mediaType = "video",
+                    storagePath = uploadResult.storagePath,
+                    mimeType = mimeType,
+                    originalFileName = title,
+                    public = true,
+                    createdAt = Timestamp.now(),
+                )
+
+                val saveResult = portfolioRepository.savePortfolioItem(portfolioItem)
+                if (saveResult.isFailure) {
+                    // Rollback: delete the orphaned Storage file
+                    try {
+                        storageRepository.deleteFile(uploadResult.storagePath)
+                    } catch (_: Exception) {
+                        // Best-effort rollback; log if we had analytics
+                    }
+                    _uploadEvent.emit(
+                        UploadEvent.Failure("Failed to save portfolio data. Upload rolled back.")
+                    )
+                    return@launch
+                }
+
+                // The Firestore snapshot listener in loadProfile() will auto-refresh the list
+                _uploadEvent.emit(UploadEvent.Success)
+
+            } catch (e: Exception) {
+                _uploadEvent.emit(UploadEvent.Failure(e.message ?: "Upload failed"))
+            } finally {
+                isUploading = false
+            }
+        }
+    }
+
+    /**
+     * Removes a portfolio item: deletes the Storage file (best-effort) then the
+     * Firestore document. The snapshot listener in loadProfile() auto-refreshes the UI.
+     */
+    fun deletePortfolioItem(item: PortfolioItem) {
+        viewModelScope.launch {
+            _uploadEvent.emit(UploadEvent.Started)
+            try {
+                // Best-effort Storage deletion — don't fail the whole operation if it errors
+                if (item.storagePath.isNotBlank()) {
+                    runCatching { storageRepository.deleteFile(item.storagePath) }
+                }
+                val result = portfolioRepository.deletePortfolioItem(item.itemId)
+                if (result.isSuccess) {
+                    _uploadEvent.emit(UploadEvent.Success)
+                } else {
+                    _uploadEvent.emit(UploadEvent.Failure("Failed to remove video"))
+                }
+            } catch (e: Exception) {
+                _uploadEvent.emit(UploadEvent.Failure("Remove failed: ${e.message}"))
+            }
+        }
+    }
+
+    private fun extensionFromMime(mimeType: String): String = when (mimeType) {
+        "video/mp4" -> "mp4"
+        "video/3gpp" -> "3gp"
+        "video/webm" -> "webm"
+        "video/x-matroska" -> "mkv"
+        "video/quicktime" -> "mov"
+        else -> "mp4"
     }
 
     class Factory(private val context: Context) : ViewModelProvider.Factory {
@@ -55,6 +286,8 @@ class ProfileViewModel(
         override fun <T : ViewModel> create(modelClass: Class<T>): T =
             ProfileViewModel(
                 userRepository = UserRepository(),
+                portfolioRepository = PortfolioRepository(),
+                storageRepository = StorageRepository(),
                 sessionManager = SessionManager(context)
             ) as T
     }
