@@ -1,9 +1,13 @@
 package com.aura.app.ui.feed
 
+import android.text.TextUtils
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.ViewCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -20,13 +24,16 @@ class CreatorPageViewHolder(
     private val creatorAvatar: ImageView = itemView.findViewById(R.id.creator_avatar)
     private val creatorName: TextView = itemView.findViewById(R.id.creator_name)
     private val dotIndicator: LinearLayout = itemView.findViewById(R.id.dot_indicator)
-    private val creatorInfoContainer: View = itemView.findViewById(R.id.creator_info_container)
-    private val videoDescription: TextView = itemView.findViewById(R.id.tv_video_description)
-    private val videoTitle: TextView = itemView.findViewById(R.id.tv_video_title)
+    private val videoCaption: TextView = itemView.findViewById(R.id.tv_video_caption)
+    private val videoCaptionMore: TextView = itemView.findViewById(R.id.tv_video_caption_more)
+    private val baseDotBottomMargin: Int =
+        (dotIndicator.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin ?: 0
+    private var dotInsetListenerAttached = false
 
     private var innerAdapter: ItemPageAdapter? = null
     private var currentEntry: CreatorFeedEntry? = null
     private var currentInnerPosition = 0
+    private var isVideoCaptionExpanded = false
     var isActive = false
         private set
 
@@ -66,7 +73,21 @@ class CreatorPageViewHolder(
         currentInnerPosition = 0
 
         // Bind pre-resolved creator identity (no Firestore call needed here)
-        creatorName.text = entry.creatorName.ifBlank { "Unknown Creator" }
+        creatorName.text = formatCreatorName(entry.creatorName)
+        isVideoCaptionExpanded = false
+        applyVideoCaptionCollapsed()
+        videoCaptionMore.setOnClickListener {
+            isVideoCaptionExpanded = !isVideoCaptionExpanded
+            if (isVideoCaptionExpanded) {
+                videoCaption.maxLines = 6
+                videoCaption.ellipsize = null
+                videoCaptionMore.text = itemView.context.getString(R.string.feed_caption_less)
+                videoCaptionMore.isVisible = true
+            } else {
+                applyVideoCaptionCollapsed()
+                videoCaption.post { refreshVideoCaptionExpansionUi() }
+            }
+        }
         creatorAvatar.setImageDrawable(null)
         if (entry.creatorProfileImageUrl.isNotEmpty()) {
             Glide.with(creatorAvatar)
@@ -75,11 +96,12 @@ class CreatorPageViewHolder(
                 .into(creatorAvatar)
         }
 
-        // Navigate to creator profile on tap
-        creatorInfoContainer.setOnClickListener {
+        // Navigate to creator profile only when avatar is tapped
+        creatorAvatar.setOnClickListener {
             callback.onCreatorProfileClicked(entry.creatorId)
         }
 
+        applyDotIndicatorInsets()
         setupDots(entry.items.size)
         updateVideoMetadata(0)
     }
@@ -105,20 +127,63 @@ class CreatorPageViewHolder(
     private fun updateVideoMetadata(position: Int) {
         val item = currentEntry?.items?.getOrNull(position)
 
-        val desc = item?.description?.trim() ?: ""
-        if (desc.isEmpty()) {
-            videoDescription.visibility = View.GONE
-        } else {
-            videoDescription.text = desc
-            videoDescription.visibility = View.VISIBLE
+        val title = item?.title?.trim().orEmpty()
+        val description = item?.description?.trim().orEmpty()
+
+        val caption = when {
+            description.isNotEmpty() -> description
+            title.isNotEmpty() -> title
+            else -> ""
         }
 
-        val title = item?.title?.trim() ?: ""
-        if (title.isEmpty()) {
-            videoTitle.visibility = View.GONE
+        if (caption.isEmpty()) {
+            videoCaption.text = ""
+            videoCaption.isVisible = false
+            videoCaptionMore.isVisible = false
+            isVideoCaptionExpanded = false
+            return
+        }
+
+        videoCaption.text = caption
+        videoCaption.isVisible = true
+
+        if (isVideoCaptionExpanded) {
+            videoCaption.maxLines = 6
+            videoCaption.ellipsize = null
+            videoCaptionMore.text = itemView.context.getString(R.string.feed_caption_less)
+            videoCaptionMore.isVisible = true
         } else {
-            videoTitle.text = title
-            videoTitle.visibility = View.VISIBLE
+            applyVideoCaptionCollapsed()
+            videoCaption.post { refreshVideoCaptionExpansionUi() }
+        }
+    }
+
+    private fun formatCreatorName(name: String): String {
+        val trimmed = name.trim()
+        if (trimmed.isEmpty()) return "@creator"
+        return if (trimmed.startsWith("@")) trimmed else "@$trimmed"
+    }
+
+    private fun applyVideoCaptionCollapsed() {
+        videoCaption.maxLines = 2
+        videoCaption.ellipsize = TextUtils.TruncateAt.END
+        videoCaptionMore.isVisible = false
+        videoCaptionMore.text = itemView.context.getString(R.string.feed_caption_more)
+    }
+
+    private fun refreshVideoCaptionExpansionUi() {
+        if (isVideoCaptionExpanded) {
+            videoCaptionMore.text = itemView.context.getString(R.string.feed_caption_less)
+            videoCaptionMore.isVisible = true
+            return
+        }
+        val layout = videoCaption.layout
+        val isEllipsized = layout != null &&
+            layout.lineCount > 0 &&
+            layout.getEllipsisCount(layout.lineCount - 1) > 0
+        videoCaptionMore.isVisible = isEllipsized
+        if (isEllipsized) {
+            videoCaptionMore.text = itemView.context.getString(R.string.feed_caption_more)
         }
     }
 
@@ -168,5 +233,20 @@ class CreatorPageViewHolder(
                 if (i == selected) 0xFFFFFFFF.toInt() else 0x80FFFFFF.toInt()
             )
         }
+    }
+
+    private fun applyDotIndicatorInsets() {
+        if (dotInsetListenerAttached) return
+        dotInsetListenerAttached = true
+        ViewCompat.setOnApplyWindowInsetsListener(dotIndicator) { view, insets ->
+            val bottomInset = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.navigationBars()).bottom
+            val lp = view.layoutParams as? ViewGroup.MarginLayoutParams
+            if (lp != null) {
+                lp.bottomMargin = baseDotBottomMargin + bottomInset
+                view.layoutParams = lp
+            }
+            insets
+        }
+        ViewCompat.requestApplyInsets(dotIndicator)
     }
 }

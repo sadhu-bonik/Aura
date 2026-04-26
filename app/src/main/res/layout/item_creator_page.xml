@@ -16,71 +16,75 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="96dp"
+        android:layout_marginBottom="48dp"
         android:orientation="horizontal"
         android:visibility="gone" />
 
     <!-- Metadata overlay pinned to bottom -->
     <LinearLayout
+        android:id="@+id/feed_metadata_overlay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginEnd="68dp"
+        android:layout_marginBottom="32dp"
         android:orientation="vertical"
         android:paddingHorizontal="16dp"
-        android:paddingTop="32dp"
-        android:paddingBottom="24dp"
-        android:background="#20000000">
+        android:paddingTop="36dp"
+        android:paddingBottom="28dp">
 
         <!-- 1. Creator identity row: avatar + name — tappable for profile -->
         <LinearLayout
             android:id="@+id/creator_info_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/creator_avatar"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
-                android:contentDescription="@string/feed_creator_avatar" />
+                android:contentDescription="@string/feed_creator_avatar"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
 
             <TextView
                 android:id="@+id/creator_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="@font/manrope_bold"
+                android:maxLines="1"
                 android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- 2. Title -->
+        <!-- 2. Caption -->
         <TextView
-            android:id="@+id/tv_video_title"
+            android:id="@+id/tv_video_caption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:maxLines="1"
             android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
             android:visibility="gone" />
 
-        <!-- 3. Description -->
         <TextView
-            android:id="@+id/tv_video_description"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_video_caption_more"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textColor="#CCFFFFFF"
-            android:textSize="13sp"
-            android:maxLines="3"
-            android:ellipsize="end"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="2dp"
+            android:text="@string/feed_caption_more"
+            android:textColor="@color/colorPrimary"
+            android:textSize="11sp"
             android:visibility="gone" />
 
     </LinearLayout>

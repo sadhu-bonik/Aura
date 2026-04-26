@@ -11,12 +11,25 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:translationY="@dimen/bottom_nav_feed_overlap"
         app:defaultNavHost="false"
         app:navGraph="@navigation/nav_home"
         app:layout_constraintBottom_toTopOf="@id/bottom_nav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Upward purple glow: simulates box-shadow 0 -8px 32px rgba(86,32,224,0.08) from design -->
+    <View
+        android:id="@+id/nav_shadow_glow"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:alpha="0.5"
+        android:background="@drawable/bg_nav_shadow_glow"
+        android:translationY="24dp"
+        app:layout_constraintBottom_toTopOf="@id/bottom_nav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Bottom Navigation Bar — glass panel, rounded top corners (No-Line Rule: tonal, no divider stroke) -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -25,9 +38,13 @@
         android:layout_height="@dimen/bottom_nav_height"
         android:background="@drawable/bg_glass_bottom_nav"
         app:itemActiveIndicatorStyle="@style/Widget.Aura.BottomNav.ActiveIndicator"
+        app:itemIconSize="24dp"
         app:itemIconTint="@color/color_nav_item"
+        app:itemPaddingBottom="10dp"
+        app:itemPaddingTop="10dp"
+        app:itemRippleColor="@android:color/transparent"
         app:itemTextColor="@color/color_nav_item"
-        app:labelVisibilityMode="labeled"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 

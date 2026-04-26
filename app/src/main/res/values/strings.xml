@@ -7,6 +7,8 @@
     <string name="feed_error">Couldn\'t load the feed. Pull down or try again later.</string>
     <string name="feed_video_error">This video couldn\'t play.</string>
     <string name="feed_creator_avatar">Creator avatar</string>
+    <string name="feed_caption_more">more</string>
+    <string name="feed_caption_less">less</string>
 
     <!-- Active deals / DM window -->
     <string name="title_active_deals">Active Deals</string>

@@ -10,7 +10,7 @@
         android:title="@string/tab_deals" />
     <item
         android:id="@+id/navigation_feed"
-        android:icon="@drawable/ic_nav_feed"
+        android:icon="@drawable/ic_nav_home"
         android:title="@string/tab_feed" />
     <item
         android:id="@+id/navigation_search"

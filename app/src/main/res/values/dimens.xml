@@ -20,7 +20,7 @@
 
     <dimen name="btn_height">52dp</dimen> <dimen name="button_height">52dp</dimen> <dimen name="input_height">56dp</dimen>
     <dimen name="top_app_bar_height">64dp</dimen>
-    <dimen name="bottom_nav_height">80dp</dimen> <dimen name="avatar_sm">32dp</dimen>
+    <dimen name="bottom_nav_height">96dp</dimen> <dimen name="bottom_nav_corner_radius">44dp</dimen> <dimen name="bottom_nav_feed_overlap">44dp</dimen> <dimen name="avatar_sm">32dp</dimen>
     <dimen name="avatar_md">48dp</dimen>
     <dimen name="avatar_lg">80dp</dimen>
     <dimen name="avatar_xl">160dp</dimen> </resources>

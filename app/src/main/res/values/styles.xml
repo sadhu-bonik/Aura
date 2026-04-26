@@ -263,9 +263,9 @@
     </style>
 
     <style name="Widget.Aura.BottomNav.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/colorSurfaceContainerHigh</item>
+        <item name="android:color">@color/colorSurfaceContainerHighest</item>
         <item name="android:width">56dp</item>
-        <item name="android:height">32dp</item>
+        <item name="android:height">56dp</item>
         <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
         <item name="marginHorizontal">8dp</item>
     </style>
