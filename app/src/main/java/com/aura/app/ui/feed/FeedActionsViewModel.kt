@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.aura.app.data.repository.ShortlistRepository
+import com.aura.app.utils.Constants
+import com.aura.app.utils.StubSession
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +40,13 @@ class FeedActionsViewModel(
         checkShortlistStatus()
     }
 
+    fun getCurrentCreatorId(): String? = currentCreatorId
+
+    fun getCurrentUserId(): String? {
+        if (Constants.USE_STUBS) return StubSession.userId()
+        return auth.currentUser?.uid
+    }
+
     fun toggleShortlist() {
         val uid = auth.currentUser?.uid ?: return
         val creatorId = currentCreatorId ?: return
@@ -50,6 +59,10 @@ class FeedActionsViewModel(
     }
 
     private fun loadUserRole() {
+        if (Constants.USE_STUBS) {
+            _isBrand.value = StubSession.role() == Constants.ROLE_BRAND
+            return
+        }
         val uid = auth.currentUser?.uid ?: return
         viewModelScope.launch {
             val role = withContext(Dispatchers.IO) {

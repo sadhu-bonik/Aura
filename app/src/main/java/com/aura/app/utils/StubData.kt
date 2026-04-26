@@ -32,6 +32,49 @@ object StubData {
         ),
     )
 
+    val campaigns = listOf(
+        com.aura.app.data.model.Campaign(
+            campaignId = "camp_001",
+            brandId = BRAND_ID_NOVA,
+            title = "Summer Glow 2024",
+            description = "Promoting new skincare line",
+            deliverables = listOf("1x Reel", "2x Stories"),
+            budgetMin = 2000,
+            budgetMax = 5000,
+            createdAt = ts(1000)
+        ),
+        com.aura.app.data.model.Campaign(
+            campaignId = "camp_002",
+            brandId = BRAND_ID_NOVA,
+            title = "Tech Innovators Launch",
+            description = "Sponsorship for gadget reviewers",
+            deliverables = listOf("3x YouTube Integration"),
+            budgetMin = 8500,
+            budgetMax = 12000,
+            createdAt = ts(2000)
+        ),
+        com.aura.app.data.model.Campaign(
+            campaignId = "camp_003",
+            brandId = BRAND_ID_NOVA,
+            title = "Wellness Week Drive",
+            description = "Mental health app awareness",
+            deliverables = listOf("5x Static Posts"),
+            budgetMin = 1500,
+            budgetMax = 3000,
+            createdAt = ts(3000)
+        ),
+        com.aura.app.data.model.Campaign(
+            campaignId = "camp_004",
+            brandId = BRAND_ID_APEX,
+            title = "Urban Explorer SS24",
+            description = "High-end apparel showcase",
+            deliverables = listOf("2x Reels"),
+            budgetMin = 4000,
+            budgetMax = 6500,
+            createdAt = ts(4000)
+        )
+    )
+
     val deals = listOf(
         // ── Active (accepted + chatUnlocked) ──────────────────────────────────
         Deal(

@@ -122,6 +122,15 @@ class UserRepository(
      * Retrieves a complete user profile from Firestore.
      */
     suspend fun getUserProfile(userId: String): User? {
+        if (Constants.USE_STUBS) {
+            val lite = StubData.users[userId] ?: return null
+            return User(
+                userId = lite.userId,
+                displayName = lite.displayName,
+                profileImageUrl = lite.profileImageUrl,
+                role = if (userId == StubData.CREATOR_ID) "creator" else "brand"
+            )
+        }
         return try {
             val doc = firestore.collection(COLLECTION).document(userId).get().await()
             if (!doc.exists()) return null

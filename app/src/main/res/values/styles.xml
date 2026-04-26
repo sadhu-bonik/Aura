@@ -334,4 +334,18 @@
         <item name="cornerSizeBottomRight">0dp</item>
     </style>
 
+    <style name="Theme.Aura.BottomSheetDialog.SelectCampaign" parent="Theme.Aura.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.Aura.BottomSheet.SelectCampaign</item>
+    </style>
+
+    <style name="Widget.Aura.BottomSheet.SelectCampaign" parent="Widget.Aura.BottomSheet">
+        <item name="backgroundTint">@color/colorSurface</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Aura.BottomSheet.SelectCampaign</item>
+    </style>
+
+    <style name="ShapeAppearance.Aura.BottomSheet.SelectCampaign" parent="ShapeAppearance.Aura.BottomSheet">
+        <item name="cornerSizeTopLeft">32dp</item>
+        <item name="cornerSizeTopRight">32dp</item>
+    </style>
+
 </resources>

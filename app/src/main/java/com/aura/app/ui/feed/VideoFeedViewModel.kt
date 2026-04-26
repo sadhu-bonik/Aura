@@ -8,7 +8,9 @@ import com.aura.app.data.model.CreatorFeedEntry
 import com.aura.app.data.repository.CreatorRankingRepository
 import com.aura.app.data.repository.PortfolioRepository
 import com.aura.app.data.repository.UserRepository
+import com.aura.app.utils.Constants
 import com.aura.app.utils.SessionManager
+import com.aura.app.utils.StubSession
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,7 +49,11 @@ class VideoFeedViewModel(
         viewModelScope.launch {
             _state.value = FeedUiState.Loading
 
-            val currentUserId = sessionManager.getUserId()
+            val currentUserId = if (Constants.USE_STUBS) {
+                StubSession.userId()
+            } else {
+                sessionManager.getUserId()
+            }
             if (currentUserId == null) {
                 _state.value = FeedUiState.Error("Not signed in")
                 return@launch
@@ -107,7 +113,12 @@ class VideoFeedViewModel(
         val existingCreatorIds = current.map { it.creatorId }.toSet()
 
         viewModelScope.launch {
-            val currentUserId = sessionManager.getUserId() ?: return@launch
+            val currentUserId = if (Constants.USE_STUBS) {
+                StubSession.userId()
+            } else {
+                sessionManager.getUserId()
+            }
+            if (currentUserId == null) return@launch
             try {
                 val moreEntries = portfolioRepository.getDiscoveryFeed(
                     excludeUserId = currentUserId,

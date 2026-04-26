@@ -13,7 +13,9 @@ import com.aura.app.data.model.User
 import com.aura.app.data.repository.PortfolioRepository
 import com.aura.app.data.repository.StorageRepository
 import com.aura.app.data.repository.UserRepository
+import com.aura.app.utils.Constants
 import com.aura.app.utils.SessionManager
+import com.aura.app.utils.StubSession
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +32,9 @@ sealed class ProfileUiState {
         val creatorProfile: CreatorProfile? = null,
         val brandProfile: BrandProfile? = null,
         val portfolio: List<PortfolioItem> = emptyList(),
-        val isOwner: Boolean = true
+        val isOwner: Boolean = true,
+        val viewerRole: String? = null,
+        val viewerId: String? = null
     ) : ProfileUiState()
     data class Error(val message: String) : ProfileUiState()
 }
@@ -71,7 +75,13 @@ class ProfileViewModel(
     fun loadProfile(creatorId: String? = null) {
         viewModelScope.launch {
             _state.value = ProfileUiState.Loading
-            val currentUserId = sessionManager.getUserId()
+            
+            val currentUserId = if (Constants.USE_STUBS) {
+                StubSession.userId()
+            } else {
+                sessionManager.getUserId()
+            }
+
             if (currentUserId == null) {
                 _state.value = ProfileUiState.Error("Not signed in")
                 return@launch
@@ -100,11 +110,15 @@ class ProfileViewModel(
                 }
             }
 
+            // Fetch viewer's role to determine if they can send a deal
+            val viewerUser = userRepository.getUserProfile(currentUserId)
+            val viewerRole = viewerUser?.role
+
             // Show the user info immediately, then stream portfolio items
-            _state.value = ProfileUiState.Success(user, creatorProfile, brandProfile, emptyList(), isOwner)
+            _state.value = ProfileUiState.Success(user, creatorProfile, brandProfile, emptyList(), isOwner, viewerRole, currentUserId)
 
             portfolioRepository.getCreatorPortfolio(targetId).collect { portfolio ->
-                _state.value = ProfileUiState.Success(user, creatorProfile, brandProfile, portfolio, isOwner)
+                _state.value = ProfileUiState.Success(user, creatorProfile, brandProfile, portfolio, isOwner, viewerRole, currentUserId)
             }
         }
     }

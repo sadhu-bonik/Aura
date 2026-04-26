@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="@color/colorBackground"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
     <!-- Fragment container for the tabs -->
     <androidx.fragment.app.FragmentContainerView
@@ -42,6 +44,8 @@
         app:itemIconTint="@color/color_nav_item"
         app:itemPaddingBottom="10dp"
         app:itemPaddingTop="10dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         app:itemRippleColor="@android:color/transparent"
         app:itemTextColor="@color/color_nav_item"
         app:labelVisibilityMode="unlabeled"

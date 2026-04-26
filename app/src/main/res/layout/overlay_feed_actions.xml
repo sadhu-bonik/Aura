@@ -4,70 +4,54 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="end|bottom"
-    android:layout_marginEnd="12dp"
-    android:layout_marginBottom="16dp"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
     <ImageButton
         android:id="@+id/btn_shortlist"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="12dp"
         android:background="@drawable/bg_feed_action_button"
         android:contentDescription="@string/action_shortlist"
-        android:padding="16dp"
+        android:padding="13dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_shortlist_outline"
         android:tint="@color/colorOnSurface" />
 
-    <TextView
-        android:id="@+id/label_shortlist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="14dp"
-        android:text="@string/action_shortlist"
-        android:textColor="@color/colorOnSurface"
-        android:textSize="10sp" />
+    <FrameLayout
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="12dp">
 
-    <ImageButton
-        android:id="@+id/btn_deal"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:background="@drawable/bg_feed_action_button_accent"
-        android:contentDescription="@string/action_deal"
-        android:padding="16dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_deals"
-        android:tint="@color/colorPrimary" />
+        <View
+            android:id="@+id/deal_glow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0"
+            android:background="@drawable/bg_deal_glow" />
 
-    <TextView
-        android:id="@+id/label_deal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="14dp"
-        android:text="@string/action_deal"
-        android:textColor="@color/colorOnSurface"
-        android:textSize="10sp" />
+        <ImageButton
+            android:id="@+id/btn_deal"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_deal_button"
+            android:contentDescription="@string/action_deal"
+            android:padding="14dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_nav_deals"
+            android:tint="@color/colorPrimary" />
+    </FrameLayout>
 
     <ImageButton
         android:id="@+id/btn_more"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:background="@drawable/bg_feed_action_button"
         android:contentDescription="@string/action_share"
-        android:padding="16dp"
+        android:padding="13dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_feed_share"
         android:tint="@color/colorOnSurface" />
-
-    <TextView
-        android:id="@+id/label_more"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="@string/action_share"
-        android:textColor="@color/colorOnSurface"
-        android:textSize="10sp" />
 </LinearLayout>

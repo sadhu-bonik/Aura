@@ -22,6 +22,7 @@ import com.aura.app.databinding.FragmentProfileBinding
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.aura.app.R
+import com.aura.app.ui.feed.SelectCampaignBottomSheet
 import kotlinx.coroutines.launch
 
 
@@ -261,6 +262,15 @@ class ProfileFragment : Fragment() {
 
                 binding.btnEditProfile.visibility =
                     if (state.isOwner) View.VISIBLE else View.GONE
+
+                binding.btnSendDeal.visibility =
+                    if (!state.isOwner && state.viewerRole == "brand" && user.role == "creator") View.VISIBLE else View.GONE
+
+                binding.btnSendDeal.setOnClickListener {
+                    val viewerId = state.viewerId ?: return@setOnClickListener
+                    SelectCampaignBottomSheet.newInstance(viewerId, user.userId)
+                        .show(childFragmentManager, SelectCampaignBottomSheet.TAG)
+                }
 
                 binding.btnAddPortfolio.visibility =
                     if (state.isOwner && !isBrand) View.VISIBLE else View.GONE
