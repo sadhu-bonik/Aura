@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.aura.app.R
 import com.aura.app.databinding.FragmentChatBinding
 import com.aura.app.utils.Constants
-import com.aura.app.utils.StubSession
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 
 class ChatFragment : Fragment() {
 
@@ -33,6 +33,7 @@ class ChatFragment : Fragment() {
     private var hasShownReviewPrompt = false
 
     private val dealId: String by lazy { arguments?.getString("dealId") ?: "" }
+    private val currentUserId: String by lazy { FirebaseAuth.getInstance().currentUser?.uid ?: "" }
 
     private val pickMedia = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
@@ -51,7 +52,7 @@ class ChatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         messageAdapter = MessageAdapter(
-            currentUserId = StubSession.userId(),
+            currentUserId = currentUserId,
             onVideoClick = { videoUrl ->
                 findNavController().navigate(
                     R.id.action_chatFragment_to_videoPlayerFragment,
@@ -81,8 +82,8 @@ class ChatFragment : Fragment() {
 
         binding.btnSend.setOnClickListener {
             val content = binding.etMessage.text?.toString() ?: return@setOnClickListener
-            val receiverId = viewModel.resolveReceiverId(StubSession.userId())
-            viewModel.sendMessage(content, StubSession.userId(), receiverId)
+            val receiverId = viewModel.resolveReceiverId(currentUserId)
+            viewModel.sendMessage(content, currentUserId, receiverId)
             binding.etMessage.text?.clear()
         }
 
@@ -107,19 +108,19 @@ class ChatFragment : Fragment() {
         }
 
         observeViewModel()
-        viewModel.load(dealId, StubSession.userId())
+        viewModel.load(dealId, currentUserId)
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.markAsRead(StubSession.userId())
+        viewModel.markAsRead(currentUserId)
     }
 
     private fun handleAttachment(uri: Uri) {
         val mimeType = requireContext().contentResolver.getType(uri) ?: "application/octet-stream"
         val fileName = resolveFileName(uri)
-        val receiverId = viewModel.resolveReceiverId(StubSession.userId())
-        viewModel.sendAttachment(uri, mimeType, fileName, StubSession.userId(), receiverId)
+        val receiverId = viewModel.resolveReceiverId(currentUserId)
+        viewModel.sendAttachment(uri, mimeType, fileName, currentUserId, receiverId)
     }
 
     private fun resolveFileName(uri: Uri): String =
@@ -152,7 +153,7 @@ class ChatFragment : Fragment() {
                 .into(binding.ivOtherAvatar)
 
             messageAdapter = MessageAdapter(
-                currentUserId = StubSession.userId(),
+                currentUserId = currentUserId,
                 senderAvatarUrl = user?.profileImageUrl,
                 onVideoClick = { videoUrl ->
                     findNavController().navigate(
@@ -207,11 +208,10 @@ class ChatFragment : Fragment() {
             binding.layoutEmpty.isVisible = items.isEmpty() && viewModel.isLoading.value != true
             binding.rvMessages.isVisible = items.isNotEmpty()
 
-            val currentUserId = StubSession.userId()
-            val hasUnread = items.any { 
-                it is ChatListItem.RegularMessage && 
-                it.message.receiverId == currentUserId && 
-                !it.message.isRead 
+            val hasUnread = items.any {
+                it is ChatListItem.RegularMessage &&
+                it.message.receiverId == currentUserId &&
+                !it.message.isRead
             }
             if (hasUnread) {
                 viewModel.markAsRead(currentUserId)
@@ -227,7 +227,7 @@ class ChatFragment : Fragment() {
     }
 
     private fun updateClosedSubtitle(deal: com.aura.app.data.model.Deal) {
-        val myId = StubSession.userId()
+        val myId = currentUserId
         val subtitle = when {
             deal.status == Constants.STATUS_COMPLETED ->
                 getString(R.string.conversation_closed_completed)

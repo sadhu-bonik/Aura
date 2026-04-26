@@ -14,9 +14,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.aura.app.R
+import com.aura.app.data.repository.UserRepository
 import com.aura.app.databinding.FragmentDealDashboardBinding
 import com.aura.app.utils.Constants
-import com.aura.app.utils.StubSession
 import com.aura.app.utils.rootNavController
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
@@ -77,12 +77,14 @@ class DealDashboardFragment : Fragment() {
         viewModel.completedDeals.observe(viewLifecycleOwner) { items ->
             binding.tvStatCompleted.text = items.size.toString().padStart(2, '0')
         }
+        viewModel.userRole.observe(viewLifecycleOwner) { applyRoleLabels() }
 
         viewLifecycleOwner.lifecycleScope.launch {
             reviewViewModel.pendingReviewDeal.filterNotNull().collect { deal ->
                 reviewViewModel.markReviewPromptShown(deal.dealId)
-                val otherPartyId = if (StubSession.role() == Constants.ROLE_CREATOR) deal.brandId else deal.creatorId
-                val otherParty = com.aura.app.utils.StubData.users[otherPartyId] ?: return@collect
+                val role = viewModel.userRole.value ?: Constants.ROLE_CREATOR
+                val otherPartyId = if (role == Constants.ROLE_CREATOR) deal.brandId else deal.creatorId
+                val otherParty = UserRepository().getUserLite(otherPartyId) ?: return@collect
                 ReviewFlow.newInstance(deal.dealId, otherPartyId, otherParty.displayName, otherParty.profileImageUrl)
                     .show(childFragmentManager, "review_flow")
             }
@@ -95,7 +97,9 @@ class DealDashboardFragment : Fragment() {
     }
 
     private fun applyRoleLabels() {
-        val isBrand = StubSession.role() == Constants.ROLE_BRAND
+        if (_binding == null) return
+        val role = viewModel.userRole.value
+        val isBrand = role == Constants.ROLE_BRAND
         binding.btnPillPending.text = getString(
             if (isBrand) R.string.tab_sent_short else R.string.tab_pending_short
         )

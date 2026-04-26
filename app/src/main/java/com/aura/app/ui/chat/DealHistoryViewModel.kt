@@ -8,8 +8,8 @@ import com.aura.app.data.model.Deal
 import com.aura.app.data.repository.DealRepository
 import com.aura.app.data.repository.UserRepository
 import com.aura.app.utils.Constants
-import com.aura.app.utils.StubSession
-import com.aura.app.utils.StubState
+import com.aura.app.utils.CurrentUser
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -28,6 +28,9 @@ class DealHistoryViewModel(
     private val _isLoading = MutableLiveData(true)
     val isLoading: LiveData<Boolean> = _isLoading
 
+    private val _userRole = MutableLiveData<String?>(null)
+    val userRole: LiveData<String?> = _userRole
+
     private var loadJob: Job? = null
 
     init {
@@ -36,26 +39,22 @@ class DealHistoryViewModel(
 
     fun load() {
         loadJob?.cancel()
-        val userId = StubSession.userId()
-        val role = StubSession.role()
         _isLoading.value = true
 
-        if (Constants.USE_STUBS) {
-            loadJob = viewModelScope.launch {
-                StubState.dealsFlow.collect { deals ->
-                    val filtered = deals.filter { it.creatorId == userId || it.brandId == userId }
-                    partition(filtered, role)
-                    _isLoading.value = false
-                }
-            }
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        if (uid == null) {
+            _isLoading.value = false
             return
         }
 
         loadJob = viewModelScope.launch {
+            val role = CurrentUser.role().ifEmpty { Constants.ROLE_CREATOR }
+            _userRole.value = role
+
             val flow = if (role == Constants.ROLE_CREATOR) {
-                dealRepository.getDealsForCreator(userId)
+                dealRepository.getDealsForCreator(uid)
             } else {
-                dealRepository.getDealsForBrand(userId)
+                dealRepository.getDealsForBrand(uid)
             }
 
             flow.catch { _isLoading.value = false }

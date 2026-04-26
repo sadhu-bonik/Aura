@@ -55,6 +55,10 @@ class PastDealsTabFragment : Fragment() {
         binding.rvDeals.layoutManager = LinearLayoutManager(requireContext())
         binding.rvDeals.adapter = adapter
 
+        historyViewModel.userRole.observe(viewLifecycleOwner) { role ->
+            adapter.setRole(role ?: Constants.ROLE_CREATOR)
+        }
+
         historyViewModel.isLoading.observe(viewLifecycleOwner) { loading ->
             binding.pbLoading.isVisible = loading
         }

@@ -4,15 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aura.app.R
 import com.aura.app.databinding.FragmentActiveDealsBinding
-import com.aura.app.utils.StubSession
+import com.aura.app.utils.Constants
+import com.aura.app.utils.CurrentUser
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
 class ActiveDealsFragment : Fragment() {
 
@@ -44,28 +47,18 @@ class ActiveDealsFragment : Fragment() {
 
         binding.tbActiveDeals.setNavigationOnClickListener { findNavController().navigateUp() }
 
-        binding.tbActiveDeals.inflateMenu(R.menu.menu_active_deals)
-        updateSwitchMenuTitle()
-        binding.tbActiveDeals.setOnMenuItemClickListener { menuItem ->
-            if (menuItem.itemId == R.id.action_switch_user) {
-                StubSession.switchToNext()
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.toast_switched_to_user, StubSession.displayName()),
-                    Toast.LENGTH_SHORT
-                ).show()
-                updateSwitchMenuTitle()
-                viewModel.load(StubSession.userId(), StubSession.role())
-                true
-            } else false
-        }
-
-        binding.btnRetry.setOnClickListener {
-            viewModel.load(StubSession.userId(), StubSession.role())
-        }
+        binding.btnRetry.setOnClickListener { reload() }
 
         observeViewModel()
-        viewModel.load(StubSession.userId(), StubSession.role())
+        reload()
+    }
+
+    private fun reload() {
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        viewLifecycleOwner.lifecycleScope.launch {
+            val role = CurrentUser.role().ifEmpty { Constants.ROLE_CREATOR }
+            viewModel.load(uid, role)
+        }
     }
 
     private fun observeViewModel() {
@@ -86,11 +79,6 @@ class ActiveDealsFragment : Fragment() {
             binding.rvActiveDeals.isVisible = !hasError
             binding.tvErrorMessage.text = error ?: getString(R.string.error_active_deals)
         }
-    }
-
-    private fun updateSwitchMenuTitle() {
-        val item = binding.tbActiveDeals.menu.findItem(R.id.action_switch_user) ?: return
-        item.title = getString(R.string.menu_switch_to_user, StubSession.nextUserDisplayName())
     }
 
     override fun onDestroyView() {

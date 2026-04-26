@@ -1,19 +1,16 @@
 package com.aura.app.ui.chat
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.aura.app.data.model.Deal
 import com.aura.app.data.model.UserLite
 import com.aura.app.data.repository.DealRepository
 import com.aura.app.data.repository.UserRepository
 import com.aura.app.utils.Constants
-import com.aura.app.utils.SessionManager
-import com.aura.app.utils.StubSession
-import com.aura.app.utils.StubState
+import com.aura.app.utils.CurrentUser
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -26,7 +23,6 @@ data class DealOfferItem(
 class DealDashboardViewModel(
     private val dealRepository: DealRepository = DealRepository(),
     private val userRepository: UserRepository = UserRepository(),
-    private val sessionManager: SessionManager? = null,
 ) : ViewModel() {
 
     private val _activeDeals = MutableLiveData<List<ActiveDealItem>>(emptyList())
@@ -50,6 +46,9 @@ class DealDashboardViewModel(
     private val _acceptEvent = MutableLiveData<String?>()
     val acceptEvent: LiveData<String?> = _acceptEvent
 
+    private val _userRole = MutableLiveData<String?>(null)
+    val userRole: LiveData<String?> = _userRole
+
     private var loadJob: Job? = null
 
     init {
@@ -58,32 +57,27 @@ class DealDashboardViewModel(
 
     fun load() {
         loadJob?.cancel()
-        val userId = StubSession.userId()
-        val role = StubSession.role()
         _isLoading.value = true
 
-        if (Constants.USE_STUBS) {
-            StubState.expireStaleDeals()
-            loadJob = viewModelScope.launch {
-                StubState.dealsFlow.collect { deals ->
-                    val filtered = deals.filter { it.creatorId == userId || it.brandId == userId }
-                    partition(filtered, userId, role)
-                    _isLoading.value = false
-                }
-            }
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        if (uid == null) {
+            _isLoading.value = false
             return
         }
 
         loadJob = viewModelScope.launch {
+            val role = CurrentUser.role().ifEmpty { Constants.ROLE_CREATOR }
+            _userRole.value = role
+
             val flow = if (role == Constants.ROLE_CREATOR) {
-                dealRepository.getDealsForCreator(userId)
+                dealRepository.getDealsForCreator(uid)
             } else {
-                dealRepository.getDealsForBrand(userId)
+                dealRepository.getDealsForBrand(uid)
             }
 
             flow.catch { _isLoading.value = false }
                 .collect { deals ->
-                    partition(deals, userId, role)
+                    partition(deals, uid, role)
                     _isLoading.value = false
                 }
         }
@@ -91,23 +85,14 @@ class DealDashboardViewModel(
 
     fun acceptDeal(dealId: String) {
         viewModelScope.launch {
-            if (Constants.USE_STUBS) {
-                StubState.updateDealStatus(dealId, Constants.STATUS_ACCEPTED, chatUnlocked = true)
-                _acceptEvent.value = dealId
-            } else {
-                dealRepository.acceptDeal(dealId)
-                    .onSuccess { _acceptEvent.value = dealId }
-            }
+            dealRepository.acceptDeal(dealId)
+                .onSuccess { _acceptEvent.value = dealId }
         }
     }
 
     fun rejectDeal(dealId: String) {
         viewModelScope.launch {
-            if (Constants.USE_STUBS) {
-                StubState.updateDealStatus(dealId, Constants.STATUS_REJECTED, chatUnlocked = false)
-            } else {
-                dealRepository.rejectDeal(dealId)
-            }
+            dealRepository.rejectDeal(dealId)
         }
     }
 

@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aura.app.R
 import com.aura.app.databinding.FragmentDealTabBinding
-import com.aura.app.utils.StubSession
 import com.aura.app.utils.rootNavController
 
 class ActiveDealsTabFragment : Fragment() {

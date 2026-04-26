@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.aura.app.R
 import com.aura.app.databinding.FragmentCampaignInfoBottomSheetBinding
 import com.aura.app.utils.Constants
-import com.aura.app.utils.StubSession
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 
 class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
 
@@ -24,6 +24,8 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
 
     private val viewModel: CampaignInfoViewModel by viewModels()
     private val mediaAdapter = SharedMediaAdapter()
+
+    private val currentUserId: String by lazy { FirebaseAuth.getInstance().currentUser?.uid ?: "" }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentCampaignInfoBottomSheetBinding.inflate(inflater, container, false)
@@ -40,7 +42,7 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
         binding.btnViewProfile.isEnabled = false
 
         val dealId = arguments?.getString(ARG_DEAL_ID) ?: return
-        viewModel.load(dealId, StubSession.userId())
+        viewModel.load(dealId, currentUserId)
 
         setupEditControls()
         setupActionButtons()
@@ -125,7 +127,7 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
             binding.ivEditTitle.isVisible = isEditable
             binding.ivEditDescription.isVisible = isEditable
 
-            val myId = StubSession.userId()
+            val myId = currentUserId
             val isAccepted = deal.status == Constants.STATUS_ACCEPTED
 
             when {
@@ -205,7 +207,7 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
                 .into(binding.ivProfilePhoto)
 
             val deal = viewModel.deal.value ?: return@observe
-            val myId = StubSession.userId()
+            val myId = currentUserId
             if (deal.status == Constants.STATUS_CANCELLED && deal.cancelledBy != myId && binding.tvReasonText.isVisible) {
                 val name = user?.displayName ?: "the other party"
                 val baseText = "Cancelled by $name"

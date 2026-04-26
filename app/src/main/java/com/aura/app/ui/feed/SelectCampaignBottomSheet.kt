@@ -28,6 +28,9 @@ class SelectCampaignBottomSheet : BottomSheetDialogFragment() {
 
     private lateinit var adapter: CampaignSelectAdapter
 
+    private var brandId: String = ""
+    private var creatorId: String = ""
+
     override fun getTheme(): Int = R.style.Theme_Aura_BottomSheetDialog_SelectCampaign
 
     override fun onCreateView(
@@ -42,8 +45,8 @@ class SelectCampaignBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val brandId = arguments?.getString(ARG_BRAND_ID) ?: ""
-        val creatorId = arguments?.getString(ARG_CREATOR_ID) ?: ""
+        brandId = arguments?.getString(ARG_BRAND_ID) ?: ""
+        creatorId = arguments?.getString(ARG_CREATOR_ID) ?: ""
 
         setupRecyclerView()
         setupListeners()
@@ -58,13 +61,46 @@ class SelectCampaignBottomSheet : BottomSheetDialogFragment() {
                 launch {
                     viewModel.selectedCampaignId.collect { selectedId ->
                         adapter.setSelectedCampaign(selectedId)
-                        binding.btnSendDeal.isEnabled = selectedId != null
+                        updateSendButtonEnabled()
+                    }
+                }
+                launch {
+                    viewModel.sendState.collect { sendState ->
+                        renderSendState(sendState)
                     }
                 }
             }
         }
 
         viewModel.loadCampaigns(brandId)
+    }
+
+    private fun updateSendButtonEnabled() {
+        val selected = viewModel.selectedCampaignId.value != null
+        val notSending = viewModel.sendState.value !is SendDealUiState.Sending
+        binding.btnSendDeal.isEnabled = selected && notSending
+    }
+
+    private fun renderSendState(state: SendDealUiState) {
+        when (state) {
+            SendDealUiState.Idle -> {
+                binding.btnSendDeal.text = "Send Deal"
+                updateSendButtonEnabled()
+            }
+            SendDealUiState.Sending -> {
+                binding.btnSendDeal.text = "Sending..."
+                binding.btnSendDeal.isEnabled = false
+            }
+            SendDealUiState.Sent -> {
+                Toast.makeText(requireContext(), "Deal sent!", Toast.LENGTH_SHORT).show()
+                dismiss()
+            }
+            is SendDealUiState.Error -> {
+                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
+                binding.btnSendDeal.text = "Send Deal"
+                updateSendButtonEnabled()
+            }
+        }
     }
 
     override fun onStart() {
@@ -99,11 +135,7 @@ class SelectCampaignBottomSheet : BottomSheetDialogFragment() {
             Toast.makeText(requireContext(), "Create campaign — coming soon", Toast.LENGTH_SHORT).show()
         }
         binding.btnSendDeal.setOnClickListener {
-            val selectedId = viewModel.selectedCampaignId.value
-            if (selectedId != null) {
-                Toast.makeText(requireContext(), "Deal sent for campaign: $selectedId", Toast.LENGTH_SHORT).show()
-                dismiss()
-            }
+            viewModel.sendDeal(brandId, creatorId)
         }
     }
 

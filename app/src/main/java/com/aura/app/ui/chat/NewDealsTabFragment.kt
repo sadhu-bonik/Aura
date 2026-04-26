@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aura.app.R
 import com.aura.app.databinding.FragmentDealTabBinding
+import com.aura.app.utils.Constants
 import com.aura.app.utils.rootNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -31,12 +32,6 @@ class NewDealsTabFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (com.aura.app.utils.StubSession.role() == com.aura.app.utils.Constants.ROLE_BRAND) {
-            binding.tvEmpty.setText(R.string.empty_sent_deals)
-        } else {
-            binding.tvEmpty.setText(R.string.empty_new_deals)
-        }
-
         adapter = DealOfferAdapter(
             mode = OfferCardMode.NEW_DEALS,
             onItemClick = { item ->
@@ -48,6 +43,15 @@ class NewDealsTabFragment : Fragment() {
         )
         binding.rvDeals.layoutManager = LinearLayoutManager(requireContext())
         binding.rvDeals.adapter = adapter
+
+        dashboardViewModel.userRole.observe(viewLifecycleOwner) { role ->
+            val resolved = role ?: Constants.ROLE_CREATOR
+            adapter.setRole(resolved)
+            binding.tvEmpty.setText(
+                if (resolved == Constants.ROLE_BRAND) R.string.empty_sent_deals
+                else R.string.empty_new_deals
+            )
+        }
 
         dashboardViewModel.isLoading.observe(viewLifecycleOwner) { loading ->
             binding.pbLoading.isVisible = loading

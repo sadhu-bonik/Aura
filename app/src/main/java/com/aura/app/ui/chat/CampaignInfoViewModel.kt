@@ -11,8 +11,6 @@ import com.aura.app.data.repository.DealRepository
 import com.aura.app.data.repository.MessageRepository
 import com.aura.app.data.repository.UserRepository
 import com.aura.app.utils.Constants
-import com.aura.app.utils.StubSession
-import com.aura.app.utils.StubState
 import kotlinx.coroutines.launch
 
 sealed class DealActionResult {
@@ -51,11 +49,7 @@ class CampaignInfoViewModel(
         this.dealId = dealId
         this.currentUserId = currentUserId
         viewModelScope.launch {
-            val deal = if (Constants.USE_STUBS) {
-                StubState.currentDeals().firstOrNull { it.dealId == dealId }
-            } else {
-                dealRepository.getDeal(dealId).getOrNull()
-            } ?: return@launch
+            val deal = dealRepository.getDeal(dealId).getOrNull() ?: return@launch
 
             _deal.value = deal
             val otherUserId = if (deal.creatorId == currentUserId) deal.brandId else deal.creatorId
@@ -79,45 +73,28 @@ class CampaignInfoViewModel(
 
     fun cancelDeal(reason: String) {
         viewModelScope.launch {
-            if (Constants.USE_STUBS) {
-                StubState.cancelDeal(dealId, cancelledBy = currentUserId, reason = reason)
-                _deal.value = _deal.value?.copy(
-                    status = Constants.STATUS_CANCELLED,
-                    chatUnlocked = true,
-                    cancelledBy = currentUserId,
-                    cancelReason = reason,
-                )
-                _actionResult.value = DealActionResult.Success
-            } else {
-                dealRepository.cancelDeal(dealId, cancelledBy = currentUserId, reason = reason)
-                    .onSuccess {
-                        _deal.value = _deal.value?.copy(
-                            status = Constants.STATUS_CANCELLED,
-                            chatUnlocked = true,
-                            cancelledBy = currentUserId,
-                            cancelReason = reason,
-                        )
-                        _actionResult.value = DealActionResult.Success
-                    }
-                    .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to cancel deal") }
-            }
+            dealRepository.cancelDeal(dealId, cancelledBy = currentUserId, reason = reason)
+                .onSuccess {
+                    _deal.value = _deal.value?.copy(
+                        status = Constants.STATUS_CANCELLED,
+                        chatUnlocked = true,
+                        cancelledBy = currentUserId,
+                        cancelReason = reason,
+                    )
+                    _actionResult.value = DealActionResult.Success
+                }
+                .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to cancel deal") }
         }
     }
 
     fun requestCompletion() {
         viewModelScope.launch {
-            if (Constants.USE_STUBS) {
-                StubState.requestCompletion(dealId, currentUserId)
-                _deal.value = _deal.value?.copy(completionRequestedBy = currentUserId)
-                _actionResult.value = DealActionResult.Success
-            } else {
-                dealRepository.requestCompletion(dealId, currentUserId)
-                    .onSuccess {
-                        _deal.value = _deal.value?.copy(completionRequestedBy = currentUserId)
-                        _actionResult.value = DealActionResult.Success
-                    }
-                    .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to request completion") }
-            }
+            dealRepository.requestCompletion(dealId, currentUserId)
+                .onSuccess {
+                    _deal.value = _deal.value?.copy(completionRequestedBy = currentUserId)
+                    _actionResult.value = DealActionResult.Success
+                }
+                .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to request completion") }
         }
     }
 

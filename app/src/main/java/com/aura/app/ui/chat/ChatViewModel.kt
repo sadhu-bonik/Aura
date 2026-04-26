@@ -14,11 +14,7 @@ import com.aura.app.data.repository.DealRepository
 import com.aura.app.data.repository.MessageRepository
 import com.aura.app.data.repository.UserRepository
 import com.aura.app.firebase.StorageManager
-import com.aura.app.utils.Constants
-import com.aura.app.utils.StubSession
-import com.aura.app.utils.StubState
 import com.google.firebase.Timestamp
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -77,7 +73,6 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
     private var dealId: String = ""
     private var currentUserId: String = ""
-    private var dealObserveJob: Job? = null
 
     private fun rebuildChatItems() {
         val confirmed = _firestoreMessages.value?.map { ChatListItem.RegularMessage(it) } ?: emptyList()
@@ -91,45 +86,6 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         _isLoading.value = true
         _error.value = null
 
-        if (Constants.USE_STUBS) {
-            dealObserveJob?.cancel()
-            dealObserveJob = viewModelScope.launch {
-                StubState.dealsFlow.collect { deals ->
-                    val deal = deals.firstOrNull { it.dealId == dealId }
-                    if (deal != null) {
-                        _deal.value = deal
-                        updateCompletionState(deal, currentUserId)
-                    }
-                }
-            }
-
-            val deal = StubState.currentDeals().firstOrNull { it.dealId == dealId }
-            if (deal == null) {
-                _error.value = "Deal not found"
-                _isLoading.value = false
-                return
-            }
-            _deal.value = deal
-            updateCompletionState(deal, currentUserId)
-
-            viewModelScope.launch {
-                val otherUserId = if (deal.creatorId == currentUserId) deal.brandId else deal.creatorId
-                _otherUser.value = userRepository.getUserLite(otherUserId)
-
-                messageRepository.streamMessages(dealId)
-                    .catch { e ->
-                        _error.value = e.message
-                        _isLoading.value = false
-                    }
-                    .collect { msgs ->
-                        _firestoreMessages.value = msgs
-                        rebuildChatItems()
-                        _isLoading.value = false
-                    }
-            }
-            return
-        }
-
         viewModelScope.launch {
             val deal = dealRepository.getDeal(dealId).getOrNull()
             if (deal == null) {
@@ -138,10 +94,10 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                 return@launch
             }
             _deal.value = deal
-            updateCompletionState(deal, currentUserId)
 
             val otherUserId = if (deal.creatorId == currentUserId) deal.brandId else deal.creatorId
             _otherUser.value = userRepository.getUserLite(otherUserId)
+            updateCompletionState(deal, currentUserId)
 
             messageRepository.streamMessages(dealId)
                 .catch { e ->
@@ -161,7 +117,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
             deal.completionRequestedBy.isEmpty() -> CompletionRequestState.None
             deal.completionRequestedBy == myUserId -> CompletionRequestState.OutgoingFromMe
             else -> {
-                val name = StubSession.displayName()
+                val name = _otherUser.value?.displayName ?: "the other party"
                 CompletionRequestState.IncomingFromOther(name)
             }
         }
@@ -170,18 +126,10 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     fun respondToCompletion(accepted: Boolean) {
         viewModelScope.launch {
             if (accepted) {
-                if (Constants.USE_STUBS) {
-                    StubState.updateDealStatus(dealId, Constants.STATUS_COMPLETED, chatUnlocked = true)
-                } else {
-                    dealRepository.confirmCompletion(dealId)
-                }
+                dealRepository.confirmCompletion(dealId)
             } else {
                 val systemText = getApplication<Application>().getString(R.string.system_msg_completion_declined)
-                if (Constants.USE_STUBS) {
-                    StubState.clearCompletionRequest(dealId)
-                } else {
-                    dealRepository.declineCompletion(dealId)
-                }
+                dealRepository.declineCompletion(dealId)
                 messageRepository.sendSystemMessage(dealId, systemText)
             }
         }
@@ -190,15 +138,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     fun sendMessage(content: String, senderId: String, receiverId: String) {
         if (content.isBlank() || _isUploading.value == true) return
         viewModelScope.launch {
-            val result = if (Constants.USE_STUBS) {
-                val res = messageRepository.sendMessageDirect(dealId, senderId, receiverId, content.trim())
-                if (res.isSuccess) {
-                    StubState.updateLastMessage(dealId, content.trim(), Timestamp.now())
-                }
-                res
-            } else {
-                messageRepository.sendMessage(dealId, senderId, receiverId, content.trim())
-            }
+            val result = messageRepository.sendMessage(dealId, senderId, receiverId, content.trim())
             result.onFailure {
                 addFailedMessage(ChatListItem.FailedMessage(
                     dealId = dealId,
@@ -213,11 +153,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     fun retryFailed(item: ChatListItem.FailedMessage) {
         removeFailedMessage(item.tempId)
         viewModelScope.launch {
-            val result = if (Constants.USE_STUBS) {
-                messageRepository.sendMessageDirect(item.dealId, item.senderId, item.receiverId, item.content)
-            } else {
-                messageRepository.sendMessage(item.dealId, item.senderId, item.receiverId, item.content)
-            }
+            val result = messageRepository.sendMessage(item.dealId, item.senderId, item.receiverId, item.content)
             result.onFailure {
                 addFailedMessage(item.copy(tempId = UUID.randomUUID().toString()))
             }
@@ -236,36 +172,15 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                             mimeType.startsWith("video/") -> "video"
                             else -> "file"
                         }
-                        val res = if (Constants.USE_STUBS) {
-                            val msgRes = messageRepository.sendMediaMessageDirect(
-                                dealId = dealId,
-                                senderId = senderId,
-                                receiverId = receiverId,
-                                downloadUrl = downloadUrl,
-                                mediaType = mediaType,
-                                fileName = fileName,
-                            )
-                            if (msgRes.isSuccess) {
-                                val preview = when (mediaType) {
-                                    "image" -> "Photo"
-                                    "video" -> "Video"
-                                    "file" -> fileName.ifBlank { "File" }
-                                    else -> "Attachment"
-                                }
-                                StubState.updateLastMessage(dealId, preview, Timestamp.now())
-                            }
-                            msgRes
-                        } else {
-                            messageRepository.sendMediaMessage(
-                                dealId = dealId,
-                                senderId = senderId,
-                                receiverId = receiverId,
-                                downloadUrl = downloadUrl,
-                                mediaType = mediaType,
-                                fileName = fileName,
-                            )
-                        }
-                        
+                        val res = messageRepository.sendMediaMessage(
+                            dealId = dealId,
+                            senderId = senderId,
+                            receiverId = receiverId,
+                            downloadUrl = downloadUrl,
+                            mediaType = mediaType,
+                            fileName = fileName,
+                        )
+
                         res.onFailure {
                             addFailedMessage(ChatListItem.FailedMessage(
                                 dealId = dealId,
@@ -293,9 +208,6 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
     fun markAsRead(currentUserId: String) {
         viewModelScope.launch {
-            if (Constants.USE_STUBS) {
-                StubState.clearUnreadCount(dealId, currentUserId)
-            }
             messageRepository.markMessagesAsRead(dealId, currentUserId)
         }
     }

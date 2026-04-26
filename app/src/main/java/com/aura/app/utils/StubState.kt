@@ -24,6 +24,10 @@ object StubState {
         }
     }
 
+    fun sendDeal(deal: Deal) {
+        _deals.value = _deals.value + deal
+    }
+
     fun requestCompletion(dealId: String, initiatorId: String) {
         _deals.value = _deals.value.map { deal ->
             if (deal.dealId == dealId) deal.copy(completionRequestedBy = initiatorId) else deal

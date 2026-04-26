@@ -11,7 +11,6 @@ import com.aura.app.R
 import com.aura.app.data.model.Deal
 import com.aura.app.databinding.ItemDealOfferBinding
 import com.aura.app.utils.Constants
-import com.aura.app.utils.StubSession
 import com.bumptech.glide.Glide
 
 enum class OfferCardMode { NEW_DEALS, COMPLETED, PAST }
@@ -26,6 +25,13 @@ class DealOfferAdapter(
 
     private var reviewsLoaded = false
     private var reviewsMap = emptyMap<String, com.aura.app.data.model.Review>()
+    private var role: String = Constants.ROLE_CREATOR
+
+    fun setRole(role: String) {
+        if (this.role == role) return
+        this.role = role
+        notifyItemRangeChanged(0, itemCount)
+    }
 
     fun setReviewsData(loaded: Boolean, map: Map<String, com.aura.app.data.model.Review>) {
         reviewsLoaded = loaded
@@ -38,7 +44,7 @@ class DealOfferAdapter(
 
         fun bind(item: DealOfferItem) {
             val deal = item.deal
-            val role = StubSession.role()
+            val role = this@DealOfferAdapter.role
 
             if (role == Constants.ROLE_CREATOR) {
                 binding.tvPrimary.text = item.otherUser?.displayName ?: "—"

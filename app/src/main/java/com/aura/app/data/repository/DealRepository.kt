@@ -42,6 +42,31 @@ class DealRepository(
         expireIfStale(deal)
     }
 
+    suspend fun sendDeal(
+        brandId: String,
+        creatorId: String,
+        campaignId: String,
+        title: String,
+        description: String,
+        budget: Long
+    ): Result<Unit> = runCatching {
+        val ref = deals.document()
+        val deal = Deal(
+            dealId = ref.id,
+            brandId = brandId,
+            creatorId = creatorId,
+            campaignId = campaignId,
+            title = title,
+            description = description,
+            budget = budget,
+            status = Constants.STATUS_PENDING,
+            chatUnlocked = false,
+            createdAt = Timestamp.now(),
+            updatedAt = Timestamp.now()
+        )
+        ref.set(deal).await()
+    }
+
     // Flips status → accepted AND chatUnlocked → true in one atomic transaction.
     suspend fun acceptDeal(dealId: String): Result<Unit> = runCatching {
         firestore.runTransaction { tx ->

@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import com.aura.app.R
 import com.aura.app.databinding.FragmentDealTabBinding
+import com.aura.app.utils.Constants
 
 class CompletedDealsTabFragment : Fragment() {
 
@@ -49,6 +50,10 @@ class CompletedDealsTabFragment : Fragment() {
         )
         binding.rvDeals.layoutManager = LinearLayoutManager(requireContext())
         binding.rvDeals.adapter = adapter
+
+        historyViewModel.userRole.observe(viewLifecycleOwner) { role ->
+            adapter.setRole(role ?: Constants.ROLE_CREATOR)
+        }
 
         historyViewModel.isLoading.observe(viewLifecycleOwner) { loading ->
             binding.pbLoading.isVisible = loading

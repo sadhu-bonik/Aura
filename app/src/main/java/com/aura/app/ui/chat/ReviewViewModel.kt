@@ -8,7 +8,7 @@ import com.aura.app.data.model.Review
 import com.aura.app.data.repository.DealRepository
 import com.aura.app.data.repository.ReviewRepository
 import com.aura.app.utils.Constants
-import com.aura.app.utils.StubSession
+import com.aura.app.utils.CurrentUser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,7 +29,7 @@ class ReviewViewModel(application: Application) : AndroidViewModel(application) 
 
     init {
         viewModelScope.launch {
-            val currentUserId = StubSession.userId()
+            val currentUserId = CurrentUser.uid()
             if (currentUserId.isNotEmpty()) {
                 reviewRepo.streamMyReviews(currentUserId).collect { map ->
                     _reviewsByDealId.value = map
@@ -41,7 +41,7 @@ class ReviewViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun checkPendingDeals(currentUserId: String, reviewsMap: Map<String, Review>) {
         viewModelScope.launch {
-            val isCreator = StubSession.role() == Constants.ROLE_CREATOR
+            val isCreator = CurrentUser.role() == Constants.ROLE_CREATOR
             val dealsFlow = if (isCreator) {
                 dealRepo.getDealsForCreator(currentUserId)
             } else {
@@ -62,7 +62,7 @@ class ReviewViewModel(application: Application) : AndroidViewModel(application) 
     fun submitRating(dealId: String, revieweeId: String, rating: Double): StateFlow<Result<String>?> {
         val resultFlow = MutableStateFlow<Result<String>?>(null)
         viewModelScope.launch {
-            val currentUserId = StubSession.userId()
+            val currentUserId = CurrentUser.uid()
             if (currentUserId.isNotEmpty()) {
                 val review = Review(
                     dealId = dealId,
@@ -89,10 +89,8 @@ class ReviewViewModel(application: Application) : AndroidViewModel(application) 
                 Result.success(Unit)
             }
             if (result.isSuccess) {
-                val userId = StubSession.userId()
-                if (Constants.USE_STUBS) {
-                    com.aura.app.utils.StubState.markUserReviewed(dealId, userId)
-                } else {
+                val userId = CurrentUser.uid()
+                if (userId.isNotEmpty()) {
                     dealRepo.markUserReviewed(dealId, userId)
                 }
             }
