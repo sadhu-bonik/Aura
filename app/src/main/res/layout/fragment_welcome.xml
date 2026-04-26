@@ -53,7 +53,6 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:letterSpacing="-0.03"
-                android:fontFamily="sans-serif-medium"
                 android:contentDescription="@string/cd_app_logo" />
         </LinearLayout>
 
@@ -79,7 +78,6 @@
                 android:textSize="34sp"
                 android:textStyle="bold"
                 android:letterSpacing="-0.03"
-                android:fontFamily="sans-serif-medium"
                 android:lineSpacingMultiplier="1.1"
                 android:layout_marginBottom="@dimen/space_md" />
 
@@ -139,14 +137,10 @@
             <!-- Continue Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_continue"
+                style="@style/Widget.Aura.Button.Primary.Gradient"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
                 android:text="@string/auth_continue_btn"
-                android:textColor="@color/colorOnPrimary"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:background="@drawable/bg_button_primary_gradient"
-                app:cornerRadius="26dp"
                 android:layout_marginBottom="@dimen/space_xl" />
 
         </LinearLayout>

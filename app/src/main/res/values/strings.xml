@@ -18,13 +18,25 @@
     <string name="toast_switched_to_user">Now acting as %s</string>
 
     <!-- Deal Dashboard -->
-    <string name="title_deal_dashboard">Deals</string>
+    <string name="title_deal_dashboard">Deal Dashboard</string>
+    <string name="subtitle_deal_dashboard">Track your collaborations</string>
     <string name="tab_active_deals">Active Deals</string>
+    <string name="tab_active_short">Active</string>
+    <string name="tab_pending_short">Pending</string>
+    <string name="tab_sent_short">Sent</string>
     <string name="tab_new_deals">New Deals</string>
     <string name="tab_sent_deals">Sent Deals</string>
+    <string name="dashboard_stat_active">Active Deals</string>
+    <string name="dashboard_stat_pending">Pending</string>
+    <string name="dashboard_stat_sent">Sent</string>
+    <string name="dashboard_stat_completed">Completed</string>
+    <string name="dashboard_action_switch_user">Switch user</string>
+    <string name="dashboard_action_filter">Filter deals</string>
+    <string name="dashboard_filter_coming_soon">Filters coming soon</string>
     <string name="empty_new_deals">No new offers yet</string>
     <string name="empty_sent_deals">No deals sent yet</string>
     <string name="title_deal_history">Deal History</string>
+    <string name="subtitle_deal_history">Review past collaborations</string>
     <string name="tab_completed_deals">Completed</string>
     <string name="tab_past_deals">Past</string>
     <string name="empty_completed_deals">No completed deals yet</string>
@@ -352,4 +364,10 @@
     <string name="toast_portfolio_full">Portfolio is full (10 videos max). Remove one first.</string>
     <string name="cd_remove_video">Remove video</string>
     <string name="cd_photo_preview">Profile photo preview</string>
+
+    <!-- Reusable include components (Task 2) -->
+    <string name="retry">Retry</string>
+    <string name="empty_default_title">Nothing here yet</string>
+    <string name="empty_default_subtitle">Pull to refresh or check back later.</string>
+    <string name="error_default_message">Something went wrong. Please try again.</string>
 </resources>

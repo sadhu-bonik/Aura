@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.aura.app.R
 import com.aura.app.databinding.FragmentDealHistoryBinding
-import com.google.android.material.tabs.TabLayoutMediator
 
 class DealHistoryFragment : Fragment() {
 
@@ -18,7 +21,7 @@ class DealHistoryFragment : Fragment() {
 
     val viewModel: DealHistoryViewModel by viewModels()
 
-    private var mediator: TabLayoutMediator? = null
+    private var pageChangeCallback: ViewPager2.OnPageChangeCallback? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDealHistoryBinding.inflate(inflater, container, false)
@@ -28,9 +31,9 @@ class DealHistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.tbHistory.setNavigationOnClickListener { findNavController().navigateUp() }
+        binding.btnBack.setOnClickListener { findNavController().navigateUp() }
 
-        binding.viewPagerHistory.adapter = object : androidx.viewpager2.adapter.FragmentStateAdapter(this) {
+        binding.viewPagerHistory.adapter = object : FragmentStateAdapter(this) {
             override fun getItemCount() = 2
             override fun createFragment(position: Int): Fragment = when (position) {
                 0 -> CompletedDealsTabFragment()
@@ -38,20 +41,45 @@ class DealHistoryFragment : Fragment() {
             }
         }
 
-        val labels = listOf(
-            getString(R.string.tab_completed_deals),
-            getString(R.string.tab_past_deals),
-        )
+        binding.btnPillCompleted.setOnClickListener { binding.viewPagerHistory.currentItem = 0 }
+        binding.btnPillPast.setOnClickListener { binding.viewPagerHistory.currentItem = 1 }
 
-        mediator = TabLayoutMediator(binding.tabLayoutHistory, binding.viewPagerHistory) { tab, position ->
-            tab.text = labels[position]
+        pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) = renderPillSelection(position)
         }
-        mediator!!.attach()
+        binding.viewPagerHistory.registerOnPageChangeCallback(pageChangeCallback!!)
+        renderPillSelection(0)
+    }
+
+    private fun renderPillSelection(position: Int) {
+        val ctx = requireContext()
+        val onContainer = ContextCompat.getColor(ctx, R.color.colorOnPrimaryContainer)
+        val onVariant = ContextCompat.getColor(ctx, R.color.colorOnSurfaceVariant)
+        val transparent = android.R.color.transparent
+        val bold = ResourcesCompat.getFont(ctx, R.font.manrope_bold)
+
+        if (position == 0) {
+            binding.btnPillCompleted.setBackgroundResource(R.drawable.bg_history_pill_selected)
+            binding.btnPillCompleted.setTextColor(onContainer)
+            binding.btnPillCompleted.typeface = bold
+
+            binding.btnPillPast.setBackgroundResource(transparent)
+            binding.btnPillPast.setTextColor(onVariant)
+            binding.btnPillPast.typeface = bold
+        } else {
+            binding.btnPillPast.setBackgroundResource(R.drawable.bg_history_pill_selected)
+            binding.btnPillPast.setTextColor(onContainer)
+            binding.btnPillPast.typeface = bold
+
+            binding.btnPillCompleted.setBackgroundResource(transparent)
+            binding.btnPillCompleted.setTextColor(onVariant)
+            binding.btnPillCompleted.typeface = bold
+        }
     }
 
     override fun onDestroyView() {
-        mediator?.detach()
-        mediator = null
+        pageChangeCallback?.let { binding.viewPagerHistory.unregisterOnPageChangeCallback(it) }
+        pageChangeCallback = null
         super.onDestroyView()
         _binding = null
     }

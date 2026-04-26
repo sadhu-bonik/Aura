@@ -1,5 +1,6 @@
 package com.aura.app.ui.chat
 
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +12,6 @@ import com.aura.app.R
 import com.aura.app.databinding.ItemActiveDealBinding
 import com.aura.app.utils.Constants
 import com.bumptech.glide.Glide
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class ActiveDealAdapter(
     private val onDealClick: (ActiveDealItem) -> Unit,
@@ -25,21 +24,21 @@ class ActiveDealAdapter(
             val deal = item.deal
             val ctx = binding.root.context
 
+            binding.tvOtherPartyName.text = item.otherUser?.displayName ?: "—"
             binding.tvDealTitle.text = deal.title
-            binding.tvOtherPartyName.text = ctx.getString(
-                R.string.label_deal_with,
-                item.otherUser?.displayName ?: "—"
-            )
-
-            binding.tvLastMessage.text = deal.lastMessageText.ifBlank {
-                ctx.getString(R.string.label_no_messages)
-            }
 
             binding.viewUnreadDot.isVisible = item.unreadCount > 0
 
-            deal.lastMessageTime?.toDate()?.let { date ->
-                binding.tvTimestamp.text = SimpleDateFormat("h:mm a", Locale.getDefault()).format(date)
-            }
+            val timeMs = deal.lastMessageTime?.toDate()?.time
+                ?: deal.updatedAt?.toDate()?.time
+            binding.tvTimestamp.text = if (timeMs != null) {
+                DateUtils.getRelativeTimeSpanString(
+                    timeMs,
+                    System.currentTimeMillis(),
+                    DateUtils.MINUTE_IN_MILLIS,
+                    DateUtils.FORMAT_ABBREV_RELATIVE
+                )
+            } else ""
 
             Glide.with(binding.ivAvatar)
                 .load(item.otherUser?.profileImageUrl)
@@ -54,8 +53,10 @@ class ActiveDealAdapter(
                 binding.chipStatus.setBackgroundResource(R.drawable.chip_status_accepted)
                 binding.chipStatus.setTextColor(ctx.getColor(R.color.colorPrimary))
                 binding.viewUnreadDot.isVisible = false
+                binding.tvTimestamp.visibility = View.GONE
             } else {
                 binding.chipStatus.visibility = View.GONE
+                binding.tvTimestamp.visibility = View.VISIBLE
             }
 
             binding.root.setOnClickListener { onDealClick(item) }

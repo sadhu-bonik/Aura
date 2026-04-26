@@ -1,0 +1,232 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#2d2b34",
+                        "primary-fixed": "#d6ccf9",
+                        "error": "#f97386",
+                        "tertiary-fixed": "#fdcbf2",
+                        "on-surface": "#e9e3ef",
+                        "outline-variant": "#494650",
+                        "inverse-surface": "#fdf8fe",
+                        "on-tertiary-container": "#654060",
+                        "inverse-primary": "#615a80",
+                        "surface-variant": "#27252d",
+                        "surface-tint": "#cac1ed",
+                        "error-dim": "#c44b5f",
+                        "outline": "#77747e",
+                        "on-secondary-fixed": "#413d51",
+                        "tertiary-fixed-dim": "#eebde3",
+                        "secondary-fixed-dim": "#d8d1ea",
+                        "on-error-container": "#ff97a3",
+                        "on-error": "#490013",
+                        "secondary-fixed": "#e6dff9",
+                        "surface-container": "#1a191f",
+                        "surface-container-lowest": "#000000",
+                        "on-primary": "#423b60",
+                        "surface-container-low": "#141318",
+                        "secondary": "#cac3dc",
+                        "on-secondary-fixed-variant": "#5d596e",
+                        "tertiary": "#ffdff6",
+                        "primary": "#cac1ed",
+                        "primary-dim": "#bcb3df",
+                        "surface": "#0f0e12",
+                        "surface-dim": "#0f0e12",
+                        "secondary-dim": "#bcb5ce",
+                        "tertiary-container": "#fdcbf2",
+                        "on-tertiary-fixed": "#512e4c",
+                        "on-primary-fixed": "#362f53",
+                        "primary-container": "#554d73",
+                        "on-primary-container": "#e7dfff",
+                        "on-secondary": "#423d52",
+                        "tertiary-dim": "#eebde3",
+                        "surface-container-highest": "#27252d",
+                        "on-surface-variant": "#aea9b5",
+                        "on-secondary-container": "#c3bcd5",
+                        "primary-fixed-dim": "#c8beea",
+                        "secondary-container": "#3d394d",
+                        "background": "#0f0e12",
+                        "inverse-on-surface": "#565459",
+                        "on-background": "#e9e3ef",
+                        "error-container": "#871c34",
+                        "on-tertiary-fixed-variant": "#704a6a",
+                        "on-primary-fixed-variant": "#534b71",
+                        "surface-container-high": "#201f26",
+                        "on-tertiary": "#6f4969"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "display": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-overlay {
+            backdrop-filter: blur(12px);
+            background-color: rgba(15, 14, 18, 0.7);
+        }
+        .bottom-sheet-gradient {
+            background: linear-gradient(135deg, #7a729a 0%, #554d73 100%);
+        }
+        .selected-glow {
+            box-shadow: 0 0 20px rgba(202, 193, 237, 0.15);
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #0f0e12;
+            overflow: hidden;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="text-on-background">
+<!-- Background Mock (Discovery Feed Screen 127) -->
+<div class="fixed inset-0 z-0">
+<div class="p-6 grid grid-cols-2 gap-4 opacity-40">
+<div class="h-64 rounded-lg bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="vibrant fashion editorial photography with high contrast lighting and bold designer clothing on a minimalist studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1iqANx1k6P71RUi6xwTDMGTfAJZjPuXYyMbS-kHIvrjF5_p405OqV82RLoNwizTjOWP9t3hXJ3pf2ts81OWZyBLbV_a78BUzgGc73Cf8Bvlx5HuPNEelVwjN2uxHfdhkKcMXjcLouK9hWcOfFVXabSag2QifqH8EIMUqKANKBeQ59qHwYmw4hzds3z1ny2DRVlY64G80MRkDisW7gIVKZ1G4vD-JQRq0LL3yHcYIoR57wdLOnYTcdlwne-OISbvVDnSgi3JG3uw" style="">
+</div>
+<div class="h-48 rounded-lg bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="minimalist tech product photography of a sleek smart watch with soft metallic reflections on a deep slate surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKtsDq84Or8klBBppznjQ22A80IcmUnSdpfbmLhpMedSEZOg_anrqbNv4LpCMWZlMaGrgq7WrcvEHotIYlwWB2n_Gkorwd2FPebecNBc_sy6-pEHIopTfDGgptucgomv_69URqFMyS9f2ipJINMK_PxRtCse2R-GIue5gQYvNBDHKUVOC6scgPN3ynWlBRxAsZOzneg4a2sVJJ4u7O3gA6AQR0gc-6eaZpC79Iv4aVxDMY_gCkaqX7UjwjzGWP3h3zIZyvCTOSiw" style="">
+</div>
+<div class="h-56 rounded-lg bg-surface-container overflow-hidden col-span-2">
+<img class="w-full h-full object-cover" data-alt="luxury boutique storefront interior with warm ambient lighting and modern architectural lines in a nocturnal urban setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUtnaKQiJEZXcFlkI9ijCSsemH28MjO7D6MdJzOzqMH9M86moRY-1Mx8uAVS6gLTRSCHmG_DdQmqFoYYJQrOLbId6ci2Jh08Bb5_3sxW6tLyzmI1976AzgCeJ5gkWyPf_gXZ9y9BQoPbQTZ6kuI9tBjI48djQlSbtZARHcvDIQS7kNuJM3vb2S9jeBpzr1wgT4sksWdk1-d6AX6pP06-9GfUaIfHgbG31MbUNUM4aEM5sgJKtQmXKwsLu90DYCxMIGqSd6I5yQFQ" style="">
+</div>
+<div class="h-64 rounded-lg bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="close up portrait of a model with ethereal makeup and shimmering jewelry under soft violet neon lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPHzElV4NuUnIh-lnQGVxaRoaF_po6ATxq7ptd1qCH5qgv_9bfEcZU6ZQQHpFkBCH-ScnjSdu1RGcv5ZnaS0OwQkaBVMRsqRrF6qPUuFmN05rSVigIE0-XMlB96VFvFf4NcdIl098l03DDiMTmwAr_5-YX4KZNJ3QeDope7eAEI9OvaioBApcOLvqXGqf8snBMbr88qF8XKpAs4LPw9-Ew0CIDhGT6BQMpq2xKp3SbZLnLFsYvoYeoHiu0iOeV4PEWAz_3x_RIVA" style="">
+</div>
+</div>
+</div>
+<!-- Blurred Backdrop -->
+<div class="fixed inset-0 z-10 glass-overlay"></div>
+<!-- Bottom Sheet Popup -->
+<div class="fixed bottom-0 left-0 right-0 z-50 h-[65%] flex flex-col bg-surface border-t border-outline-variant/15 rounded-t-[32px] shadow-2xl overflow-hidden">
+<!-- TopAppBar (Shared Component Logic) -->
+<header class="flex items-center justify-between px-6 h-16 w-full sticky top-0 bg-neutral-900/80 backdrop-blur-xl z-20">
+<div class="flex flex-col">
+<h1 class="text-xl font-bold text-neutral-50 font-manrope tracking-tight" style="">Select Campaign</h1>
+<p class="text-[11px] font-medium text-neutral-400 font-manrope" style="">Choose a campaign to send</p>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-neutral-800/80 transition-colors" style="">
+<span class="material-symbols-outlined text-neutral-400" style="">close</span>
+</button>
+</header>
+<!-- Drag Handle Indicator -->
+<div class="w-12 h-1.5 bg-outline-variant/30 rounded-full mx-auto mt-2 absolute top-0 left-1/2 -translate-x-1/2"></div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto px-6 py-4 space-y-4 pb-32">
+<!-- Selected Card -->
+<div class="relative p-5 rounded-lg bg-surface-container-high border-2 border-primary selected-glow transition-all">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="text-on-surface font-bold text-lg leading-tight" style="">Summer Glow 2024</h3>
+<p class="text-on-surface-variant text-sm mt-1" style="">Promoting new sncare line</p>
+</div>
+<div class="bg-primary-container text-on-primary-container px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider" style="">
+                        Selected
+                    </div>
+</div>
+<div class="flex items-center gap-4 mt-4">
+<div class="flex items-center gap-1.5 bg-surface-container-highest px-3 py-1.5 rounded-full">
+<span class="material-symbols-outlined text-sm text-primary" style="">movie</span>
+<span class="text-xs font-semibold text-on-surface" style="">1x Reel, 2x Stories</span>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-container-highest px-3 py-1.5 rounded-full">
+<span class="material-symbols-outlined text-sm text-primary" style="">payments</span>
+<span class="text-xs font-semibold text-on-surface" style="">$2000 - $5000</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="p-5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="text-on-surface font-semibold text-lg leading-tight" style="">Tech Innovators Launch</h3>
+<p class="text-on-surface-variant text-sm mt-1" style="">Sponsorship for gadget reviewers</p>
+</div>
+</div>
+<div class="flex items-center gap-4 mt-4">
+<div class="flex items-center gap-1.5 bg-surface-container px-3 py-1.5 rounded-full group-hover:bg-surface-container-high">
+<span class="material-symbols-outlined text-sm text-on-surface-variant" style="">video_library</span>
+<span class="text-xs font-semibold text-on-surface-variant" style="">3x YouTube Integration</span>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-container px-3 py-1.5 rounded-full group-hover:bg-surface-container-high">
+<span class="material-symbols-outlined text-sm text-on-surface-variant" style="">payments</span>
+<span class="text-xs font-semibold text-on-surface-variant" style="">$8500 - $12000</span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="p-5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="text-on-surface font-semibold text-lg leading-tight" style="">Wellness Week Drive</h3>
+<p class="text-on-surface-variant text-sm mt-1" style="">Mental health app awareness</p>
+</div>
+</div>
+<div class="flex items-center gap-4 mt-4">
+<div class="flex items-center gap-1.5 bg-surface-container px-3 py-1.5 rounded-full group-hover:bg-surface-container-high">
+<span class="material-symbols-outlined text-sm text-on-surface-variant" style="">photo_library</span>
+<span class="text-xs font-semibold text-on-surface-variant" style="">5x Static Posts</span>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-container px-3 py-1.5 rounded-full group-hover:bg-surface-container-high">
+<span class="material-symbols-outlined text-sm text-on-surface-variant" style="">payments</span>
+<span class="text-xs font-semibold text-on-surface-variant" style="">$1500 - $3000</span>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="p-5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="text-on-surface font-semibold text-lg leading-tight" style="">Urban Explorer SS24</h3>
+<p class="text-on-surface-variant text-sm mt-1" style="">High-end apparel showcase</p>
+</div>
+</div>
+<div class="flex items-center gap-4 mt-4">
+<div class="flex items-center gap-1.5 bg-surface-container px-3 py-1.5 rounded-full group-hover:bg-surface-container-high">
+<span class="material-symbols-outlined text-sm text-on-surface-variant" style="">movie</span>
+<span class="text-xs font-semibold text-on-surface-variant" style="">2x Reels</span>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-container px-3 py-1.5 rounded-full group-hover:bg-surface-container-high">
+<span class="material-symbols-outlined text-sm text-on-surface-variant" style="">payments</span>
+<span class="text-xs font-semibold text-on-surface-variant" style="">$4000 - $6500</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Fixed Actions at Bottom -->
+<div class="absolute bottom-0 left-0 right-0 p-6 bg-surface/90 backdrop-blur-md space-y-3">
+<button class="w-full h-14 bottom-sheet-gradient rounded-full text-on-primary font-bold text-base shadow-lg shadow-primary/20 active:scale-[0.98] transition-transform" style="">
+                Send Deal
+            </button>
+</div>
+</div>
+<!-- BottomNavBar (Shared Component Logic) - Hidden as per suppression rules for focused task -->
+</body></html>

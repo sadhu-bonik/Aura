@@ -1,0 +1,222 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Aura Deal History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#cac1ed",
+                        "on-primary": "#423b60",
+                        "on-secondary-fixed": "#413d51",
+                        "error": "#f97386",
+                        "primary-fixed": "#d6ccf9",
+                        "surface-container-high": "#201f26",
+                        "tertiary": "#ffdff6",
+                        "on-primary-fixed-variant": "#534b71",
+                        "error-dim": "#c44b5f",
+                        "surface-container-low": "#141318",
+                        "surface-bright": "#2d2b34",
+                        "surface": "#0f0e12",
+                        "tertiary-fixed-dim": "#eebde3",
+                        "on-tertiary-fixed-variant": "#704a6a",
+                        "primary-dim": "#bcb3df",
+                        "on-error": "#490013",
+                        "secondary-fixed-dim": "#d8d1ea",
+                        "tertiary-dim": "#eebde3",
+                        "on-secondary-fixed-variant": "#5d596e",
+                        "inverse-primary": "#615a80",
+                        "on-primary-container": "#e7dfff",
+                        "tertiary-container": "#fdcbf2",
+                        "secondary-container": "#3d394d",
+                        "on-secondary-container": "#c3bcd5",
+                        "on-background": "#e9e3ef",
+                        "surface-container-lowest": "#000000",
+                        "primary-fixed-dim": "#c8beea",
+                        "surface-tint": "#cac1ed",
+                        "background": "#0f0e12",
+                        "outline-variant": "#494650",
+                        "error-container": "#871c34",
+                        "outline": "#77747e",
+                        "surface-container": "#1a191f",
+                        "on-tertiary-container": "#654060",
+                        "on-error-container": "#ff97a3",
+                        "on-surface-variant": "#aea9b5",
+                        "secondary-fixed": "#e6dff9",
+                        "secondary-dim": "#bcb5ce",
+                        "surface-container-highest": "#27252d",
+                        "on-surface": "#e9e3ef",
+                        "inverse-on-surface": "#565459",
+                        "on-primary-fixed": "#362f53",
+                        "tertiary-fixed": "#fdcbf2",
+                        "secondary": "#cac3dc",
+                        "surface-dim": "#0f0e12",
+                        "primary-container": "#554d73",
+                        "surface-variant": "#27252d",
+                        "on-secondary": "#423d52",
+                        "on-tertiary-fixed": "#512e4c",
+                        "inverse-surface": "#fdf8fe",
+                        "on-tertiary": "#6f4969"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "display": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .aura-glass {
+            background: rgba(15, 14, 18, 0.8);
+            backdrop-filter: blur(24px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-neutral-900/80 backdrop-blur-xl flex justify-between items-center px-6 h-16 w-full shadow-none font-sans antialiased text-white tracking-tight">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-violet-500 cursor-pointer active:scale-95 duration-200" style="">menu</span>
+<h1 class="text-xl font-bold text-white" style="">Deal History</h1>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/30 active:scale-95 duration-200 cursor-pointer">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Close-up portrait of a professional woman with soft studio lighting and a clean minimalist background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhnKmFY5hE9sRfq4kyNlUd3MfyF8a6iQcBxwXIrpQ7UEhLkT_EYcGI8b1kMLz4TJmk2KLU5WH_yjhwjdCFULPpdRdhlWqCe4d-O-DJ4tOh1SlWHP_N82wbiYO1ACsc7Rl4PEOv5i4hXKN7Nt9npeA52G0I9qfv82mXNYmkvt0uRC7YQWOFJ7Uf5fT2UkS6K9BR6qrJFlKvNc7vDQxcYxlHt3zpjKoEio9W__S7cXeuxa6beENCDFtKS_O7crtRyg0YoYLtlHzPgJE" style="">
+</div>
+</header>
+<main class="pt-24 pb-32 px-6">
+<!-- Tabs -->
+<div class="flex items-center gap-2 mb-8 bg-surface-container-low p-1.5 rounded-full w-fit mx-auto shadow-inner">
+<button class="px-6 py-2.5 rounded-full text-sm font-medium text-neutral-500 hover:text-on-surface transition-colors" style="">Completed</button>
+<button class="px-6 py-2.5 rounded-full text-sm font-semibold bg-violet-600/20 text-violet-400 shadow-sm transition-all" style="">
+                Past Deals
+            </button>
+</div>
+<!-- History Content -->
+<div class="space-y-4">
+<!-- Expired Card -->
+<div class="group relative bg-surface-container-low rounded-lg p-5 hover:bg-surface-container transition-all duration-300 cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="Brand Logo" class="w-full h-full object-cover" data-alt="Minimalist luxury brand logo featuring geometric shapes on a dark matte background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMXdr1ajzwhV2vDbyX8lZgdIVY9u3AB2_jGDrAUEee-S-WeovHg-N-z7nRZZSKUYtBxE8tLeYtP0Fz_HGV38vuH0EsZlHXe7Lr8UDq1uMkNOKGTM4MhW2MQRVCb0iPXdvuqeVN7Sm-GBMZKQmi8Buwlbzt9--wccOFi4lgPrbVFdxVQMXg0bEBgJcWVki7XLsw80h_StDLhN4StpWfqiejhjy_vj7Lzd-OgfClvr4z91lwK1mcy7eUoX8I6HdKFnwMfl_qK2TxNtw" style="">
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold tracking-widest text-primary/60 uppercase" style="">Lumina Skincare</span>
+<h3 class="text-lg font-bold text-on-surface leading-tight" style="">Summer Glow Campaign</h3>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="px-3 py-1 rounded-full text-[10px] font-extrabold tracking-tighter bg-error/10 text-error border border-error/20" style="">EXPIRED</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform" style="">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Cancelled Card -->
+<div class="group relative bg-surface-container-low rounded-lg p-5 hover:bg-surface-container transition-all duration-300 cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="Brand Logo" class="w-full h-full object-cover" data-alt="Modern tech company office aesthetic with clean lines and soft blue ambient lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANVLgWCspACPDM1YQSGsgi6JFVANsXVzRxwI4eR6guB1-Uvi9lvJkWXwHNVpJWLTTr99HdmKxeg2NdFPb4RWDBPsCTKEIyqHw6YdqMqRJDQjoEPkV_LQATAtwZyOA1lWtcQuhPBCh3iCb3rfDQgYWWn85jQa92n1SOmm3hAIRopDQKzKNBDFHFp7VwFXC-eAXzn1-ITaxXxkVlQ6KIt4kY8Tm7L0eQ7AMCOOmLH3xkaaRxNf_3lYc-bXpCRAViEg9LmQap-B6Lvck" style="">
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold tracking-widest text-primary/60 uppercase" style="">Vantage Apparel</span>
+<h3 class="text-lg font-bold text-on-surface leading-tight" style="">Urban Nomad Collection</h3>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="px-3 py-1 rounded-full text-[10px] font-extrabold tracking-tighter bg-neutral-700/30 text-neutral-400 border border-neutral-600/30" style="">CANCELLED</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform" style="">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Declined Card -->
+<div class="group relative bg-surface-container-low rounded-lg p-5 hover:bg-surface-container transition-all duration-300 cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="Brand Logo" class="w-full h-full object-cover" data-alt="Close-up of a sleek designer sneaker with dramatic lighting against a dark moody studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3WmhkU1ySDlAcYpo8_ATEZ8F0WyFph4FHV2ZmKafUjmdJWUfa1uVO0ab9-v1kHBcAMrLgp0SkV84woTWzTnnIR66IICufyE10wEqad3pSvcsnpSIiqZ45XEpTIOa94ZUYbS9Jty7eR97Lyf2ZgawpurEeFO-_f_v-C8pi2tiM76uoLR0OBIYorH97fD8sO7zoZZOgUWSttM7H3_NXRQTZ61hL_CDzS1qod7fAdIesiR5_oCv-KG5nk7YhbIqb_ew1ZWCwTBhATcE" style="">
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold tracking-widest text-primary/60 uppercase" style="">Swift Athletics</span>
+<h3 class="text-lg font-bold text-on-surface leading-tight" style="">Marathon Series Launch</h3>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="px-3 py-1 rounded-full text-[10px] font-extrabold tracking-tighter bg-orange-500/10 text-orange-400 border border-orange-500/20" style="">DECLINED</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform" style="">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Expired Card 2 -->
+<div class="group relative bg-surface-container-low rounded-lg p-5 hover:bg-surface-container transition-all duration-300 cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="Brand Logo" class="w-full h-full object-cover" data-alt="Elegant fashion boutique interior with soft warm lighting and designer clothes on minimalist racks" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4Nc_UClsNBNSkAbuYgZefJMChTiGdGppiZiIGeCaR_PUz6VR3rYMRRSd6QjwH4qfDaHwClGUUjF7pOhp4TdBijifRAM9_zWKdJ-oBM_THAxguELhOSwlRIfQCptsVLY36O9KMdISFnH_XqPtD_Uia1tApclwR03lqDPkn99pv6IrCa-tqjG20nFb7fPvJJonRZOZc2oi6-wrl81BO1KfJ4j-MxCh2gp7NX3RXtcypsRePKlxBXtnwDWaMeF-aKxhD_pArGKyYYr4" style="">
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold tracking-widest text-primary/60 uppercase" style="">Moda Aura</span>
+<h3 class="text-lg font-bold text-on-surface leading-tight" style="">Autumn Essentials</h3>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="px-3 py-1 rounded-full text-[10px] font-extrabold tracking-tighter bg-error/10 text-error border border-error/20" style="">EXPIRED</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform" style="">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State Fallback Logic (Not visible but styled for layout check) -->
+<div class="hidden flex-col items-center justify-center py-20 text-center">
+<span class="material-symbols-outlined text-6xl text-neutral-800 mb-4" style="">history_toggle_off</span>
+<p class="text-neutral-500 font-medium" style="">No past deals found in your history.</p>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-6 bg-neutral-900/80 backdrop-blur-2xl rounded-t-[32px] border-none shadow-[0_-8px_30px_rgb(0,0,0,0.12)]">
+<!-- Dashboard -->
+<div class="flex flex-col items-center justify-center text-neutral-500 hover:text-violet-300 transition-all cursor-pointer active:scale-90 duration-200">
+<span class="material-symbols-outlined mb-1" style="">grid_view</span>
+<span class="font-sans text-[11px] font-medium uppercase tracking-widest" style="">Dashboard</span>
+</div>
+<!-- Deals (ACTIVE) -->
+<div class="flex flex-col items-center justify-center bg-violet-600/20 text-violet-400 rounded-full px-5 py-2 transition-all cursor-pointer active:scale-90 duration-200">
+<span class="material-symbols-outlined mb-1" data-weight="fill" style="font-variation-settings: &quot;FILL&quot; 1;">history</span>
+<span class="font-sans text-[11px] font-medium uppercase tracking-widest" style="">Deals</span>
+</div>
+<!-- Analytics -->
+<div class="flex flex-col items-center justify-center text-neutral-500 hover:text-violet-300 transition-all cursor-pointer active:scale-90 duration-200">
+<span class="material-symbols-outlined mb-1" style="">insights</span>
+<span class="font-sans text-[11px] font-medium uppercase tracking-widest" style="">Analytics</span>
+</div>
+<!-- Profile -->
+<div class="flex flex-col items-center justify-center text-neutral-500 hover:text-violet-300 transition-all cursor-pointer active:scale-90 duration-200">
+<span class="material-symbols-outlined mb-1" style="">person</span>
+<span class="font-sans text-[11px] font-medium uppercase tracking-widest" style="">Profile</span>
+</div>
+</nav>
+</body></html>

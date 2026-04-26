@@ -1,0 +1,203 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#f97386",
+                        "inverse-on-surface": "#565459",
+                        "tertiary-fixed": "#fdcbf2",
+                        "on-surface": "#e9e3ef",
+                        "surface-container": "#1a191f",
+                        "on-primary-fixed": "#362f53",
+                        "tertiary-container": "#fdcbf2",
+                        "secondary-dim": "#bcb5ce",
+                        "surface-container-lowest": "#000000",
+                        "outline-variant": "#494650",
+                        "tertiary-fixed-dim": "#eebde3",
+                        "on-tertiary-fixed-variant": "#704a6a",
+                        "surface-variant": "#27252d",
+                        "outline": "#77747e",
+                        "on-tertiary-container": "#654060",
+                        "on-secondary": "#423d52",
+                        "on-primary-container": "#e7dfff",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#141318",
+                        "primary": "#5620e0",
+                        "secondary-fixed-dim": "#d8d1ea",
+                        "surface": "#0f0e12",
+                        "primary-fixed-dim": "#c8beea",
+                        "surface-container-highest": "#27252d",
+                        "on-surface-variant": "#aea9b5",
+                        "inverse-surface": "#fdf8fe",
+                        "surface-dim": "#0f0e12",
+                        "on-secondary-fixed-variant": "#5d596e",
+                        "on-secondary-container": "#c3bcd5",
+                        "on-background": "#e9e3ef",
+                        "error-dim": "#c44b5f",
+                        "surface-tint": "#5620e0",
+                        "on-error": "#490013",
+                        "surface-bright": "#2d2b34",
+                        "on-tertiary": "#6f4969",
+                        "background": "#0f0e12",
+                        "on-error-container": "#ff97a3",
+                        "on-secondary-fixed": "#413d51",
+                        "secondary-fixed": "#e6dff9",
+                        "inverse-primary": "#615a80",
+                        "on-primary-fixed-variant": "#534b71",
+                        "surface-container-high": "#201f26",
+                        "tertiary-dim": "#eebde3",
+                        "tertiary": "#ffdff6",
+                        "primary-fixed": "#d6ccf9",
+                        "error-container": "#871c34",
+                        "on-tertiary-fixed": "#512e4c",
+                        "primary-container": "#554d73",
+                        "secondary-container": "#3d394d",
+                        "primary-dim": "#bcb3df",
+                        "secondary": "#cac3dc"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0f0e12;
+            color: #e9e3ef;
+            font-family: 'Manrope', sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center px-4 h-16 md:h-20 bg-zinc-950/80 backdrop-blur-3xl border-none shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+<div class="flex items-center w-full max-w-lg mx-auto gap-4">
+<button class="p-2 -ml-2 rounded-full hover:bg-zinc-800/50 transition-all active:scale-[0.98] duration-200 text-zinc-500" style="">
+<span class="material-symbols-outlined text-primary" style="">arrow_back</span>
+</button>
+<h1 class="font-manrope tracking-tight font-semibold text-zinc-100 text-lg" style="">Create Password</h1>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="w-full max-w-lg px-6 pt-32 pb-12 flex flex-col gap-8 flex-grow justify-center">
+<!-- Hero Section -->
+<div class="space-y-2">
+<h2 class="text-4xl md:text-5xl font-extrabold tracking-tight text-on-surface leading-tight" style="">
+                Create your password
+            </h2>
+<p class="text-on-surface-variant text-lg leading-relaxed" style="">
+                Secure your account
+            </p>
+</div>
+<!-- Form Section -->
+<section class="flex flex-col gap-6">
+<div class="space-y-6">
+<!-- Password Field -->
+<div class="space-y-2">
+<label class="block ml-6 text-sm font-medium text-on-surface-variant" style="">Password</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-low text-on-surface px-6 py-5 rounded-full border-none focus:ring-2 focus:ring-primary/40 transition-all duration-300 placeholder:text-outline/40" placeholder="hii" type="password">
+<button class="absolute right-6 top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors" style="">
+<span class="material-symbols-outlined" style="">visibility</span>
+</button>
+</div>
+</div>
+<!-- Confirm Password Field -->
+<div class="space-y-2">
+<label class="block ml-6 text-sm font-medium text-on-surface-variant" style="">Confirm Password</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-low text-on-surface px-6 py-5 rounded-full border-none focus:ring-2 focus:ring-primary/40 transition-all duration-300 placeholder:text-outline/40 border-error/50" placeholder="hii" type="password">
+<button class="absolute right-6 top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors" style="">
+<span class="material-symbols-outlined" style="">visibility</span>
+</button>
+</div>
+<!-- Validation Error Placeholder -->
+<p class="ml-6 text-xs text-error font-medium flex items-center gap-1" style="">
+<span class="material-symbols-outlined text-[14px]" style="">error</span>
+                        Passwords do not match
+                    </p>
+</div>
+</div>
+<!-- Dynamic Password Checklist -->
+<div class="bg-surface-container-low p-6 rounded-[2rem] space-y-4 border border-outline-variant/10">
+<h4 class="text-[10px] font-bold uppercase tracking-[0.2em] text-outline px-1" style="">Security Checklist</h4>
+<ul class="grid grid-cols-1 gap-3">
+<!-- Rule: Satisfied -->
+<li class="flex items-center gap-3 group" style="">
+<div class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px] text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">check_circle</span>
+</div>
+<span class="text-sm text-on-surface" style="">At least 8 characters</span>
+</li>
+<!-- Rule: Inactive -->
+<li class="flex items-center gap-3 group" style="">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px] text-outline/40" style="">circle</span>
+</div>
+<span class="text-sm text-on-surface-variant" style="">At least 1 uppercase letter</span>
+</li>
+<!-- Rule: Inactive -->
+<li class="flex items-center gap-3 group" style="">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px] text-outline/40" style="">circle</span>
+</div>
+<span class="text-sm text-on-surface-variant" style="">At least 1 number</span>
+</li>
+<!-- Rule: Inactive (New) -->
+<li class="flex items-center gap-3 group" style="">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px] text-outline/40" style="">circle</span>
+</div>
+<span class="text-sm text-on-surface-variant" style="">At least 1 special character</span>
+</li>
+</ul>
+</div>
+<!-- Global Error Message Placeholder -->
+<div class="bg-error/10 border border-error/20 p-4 rounded-2xl flex items-start gap-3">
+<span class="material-symbols-outlined text-error text-[20px]" style="">info</span>
+<p class="text-xs text-error font-medium leading-relaxed" style="">
+                    Password must meet all requirements before proceeding.
+                </p>
+</div>
+</section>
+<!-- CTA Actions -->
+<div class="flex flex-col gap-4 pt-4">
+<!-- Disabled State: Opacity reduced, pointer events none -->
+<button class="w-full py-5 rounded-full bg-primary text-white font-bold text-lg shadow-[0_8px_24px_rgba(86,32,224,0.3)] transition-all duration-200 opacity-40 cursor-not-allowed" style="">
+                Next
+            </button>
+<button class="w-full py-5 rounded-full text-on-surface-variant font-semibold hover:bg-surface-container-high active:scale-[0.98] transition-all duration-200" style="">
+                Cancel
+            </button>
+</div>
+<!-- Decorative Elements -->
+<div class="fixed -bottom-20 -right-20 w-80 h-80 bg-primary/10 blur-[120px] rounded-full pointer-events-none"></div>
+<div class="fixed -top-20 -left-20 w-80 h-80 bg-primary/5 blur-[120px] rounded-full pointer-events-none"></div>
+</main>
+<!-- Contextual Footer -->
+<footer class="mt-auto pb-10 px-6 text-center">
+<p class="text-[10px] text-outline leading-relaxed max-w-xs mx-auto uppercase tracking-widest opacity-60" style="">
+            Aura Lumina Security Protocol • Industry Standard Encryption
+        </p>
+</footer>
+</body></html>

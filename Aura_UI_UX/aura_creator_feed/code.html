@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#77747e",
+                    "primary-dim": "#bcb3df",
+                    "secondary-fixed": "#e6dff9",
+                    "surface-container-highest": "#27252d",
+                    "inverse-on-surface": "#565459",
+                    "surface-container": "#1a191f",
+                    "inverse-primary": "#615a80",
+                    "tertiary-fixed": "#fdcbf2",
+                    "surface-variant": "#27252d",
+                    "on-error-container": "#ff97a3",
+                    "on-primary-fixed-variant": "#534b71",
+                    "primary-fixed-dim": "#c8beea",
+                    "secondary-container": "#3d394d",
+                    "on-primary": "#423b60",
+                    "tertiary-fixed-dim": "#eebde3",
+                    "on-tertiary-container": "#654060",
+                    "tertiary-container": "#fdcbf2",
+                    "on-background": "#e9e3ef",
+                    "error-dim": "#c44b5f",
+                    "surface-container-high": "#201f26",
+                    "error": "#f97386",
+                    "tertiary": "#ffdff6",
+                    "on-surface-variant": "#aea9b5",
+                    "on-secondary": "#423d52",
+                    "on-secondary-container": "#c3bcd5",
+                    "tertiary-dim": "#eebde3",
+                    "inverse-surface": "#fdf8fe",
+                    "on-tertiary-fixed": "#512e4c",
+                    "outline-variant": "#494650",
+                    "secondary-dim": "#bcb5ce",
+                    "surface-dim": "#0f0e12",
+                    "surface-container-low": "#141318",
+                    "on-secondary-fixed-variant": "#5d596e",
+                    "secondary": "#cac3dc",
+                    "surface-container-lowest": "#000000",
+                    "primary": "#cac1ed",
+                    "background": "#0f0e12",
+                    "on-surface": "#e9e3ef",
+                    "on-error": "#490013",
+                    "primary-fixed": "#d6ccf9",
+                    "on-primary-fixed": "#362f53",
+                    "surface-tint": "#cac1ed",
+                    "primary-container": "#554d73",
+                    "surface-bright": "#2d2b34",
+                    "surface": "#0f0e12",
+                    "on-tertiary-fixed-variant": "#704a6a",
+                    "on-tertiary": "#6f4969",
+                    "on-secondary-fixed": "#413d51",
+                    "secondary-fixed-dim": "#d8d1ea",
+                    "on-primary-container": "#e7dfff",
+                    "error-container": "#871c34"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Manrope"],
+                    "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Manrope', sans-serif; }
+    </style>
+<style>
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 3s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background overflow-hidden h-screen w-full select-none">
+<!-- TopAppBar Section -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-center px-6 h-16 bg-transparent">
+<h1 class="text-xl font-black text-white tracking-widest uppercase opacity-70">Aura</h1>
+</header>
+<!-- Main Feed Container -->
+<main class="relative h-screen w-full bg-surface">
+<!-- Video Canvas Section -->
+<div class="absolute inset-0 w-full h-full">
+<img class="w-full h-full object-cover" data-alt="Cinematic high-end fashion shoot with a model in avant-garde silhouette against a deep violet and obsidian minimalist studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhk6nD8ZpGPlzb6NcVN2aOnurFgDrRsRNLvzWsdGbGt89FskUOhwp7aB252KvochzhdWzk_Dk63qfV_393L3nRDsSPnXTLV82SxjSDtEQJWgIybaUEnkV4Hj8WWsoaqq35XqqdUNhl0K-lmG8pIeQb-39uurmU5j-iJ5p6UNw-uPH4XanlzWsx9OerlOuyXU8ltjduVVw4cQ0Qs9gtnWEqgglcvOQdE5pm8FHwj9bIPvq6LyHxiQmizJjYPWHgyq8GVUVa2BH5_Q"/>
+<!-- Overlay Gradients -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-transparent"></div>
+</div>
+<!-- Right Side Action Bar -->
+<div class="absolute right-4 bottom-32 flex flex-col items-center space-y-6 z-40">
+<!-- Creator Avatar -->
+<!-- Interaction Buttons -->
+<div class="flex flex-col items-center space-y-1">
+<button class="w-12 h-12 flex items-center justify-center group">
+<span class="material-symbols-outlined text-3xl text-primary scale-110" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+</button>
+<span class="text-xs font-bold text-white tracking-wide">42.8K</span>
+</div>
+<div class="flex flex-col items-center space-y-1">
+<button class="w-12 h-12 flex items-center justify-center text-white hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-3xl">visibility</span>
+</button>
+<span class="text-xs font-bold text-white tracking-wide">1.2K</span>
+</div>
+<div class="flex flex-col items-center space-y-1">
+<button class="w-12 h-12 flex items-center justify-center text-white hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-3xl">share</span>
+</button>
+</div>
+<!-- Spinning Record Aesthetic -->
+</div>
+<!-- Bottom Content Overlay -->
+<div class="absolute bottom-24 left-0 w-full px-5 z-30 pb-10">
+<div class="max-w-md space-y-3">
+<div class="flex items-center space-x-2">
+<img class="w-9 h-9 rounded-full object-cover border border-white/20 shrink-0" data-alt="User Profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMKgxLk2lmmlkfmv8Ncj15tEWNI-YXy7GcNs-uRccH-m_C0MhgRJlcFnphY2oxqUHV7NkNnRXugs7YlDOpf59cECFApB31RG3bKFZrX-G4kQ2LGjtBY16pSqgaoMao86Z8C501e7TYJbXnhquEtq31lCy5Ndyci2NTzvyuDaFSdCBDHCrlv8TsaB0cYHGb9O4otRRgZawLf4ftGLjLLkoJG57AGj_UZi5ZUFXmGWVKCz5jo5byVfd8EGGHR0moXuYOG7UAE_vHlg"/>
+<h2 class="text-lg font-bold text-white tracking-tight leading-none">@jessica_vogue</h2>
+<span class="material-symbols-outlined text-primary text-base leading-none" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<p class="text-on-surface text-base leading-relaxed font-medium">
+                    Loving the new collection! #fashion #aura #2024
+                </p>
+<div class="flex items-center space-x-2 pt-1 opacity-80">
+<div class="w-6 h-6 rounded-full bg-black/20 flex items-center justify-center animate-spin-slow">
+<span class="material-symbols-outlined text-white text-sm">music_note</span>
+</div>
+<span class="text-xs text-white font-medium">Original Audio - @jessica_vogue</span>
+</div></div>
+</div>
+</main>
+<!-- BottomNavBar Section -->
+<!-- active: Home -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-8 py-6 pb-8 bg-neutral-900/80 dark:bg-neutral-900/80 backdrop-blur-3xl rounded-t-[40px] shadow-[0_-8px_32px_rgba(86,32,224,0.08)]">
+<a class="flex items-center justify-center text-neutral-500 p-4 hover:text-neutral-300 transition-colors active:scale-90 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">person</span>
+</a>
+<a class="flex items-center justify-center text-neutral-500 p-4 hover:text-neutral-300 transition-colors active:scale-90 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">handshake</span>
+</a>
+<a class="flex items-center justify-center bg-neutral-800/50 text-[#5620e0] rounded-full p-4 w-12 h-12 active:scale-90 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+</a>
+<a class="flex items-center justify-center text-neutral-500 p-4 hover:text-neutral-300 transition-colors active:scale-90 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">search</span>
+</a>
+</nav>
+<style>
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 3s linear infinite;
+        }
+    </style>
+</body></html>

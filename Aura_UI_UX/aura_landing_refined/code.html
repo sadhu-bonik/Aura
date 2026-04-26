@@ -1,0 +1,108 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"surface-variant": "#27252d", "on-surface": "#e9e3ef", "surface-dim": "#0f0e12", "surface-container-low": "#141318", secondary: "#cac3dc", "primary-container": "#554d73", surface: "#0f0e12", "surface-tint": "#cac1ed", "primary-dim": "#bcb3df", "tertiary-container": "#fdcbf2", "on-primary": "#423b60", "on-secondary-container": "#c3bcd5", "tertiary-dim": "#eebde3", "on-secondary": "#423d52", "on-secondary-fixed": "#413d51", "primary-fixed-dim": "#c8beea", "error-container": "#871c34", "on-primary-container": "#e7dfff", "outline-variant": "#494650", primary: "#cac1ed", tertiary: "#ffdff6", "surface-bright": "#2d2b34", "on-surface-variant": "#aea9b5", "surface-container": "#1a191f", "on-error": "#490013", "error-dim": "#c44b5f", "on-secondary-fixed-variant": "#5d596e", "on-background": "#e9e3ef", "on-tertiary-container": "#654060", "secondary-dim": "#bcb5ce", "inverse-on-surface": "#565459", "inverse-surface": "#fdf8fe", "on-primary-fixed": "#362f53", "on-tertiary-fixed-variant": "#704a6a", background: "#0f0e12", error: "#f97386", outline: "#77747e", "on-primary-fixed-variant": "#534b71", "on-error-container": "#ff97a3", "surface-container-lowest": "#000000", "secondary-fixed-dim": "#d8d1ea", "tertiary-fixed-dim": "#eebde3", "surface-container-highest": "#27252d", "primary-fixed": "#d6ccf9", "surface-container-high": "#201f26", "on-tertiary-fixed": "#512e4c", "secondary-container": "#3d394d", "tertiary-fixed": "#fdcbf2", "secondary-fixed": "#e6dff9", "inverse-primary": "#615a80", "on-tertiary": "#6f4969"}, borderRadius: {DEFAULT: "1rem", lg: "2rem", xl: "3rem", full: "9999px"}, fontFamily: {headline: ["Manrope"], body: ["Manrope"], label: ["Manrope"], display: "Manrope"}}}};</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-aura-gradient {
+            background: linear-gradient(135deg, #645889 0%, #584c7d 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface font-body text-on-surface selection:bg-primary-container selection:text-on-primary-container min-h-screen">
+<!-- TopAppBar -->
+<nav class="flex items-center justify-between px-6 py-4 w-full z-50 fixed top-0 bg-surface/80 backdrop-blur-xl">
+<div class="flex items-center justify-start flex-1">
+<button class="p-2 -ml-2 text-outline hover:bg-surface-container-highest rounded-full transition-all duration-200 active:scale-95" style="">
+<span class="material-symbols-outlined" data-icon="close" style="">close</span>
+</button>
+</div>
+<div class="flex-1 flex justify-center">
+<span class="text-2xl font-extrabold tracking-tighter text-primary font-['Manrope']" style="">Aura</span>
+</div>
+<div class="flex-1"></div>
+</nav>
+<!-- Main Canvas -->
+<main class="min-h-screen flex flex-col items-center justify-center px-8 pt-20 pb-16">
+<!-- Hero Section -->
+<div class="w-full max-w-md text-center space-y-6 mb-12">
+<div class="inline-flex items-center px-4 py-1 rounded-full bg-tertiary-container text-on-tertiary-container">
+<span class="text-[10px] font-bold tracking-widest uppercase font-label" style="">The Ethereal Atelier</span>
+</div>
+<h1 class="text-5xl font-extrabold tracking-tight text-on-surface font-headline leading-tight" style="">
+                Welcome to Aura
+            </h1>
+<p class="text-lg text-on-surface-variant font-medium leading-relaxed max-w-[280px] mx-auto" style="">
+                Connect creators with brands
+            </p>
+</div>
+<!-- Form Area -->
+<div class="w-full max-w-md space-y-8">
+<form class="space-y-8" onsubmit="return false;">
+<!-- Input Group -->
+<div class="relative group space-y-2">
+<div class="relative">
+<div class="absolute inset-y-0 left-6 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[20px]" data-icon="mail" style="">mail</span>
+</div>
+<input class="w-full h-16 pl-14 pr-6 bg-surface-container-low border-none rounded-full text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary focus:bg-surface-container-highest transition-all duration-300 font-medium" id="emailInput" placeholder="h123@gmail.com" type="email">
+</div>
+<!-- Helper and Error Text -->
+<div class="px-6">
+<p class="text-xs text-on-surface-variant font-medium" style="">
+                            Enter a valid email address (e.g., name@email.com)
+                        </p>
+<p class="text-xs text-error font-semibold mt-1 hidden" id="errorText" style="">
+                            Invalid email format
+                        </p>
+</div>
+</div>
+<!-- CTA Button -->
+<button class="w-full h-16 bg-aura-gradient font-bold text-lg rounded-full shadow-lg shadow-primary/20 transition-all duration-300 flex items-center justify-center gap-2 group text-[#161121] active:scale-[0.98] hover:shadow-primary/30" id="submitBtn" style="">
+                    Continue
+                    <span class="material-symbols-outlined text-[20px] transition-transform duration-300 group-hover:translate-x-1" data-icon="arrow_forward" style="">arrow_forward</span>
+</button>
+</form>
+</div>
+<!-- Footer / Legal -->
+<footer class="mt-16 text-center">
+<p class="text-xs text-on-surface-variant font-medium max-w-[240px] mx-auto leading-relaxed" style="">
+                By continuing, you agree to our <span class="text-primary font-bold cursor-pointer" style="">Terms of Service</span> and <span class="text-primary font-bold cursor-pointer" style="">Privacy Policy</span>.
+            </p>
+</footer>
+</main>
+<script>
+        const emailInput = document.getElementById('emailInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const errorText = document.getElementById('errorText');
+
+        emailInput.addEventListener('input', (e) => {
+            const email = e.target.value;
+            const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            
+            if (email === "") {
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                submitBtn.classList.remove('active:scale-[0.98]', 'hover:shadow-primary/30');
+                errorText.classList.add('hidden');
+            } else if (isValid) {
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                submitBtn.classList.add('active:scale-[0.98]', 'hover:shadow-primary/30');
+                errorText.classList.add('hidden');
+            } else {
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                submitBtn.classList.remove('active:scale-[0.98]', 'hover:shadow-primary/30');
+                errorText.classList.remove('hidden');
+            }
+        });
+    </script>
+</body></html>

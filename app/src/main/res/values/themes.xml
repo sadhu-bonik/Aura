@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--
+        Theme.Aura2 (and its base Base.Theme.Aura2) lives in styles.xml.
+        That base theme sets fontFamily=@font/manrope so every TextView
+        inherits Manrope by default per Ethereal Atelier (Nocturnal Edition).
+    -->
 </resources>

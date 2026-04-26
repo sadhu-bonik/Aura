@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/space_sm"
+    android:paddingVertical="@dimen/space_sm">
+
+    <FrameLayout
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:background="@drawable/bg_avatar_gradient_ring"
+        android:padding="2dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_creator_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorSurfaceContainer"
+            android:contentDescription="@string/cd_photo_preview"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_creator_name"
+        style="@style/TextAppearance.Aura.LabelLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_sm"
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:text="@jessica_vogue" />
+
+    <TextView
+        android:id="@+id/tv_creator_niche"
+        style="@style/TextAppearance.Aura.BodySmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/colorOnSurfaceVariant"
+        tools:text="Fashion" />
+</LinearLayout>
