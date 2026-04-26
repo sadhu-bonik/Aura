@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -28,6 +29,10 @@ class EditProfileFragment : Fragment() {
 
     private val viewModel: EditProfileViewModel by viewModels {
         EditProfileViewModel.Factory()
+    }
+
+    private val feedViewModel: com.aura.app.ui.feed.VideoFeedViewModel by activityViewModels {
+        com.aura.app.ui.feed.VideoFeedViewModel.Factory(requireContext().applicationContext)
     }
 
     private var selectedImageUri: Uri? = null
@@ -129,6 +134,14 @@ class EditProfileFragment : Fragment() {
                             binding.layoutLoading.root.visibility = View.GONE
                             Toast.makeText(requireContext(), event.message, Toast.LENGTH_LONG).show()
                             viewModel.resetEvent()
+                        }
+                        is EditProfileEvent.SaveSuccessWithTagChange -> {
+                            binding.layoutLoading.root.visibility = View.GONE
+                            Toast.makeText(requireContext(), "Profile updated (Tags changed)", Toast.LENGTH_SHORT).show()
+                            feedViewModel.clearSimilarCreatorFeedCache()
+                            feedViewModel.loadCreatorFeed(forceRefresh = true)
+                            viewModel.resetEvent()
+                            findNavController().popBackStack()
                         }
                         is EditProfileEvent.SaveSuccess -> {
                             binding.layoutLoading.root.visibility = View.GONE

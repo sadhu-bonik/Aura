@@ -35,12 +35,10 @@ class CreatorRankingRepository(
      *
      * @param currentUserId   UID of the logged-in creator (excluded from results).
      * @param currentUserTags Raw (non-normalized) niche tags of the logged-in creator.
-     * @param maxCreators     Cap on the number of creators returned.
      */
     suspend fun getRankedCreatorIds(
         currentUserId: String,
-        currentUserTags: List<String>,
-        maxCreators: Int = 20,
+        currentUserTags: List<String>
     ): List<String> {
         // Normalize the viewer's own tags once — reused for every comparison below.
         val viewerTags = NicheMatcher.normalizeTags(currentUserTags)
@@ -82,6 +80,7 @@ class CreatorRankingRepository(
             val hasMatch: Boolean,
             val portfolioCount: Int,
             val lastActiveAt: Long,
+            val youtubeBaseCreatorScore: Double,
             val tags: List<String>
         )
 
@@ -101,6 +100,7 @@ class CreatorRankingRepository(
                 hasMatch = overlap > 0,
                 portfolioCount = profile.portfolioCount,
                 lastActiveAt = lastActive,
+                youtubeBaseCreatorScore = profile.youtubeBaseCreatorScore,
                 tags = profile.tags
             )
         }
@@ -108,13 +108,13 @@ class CreatorRankingRepository(
         // ── Step 4: Sort ────────────────────────────────────────────────────────
         //
         // Priority:
-        //   1. hasMatch     → matches come first
-        //   2. overlapCount → more matches = higher rank
+        //   1. overlapCount → more matches = higher rank
+        //   2. youtubeBaseCreatorScore → fallback requested by Test Plan
         //   3. portfolioCount → handle fallback as requested
         //   4. lastActiveAt → tiebreak
         val sorted = scored.sortedWith(
-            compareByDescending<ScoredCreator> { it.hasMatch }
-                .thenByDescending { it.overlapCount }
+            compareByDescending<ScoredCreator> { it.overlapCount }
+                .thenByDescending { it.youtubeBaseCreatorScore }
                 .thenByDescending { it.portfolioCount }
                 .thenByDescending { it.lastActiveAt }
         )
@@ -124,6 +124,6 @@ class CreatorRankingRepository(
             Log.d(TAG, "#${index + 1}: ${sc.creatorId} | Overlap: ${sc.overlapCount} | Portfolio: ${sc.portfolioCount}")
         }
 
-        return sorted.map { it.creatorId }.take(maxCreators)
+        return sorted.map { it.creatorId }
     }
 }

@@ -29,6 +29,7 @@ sealed class EditProfileUiState {
 sealed class EditProfileEvent {
     object Saving : EditProfileEvent()
     object SaveSuccess : EditProfileEvent()
+    object SaveSuccessWithTagChange : EditProfileEvent()
     data class SaveError(val message: String) : EditProfileEvent()
 }
 
@@ -95,6 +96,9 @@ class EditProfileViewModel(
                 }
 
                 if (currentRole == "brand") {
+                    val oldBrandTags = (_state.value as? EditProfileUiState.Success)?.brandProfile?.industryTags ?: emptyList()
+                    val brandTagsChanged = oldBrandTags.toSet() != selectedTags.toSet()
+
                     // Route brand edits to brandProfiles collection.
                     // isProfileComplete requires motto (from registration, never cleared here)
                     // AND at least 1 industry tag — recomputed on every save.
@@ -109,8 +113,17 @@ class EditProfileViewModel(
                     userRepository.updateBrandProfilePartial(uid, brandUpdates)
                     // Mirror completion flag and display name in the users/{uid} doc
                     userUpdates["isProfileComplete"] = isComplete
+
+                    if (brandTagsChanged) {
+                        _event.value = EditProfileEvent.SaveSuccessWithTagChange
+                    } else {
+                        _event.value = EditProfileEvent.SaveSuccess
+                    }
                 } else {
                     // Creator profile update
+                    val oldTags = (_state.value as? EditProfileUiState.Success)?.creatorProfile?.tags ?: emptyList()
+                    val tagsChanged = oldTags.toSet() != selectedTags.toSet()
+
                     val creatorUpdates = mapOf(
                         "bio" to bio,
                         "niche" to selectedTags.joinToString(", "),
@@ -119,9 +132,13 @@ class EditProfileViewModel(
                     )
                     Log.d(TAG, "saveProfile creator payload → $creatorUpdates")
                     userRepository.updateCreatorProfilePartial(uid, creatorUpdates)
-                }
 
-                _event.value = EditProfileEvent.SaveSuccess
+                    if (tagsChanged) {
+                        _event.value = EditProfileEvent.SaveSuccessWithTagChange
+                    } else {
+                        _event.value = EditProfileEvent.SaveSuccess
+                    }
+                }
 
             } catch (e: Exception) {
                 _event.value = EditProfileEvent.SaveError(e.message ?: "Failed to save profile")

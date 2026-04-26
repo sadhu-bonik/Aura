@@ -23,8 +23,12 @@ class CreatorPageViewHolder(
     private val itemsRecycler: RecyclerView = itemView.findViewById(R.id.items_recycler)
     private val creatorAvatar: ImageView = itemView.findViewById(R.id.creator_avatar)
     private val creatorName: TextView = itemView.findViewById(R.id.creator_name)
+    private val creatorInfoContainer: View = itemView.findViewById(R.id.creator_info_container)
     private val dotIndicator: LinearLayout = itemView.findViewById(R.id.dot_indicator)
     private val videoCaption: TextView = itemView.findViewById(R.id.tv_video_caption)
+    private val creatorTags: TextView = itemView.findViewById(R.id.creator_tags)
+    private val creatorScore: TextView = itemView.findViewById(R.id.creator_score)
+    private val creatorBio: TextView = itemView.findViewById(R.id.creator_bio)
     private val videoCaptionMore: TextView = itemView.findViewById(R.id.tv_video_caption_more)
     private val baseDotBottomMargin: Int =
         (dotIndicator.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin ?: 0
@@ -96,8 +100,29 @@ class CreatorPageViewHolder(
                 .into(creatorAvatar)
         }
 
-        // Navigate to creator profile only when avatar is tapped
-        creatorAvatar.setOnClickListener {
+        if (entry.tags.isNotEmpty()) {
+            creatorTags.text = entry.tags.joinToString(" • ")
+            creatorTags.visibility = View.VISIBLE
+        } else {
+            creatorTags.visibility = View.GONE
+        }
+
+        if (entry.youtubeScore > 0) {
+            creatorScore.text = "★ ${String.format("%.1f", entry.youtubeScore)}"
+            creatorScore.visibility = View.VISIBLE
+        } else {
+            creatorScore.visibility = View.GONE
+        }
+
+        if (entry.bio.isNotBlank()) {
+            creatorBio.text = entry.bio
+            creatorBio.visibility = View.VISIBLE
+        } else {
+            creatorBio.visibility = View.GONE
+        }
+
+        // Navigate to creator profile on tap
+        creatorInfoContainer.setOnClickListener {
             callback.onCreatorProfileClicked(entry.creatorId)
         }
 

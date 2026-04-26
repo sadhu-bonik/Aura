@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 
 class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
 
-    private val viewModel: VideoFeedViewModel by viewModels { VideoFeedViewModel.Factory(requireContext()) }
+    private val viewModel: VideoFeedViewModel by activityViewModels { VideoFeedViewModel.Factory(requireContext().applicationContext) }
     private val actionsViewModel: FeedActionsViewModel by viewModels { FeedActionsViewModel.Factory() }
     private val authViewModel: com.aura.app.ui.auth.AuthViewModel by activityViewModels { com.aura.app.ui.auth.AuthViewModel.Factory() }
 
@@ -87,6 +87,11 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
     private val pageCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
             updateActiveCreator(position)
+            
+            // Trigger pagination when reaching the last few items
+            if (position >= currentEntries.size - 2 && currentEntries.isNotEmpty()) {
+                viewModel.loadMoreFeed()
+            }
         }
     }
 
@@ -172,9 +177,15 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
                     val restorePosition = pendingRestoreCreatorPosition
                     if (restorePosition != null && restorePosition in state.entries.indices) {
                         pager?.setCurrentItem(restorePosition, false)
+                    } else if (
+                        activeCreatorPosition != RecyclerView.NO_POSITION &&
+                        activeCreatorPosition > 0 &&
+                        activeCreatorPosition < state.entries.size
+                    ) {
+                        pager?.setCurrentItem(activeCreatorPosition, false)
                     }
                     pendingRestoreCreatorPosition = null
-                    // post: give ViewPager2 one frame to attach its child ViewHolders before activating
+                    // post: allow ViewPager2 to finish attaching child ViewHolders before activation
                     pager?.post { pager?.let { updateActiveCreator(it.currentItem) } }
                 }
             }
