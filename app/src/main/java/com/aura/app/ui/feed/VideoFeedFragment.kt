@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.aura.app.R
@@ -22,13 +23,14 @@ import kotlinx.coroutines.launch
 
 class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
 
-    private val viewModel: VideoFeedViewModel by viewModels { VideoFeedViewModel.Factory() }
+    private val viewModel: VideoFeedViewModel by viewModels { VideoFeedViewModel.Factory(requireContext()) }
     private val actionsViewModel: FeedActionsViewModel by viewModels { FeedActionsViewModel.Factory() }
     private val authViewModel: com.aura.app.ui.auth.AuthViewModel by activityViewModels { com.aura.app.ui.auth.AuthViewModel.Factory() }
 
     private var pager: ViewPager2? = null
     private var loading: ProgressBar? = null
     private var message: TextView? = null
+    private var refreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout? = null
     private var adapter: CreatorPageAdapter? = null
     private var pool: ExoPlayerPool? = null
     private var activeHolder: VideoPageViewHolder? = null
@@ -59,6 +61,12 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
             p.playWhenReady = !p.playWhenReady
         }
 
+        override fun onCreatorProfileClicked(creatorId: String) {
+            val bundle = android.os.Bundle().apply { putString("creatorId", creatorId) }
+            // Navigate within the home graph so back-stack is preserved
+            findNavController().navigate(R.id.action_feed_to_creator_profile, bundle)
+        }
+
         override fun onItemPositionChanged(creatorPosition: Int, itemPosition: Int) {
             activeItemPosition = itemPosition
         }
@@ -79,21 +87,29 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
         pager = view.findViewById(R.id.video_pager)
         loading = view.findViewById(R.id.feed_loading)
         message = view.findViewById(R.id.feed_message)
+        refreshLayout = view.findViewById(R.id.feed_refresh)
+
+        refreshLayout?.setOnRefreshListener {
+            viewModel.loadCreatorFeed()
+        }
 
         pool = ExoPlayerPool(requireContext().applicationContext)
 
         FeedActionsOverlay(view, actionsViewModel, viewLifecycleOwner, this).setup()
 
-        val feedAdapter = CreatorPageAdapter(
-            activeVideoCallback, viewModel.userRepository, viewLifecycleOwner.lifecycleScope
-        ).also { adapter = it }
+        val feedAdapter = CreatorPageAdapter(activeVideoCallback).also { adapter = it }
         pager?.adapter = feedAdapter
         pager?.offscreenPageLimit = 1
         pager?.registerOnPageChangeCallback(pageCallback)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { render(it) }
+                viewModel.state.collect { state ->
+                    if (state !is FeedUiState.Loading) {
+                        refreshLayout?.isRefreshing = false
+                    }
+                    render(state)
+                }
             }
         }
         
@@ -125,7 +141,7 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
                 loading?.visibility = View.GONE
                 pager?.visibility = View.GONE
                 message?.apply {
-                    text = getString(R.string.feed_error)
+                    text = state.message
                     visibility = View.VISIBLE
                 }
             }

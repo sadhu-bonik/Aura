@@ -332,8 +332,9 @@
                 android:layout_height="@dimen/btn_height"
                 android:layout_marginTop="@dimen/space_sm"
                 android:text="@string/btn_complete_deal"
-                app:icon="@drawable/ic_check_circle"
-                app:iconTint="@color/colorOnPrimary"
+                android:textColor="@color/white"
+                app:icon="@drawable/ic_check"
+                app:iconTint="@color/colorSuccess"
                 app:iconGravity="textStart"
                 app:backgroundTint="@color/colorPrimary"
                 app:cornerRadius="@dimen/corner_radius_md" />

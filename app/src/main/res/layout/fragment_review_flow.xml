@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorSurface"
+    android:fitsSystemWindows="true">
+
+    <ViewFlipper
+        android:id="@+id/vf_steps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:measureAllChildren="false"
+        android:inAnimation="@android:anim/slide_in_left"
+        android:outAnimation="@android:anim/slide_out_right">
+
+        <!-- Step 1: Rating -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/view_step_rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/space_xxl">
+
+            <View
+                android:id="@+id/v_drag_handle_1"
+                android:layout_width="40dp"
+                android:layout_height="4dp"
+                android:layout_marginTop="@dimen/space_sm"
+                android:background="@color/colorDivider"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:layout_marginEnd="@dimen/space_sm"
+                android:contentDescription="@string/content_description_close"
+                style="@style/Widget.Material3.Button.IconButton"
+                app:icon="@drawable/ic_close"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_step1_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/review_step1_title"
+                android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                app:layout_constraintTop_toBottomOf="@id/v_drag_handle_1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_reviewee_photo"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="@dimen/space_xl"
+                android:scaleType="centerCrop"
+                app:layout_constraintTop_toBottomOf="@id/tv_step1_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_reviewee_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_sm"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                app:layout_constraintTop_toBottomOf="@id/iv_reviewee_photo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/ll_stars"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xxl"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/tv_reviewee_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView android:id="@+id/iv_star_1" android:layout_width="48dp" android:layout_height="48dp" android:padding="8dp" android:src="@drawable/ic_aura_star_outline" />
+                <ImageView android:id="@+id/iv_star_2" android:layout_width="48dp" android:layout_height="48dp" android:padding="8dp" android:src="@drawable/ic_aura_star_outline" />
+                <ImageView android:id="@+id/iv_star_3" android:layout_width="48dp" android:layout_height="48dp" android:padding="8dp" android:src="@drawable/ic_aura_star_outline" />
+                <ImageView android:id="@+id/iv_star_4" android:layout_width="48dp" android:layout_height="48dp" android:padding="8dp" android:src="@drawable/ic_aura_star_outline" />
+                <ImageView android:id="@+id/iv_star_5" android:layout_width="48dp" android:layout_height="48dp" android:padding="8dp" android:src="@drawable/ic_aura_star_outline" />
+            </LinearLayout>
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/pb_loading_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_lg"
+                android:visibility="gone"
+                android:indeterminate="true"
+                app:indicatorColor="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/ll_stars"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Step 2: Comment -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/view_step_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/space_xxl">
+
+            <View
+                android:id="@+id/v_drag_handle_2"
+                android:layout_width="40dp"
+                android:layout_height="4dp"
+                android:layout_marginTop="@dimen/space_sm"
+                android:background="@color/colorDivider"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_step2_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/review_step2_title"
+                android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                app:layout_constraintTop_toBottomOf="@id/v_drag_handle_2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_step2_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:textColor="@color/colorTextSecondary"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                app:layout_constraintTop_toBottomOf="@id/tv_step2_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="This will appear on Alice's profile" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_comment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:layout_marginHorizontal="@dimen/space_md"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:layout_constraintTop_toBottomOf="@id/tv_step2_subtitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/review_comment_hint"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:minLines="3"
+                    android:maxLines="4" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_done"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/btn_height"
+                android:layout_marginTop="@dimen/space_xl"
+                android:layout_marginHorizontal="@dimen/space_md"
+                android:text="@string/review_done_button"
+                app:backgroundTint="@color/colorPrimary"
+                android:textColor="@color/white"
+                app:cornerRadius="@dimen/corner_radius_md"
+                app:layout_constraintTop_toBottomOf="@id/til_comment"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/pb_loading_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:indeterminate="true"
+                app:indicatorColor="@color/white"
+                app:layout_constraintTop_toTopOf="@id/btn_done"
+                app:layout_constraintBottom_toBottomOf="@id/btn_done"
+                app:layout_constraintStart_toStartOf="@id/btn_done"
+                app:layout_constraintEnd_toEndOf="@id/btn_done" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ViewFlipper>
+</androidx.core.widget.NestedScrollView>

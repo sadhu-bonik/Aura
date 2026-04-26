@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#5d596e",
+                        "tertiary": "#ffdff6",
+                        "inverse-on-surface": "#565459",
+                        "surface": "#0f0e12",
+                        "on-primary-fixed-variant": "#534b71",
+                        "tertiary-fixed-dim": "#eebde3",
+                        "on-primary-container": "#e7dfff",
+                        "on-secondary-container": "#c3bcd5",
+                        "secondary-dim": "#bcb5ce",
+                        "on-tertiary-fixed-variant": "#704a6a",
+                        "surface-container-high": "#201f26",
+                        "surface-container": "#1a191f",
+                        "on-primary": "#423b60",
+                        "surface-container-low": "#141318",
+                        "outline": "#77747e",
+                        "surface-tint": "#cac1ed",
+                        "surface-container-highest": "#27252d",
+                        "on-primary-fixed": "#362f53",
+                        "secondary": "#cac3dc",
+                        "primary": "#cac1ed",
+                        "error": "#f97386",
+                        "tertiary-dim": "#eebde3",
+                        "error-container": "#871c34",
+                        "surface-variant": "#27252d",
+                        "primary-fixed": "#d6ccf9",
+                        "secondary-container": "#3d394d",
+                        "on-secondary-fixed": "#413d51",
+                        "error-dim": "#c44b5f",
+                        "on-error": "#490013",
+                        "on-surface-variant": "#aea9b5",
+                        "inverse-surface": "#fdf8fe",
+                        "on-background": "#e9e3ef",
+                        "on-surface": "#e9e3ef",
+                        "surface-bright": "#2d2b34",
+                        "primary-dim": "#bcb3df",
+                        "primary-container": "#554d73",
+                        "inverse-primary": "#615a80",
+                        "secondary-fixed-dim": "#d8d1ea",
+                        "tertiary-container": "#fdcbf2",
+                        "secondary-fixed": "#e6dff9",
+                        "background": "#0f0e12",
+                        "surface-dim": "#0f0e12",
+                        "outline-variant": "#494650",
+                        "on-tertiary-fixed": "#512e4c",
+                        "on-tertiary-container": "#654060",
+                        "surface-container-lowest": "#000000",
+                        "on-tertiary": "#6f4969",
+                        "tertiary-fixed": "#fdcbf2",
+                        "primary-fixed-dim": "#c8beea",
+                        "on-secondary": "#423d52",
+                        "on-error-container": "#ff97a3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "2": "0.5rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-aurora-gradient {
+            background: linear-gradient(135deg, #cac1ed 0%, #7a729a 100%);
+        }
+        .aura-glass {
+            background: rgba(15, 14, 18, 0.8);
+            backdrop-filter: blur(24px);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4 aura-glass border-b border-outline-variant/10">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-zinc-800/50 rounded-full transition-colors active:scale-95 duration-200 ease-out">
+<span class="material-symbols-outlined text-zinc-100">arrow_back</span>
+</button>
+<h1 class="font-headline text-xl font-bold text-zinc-100 tracking-tight">Profile Setup</h1>
+</div>
+<div class="h-10 w-10 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="minimalist user avatar icon on a dark circular background with soft purple rim light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpfj2jopMXSpqkw7dUGJbyfUg7My3pR9z5vP7K_IBWJR5I71hnq77BtJJgts-xmvLZ3cEQgl1EwvrTb74bWb78G7OmY5In4Rg_YGz9y00f437uadlQqsXSgU9iUVtdLs6ziBjLI-yYAEImrj7sGNg_Wsq4E0jnM--Kz3yy69ChuB5OnY8f5kbfgcByRMHz7FZdWW74_ydyn9vePkANlsj7uM40ykG5ENS5bk7qvqseQcBonuUM2aCkFJWdEszLYt7BcD8GtqsRAw"/>
+</div>
+</header>
+<main class="pt-24 pb-20 px-6 max-w-2xl mx-auto min-h-screen flex flex-col gap-10">
+<!-- Header Section -->
+<section class="flex flex-col gap-2">
+<h2 class="font-headline text-4xl font-extrabold tracking-tight text-on-surface">Brand Profile Setup</h2>
+<p class="text-on-surface-variant text-lg">Tell us about your brand</p>
+</section>
+<!-- Form Canvas -->
+<div class="flex flex-col gap-12">
+<!-- Industry / Category Section -->
+<section class="flex flex-col gap-4">
+<label class="text-sm font-semibold tracking-wider uppercase text-on-surface-variant">INDUSTRY / CATEGORY</label>
+<div class="flex flex-wrap gap-2">
+<button class="px-5 py-2.5 rounded-full bg-surface-container-highest border border-primary text-primary font-semibold text-sm transition-all hover:brightness-110 active:scale-95">Fashion</button>
+<button class="px-5 py-2.5 rounded-full bg-surface-container-low border border-transparent text-on-surface-variant font-medium text-sm transition-all hover:bg-surface-container-high active:scale-95">Tech</button>
+<button class="px-5 py-2.5 rounded-full bg-surface-container-low border border-transparent text-on-surface-variant font-medium text-sm transition-all hover:bg-surface-container-high active:scale-95">Beauty</button>
+<button class="px-5 py-2.5 rounded-full bg-surface-container-low border border-transparent text-on-surface-variant font-medium text-sm transition-all hover:bg-surface-container-high active:scale-95">Fitness</button>
+<button class="px-5 py-2.5 rounded-full bg-surface-container-low border border-transparent text-on-surface-variant font-medium text-sm transition-all hover:bg-surface-container-high active:scale-95">Food</button>
+<button class="px-5 py-2.5 rounded-full bg-surface-container-low border border-transparent text-on-surface-variant font-medium text-sm transition-all hover:bg-surface-container-high active:scale-95">Travel</button>
+<button class="px-5 py-2.5 rounded-full bg-surface-container-low border border-transparent text-on-surface-variant font-medium text-sm transition-all hover:bg-surface-container-high active:scale-95">Gaming</button>
+</div>
+<span class="text-xs text-error font-medium">Please select an industry</span>
+</section>
+<!-- Target Audience Section -->
+<section class="flex flex-col gap-4">
+<label class="text-sm font-semibold tracking-wider uppercase text-on-surface-variant">TARGET AUDIENCE</label>
+<div class="flex flex-wrap gap-2">
+<button class="px-5 py-2.5 rounded-full bg-surface-container-low border border-transparent text-on-surface-variant font-medium text-sm transition-all hover:bg-surface-container-high active:scale-95">Gen Z</button>
+<button class="px-5 py-2.5 rounded-full bg-surface-container-low border border-transparent text-on-surface-variant font-medium text-sm transition-all hover:bg-surface-container-high active:scale-95">Millennials</button>
+<button class="px-5 py-2.5 rounded-full bg-surface-container-low border border-transparent text-on-surface-variant font-medium text-sm transition-all hover:bg-surface-container-high active:scale-95">Professionals</button>
+<button class="px-5 py-2.5 rounded-full bg-surface-container-low border border-transparent text-on-surface-variant font-medium text-sm transition-all hover:bg-surface-container-high active:scale-95">Students</button>
+</div>
+<span class="text-xs text-error font-medium">Please select a target audience</span>
+</section>
+<!-- Location Section -->
+<section class="flex flex-col gap-2">
+<label class="text-sm font-semibold tracking-wider uppercase text-on-surface-variant ml-1">LOCATION (REQUIRED)</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant group-focus-within:text-primary transition-colors">location_on</span>
+</div>
+<input class="w-full bg-surface-container-low text-on-surface border-none rounded-lg py-4 pl-12 pr-4 ring-1 ring-outline-variant focus:ring-2 focus:ring-primary focus:bg-surface-container-highest transition-all outline-none" placeholder="e.g. New York, USA" type="text"/>
+</div>
+<span class="text-xs text-error font-medium ml-1 mt-1">Location is required</span>
+</section>
+<!-- Portfolio Input -->
+<section class="flex flex-col gap-2">
+<label class="text-sm font-semibold tracking-wider uppercase text-on-surface-variant ml-1">BRAND WEBSITE (OPTIONAL)</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant group-focus-within:text-primary transition-colors">link</span>
+</div>
+<input class="w-full bg-surface-container-low text-on-surface border-none rounded-lg py-4 pl-12 pr-4 ring-1 ring-outline-variant focus:ring-2 focus:ring-primary focus:bg-surface-container-highest transition-all outline-none" placeholder="https://yourbrand.com" type="url"/>
+</div>
+</section>
+<!-- Buttons Section -->
+<section class="flex flex-col gap-6 mt-4">
+<button class="w-full py-4 rounded-full bg-[#5620e0]/40 text-on-surface/50 font-bold text-lg cursor-not-allowed transition-all">
+                    Finish Setup
+                </button>
+<button class="w-full py-4 rounded-full border border-outline-variant text-on-surface font-bold text-lg hover:bg-surface-container-highest active:scale-95 transition-all">
+                    Save &amp; Exit
+                </button>
+</section>
+</div>
+</main>
+<!-- Decorative Glows -->
+<div class="fixed -top-40 -left-40 w-96 h-96 bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="fixed -bottom-40 -right-40 w-96 h-96 bg-tertiary/5 rounded-full blur-[120px] pointer-events-none"></div>
+</body></html>

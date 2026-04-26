@@ -28,8 +28,15 @@ class HomeContainerFragment : Fragment() {
 
         val navHostFragment = childFragmentManager.findFragmentById(R.id.nav_host_fragment_home) as NavHostFragment
         val navController = navHostFragment.navController
-        
+
         binding.bottomNav.setupWithNavController(navController)
+
+        // Incomplete brand accounts arrive here after login. Open EditProfile so they can
+        // complete the required fields (motto already set from registration; need ≥1 tag).
+        val setupRequired = arguments?.getBoolean("brandSetupRequired", false) ?: false
+        if (setupRequired) {
+            navController.navigate(R.id.navigation_edit_profile)
+        }
     }
 
     override fun onDestroyView() {

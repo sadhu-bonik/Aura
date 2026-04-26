@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#27252d",
+                        "on-surface": "#e9e3ef",
+                        "surface-container-lowest": "#000000",
+                        "tertiary": "#ffdff6",
+                        "outline": "#77747e",
+                        "inverse-on-surface": "#565459",
+                        "on-error": "#490013",
+                        "primary-container": "#554d73",
+                        "error-container": "#871c34",
+                        "surface-dim": "#0f0e12",
+                        "on-background": "#e9e3ef",
+                        "secondary-dim": "#bcb5ce",
+                        "on-secondary-container": "#c3bcd5",
+                        "secondary": "#cac3dc",
+                        "on-primary": "#423b60",
+                        "on-primary-fixed": "#362f53",
+                        "on-primary-container": "#e7dfff",
+                        "on-tertiary-container": "#654060",
+                        "surface": "#0f0e12",
+                        "tertiary-fixed": "#fdcbf2",
+                        "on-tertiary-fixed": "#512e4c",
+                        "on-secondary-fixed": "#413d51",
+                        "error": "#f97386",
+                        "secondary-container": "#3d394d",
+                        "surface-container-high": "#201f26",
+                        "surface-bright": "#2d2b34",
+                        "on-primary-fixed-variant": "#534b71",
+                        "primary": "#cac1ed",
+                        "surface-variant": "#27252d",
+                        "inverse-surface": "#fdf8fe",
+                        "on-surface-variant": "#aea9b5",
+                        "on-secondary": "#423d52",
+                        "tertiary-container": "#fdcbf2",
+                        "surface-container-low": "#141318",
+                        "on-error-container": "#ff97a3",
+                        "background": "#0f0e12",
+                        "secondary-fixed-dim": "#d8d1ea",
+                        "on-secondary-fixed-variant": "#5d596e",
+                        "on-tertiary": "#6f4969",
+                        "surface-container": "#1a191f",
+                        "secondary-fixed": "#e6dff9",
+                        "primary-fixed": "#d6ccf9",
+                        "tertiary-dim": "#eebde3",
+                        "primary-fixed-dim": "#c8beea",
+                        "error-dim": "#c44b5f",
+                        "outline-variant": "#494650",
+                        "on-tertiary-fixed-variant": "#704a6a",
+                        "primary-dim": "#bcb3df",
+                        "surface-tint": "#cac1ed",
+                        "tertiary-fixed-dim": "#eebde3",
+                        "inverse-primary": "#615a80"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0f0e12;
+            color: #e9e3ef;
+            font-family: 'Manrope', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .aura-glow {
+            box-shadow: 0 0 40px 0 rgba(139, 92, 246, 0.25);
+        }
+        body {
+            min-height: 100dvh;
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-100 font-manrope overflow-x-hidden flex flex-col">
+<!-- TopAppBar Shared Component -->
+<header class="fixed top-0 w-full z-50 bg-zinc-950/80 backdrop-blur-3xl bg-gradient-to-b from-zinc-900/20 to-transparent">
+<div class="flex items-center justify-between px-6 h-20 w-full max-w-lg mx-auto">
+<div class="flex items-center gap-4">
+<button class="p-2 -ml-2 hover:bg-zinc-800/40 rounded-full transition-colors active:scale-95 duration-200 text-violet-500">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-manrope tracking-tight font-bold text-lg text-on-surface">Choose Identity</h1>
+</div>
+<div class="text-xl font-black text-zinc-100 tracking-tighter">AURA</div>
+</div>
+</header>
+<main class="flex-grow pt-24 pb-44 px-6 max-w-lg mx-auto w-full flex flex-col justify-center min-h-screen">
+<!-- Header Section -->
+<div class="mb-8">
+<h2 class="text-4xl font-extrabold tracking-tight text-on-surface mb-3 leading-tight font-display">
+                Choose your role
+            </h2>
+<p class="text-on-surface-variant text-lg font-medium">
+                This choice cannot be changed later.
+            </p>
+</div>
+<!-- Role Selection Cards -->
+<div class="grid grid-cols-1 gap-8">
+<!-- Card 1: Creator (Selected State) -->
+<div class="group relative bg-zinc-900 p-8 rounded-2xl border-4 border-violet-500 aura-glow transition-all duration-300 cursor-pointer active:scale-[0.98] flex flex-col min-h-[220px]">
+<div class="flex items-start justify-between mb-6">
+<div class="bg-violet-600/20 p-4 rounded-xl">
+<span class="material-symbols-outlined text-violet-400 text-3xl" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</div>
+<div class="h-6 w-6 rounded-full border-2 border-violet-500 flex items-center justify-center">
+<div class="h-3 w-3 bg-violet-500 rounded-full"></div>
+</div>
+</div>
+<div class="flex-grow">
+<h3 class="text-2xl font-bold text-white mb-2 font-display">Creator</h3>
+<p class="text-zinc-400 leading-relaxed">
+                        Showcase your content and collaborate with brands.
+                    </p>
+</div>
+</div>
+<!-- Card 2: Brand (Unselected State) -->
+<div class="group relative bg-zinc-900 p-8 rounded-2xl border border-zinc-800 transition-all duration-300 cursor-pointer active:scale-[0.98] hover:border-zinc-700 flex flex-col min-h-[220px]">
+<div class="flex items-start justify-between mb-6">
+<div class="bg-zinc-800 p-4 rounded-xl">
+<span class="material-symbols-outlined text-zinc-500 text-3xl">campaign</span>
+</div>
+<div class="h-6 w-6 rounded-full border-2 border-zinc-700"></div>
+</div>
+<div class="flex-grow">
+<h3 class="text-2xl font-bold text-white mb-2 font-display">Brand</h3>
+<p class="text-zinc-400 leading-relaxed">
+                        Discover creators and launch campaigns.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Spacing before action area -->
+<div class="h-8"></div>
+</main>
+<!-- Fixed Footer Actions -->
+<footer class="fixed bottom-0 left-0 w-full bg-zinc-950/80 backdrop-blur-xl p-6 z-40 border-t border-zinc-900">
+<div class="max-w-lg mx-auto flex flex-col gap-4">
+<button class="w-full h-16 rounded-full bg-violet-600 text-white font-bold text-lg shadow-lg shadow-violet-900/20 hover:bg-violet-500 active:scale-[0.98] transition-all">
+                Create Account
+            </button>
+<button class="w-full py-4 text-zinc-500 font-semibold hover:text-zinc-300 transition-colors active:scale-95">
+                Cancel
+            </button>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/empty_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/space_xl"
+    android:paddingVertical="@dimen/space_xxl">
+
+    <ImageView
+        android:id="@+id/iv_empty_icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:alpha="0.7"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_aura_star_outline"
+        app:tint="@color/colorOnSurfaceVariant"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_empty_title"
+        style="@style/TextAppearance.Aura.TitleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_md"
+        android:gravity="center"
+        tools:text="Nothing here yet" />
+
+    <TextView
+        android:id="@+id/tv_empty_subtitle"
+        style="@style/TextAppearance.Aura.BodyMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_sm"
+        android:gravity="center"
+        android:textColor="@color/colorOnSurfaceVariant"
+        tools:text="Pull to refresh or check back later." />
+</LinearLayout>

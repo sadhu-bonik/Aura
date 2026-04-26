@@ -66,7 +66,12 @@
         android:id="@+id/forgotPasswordFragment"
         android:name="com.aura.app.ui.auth.ForgotPasswordFragment"
         android:label="Forgot Password"
-        tools:layout="@layout/fragment_login">
+        tools:layout="@layout/fragment_forgot_password">
+
+        <argument
+            android:name="email"
+            app:argType="string"
+            android:defaultValue="" />
     </fragment>
 
     <!-- ===================== -->
@@ -237,22 +242,22 @@
     <!-- MAIN APP              -->
     <!-- ===================== -->
 
-    <!-- MAIN APP CONTAINER -->
     <fragment
         android:id="@+id/homeContainerFragment"
         android:name="com.aura.app.ui.main.HomeContainerFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_home_container" />
+        tools:layout="@layout/fragment_home_container">
 
-    <fragment
-        android:id="@+id/dealDashboardFragment"
-        android:name="com.aura.app.ui.chat.DealDashboardFragment"
-        android:label="@string/title_deal_dashboard">
+        <argument
+            android:name="brandSetupRequired"
+            app:argType="boolean"
+            android:defaultValue="false" />
+
         <action
-            android:id="@+id/action_dashboard_to_chat"
+            android:id="@+id/action_homeContainer_to_chat"
             app:destination="@id/chatFragment" />
         <action
-            android:id="@+id/action_dashboard_to_history"
+            android:id="@+id/action_homeContainer_to_history"
             app:destination="@id/dealHistoryFragment" />
     </fragment>
 

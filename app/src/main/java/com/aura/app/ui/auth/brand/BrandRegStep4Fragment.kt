@@ -7,18 +7,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.aura.app.R
 import com.aura.app.databinding.FragmentBrandRegStep4Binding
+import com.aura.app.utils.CreatorNicheTags
 import com.google.android.material.chip.Chip
 
-/**
- * BrandRegStep4Fragment — Market Presence: Industry Tags + Target Location
- *
- * Sends: industryTags (List<String>), city, state, country
- * Calls: vm.submitStep4()
- * Navigates: on stepSaved(4) → brand_step5
- */
 class BrandRegStep4Fragment : Fragment() {
 
     private var _binding: FragmentBrandRegStep4Binding? = null
@@ -35,28 +30,32 @@ class BrandRegStep4Fragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupNicheChips()
         prefillFields()
         setupObservers()
         setupClickListeners()
+    }
+
+    private fun setupNicheChips() {
+        val chipGroup = binding.chipGroupIndustries
+        chipGroup.removeAllViews()
+        CreatorNicheTags.NICHE_TAGS.forEach { tag ->
+            val chip = Chip(requireContext()).apply {
+                text = tag
+                isCheckable = true
+                isChecked = vm.industryTags.contains(tag)
+            }
+            chipGroup.addView(chip)
+        }
     }
 
     private fun prefillFields() {
         binding.etCity.setText(vm.city)
         binding.etState.setText(vm.state)
         binding.etCountry.setText(vm.country)
-
-        // Re-check previously selected industry chips
-        if (vm.industryTags.isNotEmpty()) {
-            val chipGroup = binding.chipGroupIndustries
-            for (i in 0 until chipGroup.childCount) {
-                val chip = chipGroup.getChildAt(i) as? Chip ?: continue
-                chip.isChecked = vm.industryTags.contains(chip.text.toString())
-            }
-        }
     }
 
     private fun setupObservers() {
-        // Disable Next while Firebase call is in flight
         vm.isLoading.observe(viewLifecycleOwner) { loading ->
             binding.layoutBottomNav.btnNavNext.isEnabled = !loading
             binding.layoutBottomNav.btnNavNext.alpha = if (loading) 0.5f else 1.0f
@@ -69,10 +68,9 @@ class BrandRegStep4Fragment : Fragment() {
             }
         }
 
-        // Navigate to feed when Firebase Auth + Firestore complete
         vm.registrationComplete.observe(viewLifecycleOwner) { complete ->
             if (complete) {
-                val navOptions = androidx.navigation.NavOptions.Builder()
+                val navOptions = NavOptions.Builder()
                     .setPopUpTo(R.id.welcomeFragment, inclusive = true)
                     .build()
                 findNavController().navigate(R.id.action_brand_step4_to_home, null, navOptions)
@@ -89,8 +87,7 @@ class BrandRegStep4Fragment : Fragment() {
 
         binding.layoutBottomNav.btnNavNext.setOnClickListener {
             if (!validateAndCollect()) return@setOnClickListener
-            // All data collected — fire the single Firebase call
-            vm.completeRegistration()
+            vm.completeRegistration(requireContext())
         }
     }
 

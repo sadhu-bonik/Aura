@@ -147,8 +147,9 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <!-- Video grid - sample slots (RecyclerView in production) -->
+            <!-- Video grid - static preview slots (hidden when RecyclerView takes over) -->
             <LinearLayout
+                android:id="@+id/layout_video_slots_preview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

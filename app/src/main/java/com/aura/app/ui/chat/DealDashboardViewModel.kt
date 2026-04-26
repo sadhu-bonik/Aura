@@ -1,14 +1,17 @@
 package com.aura.app.ui.chat
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.aura.app.data.model.Deal
 import com.aura.app.data.model.UserLite
 import com.aura.app.data.repository.DealRepository
 import com.aura.app.data.repository.UserRepository
 import com.aura.app.utils.Constants
+import com.aura.app.utils.SessionManager
 import com.aura.app.utils.StubSession
 import com.aura.app.utils.StubState
 import kotlinx.coroutines.Job
@@ -23,6 +26,7 @@ data class DealOfferItem(
 class DealDashboardViewModel(
     private val dealRepository: DealRepository = DealRepository(),
     private val userRepository: UserRepository = UserRepository(),
+    private val sessionManager: SessionManager? = null,
 ) : ViewModel() {
 
     private val _activeDeals = MutableLiveData<List<ActiveDealItem>>(emptyList())
@@ -59,6 +63,7 @@ class DealDashboardViewModel(
         _isLoading.value = true
 
         if (Constants.USE_STUBS) {
+            StubState.expireStaleDeals()
             loadJob = viewModelScope.launch {
                 StubState.dealsFlow.collect { deals ->
                     val filtered = deals.filter { it.creatorId == userId || it.brandId == userId }
@@ -126,8 +131,15 @@ class DealDashboardViewModel(
                 }
                 deal.status == Constants.STATUS_PENDING ->
                     new.add(DealOfferItem(deal, otherUser))
-                deal.status == Constants.STATUS_COMPLETED ->
-                    completed.add(DealOfferItem(deal, otherUser))
+                deal.status == Constants.STATUS_COMPLETED -> {
+                    val hasReviewed = if (userId == deal.creatorId) deal.creatorReviewedAt != null
+                                      else deal.brandReviewedAt != null
+                    if (hasReviewed) completed.add(DealOfferItem(deal, otherUser))
+                    else {
+                        val unread = (deal.unreadCounts[userId] ?: 0L).toInt()
+                        active.add(ActiveDealItem(deal, otherUser, unread))
+                    }
+                }
                 deal.status in listOf(
                     Constants.STATUS_REJECTED,
                     Constants.STATUS_CANCELLED,

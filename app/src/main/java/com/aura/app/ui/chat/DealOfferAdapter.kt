@@ -24,6 +24,15 @@ class DealOfferAdapter(
     private val onReject: ((String) -> Unit)? = null,
 ) : ListAdapter<DealOfferItem, DealOfferAdapter.ViewHolder>(DiffCallback) {
 
+    private var reviewsLoaded = false
+    private var reviewsMap = emptyMap<String, com.aura.app.data.model.Review>()
+
+    fun setReviewsData(loaded: Boolean, map: Map<String, com.aura.app.data.model.Review>) {
+        reviewsLoaded = loaded
+        reviewsMap = map
+        notifyItemRangeChanged(0, itemCount)
+    }
+
     inner class ViewHolder(private val binding: ItemDealOfferBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -62,20 +71,36 @@ class DealOfferAdapter(
             binding.root.setOnClickListener { onItemClick?.invoke(item) }
 
             val showInlineActions = role == Constants.ROLE_CREATOR && deal.status == Constants.STATUS_PENDING
-            binding.ivBtnAccept.isVisible = showInlineActions
+            binding.tvBtnAccept.isVisible = showInlineActions
             binding.ivBtnReject.isVisible = showInlineActions
 
             if (showInlineActions) {
-                binding.ivBtnAccept.setOnClickListener { onAccept?.invoke(deal.dealId) }
+                binding.tvBtnAccept.setOnClickListener { onAccept?.invoke(deal.dealId) }
                 binding.ivBtnReject.setOnClickListener { onReject?.invoke(deal.dealId) }
             }
         }
 
         private fun bindCompleted(item: DealOfferItem) {
+            val deal = item.deal
             binding.ivChevron.isVisible = true
-            binding.tvStatusChip.visibility = View.GONE
-            binding.ivBtnAccept.isVisible = false
+            binding.tvStatusChip.visibility = View.VISIBLE
+            binding.tvBtnAccept.isVisible = false
             binding.ivBtnReject.isVisible = false
+            
+            // Re-purpose status chip for Review button
+            val ctx = binding.root.context
+            binding.tvStatusChip.setOnClickListener(null)
+            
+            val isReviewed = reviewsLoaded && reviewsMap.containsKey(deal.dealId)
+            if (isReviewed) {
+                binding.tvStatusChip.visibility = View.VISIBLE
+                binding.tvStatusChip.text = "★ " + ctx.getString(R.string.review_aura_reviewed_badge)
+                binding.tvStatusChip.setBackgroundResource(R.drawable.chip_status_accepted)
+                binding.tvStatusChip.setTextColor(ctx.getColor(R.color.colorPrimary))
+            } else {
+                binding.tvStatusChip.visibility = View.GONE
+            }
+
             binding.root.alpha = 1f
             binding.root.isClickable = true
             binding.root.isFocusable = true
@@ -86,7 +111,7 @@ class DealOfferAdapter(
         private fun bindPast(item: DealOfferItem, deal: Deal) {
             val ctx = binding.root.context
             binding.tvStatusChip.visibility = View.VISIBLE
-            binding.ivBtnAccept.isVisible = false
+            binding.tvBtnAccept.isVisible = false
             binding.ivBtnReject.isVisible = false
             binding.ivChevron.isVisible = true
 

@@ -20,6 +20,8 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
+    private var failedAttempts = 0
+
     private val authViewModel: AuthViewModel by activityViewModels { AuthViewModel.Factory() }
     private val registrationViewModel: RegistrationViewModel by activityViewModels()
 
@@ -49,7 +51,8 @@ class LoginFragment : Fragment() {
         binding.btnCancel.setOnClickListener { findNavController().navigateUp() }
 
         binding.tvForgotPassword.setOnClickListener {
-            findNavController().navigate(R.id.action_login_to_forgot_password)
+            val bundle = android.os.Bundle().apply { putString("email", email) }
+            findNavController().navigate(R.id.action_login_to_forgot_password, bundle)
         }
     }
 
@@ -73,18 +76,30 @@ class LoginFragment : Fragment() {
                                 if (state.user.role == "creator") {
                                     findNavController().navigate(R.id.action_login_to_creator_step1)
                                 } else {
-                                    findNavController().navigate(R.id.action_login_to_brand_step1)
+                                    // Incomplete brand: go to home and open edit profile to complete setup.
+                                    // Routing to brand Step 1 would re-run Firebase Auth (account creation)
+                                    // and crash with a collision error — the account already exists.
+                                    val bundle = android.os.Bundle().apply {
+                                        putBoolean("brandSetupRequired", true)
+                                    }
+                                    findNavController().navigate(R.id.action_login_to_home, bundle)
                                 }
                             } else {
                                 findNavController().navigate(R.id.action_login_to_home)
                             }
                         }
                         is AuthState.Error -> {
-                            binding.btnLogin.isEnabled = true
-                            binding.btnLogin.alpha = 1.0f
-                            binding.tilPassword.error = state.message
-                            // Reset so that screen rotation doesn't re-show the error snackbar
+                            failedAttempts++
                             authViewModel.resetState()
+                            if (failedAttempts >= 3) {
+                                binding.btnLogin.isEnabled = false
+                                binding.btnLogin.alpha = 0.5f
+                                binding.tilPassword.error = "Too many failed attempts — use Forgot Password below"
+                            } else {
+                                binding.btnLogin.isEnabled = true
+                                binding.btnLogin.alpha = 1.0f
+                                binding.tilPassword.error = state.message
+                            }
                         }
                     }
                 }

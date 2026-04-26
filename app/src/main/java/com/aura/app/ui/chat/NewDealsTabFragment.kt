@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aura.app.R
 import com.aura.app.databinding.FragmentDealTabBinding
+import com.aura.app.utils.rootNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class NewDealsTabFragment : Fragment() {
@@ -61,8 +62,8 @@ class NewDealsTabFragment : Fragment() {
         dashboardViewModel.acceptEvent.observe(viewLifecycleOwner) { dealId ->
             if (dealId != null) {
                 dashboardViewModel.consumeAcceptEvent()
-                findNavController().navigate(
-                    R.id.action_dashboard_to_chat,
+                rootNavController().navigate(
+                    R.id.action_homeContainer_to_chat,
                     bundleOf("dealId" to dealId)
                 )
             }
@@ -70,14 +71,20 @@ class NewDealsTabFragment : Fragment() {
     }
 
     private fun confirmReject(dealId: String) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.dialog_reject_title)
-            .setMessage(R.string.dialog_reject_body)
-            .setNegativeButton(R.string.btn_cancel, null)
-            .setPositiveButton(R.string.btn_decline) { _, _ ->
-                dashboardViewModel.rejectDeal(dealId)
-            }
+        val dialogView = layoutInflater.inflate(R.layout.dialog_confirm_decline, null)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogView)
+            .setBackground(android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
             .show()
+
+        dialogView.findViewById<android.widget.TextView>(R.id.tv_btn_decline).setOnClickListener {
+            dashboardViewModel.rejectDeal(dealId)
+            dialog.dismiss()
+        }
+
+        dialogView.findViewById<android.widget.TextView>(R.id.tv_btn_cancel).setOnClickListener {
+            dialog.dismiss()
+        }
     }
 
     override fun onDestroyView() {

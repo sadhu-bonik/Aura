@@ -1,55 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    android:padding="@dimen/space_md">
+    android:fillViewport="true">
 
-    <!-- Search Bar -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_search"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search creators"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/ic_nav_discover"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Placeholder Content -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_search">
-
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:alpha="0.2"
-            android:src="@drawable/ic_nav_discover"
-            app:tint="@color/colorOnSurface" />
+        android:padding="@dimen/space_md"
+        android:paddingBottom="100dp">
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="UI Component Gallery"
+            style="@style/TextAppearance.Aura.HeadlineMedium"
+            android:layout_marginBottom="@dimen/space_xl"/>
+
+        <!-- Section Header Include -->
+        <include
+            android:id="@+id/inc_section_header"
+            layout="@layout/include_section_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/space_md"/>
+
+        <!-- Stat Pill Include -->
+        <include
+            android:id="@+id/inc_stat_pill"
+            layout="@layout/include_stat_pill"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/space_xl"/>
+
+        <!-- Creator Card Horizontal Include -->
+        <include
+            android:id="@+id/inc_creator_card"
+            layout="@layout/item_creator_card_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_md"
-            android:text="Explore the ecosystem"
-            android:textColor="@color/colorOnSurfaceVariant"
-            android:textSize="16sp" />
-    </LinearLayout>
+            android:layout_marginBottom="@dimen/space_xl"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Post Thumb Include -->
+        <include
+            android:id="@+id/inc_post_thumb"
+            layout="@layout/item_post_thumb"
+            android:layout_width="100dp"
+            android:layout_height="133dp"
+            android:layout_marginBottom="@dimen/space_xl"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="State Layouts"
+            style="@style/TextAppearance.Aura.TitleMedium"
+            android:layout_marginBottom="@dimen/space_md"/>
+
+        <!-- Loading Include -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="@dimen/space_md"
+            android:background="@color/colorSurfaceContainerLow">
+            <include layout="@layout/layout_loading" />
+        </FrameLayout>
+
+        <!-- Empty State Include -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="@dimen/space_md"
+            android:background="@color/colorSurfaceContainerLow">
+            <include layout="@layout/layout_empty_state" />
+        </FrameLayout>
+
+        <!-- Error Layout Include -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="@dimen/space_xl"
+            android:background="@color/colorSurfaceContainerLow">
+            <include layout="@layout/layout_error" />
+        </FrameLayout>
+
+    </LinearLayout>
+</ScrollView>

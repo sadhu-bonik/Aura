@@ -30,9 +30,17 @@ data class BrandProfile(
     val state: String = "",
     val country: String = "",
 
-    // First campaign (Step 5)
+    // First campaign (Step 5, optional)
     val firstCampaignName: String = "",
     val firstCampaignBrief: String = "",
+
+    // Uploaded media
+    val logoUrl: String = "",
+    val logoPath: String = "",
+    val verificationFileUrl: String = "",
+    val verificationFilePath: String = "",
+    val verificationFileName: String = "",
+    val verificationMimeType: String = "",
 
     // Metadata
     val totalCampaigns: Long = 0,

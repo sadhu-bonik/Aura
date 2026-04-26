@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#0f0e12",
+                        "surface": "#0f0e12",
+                        "surface-bright": "#2d2b34",
+                        "on-error": "#490013",
+                        "on-surface": "#e9e3ef",
+                        "primary-dim": "#bcb3df",
+                        "on-surface-variant": "#aea9b5",
+                        "secondary-dim": "#bcb5ce",
+                        "primary-fixed": "#d6ccf9",
+                        "primary-container": "#554d73",
+                        "on-secondary-fixed": "#413d51",
+                        "inverse-surface": "#fdf8fe",
+                        "surface-container": "#1a191f",
+                        "inverse-on-surface": "#565459",
+                        "tertiary-fixed": "#fdcbf2",
+                        "primary-fixed-dim": "#c8beea",
+                        "on-primary-container": "#e7dfff",
+                        "on-background": "#e9e3ef",
+                        "surface-variant": "#27252d",
+                        "surface-container-high": "#201f26",
+                        "on-primary-fixed-variant": "#534b71",
+                        "secondary-fixed-dim": "#d8d1ea",
+                        "secondary": "#cac3dc",
+                        "on-primary": "#423b60",
+                        "surface-dim": "#0f0e12",
+                        "secondary-fixed": "#e6dff9",
+                        "primary": "#cac1ed",
+                        "inverse-primary": "#615a80",
+                        "surface-tint": "#cac1ed",
+                        "secondary-container": "#3d394d",
+                        "on-tertiary-fixed-variant": "#704a6a",
+                        "on-secondary-fixed-variant": "#5d596e",
+                        "tertiary": "#ffdff6",
+                        "tertiary-container": "#fdcbf2",
+                        "on-error-container": "#ff97a3",
+                        "surface-container-lowest": "#000000",
+                        "on-secondary": "#423d52",
+                        "on-tertiary-fixed": "#512e4c",
+                        "tertiary-fixed-dim": "#eebde3",
+                        "on-tertiary-container": "#654060",
+                        "error-dim": "#c44b5f",
+                        "outline": "#77747e",
+                        "error-container": "#871c34",
+                        "outline-variant": "#494650",
+                        "on-tertiary": "#6f4969",
+                        "surface-container-low": "#141318",
+                        "on-primary-fixed": "#362f53",
+                        "error": "#f97386",
+                        "surface-container-highest": "#27252d",
+                        "tertiary-dim": "#eebde3",
+                        "on-secondary-container": "#c3bcd5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "display": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .glass-panel {
+            background: rgba(15, 14, 18, 0.8);
+            backdrop-filter: blur(24px);
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #7a729a 0%, #554d73 100%);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-neutral-900/80 backdrop-blur-xl flex justify-between items-center px-6 h-16 w-full shadow-none font-sans antialiased text-white tracking-tight">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-neutral-400 hover:bg-neutral-800/50 transition-colors p-2 rounded-full active:scale-95 duration-200 cursor-pointer">menu</span>
+<h1 class="text-xl font-bold text-white tracking-tight">Deal History</h1>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant active:scale-95 duration-200 cursor-pointer">
+<img alt="User Profile" data-alt="Portrait of a creative professional woman with soft studio lighting and a neutral atmospheric background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgX_is_JJfGbiRX_8-5eKLuZ1ukVm7CPy43IsY8XqQO7JCq0aBV3TKOg002BhXdU3cT4LfwdLZFYqoncDDBqsh8CR0J52KZtIUUs1cD9ezdlW-5ylxK7qNPe_mpyPC71dBh7M7sM0VPBNHOAAmvkqkocUtnqlTTx_K4Cmi-eZ_kZ9J3ZqOQUMaTP_TME0_zDl54Md3ecZVIrWcdTP54RMtMd1T8My1rWwRJTMoKihzHpMzc_YoFAZq2ALY6eVqWnY2fNREBIUCxMI"/>
+</div>
+</header>
+<main class="pt-24 px-6 max-w-2xl mx-auto">
+<!-- Section Header -->
+<div class="mb-8">
+<h2 class="text-3xl font-extrabold tracking-tight text-on-surface mb-1">Deal History</h2>
+<p class="text-on-surface-variant text-lg">Review past collaborations</p>
+</div>
+<!-- Custom Tabs -->
+<div class="flex p-1 bg-surface-container-low rounded-full mb-8">
+<button class="flex-1 py-3 text-sm font-bold rounded-full bg-primary-container text-on-primary-container shadow-lg transition-all duration-200">
+                Completed
+            </button>
+<button class="flex-1 py-3 text-sm font-bold rounded-full text-on-surface-variant hover:text-on-surface transition-all duration-200">
+                Past Deals
+            </button>
+</div>
+<!-- Deal List Content -->
+<div class="space-y-4" id="completed-deals">
+<!-- Deal Card 1 -->
+<div class="bg-surface-container rounded-lg p-5 flex flex-col gap-4 relative overflow-hidden group">
+<div class="flex items-center justify-between w-full">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-2xl overflow-hidden shrink-0">
+<img alt="Lumina Brand" class="w-full h-full object-cover" data-alt="Minimalist high-end fashion brand logo on a clean dark grey background with elegant typography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYK-G0LilNTd-MSUllN_Ek3Vu27vEsTDCXDJ75AduezcS4IeBkYwjhWpZZk0U7v24PIqZ0lTaSIIh4XJ-_pIzXlsU5NWBUmfbosvlBN_TEmoAFjHVNR-Akop8WZSfGfjdk4D2ojbtGc68fSn656LFCAT3xkvBjHtjB8ENHdSLaOD6k9IZxTODMYIXgqxEfxjDwk9OJWChES8BB64wBTWnZUDVHpc8HUg_rZDcnI5Dwd96RdVCWI0q11lAncvg6dJEpsJZzB6b8dIQ"/>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2 mb-0.5">
+<h3 class="text-lg font-bold text-on-surface leading-tight">Lumina Essentials</h3>
+</div>
+<p class="text-primary/80 text-sm font-medium">Summer Oasis Campaign</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+</div>
+<!-- Deal Card 2 -->
+<div class="bg-surface-container rounded-lg p-5 flex flex-col gap-4 relative overflow-hidden group">
+<div class="flex items-center justify-between w-full">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-2xl overflow-hidden shrink-0">
+<img alt="Nordic Skincare" class="w-full h-full object-cover" data-alt="Modern aesthetic skincare product bottles arranged on a dark stone surface with moody cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCha9ppkGQXGm09gVl49ASbOYuQ6fPAQU_rvF9BRSZj3FxUJK0mmkmv0bBbZFlCxuGu4ODJ8kGPxKG5IVExJiggyOOYTKhSsnTV201rPO3gUm2TYSoQDL4vUuAb3jffPlVEsntPv5FwRSLN98UT2pYgovOHKHAEk70qLE6jZ7q6w_2dSTkiOT9hiJtW4XnuH1ZeyzLxP50OSqQ1R1Y47dAKJF4OlBl5T69hQ1bgxHM3dZrhLFoVbxHRVw2nIjisdMgY7xUzuRTwBTI"/>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2 mb-0.5">
+<h3 class="text-lg font-bold text-on-surface leading-tight">Nordic Skincare</h3>
+</div>
+<p class="text-primary/80 text-sm font-medium">Winter Glow Series</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+</div>
+<!-- Deal Card 3 (Status variation: Expired implied) -->
+<!-- Deal Card 4 -->
+<div class="bg-surface-container rounded-lg p-5 flex flex-col gap-4 relative overflow-hidden group">
+<div class="flex items-center justify-between w-full">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-2xl overflow-hidden shrink-0">
+<img alt="Velvet App" class="w-full h-full object-cover" data-alt="Abstract velvet texture with deep purple and violet tones, soft flowing curves and elegant shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBh0DZnGJYboJ_pm4Z78uIxakZYoJEWNz0SbT_Y0-tgo_gnAy3IW-Dw-9GaArFa4tP6QBsQbdMz1xZs5xPU3LARSowBZzvO-mTFQ-1kX6-xzQx8q9V9BDEWml3pqwxCaUxu33NDBxMAaJR3g97naIw10elLtXHB-G_PrloxxT9w9XneRI6XW9JA-ullSNPzFUojGXrpYBh3CEtMMLGqJNqQCQLm6EEJpjl6KaVf-5KakAs-Z-a1xGV4X7P9HlWso93ApGjru3ETrJU"/>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2 mb-0.5">
+<h3 class="text-lg font-bold text-on-surface leading-tight">Velvet App</h3>
+<span class="bg-tertiary-container/10 text-tertiary px-2 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-widest border border-tertiary/20">Completed</span>
+</div>
+<p class="text-primary/80 text-sm font-medium">Brand Awareness Phase 1</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+</div>
+</div><div class="space-y-4 hidden" id="past-deals">
+<!-- Expired Deal -->
+<div class="bg-surface-container-low/50 rounded-lg p-5 flex flex-col gap-4 relative overflow-hidden opacity-80">
+<div class="flex items-center justify-between w-full">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-2xl overflow-hidden shrink-0 grayscale">
+<img alt="Zenith Tech" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjksagI2yyMl2b3Gg5JRBNOrrbvXPIR7RScOpdW1iOf9CLbvYEehJhe5yoe7b9ennJAvzqO4viiZ1FE97YuBx1OeRSryp__BOy0543Hl5SW07xie4EzeOZqp1LWigCgslr3USE3sMq0arT-Me7GWo4LanbtT0tWMeSvfQ8WN2OPSj5GkVAcFsdg99xbbFqHD6wzxDvbYyXje-e3gTFP-TgM83zbSMLvyPJ0RBLQy7I5ebD53Z_qh7zCf_zoDsQpKuRbBgadKfxEHs"/>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2 mb-0.5">
+<h3 class="text-lg font-bold text-on-surface-variant leading-tight">Zenith Tech</h3>
+<span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-widest border border-outline-variant/20">Expired</span>
+</div>
+<p class="text-on-surface-variant/60 text-sm font-medium">Product Launch v2</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/40">chevron_right</span>
+</div>
+</div>
+<!-- Cancelled Deal -->
+<div class="bg-surface-container-low/50 rounded-lg p-5 flex flex-col gap-4 relative overflow-hidden opacity-80">
+<div class="flex items-center justify-between w-full">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-2xl overflow-hidden shrink-0 grayscale">
+<img alt="Aura Cosmetics" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCha9ppkGQXGm09gVl49ASbOYuQ6fPAQU_rvF9BRSZj3FxUJK0mmkmv0bBbZFlCxuGu4ODJ8kGPxKG5IVExJiggyOOYTKhSsnTV201rPO3gUm2TYSoQDL4vUuAb3jffPlVEsntPv5FwRSLN98UT2pYgovOHKHAEk70qLE6jZ7q6w_2dSTkiOT9hiJtW4XnuH1ZeyzLxP50OSqQ1R1Y47dAKJF4OlBl5T69hQ1bgxHM3dZrhLFoVbxHRVw2nIjisdMgY7xUzuRTwBTI"/>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2 mb-0.5">
+<h3 class="text-lg font-bold text-on-surface-variant leading-tight">Aura Cosmetics</h3>
+<span class="bg-error-container/10 text-error px-2 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-widest border border-error/20">Cancelled</span>
+</div>
+<p class="text-on-surface-variant/60 text-sm font-medium">Spring Collection</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/40">chevron_right</span>
+</div>
+</div>
+<!-- Declined Deal -->
+<div class="bg-surface-container-low/50 rounded-lg p-5 flex flex-col gap-4 relative overflow-hidden opacity-80">
+<div class="flex items-center justify-between w-full">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-2xl overflow-hidden shrink-0 grayscale">
+<img alt="Nova Watches" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYK-G0LilNTd-MSUllN_Ek3Vu27vEsTDCXDJ75AduezcS4IeBkYwjhWpZZk0U7v24PIqZ0lTaSIIh4XJ-_pIzXlsU5NWBUmfbosvlBN_TEmoAFjHVNR-Akop8WZSfGfjdk4D2ojbtGc68fSn656LFCAT3xkvBjHtjB8ENHdSLaOD6k9IZxTODMYIXgqxEfxjDwk9OJWChES8BB64wBTWnZUDVHpc8HUg_rZDcnI5Dwd96RdVCWI0q11lAncvg6dJEpsJZzB6b8dIQ"/>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2 mb-0.5">
+<h3 class="text-lg font-bold text-on-surface-variant leading-tight">Nova Watches</h3>
+<span class="bg-outline/10 text-outline px-2 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-widest border border-outline/20">Declined</span>
+</div>
+<p class="text-on-surface-variant/60 text-sm font-medium">Influencer Gifting</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/40">chevron_right</span>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-6 bg-neutral-900/80 backdrop-blur-2xl rounded-t-[32px] border-none shadow-[0_-8px_30px_rgb(0,0,0,0.12)]">
+<div class="flex flex-col items-center justify-center text-neutral-500 hover:text-violet-300 transition-all active:scale-90 duration-200 cursor-pointer">
+<span class="material-symbols-outlined mb-1">grid_view</span>
+<span class="font-sans text-[11px] font-medium uppercase tracking-widest">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-violet-600/20 text-violet-400 rounded-full px-5 py-2 active:scale-90 duration-200 cursor-pointer">
+<span class="material-symbols-outlined mb-1">history</span>
+<span class="font-sans text-[11px] font-semibold uppercase tracking-widest">Deals</span>
+</div>
+<div class="flex flex-col items-center justify-center text-neutral-500 hover:text-violet-300 transition-all active:scale-90 duration-200 cursor-pointer">
+<span class="material-symbols-outlined mb-1">insights</span>
+<span class="font-sans text-[11px] font-medium uppercase tracking-widest">Analytics</span>
+</div>
+<div class="flex flex-col items-center justify-center text-neutral-500 hover:text-violet-300 transition-all active:scale-90 duration-200 cursor-pointer">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-sans text-[11px] font-medium uppercase tracking-widest">Profile</span>
+</div>
+</nav>
+</body></html>

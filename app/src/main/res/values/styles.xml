@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base application theme -->
+    <!-- ============================================================ -->
+    <!-- BASE THEME — Ethereal Atelier (Nocturnal Edition)            -->
+    <!-- ============================================================ -->
     <style name="Base.Theme.Aura2" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
@@ -17,56 +19,98 @@
         <item name="colorOnTertiaryContainer">@color/colorOnTertiaryContainer</item>
         <item name="colorError">@color/colorError</item>
         <item name="colorOnError">@color/colorOnError</item>
+        <item name="colorErrorContainer">@color/colorErrorContainer</item>
+        <item name="colorOnErrorContainer">@color/colorOnErrorContainer</item>
         <item name="colorSurface">@color/colorSurface</item>
         <item name="colorOnSurface">@color/colorOnSurface</item>
+        <item name="colorSurfaceVariant">@color/colorSurfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/colorOnSurfaceVariant</item>
         <item name="colorOutline">@color/colorOutline</item>
+        <item name="colorOutlineVariant">@color/colorOutlineVariant</item>
         <item name="android:colorBackground">@color/colorBackground</item>
         <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="fontFamily">@font/manrope</item>
     </style>
 
     <style name="Theme.Aura2" parent="Base.Theme.Aura2" />
 
     <!-- ============================================================ -->
-    <!-- TEXT APPEARANCES                                             -->
+    <!-- TEXT APPEARANCES — Manrope                                   -->
     <!-- ============================================================ -->
 
     <style name="TextAppearance.Aura.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
         <item name="android:textSize">32sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/manrope_extrabold</item>
+        <item name="android:letterSpacing">-0.02</item>
         <item name="android:textColor">@color/colorOnSurface</item>
     </style>
 
     <style name="TextAppearance.Aura.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
         <item name="android:textSize">28sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/manrope_bold</item>
+        <item name="android:letterSpacing">-0.02</item>
         <item name="android:textColor">@color/colorOnSurface</item>
     </style>
 
     <style name="TextAppearance.Aura.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
         <item name="android:textSize">24sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/manrope_bold</item>
         <item name="android:textColor">@color/colorOnSurface</item>
     </style>
 
     <style name="TextAppearance.Aura.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:textSize">20sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/manrope_semibold</item>
+        <item name="android:textColor">@color/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.Aura.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textSize">18sp</item>
+        <item name="fontFamily">@font/manrope_semibold</item>
+        <item name="android:textColor">@color/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.Aura.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/manrope_semibold</item>
         <item name="android:textColor">@color/colorOnSurface</item>
     </style>
 
     <style name="TextAppearance.Aura.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
         <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/manrope</item>
+        <item name="android:lineSpacingMultiplier">1.6</item>
         <item name="android:textColor">@color/colorOnSurface</item>
     </style>
 
     <style name="TextAppearance.Aura.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/manrope</item>
+        <item name="android:lineSpacingMultiplier">1.6</item>
         <item name="android:textColor">@color/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="TextAppearance.Aura.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/manrope</item>
+        <item name="android:textColor">@color/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="TextAppearance.Aura.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/manrope_semibold</item>
+        <item name="android:textColor">@color/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.Aura.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/manrope_medium</item>
+        <item name="android:textColor">@color/colorOnSurface</item>
     </style>
 
     <style name="TextAppearance.Aura.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
         <item name="android:textSize">11sp</item>
+        <item name="fontFamily">@font/manrope_bold</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:letterSpacing">0.12</item>
         <item name="android:textColor">@color/colorOnSurfaceVariant</item>
@@ -74,10 +118,17 @@
 
     <style name="TextAppearance.Aura.LabelTertiary" parent="TextAppearance.Material3.LabelSmall">
         <item name="android:textSize">11sp</item>
+        <item name="fontFamily">@font/manrope_bold</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:letterSpacing">0.12</item>
-        <item name="android:textColor">@color/colorTertiary</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorOnTertiaryContainer</item>
+    </style>
+
+    <!-- 11sp error message under inputs (per Figma "Invalid phone number" pattern) -->
+    <style name="TextAppearance.Aura.Error" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textSize">11sp</item>
+        <item name="fontFamily">@font/manrope_medium</item>
+        <item name="android:textColor">@color/colorErrorDim</item>
     </style>
 
     <!-- ============================================================ -->
@@ -88,23 +139,35 @@
         <item name="android:minHeight">52dp</item>
         <item name="android:paddingStart">24dp</item>
         <item name="android:paddingEnd">24dp</item>
-        <item name="android:textAppearance">@style/TextAppearance.Aura.BodyLarge</item>
+        <item name="android:textAppearance">@style/TextAppearance.Aura.LabelLarge</item>
         <item name="android:textColor">@color/colorOnPrimary</item>
-        <item name="android:textStyle">bold</item>
-        <item name="cornerRadius">26dp</item>
+        <item name="fontFamily">@font/manrope_bold</item>
+        <item name="cornerRadius">28dp</item>
         <item name="backgroundTint">@color/colorPrimary</item>
         <item name="rippleColor">@color/colorOnPrimary</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
     </style>
 
+    <!--
+        Gradient pill variant — set this style on a plain View/FrameLayout
+        wrapper (NOT on MaterialButton, since MaterialButton manages its
+        own background). Or on a layout, set
+        android:background="@drawable/bg_aura_gradient_primary" directly.
+    -->
+    <style name="Widget.Aura.Button.Primary.Gradient" parent="Widget.Aura.Button.Primary">
+        <item name="backgroundTint">@null</item>
+        <item name="android:background">@drawable/bg_aura_gradient_primary</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="Widget.Aura.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
         <item name="android:minHeight">52dp</item>
         <item name="android:paddingStart">24dp</item>
         <item name="android:paddingEnd">24dp</item>
-        <item name="android:textAppearance">@style/TextAppearance.Aura.BodyLarge</item>
+        <item name="android:textAppearance">@style/TextAppearance.Aura.LabelLarge</item>
         <item name="android:textColor">@color/colorOnSurface</item>
-        <item name="cornerRadius">26dp</item>
+        <item name="cornerRadius">28dp</item>
         <item name="strokeColor">@color/colorOutlineVariant</item>
         <item name="strokeWidth">1dp</item>
         <item name="android:insetTop">0dp</item>
@@ -112,51 +175,69 @@
     </style>
 
     <style name="Widget.Aura.Button.Text" parent="Widget.Material3.Button.TextButton">
-        <item name="android:textColor">@color/colorOnSurfaceVariant</item>
-        <item name="android:textAppearance">@style/TextAppearance.Aura.BodyMedium</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textAppearance">@style/TextAppearance.Aura.LabelLarge</item>
+        <item name="fontFamily">@font/manrope_semibold</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
     </style>
 
     <!-- ============================================================ -->
-    <!-- TEXT INPUTS                                                  -->
+    <!-- TEXT INPUTS — pill-shaped, FilledBox, ghost-border on focus  -->
     <!-- ============================================================ -->
 
-    <style name="Widget.Aura.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxBackgroundColor">@color/colorSurfaceContainerHighest</item>
-        <item name="boxStrokeColor">@color/colorOutlineVariant</item>
+    <style name="Widget.Aura.TextInputLayout" parent="Widget.Material3.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@color/colorSurfaceContainerLow</item>
+        <item name="boxStrokeColor">@color/colorPrimary</item>
         <item name="boxStrokeWidth">0dp</item>
         <item name="boxStrokeWidthFocused">2dp</item>
         <item name="hintTextColor">@color/colorOnSurfaceVariant</item>
         <item name="android:textColorHint">@color/colorOutline</item>
-        <item name="boxCornerRadiusTopStart">@dimen/corner_radius_sm</item>
-        <item name="boxCornerRadiusTopEnd">@dimen/corner_radius_sm</item>
-        <item name="boxCornerRadiusBottomStart">@dimen/corner_radius_sm</item>
-        <item name="boxCornerRadiusBottomEnd">@dimen/corner_radius_sm</item>
+        <item name="boxCornerRadiusTopStart">28dp</item>
+        <item name="boxCornerRadiusTopEnd">28dp</item>
+        <item name="boxCornerRadiusBottomStart">28dp</item>
+        <item name="boxCornerRadiusBottomEnd">28dp</item>
+        <item name="errorTextAppearance">@style/TextAppearance.Aura.Error</item>
+        <item name="errorTextColor">@color/colorErrorDim</item>
+        <item name="errorIconDrawable">@null</item>
     </style>
 
     <!-- ============================================================ -->
-    <!-- CARDS                                                        -->
+    <!-- CARDS — No-Line Rule (tonal separation only)                 -->
     <!-- ============================================================ -->
 
-    <style name="Widget.Aura.Card" parent="Widget.Material3.CardView.Elevated">
+    <style name="Widget.Aura.Card" parent="Widget.Material3.CardView.Filled">
         <item name="cardBackgroundColor">@color/colorSurfaceContainer</item>
-        <item name="cardCornerRadius">@dimen/corner_radius_md</item>
+        <item name="cardCornerRadius">@dimen/corner_radius_lg</item>
         <item name="cardElevation">0dp</item>
-        <item name="strokeColor">@color/colorOutlineVariant</item>
-        <item name="strokeWidth">1dp</item>
+        <item name="strokeWidth">0dp</item>
         <item name="contentPadding">@dimen/space_md</item>
     </style>
 
+    <!-- Recessed surface (Level 1) — for stat pills, secondary blocks -->
+    <style name="Widget.Aura.Card.Recessed" parent="Widget.Aura.Card">
+        <item name="cardBackgroundColor">@color/colorSurfaceContainerLow</item>
+    </style>
+
+    <!-- Highest surface (Level 3) — for prominent items catching the light -->
+    <style name="Widget.Aura.Card.Prominent" parent="Widget.Aura.Card">
+        <item name="cardBackgroundColor">@color/colorSurfaceContainerHighest</item>
+    </style>
+
+    <!-- Glass card — slightly translucent floating element -->
     <style name="Widget.Aura.Card.Glass" parent="Widget.Aura.Card">
         <item name="cardBackgroundColor">@color/colorSurfaceContainerLow</item>
         <item name="cardCornerRadius">@dimen/corner_radius_lg</item>
-        <item name="strokeColor">@color/colorOutlineVariant</item>
-        <item name="strokeWidth">1dp</item>
     </style>
 
-    <style name="Widget.Aura.Card.Role.Selected" parent="Widget.Aura.Card.Glass">
-        <item name="strokeColor">@color/colorPrimary</item>
+    <!-- Selected role card — replaces strokeWidth with prominence shift -->
+    <style name="Widget.Aura.Card.Role.Selected" parent="Widget.Aura.Card">
+        <item name="cardBackgroundColor">@color/colorPrimaryContainer</item>
+    </style>
+
+    <!-- "Ghost border" fallback for accessibility (per DESIGN.md §4) — outline_variant @ 15% alpha -->
+    <style name="Widget.Aura.Card.GhostBorder" parent="Widget.Aura.Card">
+        <item name="strokeColor">#26494650</item>
         <item name="strokeWidth">1dp</item>
     </style>
 
@@ -165,9 +246,10 @@
     <!-- ============================================================ -->
 
     <style name="Widget.Aura.TopAppBar" parent="Widget.Material3.Toolbar">
-        <item name="android:background">#B20B1326</item>
+        <item name="android:background">@drawable/bg_glass_top_app_bar</item>
         <item name="titleTextColor">@color/colorOnSurface</item>
         <item name="navigationIconTint">@color/colorPrimary</item>
+        <item name="titleTextAppearance">@style/TextAppearance.Aura.TitleLarge</item>
     </style>
 
     <!-- ============================================================ -->
@@ -175,27 +257,44 @@
     <!-- ============================================================ -->
 
     <style name="Widget.Aura.BottomNavBar" parent="">
-        <item name="android:background">@color/colorSurfaceContainerLow</item>
+        <item name="android:background">@drawable/bg_glass_bottom_nav</item>
         <item name="android:paddingTop">@dimen/space_sm</item>
         <item name="android:paddingBottom">@dimen/space_sm</item>
     </style>
 
+    <style name="Widget.Aura.BottomNav.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/colorSurfaceContainerHigh</item>
+        <item name="android:width">56dp</item>
+        <item name="android:height">32dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
+        <item name="marginHorizontal">8dp</item>
+    </style>
+
     <!-- ============================================================ -->
-    <!-- CHIP                                                         -->
+    <!-- CHIPS — "Aura Chip" uses tertiary-container (DESIGN.md §5)   -->
     <!-- ============================================================ -->
 
     <style name="Widget.Aura.Chip.Niche" parent="Widget.Material3.Chip.Filter">
         <item name="chipBackgroundColor">@color/colorSurfaceContainerHighest</item>
-        <item name="chipStrokeColor">@color/colorOutlineVariant</item>
-        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipStrokeWidth">0dp</item>
         <item name="android:textColor">@color/colorOnSurfaceVariant</item>
+        <item name="android:textAppearance">@style/TextAppearance.Aura.LabelMedium</item>
         <item name="chipCornerRadius">50dp</item>
     </style>
 
     <style name="Widget.Aura.Chip.Niche.Selected" parent="Widget.Aura.Chip.Niche">
-        <item name="chipBackgroundColor">@color/colorPrimaryContainer</item>
-        <item name="chipStrokeColor">@color/colorPrimary</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="chipBackgroundColor">@color/colorTertiaryContainer</item>
+        <item name="chipStrokeWidth">0dp</item>
+        <item name="android:textColor">@color/colorOnTertiaryContainer</item>
+    </style>
+
+    <!-- Aura Chip — neon accent for creator tags (per DESIGN.md §5) -->
+    <style name="Widget.Aura.Chip.Aura" parent="Widget.Material3.Chip.Assist">
+        <item name="chipBackgroundColor">@color/colorTertiaryContainer</item>
+        <item name="chipStrokeWidth">0dp</item>
+        <item name="android:textColor">@color/colorOnTertiaryContainer</item>
+        <item name="android:textAppearance">@style/TextAppearance.Aura.LabelMedium</item>
+        <item name="chipCornerRadius">50dp</item>
     </style>
 
     <!-- ============================================================ -->
@@ -208,25 +307,31 @@
         <item name="trackCornerRadius">4dp</item>
         <item name="android:minHeight">6dp</item>
     </style>
-    <style name="TextAppearance.Aura.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/colorOnBackground</item>
+
+    <style name="Widget.Aura.ProgressBar.Circular" parent="Widget.Material3.CircularProgressIndicator">
+        <item name="indicatorColor">@color/colorPrimary</item>
+        <item name="trackColor">@color/colorSurfaceContainerHigh</item>
     </style>
-    <style name="TextAppearance.Aura.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/colorOnBackground</item>
+
+    <!-- ============================================================ -->
+    <!-- DIALOGS & BOTTOM SHEETS                                      -->
+    <!-- ============================================================ -->
+
+    <style name="Theme.Aura.BottomSheetDialog" parent="Theme.Material3.DayNight.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.Aura.BottomSheet</item>
     </style>
-    <style name="TextAppearance.Aura.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/colorOnBackground</item>
+
+    <style name="Widget.Aura.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">@color/colorSurfaceContainerLow</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Aura.BottomSheet</item>
     </style>
-    <style name="TextAppearance.Aura.BodySmall" parent="TextAppearance.Material3.BodySmall">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/colorTextSecondary</item>
-    </style>
-    <style name="TextAppearance.Aura.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/colorOnBackground</item>
+
+    <style name="ShapeAppearance.Aura.BottomSheet" parent="ShapeAppearance.Material3.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">24dp</item>
+        <item name="cornerSizeTopRight">24dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
     </style>
 
 </resources>

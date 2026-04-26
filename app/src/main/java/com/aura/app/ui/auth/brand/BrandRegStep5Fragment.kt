@@ -79,13 +79,16 @@ class BrandRegStep5Fragment : Fragment() {
             }
         }
 
-        // Navigate to feed when registration completes successfully
+        // Navigate to feed when registration completes — brand always needs profile setup.
         vm.registrationComplete.observe(viewLifecycleOwner) { complete ->
             if (complete) {
+                val bundle = android.os.Bundle().apply {
+                    putBoolean("brandSetupRequired", true)
+                }
                 val navOptions = NavOptions.Builder()
                     .setPopUpTo(R.id.welcomeFragment, inclusive = true)
                     .build()
-                findNavController().navigate(R.id.action_brand_finish_to_home, null, navOptions)
+                findNavController().navigate(R.id.action_brand_finish_to_home, bundle, navOptions)
             }
         }
     }
@@ -113,22 +116,27 @@ class BrandRegStep5Fragment : Fragment() {
             vm.campaignName = binding.etCampaignName.text.toString().trim()
             vm.campaignBrief = binding.etCampaignBrief.text.toString().trim()
 
-            vm.completeRegistration()
+            vm.completeRegistration(requireContext())
         }
     }
 
     private fun validateForm(): Boolean {
+        // Campaign is optional — both fields may be blank.
+        // If only one is partially filled, require the other for consistency.
+        val name = binding.etCampaignName.text.toString().trim()
+        val brief = binding.etCampaignBrief.text.toString().trim()
         binding.tilCampaignName.error = null
         binding.tilCampaignBrief.error = null
-        var valid = true
 
-        if (binding.etCampaignName.text.isNullOrBlank()) {
-            binding.tilCampaignName.error = "Required"; valid = false
+        if (name.isNotBlank() && brief.isBlank()) {
+            binding.tilCampaignBrief.error = "Add a brief or clear the campaign name"
+            return false
         }
-        if (binding.etCampaignBrief.text.isNullOrBlank()) {
-            binding.tilCampaignBrief.error = "Required"; valid = false
+        if (brief.isNotBlank() && name.isBlank()) {
+            binding.tilCampaignName.error = "Add a name or clear the brief"
+            return false
         }
-        return valid
+        return true
     }
 
     override fun onDestroyView() { super.onDestroyView(); _binding = null }

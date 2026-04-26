@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Aura.Card.Recessed"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/corner_radius_lg"
+    app:contentPaddingBottom="@dimen/space_md"
+    app:contentPaddingLeft="@dimen/space_md"
+    app:contentPaddingRight="@dimen/space_md"
+    app:contentPaddingTop="@dimen/space_md">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_stat_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fontFamily="@font/manrope_extrabold"
+            android:letterSpacing="-0.02"
+            android:textColor="@color/colorPrimary"
+            android:textSize="22sp"
+            tools:text="42.8K" />
+
+        <TextView
+            android:id="@+id/tv_stat_label"
+            style="@style/TextAppearance.Aura.LabelSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textAllCaps="true"
+            android:textSize="10sp"
+            tools:text="VIEWS" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

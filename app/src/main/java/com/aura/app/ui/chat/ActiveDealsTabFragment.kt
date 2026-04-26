@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.aura.app.R
 import com.aura.app.databinding.FragmentDealTabBinding
 import com.aura.app.utils.StubSession
+import com.aura.app.utils.rootNavController
 
 class ActiveDealsTabFragment : Fragment() {
 
@@ -32,8 +33,8 @@ class ActiveDealsTabFragment : Fragment() {
         binding.tvEmpty.setText(R.string.empty_active_deals_title)
 
         adapter = ActiveDealAdapter { item ->
-            findNavController().navigate(
-                R.id.action_dashboard_to_chat,
+            rootNavController().navigate(
+                R.id.action_homeContainer_to_chat,
                 android.os.Bundle().apply { putString("dealId", item.deal.dealId) }
             )
         }

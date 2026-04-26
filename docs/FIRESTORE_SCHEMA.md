@@ -93,9 +93,13 @@ Authoritative schema. Any change here must be announced in the team chat and ref
 | `mediaUrl` | String | ✅ | Storage URL |
 | `mediaType` | String | ✅ | `"image"` or `"video"` |
 | `thumbnailUrl` | String | | For video |
+| `storagePath` | String | ✅ | Firebase Storage path for deletion/rollback |
+| `mimeType` | String | | e.g. `"video/mp4"` |
+| `originalFileName` | String | | Display name from user's device |
 | `tags` | List\<String\> | | |
 | `isPublic` | Boolean | ✅ | |
 | `createdAt` | Timestamp | ✅ | |
+
 
 ---
 

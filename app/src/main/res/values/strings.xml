@@ -18,13 +18,25 @@
     <string name="toast_switched_to_user">Now acting as %s</string>
 
     <!-- Deal Dashboard -->
-    <string name="title_deal_dashboard">Deals</string>
+    <string name="title_deal_dashboard">Deal Dashboard</string>
+    <string name="subtitle_deal_dashboard">Track your collaborations</string>
     <string name="tab_active_deals">Active Deals</string>
+    <string name="tab_active_short">Active</string>
+    <string name="tab_pending_short">Pending</string>
+    <string name="tab_sent_short">Sent</string>
     <string name="tab_new_deals">New Deals</string>
     <string name="tab_sent_deals">Sent Deals</string>
+    <string name="dashboard_stat_active">Active Deals</string>
+    <string name="dashboard_stat_pending">Pending</string>
+    <string name="dashboard_stat_sent">Sent</string>
+    <string name="dashboard_stat_completed">Completed</string>
+    <string name="dashboard_action_switch_user">Switch user</string>
+    <string name="dashboard_action_filter">Filter deals</string>
+    <string name="dashboard_filter_coming_soon">Filters coming soon</string>
     <string name="empty_new_deals">No new offers yet</string>
     <string name="empty_sent_deals">No deals sent yet</string>
     <string name="title_deal_history">Deal History</string>
+    <string name="subtitle_deal_history">Review past collaborations</string>
     <string name="tab_completed_deals">Completed</string>
     <string name="tab_past_deals">Past</string>
     <string name="empty_completed_deals">No completed deals yet</string>
@@ -75,7 +87,7 @@
     <!-- Deal actions -->
     <string name="btn_accept_deal">Accept</string>
     <string name="btn_reject_deal">Decline</string>
-    <string name="btn_complete_deal">Mark as Complete</string>
+    <string name="btn_complete_deal">Complete Deal</string>
 
     <!-- Deal actions — cancel + complete -->
     <string name="btn_cancel_deal">Cancel Deal</string>
@@ -102,7 +114,7 @@
 
     <!-- Conversation closed footer -->
     <string name="conversation_closed_title">CONVERSATION CLOSED</string>
-    <string name="conversation_closed_cancelled_by_other">You can no longer send messages to this thread because the deal was cancelled by the counterparty.</string>
+    <string name="conversation_closed_cancelled_by_other">You can no longer send messages to this thread because the deal was cancelled by %1$s.</string>
     <string name="conversation_closed_cancelled_by_self">You can no longer send messages to this thread because you cancelled this deal.</string>
     <string name="conversation_closed_completed">You can no longer send messages to this thread because the deal has been completed.</string>
     <string name="conversation_closed_pending">Chat opens once the deal is accepted.</string>
@@ -114,10 +126,10 @@
     <string name="btn_retry">Retry</string>
 
     <!-- Bottom navigation -->
-    <string name="nav_explore">Explore</string>
-    <string name="nav_deals">Deals</string>
-    <string name="nav_search">Search</string>
-    <string name="nav_profile">Profile</string>
+    <string name="tab_feed">Feed</string>
+    <string name="tab_search">Search</string>
+    <string name="tab_deals">Deals</string>
+    <string name="tab_profile">Profile</string>
 
     <!-- Feed action overlay -->
     <string name="action_shortlist">Shortlist</string>
@@ -195,8 +207,8 @@
     <string name="creator_reg_motto_helper">Summarize your creative essence in one powerful line.</string>
     <string name="creator_reg_bio_label">Bio/Description</string>
     <string name="creator_reg_bio_hint">Tell your story. Where does your inspiration come from?</string>
-    <string name="creator_reg_instagram_label">Instagram Handle</string>
-    <string name="creator_reg_instagram_hint">@yourname</string>
+    <string name="creator_reg_youtube_label">YouTube Channel</string>
+    <string name="creator_reg_youtube_hint">@MrBeast</string>
     <string name="creator_reg_upload_portrait_label">Upload Portrait</string>
     <string name="creator_reg_portrait_spec">Recommended: 1080x1080px. High-resolution JPG or PNG.</string>
     <string name="creator_reg_pro_tip_title">Pro Tip</string>
@@ -230,6 +242,16 @@
     <string name="nav_btn_save_exit">Save &amp; Exit</string>
     <string name="nav_btn_next">Next</string>
     <string name="nav_btn_finish">Finish Setup</string>
+
+    <!-- Reviews -->
+    <string name="review_step1_title">What would you rate their aura?</string>
+    <string name="review_step2_title">Write them a message</string>
+    <string name="review_step2_subtitle">This will appear on %1$s\'s profile</string>
+    <string name="review_done_button">Done</string>
+    <string name="review_comment_hint">Add a message (optional)</string>
+    <string name="review_success_snackbar">Aura rating saved!</string>
+    <string name="review_aura_reviewed_badge">Aura Reviewed</string>
+    <string name="chip_review_required">Review</string>
 
     <!-- Brand Registration -->
     <string name="brand_onboarding_title">Brand Onboarding</string>
@@ -330,4 +352,22 @@
     <string name="region_asia_pacific">Asia Pacific</string>
     <string name="region_latin_america">Latin America</string>
     <string name="region_mea">Middle East &amp; Africa</string>
+
+    <!-- Portfolio / media action dialogs -->
+    <string name="dialog_remove_video_title">Remove this video?</string>
+    <string name="dialog_remove_video_message">This will permanently delete the video from your portfolio.</string>
+    <string name="dialog_confirm_photo_title">Use this photo?</string>
+    <string name="dialog_confirm_photo_message">Upload this as your new profile picture?</string>
+    <string name="btn_remove">Remove</string>
+    <string name="btn_upload">Upload</string>
+    <string name="toast_portfolio_video_required">Add at least one portfolio video to finish setup.</string>
+    <string name="toast_portfolio_full">Portfolio is full (10 videos max). Remove one first.</string>
+    <string name="cd_remove_video">Remove video</string>
+    <string name="cd_photo_preview">Profile photo preview</string>
+
+    <!-- Reusable include components (Task 2) -->
+    <string name="retry">Retry</string>
+    <string name="empty_default_title">Nothing here yet</string>
+    <string name="empty_default_subtitle">Pull to refresh or check back later.</string>
+    <string name="error_default_message">Something went wrong. Please try again.</string>
 </resources>

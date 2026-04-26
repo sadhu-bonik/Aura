@@ -39,16 +39,4 @@
         android:visibility="gone"
         android:contentDescription="@null" />
 
-    <TextView
-        android:id="@+id/item_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="72dp"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:maxLines="2"
-        android:ellipsize="end" />
 </FrameLayout>

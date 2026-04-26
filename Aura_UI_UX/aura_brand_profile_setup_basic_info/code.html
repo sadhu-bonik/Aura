@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #0f0e12;
+        }
+        .aura-gradient {
+            background: linear-gradient(135deg, #554d73 0%, #362f53 100%);
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #7a729a 0%, #554d73 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#0f0e12",
+                        "outline": "#77747e",
+                        "secondary-fixed": "#e6dff9",
+                        "on-background": "#e9e3ef",
+                        "error": "#f97386",
+                        "on-primary-container": "#e7dfff",
+                        "primary-fixed-dim": "#c8beea",
+                        "on-surface": "#e9e3ef",
+                        "secondary": "#cac3dc",
+                        "error-container": "#871c34",
+                        "secondary-dim": "#bcb5ce",
+                        "primary-dim": "#bcb3df",
+                        "tertiary-container": "#fdcbf2",
+                        "tertiary-dim": "#eebde3",
+                        "surface-bright": "#2d2b34",
+                        "surface-dim": "#0f0e12",
+                        "on-error-container": "#ff97a3",
+                        "surface-container-high": "#201f26",
+                        "primary": "#cac1ed",
+                        "surface-container-low": "#141318",
+                        "on-primary": "#423b60",
+                        "on-error": "#490013",
+                        "surface-container": "#1a191f",
+                        "on-surface-variant": "#aea9b5",
+                        "inverse-on-surface": "#565459",
+                        "background": "#0f0e12",
+                        "tertiary-fixed-dim": "#eebde3",
+                        "primary-container": "#554d73",
+                        "surface-container-highest": "#27252d",
+                        "outline-variant": "#494650",
+                        "on-primary-fixed": "#362f53",
+                        "on-secondary-container": "#c3bcd5",
+                        "on-secondary-fixed": "#413d51",
+                        "secondary-container": "#3d394d",
+                        "inverse-surface": "#fdf8fe",
+                        "surface-tint": "#cac1ed",
+                        "on-secondary-fixed-variant": "#5d596e",
+                        "primary-fixed": "#d6ccf9",
+                        "on-primary-fixed-variant": "#534b71",
+                        "on-secondary": "#423d52",
+                        "on-tertiary": "#6f4969",
+                        "surface-variant": "#27252d",
+                        "on-tertiary-fixed": "#512e4c",
+                        "error-dim": "#c44b5f",
+                        "on-tertiary-container": "#654060",
+                        "tertiary-fixed": "#fdcbf2",
+                        "surface-container-lowest": "#000000",
+                        "secondary-fixed-dim": "#d8d1ea",
+                        "on-tertiary-fixed-variant": "#704a6a",
+                        "inverse-primary": "#615a80",
+                        "tertiary": "#ffdff6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl flex items-center justify-between px-6 py-5 border-b border-surface-container-high">
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-primary" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-manrope text-lg font-semibold tracking-tight text-on-surface">Complete your profile</h1>
+</div>
+<div class="text-xl font-bold text-on-surface">Aura</div>
+</header>
+<!-- Content Canvas -->
+<main class="flex-1 mt-20 px-6 max-w-2xl mx-auto w-full pb-32">
+<!-- Hero Visual Section -->
+<section class="flex flex-col items-center mb-10 pt-4">
+<h2 class="text-on-surface-variant text-base font-medium mb-8">Tell us about your brand</h2>
+<div class="relative group">
+<div class="w-32 h-32 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden border-4 border-surface-container-low transition-all duration-300 group-hover:scale-105 border-outline-variant/30">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant" data-icon="corporate_fare">corporate_fare</span>
+<!-- Background aura effect -->
+<div class="absolute inset-0 bg-primary/10 blur-xl -z-10"></div>
+</div>
+<button class="absolute bottom-0 right-0 p-3 primary-gradient rounded-full shadow-lg active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-white text-xl" data-icon="add_a_photo">add_a_photo</span>
+</button>
+</div>
+<p class="mt-4 text-on-surface-variant text-sm font-medium">Add brand logo (optional)</p>
+</section>
+<!-- Form Layout -->
+<div class="space-y-8">
+<!-- Brand Name Field -->
+<div class="space-y-3">
+<label class="block px-4 font-manrope text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-2">Brand Name (required)</label>
+<div class="relative">
+<input class="w-full bg-surface-container-highest border-0 rounded-full py-4 px-6 text-on-surface placeholder:text-outline-variant focus:ring-2 focus:ring-primary transition-all text-base" placeholder="Enter your brand name" type="text" value=""/>
+<p class="px-4 mt-2 text-error text-xs font-medium italic">Brand name is required</p>
+</div>
+</div>
+<!-- Verification Field -->
+<div class="space-y-3">
+<label class="block px-4 font-manrope text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-2">Business Verification Document (required)</label>
+<div class="relative">
+<div class="w-full bg-surface-container-highest border-0 rounded-2xl py-6 px-8 flex items-center justify-between group cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4 text-outline-variant">
+<span class="material-symbols-outlined" data-icon="upload_file">upload_file</span>
+<span class="text-base">Upload business verification document</span>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="add">add</span>
+</div>
+<p class="px-4 mt-2 text-on-surface-variant text-[10px] leading-relaxed">Used to verify brand authenticity (e.g., license, tax ID)</p>
+<p class="px-4 mt-1 text-error text-xs font-medium italic">Verification document is required</p>
+</div>
+</div>
+<!-- Brand Website Field -->
+<div class="space-y-3">
+<label class="block px-4 font-manrope text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-2">Brand Website (optional)</label>
+<div class="flex items-center bg-surface-container-highest rounded-full px-6 py-4 group focus-within:ring-2 focus-within:ring-primary transition-all">
+<span class="material-symbols-outlined text-on-surface-variant mr-3 group-focus-within:text-primary transition-colors" data-icon="language">language</span>
+<input class="w-full bg-transparent border-0 p-0 text-on-surface placeholder:text-on-surface-variant focus:ring-0 text-base" placeholder="https://yourbrand.com" type="url"/>
+</div>
+</div>
+</div>
+<!-- System Hint -->
+<div class="mt-12 mb-8 text-center">
+<p class="text-on-surface-variant text-[11px] uppercase font-bold tracking-[0.15em]">Complete your profile to access all features</p>
+</div>
+<!-- Buttons -->
+<div class="flex items-center gap-4 mt-8 pb-12">
+<!-- Save & Exit (Secondary) -->
+<button class="flex-1 py-4 text-on-surface font-manrope text-sm font-bold hover:bg-surface-container-high transition-all active:scale-95 duration-200 text-center rounded-full border border-outline-variant/30 bg-surface-container-low">
+                Save &amp; Exit
+            </button>
+<!-- Next Button (Primary) -->
+<div class="flex-[1.5]">
+<button class="w-full primary-gradient text-white py-4 rounded-full flex items-center justify-center gap-2 font-manrope text-base font-bold shadow-2xl shadow-primary/30 active:scale-[0.98] transition-transform opacity-50 pointer-events-none cursor-not-allowed">
+                    Next
+                    <span class="material-symbols-outlined text-xl" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Decorative Aura background -->
+<div class="fixed top-1/4 -right-24 w-96 h-96 bg-primary/5 blur-[120px] rounded-full -z-20"></div>
+<div class="fixed -bottom-24 -left-24 w-80 h-80 bg-tertiary/5 blur-[100px] rounded-full -z-20"></div>
+</body></html>

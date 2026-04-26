@@ -9,10 +9,9 @@
     android:clickable="true"
     android:focusable="true"
     app:cardBackgroundColor="@color/colorSurfaceContainer"
-    app:cardCornerRadius="@dimen/corner_radius_md"
+    app:cardCornerRadius="16dp"
     app:cardElevation="0dp"
-    app:strokeColor="@color/colorDivider"
-    app:strokeWidth="1dp">
+    app:strokeWidth="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -42,7 +41,7 @@
             android:textAppearance="@style/TextAppearance.Aura.TitleSmall"
             app:layout_constraintTop_toTopOf="@id/iv_offer_avatar"
             app:layout_constraintStart_toEndOf="@id/iv_offer_avatar"
-            app:layout_constraintEnd_toStartOf="@id/iv_btn_accept" />
+            app:layout_constraintEnd_toStartOf="@id/tv_btn_accept" />
 
         <!-- Secondary text -->
         <TextView
@@ -58,17 +57,21 @@
             app:layout_constraintTop_toBottomOf="@id/tv_primary"
             app:layout_constraintBottom_toBottomOf="@id/iv_offer_avatar"
             app:layout_constraintStart_toEndOf="@id/iv_offer_avatar"
-            app:layout_constraintEnd_toStartOf="@id/iv_btn_accept" />
+            app:layout_constraintEnd_toStartOf="@id/tv_btn_accept" />
 
-        <!-- Accept button (green circle with checkmark, creator+pending only) -->
-        <ImageView
-            android:id="@+id/iv_btn_accept"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginEnd="@dimen/space_xs"
-            android:src="@drawable/ic_check"
-            android:background="@drawable/bg_accept_circle"
-            android:padding="8dp"
+        <!-- Accept button (blue box) -->
+        <TextView
+            android:id="@+id/tv_btn_accept"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginEnd="@dimen/space_md"
+            android:background="@drawable/bg_btn_accept_blue"
+            android:text="Accept"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
             android:clickable="true"
             android:focusable="true"
             android:visibility="gone"
@@ -77,19 +80,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/iv_btn_reject" />
 
-        <!-- Reject button (red circle with X, creator+pending only) -->
+        <!-- Reject button (small white cross) -->
         <ImageView
             android:id="@+id/iv_btn_reject"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginEnd="@dimen/space_xs"
             android:src="@drawable/ic_close"
-            android:background="@drawable/bg_reject_circle"
+            app:tint="@color/white"
             android:padding="8dp"
             android:clickable="true"
             android:focusable="true"
             android:visibility="gone"
             android:contentDescription="@string/btn_reject_deal"
+            android:background="?attr/selectableItemBackgroundBorderless"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/iv_chevron" />
