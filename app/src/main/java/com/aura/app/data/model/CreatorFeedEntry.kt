@@ -5,4 +5,7 @@ data class CreatorFeedEntry(
     val items: List<PortfolioItem>,
     val creatorName: String = "",
     val creatorProfileImageUrl: String = "",
+    val bio: String = "",
+    val tags: List<String> = emptyList(),
+    val youtubeScore: Double = 0.0,
 )

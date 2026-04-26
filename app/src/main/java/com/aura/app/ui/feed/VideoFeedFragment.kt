@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 
 class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
 
-    private val viewModel: VideoFeedViewModel by viewModels { VideoFeedViewModel.Factory(requireContext()) }
+    private val viewModel: VideoFeedViewModel by activityViewModels { VideoFeedViewModel.Factory(requireContext().applicationContext) }
     private val actionsViewModel: FeedActionsViewModel by viewModels { FeedActionsViewModel.Factory() }
     private val authViewModel: com.aura.app.ui.auth.AuthViewModel by activityViewModels { com.aura.app.ui.auth.AuthViewModel.Factory() }
 
@@ -75,6 +75,11 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
     private val pageCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
             updateActiveCreator(position)
+            
+            // Trigger pagination when reaching the last few items
+            if (position >= currentEntries.size - 2 && currentEntries.isNotEmpty()) {
+                viewModel.loadMoreFeed()
+            }
         }
     }
 
@@ -151,6 +156,9 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
                 pager?.visibility = View.VISIBLE
                 currentEntries = state.entries
                 adapter?.submitList(state.entries) {
+                    if (activeCreatorPosition != RecyclerView.NO_POSITION && activeCreatorPosition > 0 && activeCreatorPosition < state.entries.size) {
+                        pager?.setCurrentItem(activeCreatorPosition, false)
+                    }
                     pager?.let { updateActiveCreator(it.currentItem) }
                 }
             }

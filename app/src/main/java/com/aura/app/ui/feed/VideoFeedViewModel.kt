@@ -25,9 +25,14 @@ class VideoFeedViewModel(
     private val _state = MutableStateFlow<FeedUiState>(FeedUiState.Loading)
     val state: StateFlow<FeedUiState> = _state
 
+    private var rankedCreatorIdsCache: List<String> = emptyList()
+    private var currentPaginationIndex = 0
+
     companion object {
         /** Max number of creator pages in the initial feed load */
         const val INITIAL_CREATOR_COUNT = 4
+        /** Number of creator pages to load on pagination */
+        const val PAGINATION_COUNT = 3
     }
 
     init {
@@ -43,7 +48,9 @@ class VideoFeedViewModel(
      * 3. Fetch portfolio items for the ranked IDs in order.
      * 4. Pre-resolve identity metadata (name/avatar).
      */
-    fun loadCreatorFeed() {
+    fun loadCreatorFeed(forceRefresh: Boolean = false) {
+        if (!forceRefresh && rankedCreatorIdsCache.isNotEmpty()) return
+
         viewModelScope.launch {
             _state.value = FeedUiState.Loading
 
@@ -63,26 +70,33 @@ class VideoFeedViewModel(
                 }
 
                 // Step 2: Get ranked creator IDs based on similarity
-                val rankedIds = rankingRepository.getRankedCreatorIds(
+                rankedCreatorIdsCache = rankingRepository.getRankedCreatorIds(
                     currentUserId = currentUserId,
-                    currentUserTags = viewerTags,
-                    maxCreators = INITIAL_CREATOR_COUNT
+                    currentUserTags = viewerTags
                 )
+                
+                currentPaginationIndex = 0
+                val batchIds = rankedCreatorIdsCache.take(INITIAL_CREATOR_COUNT)
+                currentPaginationIndex = batchIds.size
 
                 // Step 3: Fetch feed content for these specific creators
                 val entries = portfolioRepository.getDiscoveryFeed(
                     excludeUserId = currentUserId,
                     maxCreators = INITIAL_CREATOR_COUNT,
-                    rankedCreatorIds = rankedIds
+                    rankedCreatorIds = batchIds
                 )
 
-                // Step 4: Pre-resolve creator name + avatar concurrently
+                // Step 4: Pre-resolve creator name, avatar, bio, and tags concurrently
                 val resolved = entries.map { entry ->
                     async {
                         val user = runCatching { userRepository.getUserLite(entry.creatorId) }.getOrNull()
+                        val profile = runCatching { userRepository.getCreatorProfile(entry.creatorId) }.getOrNull()
                         entry.copy(
                             creatorName = user?.displayName?.takeIf { it.isNotBlank() } ?: "Unknown Creator",
-                            creatorProfileImageUrl = user?.profileImageUrl ?: ""
+                            creatorProfileImageUrl = user?.profileImageUrl ?: "",
+                            bio = profile?.bio ?: "",
+                            tags = profile?.tags ?: emptyList(),
+                            youtubeScore = profile?.youtubeBaseCreatorScore ?: 0.0
                         )
                     }
                 }.awaitAll()
@@ -106,24 +120,51 @@ class VideoFeedViewModel(
         val current = (_state.value as? FeedUiState.Content)?.entries ?: emptyList()
         val existingCreatorIds = current.map { it.creatorId }.toSet()
 
+        if (currentPaginationIndex >= rankedCreatorIdsCache.size) return
+
         viewModelScope.launch {
             val currentUserId = sessionManager.getUserId() ?: return@launch
             try {
+                val batchIds = rankedCreatorIdsCache.drop(currentPaginationIndex).take(PAGINATION_COUNT)
+                if (batchIds.isEmpty()) return@launch
+
+                currentPaginationIndex += batchIds.size
+
                 val moreEntries = portfolioRepository.getDiscoveryFeed(
                     excludeUserId = currentUserId,
-                    maxCreators = INITIAL_CREATOR_COUNT,
+                    maxCreators = batchIds.size,
+                    rankedCreatorIds = batchIds
                 )
 
-                val newEntries = moreEntries.filter { it.creatorId !in existingCreatorIds }
+                val resolved = moreEntries.map { entry ->
+                    async {
+                        val user = runCatching { userRepository.getUserLite(entry.creatorId) }.getOrNull()
+                        val profile = runCatching { userRepository.getCreatorProfile(entry.creatorId) }.getOrNull()
+                        entry.copy(
+                            creatorName = user?.displayName?.takeIf { it.isNotBlank() } ?: "Unknown Creator",
+                            creatorProfileImageUrl = user?.profileImageUrl ?: "",
+                            bio = profile?.bio ?: "",
+                            tags = profile?.tags ?: emptyList(),
+                            youtubeScore = profile?.youtubeBaseCreatorScore ?: 0.0
+                        )
+                    }
+                }.awaitAll()
+
+                val newEntries = resolved.filter { it.creatorId !in existingCreatorIds }
                 if (newEntries.isEmpty()) return@launch
 
-                val merged = (current + newEntries)
-                    .sortedByDescending { it.items.first().createdAt?.seconds ?: 0L }
+                // Append at the end to maintain correct ranking order
+                val merged = current + newEntries
                 _state.value = FeedUiState.Content(merged)
             } catch (_: Exception) {
                 // Silently fail on pagination; the current feed is still showing
             }
         }
+    }
+
+    fun clearSimilarCreatorFeedCache() {
+        rankedCreatorIdsCache = emptyList()
+        currentPaginationIndex = 0
     }
 
     class Factory(private val context: Context) : ViewModelProvider.Factory {
