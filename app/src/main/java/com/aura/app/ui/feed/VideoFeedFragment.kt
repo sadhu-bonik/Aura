@@ -37,11 +37,16 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
     private var activeCreatorPosition = RecyclerView.NO_POSITION
     private var activeItemPosition = 0
     private var currentEntries: List<CreatorFeedEntry> = emptyList()
+    private var pendingRestoreCreatorPosition: Int? = null
 
     private val activeVideoCallback = object : ActiveVideoCallback {
         override fun attachPlayer(target: VideoPageViewHolder, item: PortfolioItem) {
             val pool = pool ?: return
-            if (activeHolder === target) return
+            if (activeHolder === target) {
+                pool.activePlayer?.playWhenReady = true
+                prewarmVertical()
+                return
+            }
             activeHolder?.onPlayerDetached()
             val p = pool.activate(item.mediaUrl)
             target.onPlayerAttached(p)
@@ -62,6 +67,13 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
         }
 
         override fun onCreatorProfileClicked(creatorId: String) {
+            val currentPosition = activeCreatorPosition
+                .takeIf { it != RecyclerView.NO_POSITION }
+                ?: (pager?.currentItem ?: 0)
+            pool?.saveActivePlaybackPosition()
+            findNavController().currentBackStackEntry
+                ?.savedStateHandle
+                ?.set(KEY_FEED_CREATOR_POSITION, currentPosition)
             val bundle = android.os.Bundle().apply { putString("creatorId", creatorId) }
             // Navigate within the home graph so back-stack is preserved
             findNavController().navigate(R.id.action_feed_to_creator_profile, bundle)
@@ -88,12 +100,18 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
         loading = view.findViewById(R.id.feed_loading)
         message = view.findViewById(R.id.feed_message)
         refreshLayout = view.findViewById(R.id.feed_refresh)
+        pendingRestoreCreatorPosition = findNavController()
+            .currentBackStackEntry
+            ?.savedStateHandle
+            ?.remove(KEY_FEED_CREATOR_POSITION)
 
         refreshLayout?.setOnRefreshListener {
             viewModel.loadCreatorFeed()
         }
 
-        pool = ExoPlayerPool(requireContext().applicationContext)
+        if (pool == null) {
+            pool = ExoPlayerPool(requireContext().applicationContext)
+        }
 
         FeedActionsOverlay(view, actionsViewModel, viewLifecycleOwner, this).setup()
 
@@ -151,7 +169,13 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
                 pager?.visibility = View.VISIBLE
                 currentEntries = state.entries
                 adapter?.submitList(state.entries) {
-                    pager?.let { updateActiveCreator(it.currentItem) }
+                    val restorePosition = pendingRestoreCreatorPosition
+                    if (restorePosition != null && restorePosition in state.entries.indices) {
+                        pager?.setCurrentItem(restorePosition, false)
+                    }
+                    pendingRestoreCreatorPosition = null
+                    // post: give ViewPager2 one frame to attach its child ViewHolders before activating
+                    pager?.post { pager?.let { updateActiveCreator(it.currentItem) } }
                 }
             }
         }
@@ -195,7 +219,7 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
 
     override fun onResume() {
         super.onResume()
-        pager?.let { updateActiveCreator(it.currentItem) }
+        pager?.post { pager?.let { updateActiveCreator(it.currentItem) } }
     }
 
     override fun onDestroyView() {
@@ -207,9 +231,17 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
         message = null
         activeHolder?.onPlayerDetached()
         activeHolder = null
-        pool?.release()
-        pool = null
         currentEntries = emptyList()
         super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+        pool?.release()
+        pool = null
+        super.onDestroy()
+    }
+
+    private companion object {
+        const val KEY_FEED_CREATOR_POSITION = "feed_creator_position"
     }
 }

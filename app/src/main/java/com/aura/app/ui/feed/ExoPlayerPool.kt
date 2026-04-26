@@ -25,6 +25,7 @@ class ExoPlayerPool(context: Context) {
     )
     private val players = List(POOL_SIZE) { createPlayer() }
     private val assignments = arrayOfNulls<Assignment>(POOL_SIZE)
+    private val playbackPositionsMs = mutableMapOf<String, Long>()
 
     private data class Assignment(
         val url: String,
@@ -44,7 +45,22 @@ class ExoPlayerPool(context: Context) {
 
     fun activate(url: String): ExoPlayer {
         for (i in assignments.indices) {
-            if (assignments[i]?.role == Role.ACTIVE) {
+            val assignment = assignments[i] ?: continue
+            if (assignment.role == Role.ACTIVE && assignment.url == url) {
+                val player = players[i]
+                val resumePosition = playbackPositionsMs[url] ?: player.currentPosition
+                if (resumePosition > 0L) player.seekTo(resumePosition)
+                player.playWhenReady = true
+                assignments[i] = assignment.copy(timestamp = System.nanoTime())
+                Log.d(TAG, "activate SAME_ACTIVE: $url @${player.currentPosition}ms")
+                return player
+            }
+        }
+
+        for (i in assignments.indices) {
+            val assignment = assignments[i] ?: continue
+            if (assignment.role == Role.ACTIVE) {
+                playbackPositionsMs[assignment.url] = players[i].currentPosition
                 players[i].playWhenReady = false
                 assignments[i] = null
             }
@@ -54,8 +70,10 @@ class ExoPlayerPool(context: Context) {
             if (assignments[i]?.url == url) {
                 assignments[i] = Assignment(url, Role.ACTIVE)
                 val player = players[i]
+                val resumePosition = playbackPositionsMs[url] ?: 0L
+                if (resumePosition > 0L) player.seekTo(resumePosition)
                 player.playWhenReady = true
-                Log.d(TAG, "activate REUSE: $url")
+                Log.d(TAG, "activate REUSE: $url @${player.currentPosition}ms")
                 return player
             }
         }
@@ -65,11 +83,13 @@ class ExoPlayerPool(context: Context) {
         player.stop()
         player.clearMediaItems()
         player.setMediaItem(MediaItem.fromUri(url))
+        val resumePosition = playbackPositionsMs[url] ?: 0L
+        if (resumePosition > 0L) player.seekTo(resumePosition)
         player.repeatMode = Player.REPEAT_MODE_ONE
         player.playWhenReady = true
         player.prepare()
         assignments[idx] = Assignment(url, Role.ACTIVE)
-        Log.d(TAG, "activate COLD: $url")
+        Log.d(TAG, "activate COLD: $url @${resumePosition}ms")
         return player
     }
 
@@ -94,12 +114,29 @@ class ExoPlayerPool(context: Context) {
     }
 
     fun pauseAll() {
-        for (p in players) p.playWhenReady = false
+        for (i in players.indices) {
+            val assignment = assignments[i]
+            if (assignment != null) {
+                playbackPositionsMs[assignment.url] = players[i].currentPosition
+            }
+            players[i].playWhenReady = false
+        }
+    }
+
+    fun saveActivePlaybackPosition() {
+        for (i in assignments.indices) {
+            val assignment = assignments[i] ?: continue
+            if (assignment.role == Role.ACTIVE) {
+                playbackPositionsMs[assignment.url] = players[i].currentPosition
+                break
+            }
+        }
     }
 
     fun release() {
         for (p in players) p.release()
         assignments.fill(null)
+        playbackPositionsMs.clear()
         cache.release()
     }
 

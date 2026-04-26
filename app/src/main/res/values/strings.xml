@@ -137,6 +137,7 @@
     <string name="action_shortlist">Shortlist</string>
     <string name="action_deal">Deal</string>
     <string name="action_more">More</string>
+    <string name="action_share">Share</string>
 
     <!-- Auth Flow -->
     <string name="auth_welcome_title">Welcome to Aura</string>

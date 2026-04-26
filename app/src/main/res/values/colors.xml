@@ -153,4 +153,9 @@
     <color name="color_gradient_start">#5620E0</color>
     <color name="color_gradient_end">#7A729A</color>
     <color name="color_accent_gradient">#5620E0</color>
+
+    <!-- Feed action rail -->
+    <color name="colorFeedActionBg">#33000000</color>
+    <color name="colorFeedActionAccentBg">#1ACAC1ED</color>
+    <color name="colorFeedActionAccentStroke">#52CAC1ED</color>
 </resources>

@@ -3,53 +3,71 @@
     android:id="@+id/feed_actions_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="end|center_vertical"
+    android:layout_gravity="end|bottom"
     android:layout_marginEnd="12dp"
-    android:orientation="vertical"
-    android:gravity="center_horizontal">
+    android:layout_marginBottom="16dp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
     <ImageButton
         android:id="@+id/btn_shortlist"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_shortlist_outline"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/bg_feed_action_button"
+        android:contentDescription="@string/action_shortlist"
+        android:padding="16dp"
         android:scaleType="centerInside"
-        android:contentDescription="@string/action_shortlist" />
+        android:src="@drawable/ic_shortlist_outline"
+        android:tint="@color/colorOnSurface" />
 
     <TextView
         android:id="@+id/label_shortlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="14dp"
         android:text="@string/action_shortlist"
-        android:textColor="@android:color/white"
-        android:textSize="10sp"
-        android:layout_marginBottom="20dp" />
+        android:textColor="@color/colorOnSurface"
+        android:textSize="10sp" />
 
     <ImageButton
         android:id="@+id/btn_deal"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_deal"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/bg_feed_action_button_accent"
+        android:contentDescription="@string/action_deal"
+        android:padding="16dp"
         android:scaleType="centerInside"
-        android:contentDescription="@string/action_deal" />
+        android:src="@drawable/ic_deals"
+        android:tint="@color/colorPrimary" />
 
     <TextView
         android:id="@+id/label_deal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="14dp"
         android:text="@string/action_deal"
-        android:textColor="@android:color/white"
-        android:textSize="10sp"
-        android:layout_marginBottom="20dp" />
+        android:textColor="@color/colorOnSurface"
+        android:textSize="10sp" />
 
     <ImageButton
         android:id="@+id/btn_more"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_more"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/bg_feed_action_button"
+        android:contentDescription="@string/action_share"
+        android:padding="16dp"
         android:scaleType="centerInside"
-        android:contentDescription="@string/action_more" />
+        android:src="@drawable/ic_feed_share"
+        android:tint="@color/colorOnSurface" />
+
+    <TextView
+        android:id="@+id/label_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/action_share"
+        android:textColor="@color/colorOnSurface"
+        android:textSize="10sp" />
 </LinearLayout>

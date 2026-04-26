@@ -1,8 +1,11 @@
 package com.aura.app.ui.feed
 
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import com.aura.app.R
@@ -18,10 +21,16 @@ class FeedActionsOverlay(
     private val btnShortlist: ImageButton = root.findViewById(R.id.btn_shortlist)
     private val btnDeal: ImageButton = root.findViewById(R.id.btn_deal)
     private val btnMore: ImageButton = root.findViewById(R.id.btn_more)
+    private val baseBottomMargin: Int =
+        (container.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin ?: 0
 
     fun setup() {
+        applyActionRailInsets()
+
         viewModel.isBrand.observe(lifecycleOwner) { isBrand ->
-            container.visibility = if (isBrand) View.VISIBLE else View.GONE
+            container.visibility = View.VISIBLE
+            btnDeal.isEnabled = isBrand
+            btnDeal.alpha = if (isBrand) 1f else 0.45f
         }
 
         viewModel.isShortlisted.observe(lifecycleOwner) { shortlisted ->
@@ -38,7 +47,20 @@ class FeedActionsOverlay(
         }
 
         btnMore.setOnClickListener {
-            Toast.makeText(fragment.requireContext(), R.string.action_more, Toast.LENGTH_SHORT).show()
+            Toast.makeText(fragment.requireContext(), R.string.action_share, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun applyActionRailInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(container) { view, insets ->
+            val navInset = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+            val lp = view.layoutParams as? ViewGroup.MarginLayoutParams
+            if (lp != null) {
+                lp.bottomMargin = baseBottomMargin + navInset
+                view.layoutParams = lp
+            }
+            insets
+        }
+        ViewCompat.requestApplyInsets(container)
     }
 }
