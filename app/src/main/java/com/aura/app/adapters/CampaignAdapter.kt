@@ -13,7 +13,8 @@ import com.aura.app.R
 
 class CampaignAdapter(
     private val onCampaignClick: (Campaign) -> Unit,
-    private val onEditClick: (Campaign) -> Unit = {}
+    private val onEditClick: (Campaign) -> Unit = {},
+    private val onDeleteClick: (Campaign) -> Unit = {}
 ) : ListAdapter<Campaign, CampaignAdapter.CampaignViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CampaignViewHolder {
@@ -51,6 +52,7 @@ class CampaignAdapter(
 
             binding.root.setOnClickListener { onCampaignClick(campaign) }
             binding.btnEditCampaign.setOnClickListener { onEditClick(campaign) }
+            binding.btnDeleteCampaign.setOnClickListener { onDeleteClick(campaign) }
         }
         
         fun setEditVisible(visible: Boolean) {

@@ -4,27 +4,31 @@ import com.aura.app.data.model.Campaign
 import com.aura.app.utils.Constants
 import com.aura.app.utils.StubData
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class CampaignRepository(private val db: FirebaseFirestore) {
 
-    fun getCampaignsForBrand(brandId: String): Flow<List<Campaign>> = flow {
+    fun getCampaignsForBrand(brandId: String): Flow<List<Campaign>> = callbackFlow {
         if (Constants.USE_STUBS) {
-            emit(StubData.campaigns.filter { it.brandId == brandId })
-            return@flow
+            trySend(StubData.campaigns.filter { it.brandId == brandId })
+            awaitClose {}
+            return@callbackFlow
         }
 
-        try {
-            val snapshot = db.collection(Constants.COLLECTION_CAMPAIGNS)
-                .whereEqualTo("brandId", brandId)
-                .get()
-                .await()
-            emit(snapshot.toObjects(Campaign::class.java))
-        } catch (e: Exception) {
-            emit(emptyList())
-        }
+        val registration = db.collection(Constants.COLLECTION_CAMPAIGNS)
+            .whereEqualTo("brandId", brandId)
+            .addSnapshotListener { snapshot, _ ->
+                if (snapshot == null) {
+                    trySend(emptyList())
+                    return@addSnapshotListener
+                }
+                trySend(snapshot.toObjects(Campaign::class.java))
+            }
+
+        awaitClose { registration.remove() }
     }
 
     suspend fun getCampaign(campaignId: String): Campaign? {
@@ -36,6 +40,18 @@ class CampaignRepository(private val db: FirebaseFirestore) {
                 .toObject(Campaign::class.java)
         } catch (e: Exception) {
             null
+        }
+    }
+
+    suspend fun deleteCampaign(campaignId: String): Result<Unit> {
+        return try {
+            db.collection(Constants.COLLECTION_CAMPAIGNS)
+                .document(campaignId)
+                .delete()
+                .await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 

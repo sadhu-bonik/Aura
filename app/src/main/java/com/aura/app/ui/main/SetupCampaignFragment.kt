@@ -5,17 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.aura.app.databinding.FragmentSetupCampaignBinding
-import com.google.android.material.chip.Chip
+import com.aura.app.R
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.launch
 
-class SetupCampaignFragment : Fragment() {
+class SetupCampaignFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentSetupCampaignBinding? = null
     private val binding get() = _binding!!
@@ -26,6 +26,8 @@ class SetupCampaignFragment : Fragment() {
 
     private var campaignId: String? = null
     private var selectedImageUri: android.net.Uri? = null
+
+    override fun getTheme(): Int = R.style.Theme_Aura_BottomSheetDialog_SetupCampaign
 
     private val imagePickerLauncher = registerForActivityResult(
         androidx.activity.result.contract.ActivityResultContracts.GetContent()
@@ -48,7 +50,7 @@ class SetupCampaignFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        campaignId = arguments?.getString("campaignId")
+        campaignId = arguments?.getString(ARG_CAMPAIGN_ID)
 
         setupListeners()
         observeState()
@@ -56,9 +58,25 @@ class SetupCampaignFragment : Fragment() {
         viewModel.loadCampaign(campaignId)
     }
 
+    override fun onStart() {
+        super.onStart()
+        val bottomSheet = dialog?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) ?: return
+        val behavior = BottomSheetBehavior.from(bottomSheet)
+
+        val displayHeight = resources.displayMetrics.heightPixels
+        val targetHeight = (displayHeight * 0.92f).toInt()
+
+        bottomSheet.layoutParams.height = targetHeight
+        bottomSheet.requestLayout()
+
+        behavior.peekHeight = targetHeight
+        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        behavior.skipCollapsed = true
+    }
+
     private fun setupListeners() {
         binding.toolbarSetupCampaign.setNavigationOnClickListener {
-            findNavController().navigateUp()
+            dismiss()
         }
 
         binding.cardCampaignImage.setOnClickListener {
@@ -108,7 +126,7 @@ class SetupCampaignFragment : Fragment() {
                         }
                         is SetupCampaignUiState.Saved -> {
                             Toast.makeText(requireContext(), "Campaign saved!", Toast.LENGTH_SHORT).show()
-                            findNavController().navigateUp()
+                            dismiss()
                         }
                         is SetupCampaignUiState.Error -> {
                             binding.btnSaveCampaign.isEnabled = true
@@ -148,5 +166,18 @@ class SetupCampaignFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        const val TAG = "SetupCampaignFragment"
+        private const val ARG_CAMPAIGN_ID = "campaignId"
+
+        fun newInstance(campaignId: String? = null): SetupCampaignFragment {
+            return SetupCampaignFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_CAMPAIGN_ID, campaignId)
+                }
+            }
+        }
     }
 }

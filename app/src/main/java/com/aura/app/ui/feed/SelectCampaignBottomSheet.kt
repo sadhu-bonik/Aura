@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.aura.app.R
 import com.aura.app.adapters.CampaignSelectAdapter
 import com.aura.app.databinding.FragmentSelectCampaignBottomSheetBinding
+import com.aura.app.ui.main.SetupCampaignFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.launch
@@ -96,7 +97,9 @@ class SelectCampaignBottomSheet : BottomSheetDialogFragment() {
     private fun setupListeners() {
         binding.btnClose.setOnClickListener { dismiss() }
         binding.btnCreateCampaign.setOnClickListener {
-            Toast.makeText(requireContext(), "Create campaign — coming soon", Toast.LENGTH_SHORT).show()
+            SetupCampaignFragment.newInstance()
+                .show(parentFragmentManager, SetupCampaignFragment.TAG)
+            dismiss()
         }
         binding.btnSendDeal.setOnClickListener {
             val selectedId = viewModel.selectedCampaignId.value
@@ -110,7 +113,16 @@ class SelectCampaignBottomSheet : BottomSheetDialogFragment() {
     private fun render(state: SelectCampaignUiState) {
         when (state) {
             is SelectCampaignUiState.Loading -> {}
+            is SelectCampaignUiState.Empty -> {
+                binding.rvCampaigns.visibility = View.GONE
+                binding.layoutEmptyState.visibility = View.VISIBLE
+                binding.btnSendDeal.isEnabled = false
+                binding.tvSubtitle.text = "No campaigns set up yet"
+            }
             is SelectCampaignUiState.Success -> {
+                binding.rvCampaigns.visibility = View.VISIBLE
+                binding.layoutEmptyState.visibility = View.GONE
+                binding.tvSubtitle.text = "Choose a campaign to send"
                 adapter.submitList(state.campaigns)
             }
             is SelectCampaignUiState.Error -> {

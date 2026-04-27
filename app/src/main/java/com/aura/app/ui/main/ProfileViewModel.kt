@@ -148,6 +148,18 @@ class ProfileViewModel(
         }
     }
 
+    fun deleteCampaign(campaignId: String) {
+        viewModelScope.launch {
+            campaignRepository.deleteCampaign(campaignId)
+            val currentState = _state.value
+            if (currentState is ProfileUiState.Success) {
+                _state.value = currentState.copy(
+                    campaigns = currentState.campaigns.filter { it.campaignId != campaignId }
+                )
+            }
+        }
+    }
+
     /**
      * Uploads a new profile picture and updates the user's Firestore document.
      */

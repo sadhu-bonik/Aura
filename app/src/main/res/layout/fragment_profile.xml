@@ -146,7 +146,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_pill_surface_low"
+                android:background="@drawable/bg_pill_surface_stat"
                 android:paddingVertical="@dimen/space_md"
                 android:layout_marginEnd="6dp">
 
@@ -185,7 +185,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_pill_surface_low"
+                android:background="@drawable/bg_pill_surface_stat"
                 android:paddingVertical="@dimen/space_md"
                 android:layout_marginEnd="6dp">
 
@@ -224,7 +224,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_pill_surface_low"
+                android:background="@drawable/bg_pill_surface_stat"
                 android:paddingVertical="@dimen/space_md">
 
                 <ImageView

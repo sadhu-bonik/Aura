@@ -77,9 +77,48 @@
         android:clipToPadding="false"
         android:paddingHorizontal="24dp"
         android:paddingBottom="100dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_actions"
         app:layout_constraintTop_toBottomOf="@id/tv_subtitle"
         tools:listitem="@layout/item_campaign_select" />
+
+    <LinearLayout
+        android:id="@+id/layout_empty_state"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        android:paddingHorizontal="32dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle"
+        app:layout_constraintBottom_toTopOf="@id/bottom_actions">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_nav_deals"
+            android:alpha="0.4"
+            app:tint="@color/colorPrimary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/manrope_bold"
+            android:text="No campaigns set up yet"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/manrope_medium"
+            android:text="Tap + to create your first campaign"
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="13sp"
+            android:gravity="center" />
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/bottom_actions"

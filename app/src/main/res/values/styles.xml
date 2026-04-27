@@ -187,7 +187,7 @@
     <!-- ============================================================ -->
 
     <style name="Widget.Aura.TextInputLayout" parent="Widget.Material3.TextInputLayout.FilledBox">
-        <item name="boxBackgroundColor">@color/colorSurfaceContainerLow</item>
+        <item name="boxBackgroundColor">@color/colorSurfaceContainerHighest</item>
         <item name="boxStrokeColor">@color/colorPrimary</item>
         <item name="boxStrokeWidth">0dp</item>
         <item name="boxStrokeWidthFocused">2dp</item>
@@ -207,7 +207,7 @@
     <!-- ============================================================ -->
 
     <style name="Widget.Aura.Card" parent="Widget.Material3.CardView.Filled">
-        <item name="cardBackgroundColor">@color/colorSurfaceContainer</item>
+        <item name="cardBackgroundColor">@color/colorSurfaceContainerHighest</item>
         <item name="cardCornerRadius">@dimen/corner_radius_lg</item>
         <item name="cardElevation">0dp</item>
         <item name="strokeWidth">0dp</item>
@@ -216,7 +216,7 @@
 
     <!-- Recessed surface (Level 1) — for stat pills, secondary blocks -->
     <style name="Widget.Aura.Card.Recessed" parent="Widget.Aura.Card">
-        <item name="cardBackgroundColor">@color/colorSurfaceContainerLow</item>
+        <item name="cardBackgroundColor">@color/colorSurfaceContainerHigh</item>
     </style>
 
     <!-- Highest surface (Level 3) — for prominent items catching the light -->
@@ -226,7 +226,7 @@
 
     <!-- Glass card — slightly translucent floating element -->
     <style name="Widget.Aura.Card.Glass" parent="Widget.Aura.Card">
-        <item name="cardBackgroundColor">@color/colorSurfaceContainerLow</item>
+        <item name="cardBackgroundColor">@color/colorSurfaceContainerHigh</item>
         <item name="cardCornerRadius">@dimen/corner_radius_lg</item>
     </style>
 
@@ -338,6 +338,10 @@
         <item name="bottomSheetStyle">@style/Widget.Aura.BottomSheet.SelectCampaign</item>
     </style>
 
+    <style name="Theme.Aura.BottomSheetDialog.SetupCampaign" parent="Theme.Aura.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.Aura.BottomSheet.SetupCampaign</item>
+    </style>
+
     <style name="Widget.Aura.BottomSheet.SelectCampaign" parent="Widget.Aura.BottomSheet">
         <item name="backgroundTint">@color/colorSurface</item>
         <item name="shapeAppearance">@style/ShapeAppearance.Aura.BottomSheet.SelectCampaign</item>
@@ -346,6 +350,16 @@
     <style name="ShapeAppearance.Aura.BottomSheet.SelectCampaign" parent="ShapeAppearance.Aura.BottomSheet">
         <item name="cornerSizeTopLeft">32dp</item>
         <item name="cornerSizeTopRight">32dp</item>
+    </style>
+
+    <style name="Widget.Aura.BottomSheet.SetupCampaign" parent="Widget.Aura.BottomSheet">
+        <item name="backgroundTint">@color/colorSurface</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Aura.BottomSheet.SetupCampaign</item>
+    </style>
+
+    <style name="ShapeAppearance.Aura.BottomSheet.SetupCampaign" parent="ShapeAppearance.Aura.BottomSheet">
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeTopRight">20dp</item>
     </style>
 
 </resources>

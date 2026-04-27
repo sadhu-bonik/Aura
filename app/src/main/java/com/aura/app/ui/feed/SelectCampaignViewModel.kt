@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 
 sealed class SelectCampaignUiState {
     object Loading : SelectCampaignUiState()
+    object Empty : SelectCampaignUiState()
     data class Success(val campaigns: List<Campaign>) : SelectCampaignUiState()
     data class Error(val message: String) : SelectCampaignUiState()
 }
@@ -33,7 +34,7 @@ class SelectCampaignViewModel(
             campaignRepository.getCampaignsForBrand(brandId).collect { campaigns ->
                 android.util.Log.d("SelectCampaignVM", "Loaded ${campaigns.size} campaigns")
                 if (campaigns.isEmpty()) {
-                    _state.value = SelectCampaignUiState.Error("No campaigns found for $brandId")
+                    _state.value = SelectCampaignUiState.Empty
                 } else {
                     _state.value = SelectCampaignUiState.Success(campaigns)
                     if (_selectedCampaignId.value == null) {

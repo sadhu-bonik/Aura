@@ -39,12 +39,13 @@ class ProfileFragment : Fragment() {
     private val portfolioAdapter = PortfolioAdapter()
     private val campaignAdapter = com.aura.app.adapters.CampaignAdapter(
         onCampaignClick = { campaign ->
-            val bundle = Bundle().apply { putString("campaignId", campaign.campaignId) }
-            findNavController().navigate(R.id.action_profile_to_setupCampaign, bundle)
+            openSetupCampaignPopup(campaign.campaignId)
         },
         onEditClick = { campaign ->
-            val bundle = Bundle().apply { putString("campaignId", campaign.campaignId) }
-            findNavController().navigate(R.id.action_profile_to_setupCampaign, bundle)
+            openSetupCampaignPopup(campaign.campaignId)
+        },
+        onDeleteClick = { campaign ->
+            viewModel.deleteCampaign(campaign.campaignId)
         }
     )
 
@@ -103,7 +104,7 @@ class ProfileFragment : Fragment() {
             adapter = portfolioAdapter
         }
         binding.rvCampaigns.apply {
-            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext(), androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext())
             adapter = campaignAdapter
         }
     }
@@ -113,11 +114,16 @@ class ProfileFragment : Fragment() {
             AddVideoBottomSheet().show(childFragmentManager, AddVideoBottomSheet.TAG)
         }
         binding.btnAddCampaign.setOnClickListener {
-            findNavController().navigate(R.id.action_profile_to_setupCampaign)
+            openSetupCampaignPopup()
         }
         binding.btnMoreOptions.setOnClickListener { view ->
             showMoreOptionsMenu(view)
         }
+    }
+
+    private fun openSetupCampaignPopup(campaignId: String? = null) {
+        SetupCampaignFragment.newInstance(campaignId)
+            .show(childFragmentManager, SetupCampaignFragment.TAG)
     }
 
     private fun showMoreOptionsMenu(view: View) {
