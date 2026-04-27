@@ -48,5 +48,7 @@ data class BrandProfile(
     val totalCampaigns: Long = 0,
     val activeDeals: Long = 0,
     val industry: String = "", // Compatibility field
+    val averageRating: Double = 0.0,
+    val totalReviews: Long = 0,
     val updatedAt: Timestamp = Timestamp.now()
 )

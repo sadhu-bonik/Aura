@@ -5,19 +5,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aura.app.data.model.Notification
-import com.aura.app.data.repository.AuthRepository
 import com.aura.app.data.repository.NotificationRepository
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 /**
  * NotificationViewModel — drives the notification badge and inbox sheet.
  *
- * Observed by HomeContainerFragment (badge) and NotificationBottomSheet (list).
+ * Activity-scoped, so it survives across login/logout. To avoid leaking the previous
+ * user's notifications into the new session, the streams are torn down and rebound
+ * on every FirebaseAuth user change (signIn, signOut, account switch).
  */
 class NotificationViewModel(
     private val notifRepo: NotificationRepository = NotificationRepository(),
-    private val authRepo: AuthRepository = AuthRepository(),
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
 ) : ViewModel() {
 
     private val _unreadCount = MutableLiveData(0)
@@ -26,35 +29,63 @@ class NotificationViewModel(
     private val _notifications = MutableLiveData<List<Notification>>(emptyList())
     val notifications: LiveData<List<Notification>> = _notifications
 
+    private var boundUid: String? = null
+    private var unreadJob: Job? = null
+    private var listJob: Job? = null
+
+    private val authListener = FirebaseAuth.AuthStateListener { fa ->
+        rebind(fa.currentUser?.uid)
+    }
+
     init {
-        val uid = authRepo.currentUser?.uid
-        if (uid != null) {
-            observeUnreadCount(uid)
-            observeNotifications(uid)
-        }
+        // Bind to whatever user is currently signed in, then react to changes.
+        auth.addAuthStateListener(authListener)
+        rebind(auth.currentUser?.uid)
     }
 
-    private fun observeUnreadCount(userId: String) {
-        viewModelScope.launch {
-            notifRepo.getUnreadCount(userId)
+    /**
+     * Cancel any in-flight collectors, reset the LiveData, and (if a user is signed in)
+     * re-attach Firestore listeners scoped strictly to that uid.
+     */
+    private fun rebind(uid: String?) {
+        if (uid == boundUid) return
+        boundUid = uid
+
+        unreadJob?.cancel()
+        listJob?.cancel()
+        _unreadCount.value = 0
+        _notifications.value = emptyList()
+
+        if (uid.isNullOrBlank()) return
+
+        unreadJob = viewModelScope.launch {
+            notifRepo.getUnreadCount(uid)
                 .catch { android.util.Log.e("NotifVM", "Badge error", it) }
-                .collect { count -> _unreadCount.value = count }
+                .collect { count -> _unreadCount.postValue(count) }
         }
-    }
-
-    private fun observeNotifications(userId: String) {
-        viewModelScope.launch {
-            notifRepo.getNotifications(userId)
+        listJob = viewModelScope.launch {
+            notifRepo.getNotifications(uid)
                 .catch { android.util.Log.e("NotifVM", "Inbox error", it) }
-                .collect { list -> _notifications.value = list }
+                .collect { list -> _notifications.postValue(list) }
         }
     }
 
-    /** Called when the user opens the notification inbox — clears the badge. */
+    /** Mark a single notification as read (called when the user taps it). */
+    fun markRead(notifId: String) {
+        if (notifId.isBlank()) return
+        viewModelScope.launch { notifRepo.markRead(notifId) }
+    }
+
+    /** Bulk clear — wired to the "Mark all read" link in the inbox header. */
     fun markAllRead() {
-        val uid = authRepo.currentUser?.uid ?: return
+        val uid = boundUid ?: return
         viewModelScope.launch {
             notifRepo.markAllRead(uid)
         }
+    }
+
+    override fun onCleared() {
+        auth.removeAuthStateListener(authListener)
+        super.onCleared()
     }
 }

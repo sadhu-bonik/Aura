@@ -270,6 +270,17 @@
     <string name="review_done_button">Done</string>
     <string name="review_comment_hint">Add a message (optional)</string>
     <string name="review_success_snackbar">Aura rating saved!</string>
+    <string name="review_rate_creator_button">Rate this creator</string>
+    <string name="review_rate_brand_button">Rate this brand</string>
+    <string name="review_already_submitted">Review submitted</string>
+    <string name="notif_deal_label">Deal</string>
+    <string name="reviews_title_creator">Creator Reviews</string>
+    <string name="reviews_title_brand">Brand Reviews</string>
+    <string name="reviews_header_label">Verified Testimonials</string>
+    <string name="reviews_section_label">All Reviews</string>
+    <string name="reviews_empty">No reviews yet</string>
+    <string name="reviews_total_count">%1$d reviews</string>
+    <string name="reviews_total_count_one">1 review</string>
     <string name="review_aura_reviewed_badge">Aura Reviewed</string>
     <string name="chip_review_required">Review</string>
 
@@ -390,4 +401,19 @@
     <string name="empty_default_title">Nothing here yet</string>
     <string name="empty_default_subtitle">Pull to refresh or check back later.</string>
     <string name="error_default_message">Something went wrong. Please try again.</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings and Privacy</string>
+    <string name="settings_section_account_preferences">Account Preferences</string>
+    <string name="settings_section_access_safety">Access &amp; Safety</string>
+    <string name="settings_account">Account</string>
+    <string name="settings_edit_profile">Edit Profile</string>
+    <string name="settings_privacy">Privacy</string>
+    <string name="settings_logout">Log Out</string>
+    <string name="settings_delete_account">Delete Account</string>
+    <string name="settings_info_title">Did you know?</string>
+    <string name="settings_info_body">Your privacy settings are automatically optimized for the best experience. Changing them might affect your Aura visibility score.</string>
+    <string name="settings_coming_soon">Coming soon</string>
+    <string name="settings_aura_label">Aura</string>
+    <string name="cd_settings_back">Navigate back</string>
 </resources>

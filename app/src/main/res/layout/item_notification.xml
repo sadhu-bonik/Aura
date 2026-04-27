@@ -2,21 +2,22 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_notif_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:orientation="horizontal"
-    android:paddingHorizontal="24dp"
-    android:paddingVertical="10dp">
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="14dp">
 
-    <!-- Icon circle -->
+    <!-- Icon circle: contrasting tint that stays distinct from sheet background -->
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_vertical"
-        app:cardBackgroundColor="@color/colorSurface"
-        app:cardCornerRadius="20dp"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_gravity="top"
+        app:cardBackgroundColor="@color/colorPrimaryContainer"
+        app:cardCornerRadius="21dp"
         app:cardElevation="0dp"
         app:strokeWidth="0dp">
 
@@ -25,46 +26,67 @@
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/ic_deals"
-            app:tint="@color/colorPrimary" />
+            android:contentDescription="@null"
+            app:srcCompat="@drawable/ic_handshake"
+            app:tint="@color/colorOnPrimaryContainer" />
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Text -->
+    <!-- Text block -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="14dp"
         android:layout_weight="1"
-        android:gravity="center_vertical"
         android:orientation="vertical">
 
+        <!-- Deal title (acts as notification title) -->
+        <TextView
+            android:id="@+id/tv_notif_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/manrope_bold"
+            android:maxLines="1"
+            android:textColor="@color/colorOnSurface"
+            android:textSize="14sp"
+            tools:text="Spring Glow Campaign" />
+
+        <!-- Body / message -->
         <TextView
             android:id="@+id/tv_notif_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/manrope_medium"
-            android:textColor="@color/colorOnSurface"
-            android:textSize="13sp" />
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/manrope"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textColor="@color/colorOnSurfaceVariant"
+            android:textSize="13sp"
+            android:lineSpacingMultiplier="1.25"
+            tools:text="Aurelia accepted your deal request." />
 
         <TextView
             android:id="@+id/tv_notif_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="6dp"
             android:fontFamily="@font/manrope_medium"
-            android:textColor="@color/colorTextSecondary"
-            android:textSize="11sp" />
+            android:textColor="@color/colorOutline"
+            android:textSize="11sp"
+            tools:text="2h" />
 
     </LinearLayout>
 
-    <!-- Unread dot -->
+    <!-- Unread dot (right gutter) -->
     <View
         android:id="@+id/view_unread_dot"
-        android:layout_width="8dp"
-        android:layout_height="8dp"
-        android:layout_gravity="center_vertical"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_gravity="top"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/shape_unread_dot"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </LinearLayout>
