@@ -281,6 +281,23 @@
         <action
             android:id="@+id/action_chatFragment_to_videoPlayerFragment"
             app:destination="@id/videoPlayerFragment" />
+        <action
+            android:id="@+id/action_chat_to_profile"
+            app:destination="@id/profilePublicFragment" />
+    </fragment>
+
+    <!-- Public profile destination reachable from chat. Lives on the root nav so the
+         back button returns to the chat screen. -->
+    <fragment
+        android:id="@+id/profilePublicFragment"
+        android:name="com.aura.app.ui.main.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="creatorId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
     <fragment

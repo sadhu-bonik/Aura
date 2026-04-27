@@ -8,8 +8,6 @@ import com.aura.app.data.model.Deal
 import com.aura.app.data.repository.DealRepository
 import com.aura.app.data.repository.UserRepository
 import com.aura.app.utils.Constants
-import com.aura.app.utils.StubSession
-import com.aura.app.utils.StubState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -25,6 +23,11 @@ class DealHistoryViewModel(
     private val _pastDeals = MutableLiveData<List<DealOfferItem>>(emptyList())
     val pastDeals: LiveData<List<DealOfferItem>> = _pastDeals
 
+    private val authRepository = com.aura.app.data.repository.AuthRepository()
+
+    private val _userRole = MutableLiveData<String?>(null)
+    val userRole: LiveData<String?> = _userRole
+
     private val _isLoading = MutableLiveData(true)
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -36,33 +39,27 @@ class DealHistoryViewModel(
 
     fun load() {
         loadJob?.cancel()
-        val userId = StubSession.userId()
-        val role = StubSession.role()
+        val userId = authRepository.currentUser?.uid ?: return
         _isLoading.value = true
 
-        if (Constants.USE_STUBS) {
-            loadJob = viewModelScope.launch {
-                StubState.dealsFlow.collect { deals ->
-                    val filtered = deals.filter { it.creatorId == userId || it.brandId == userId }
-                    partition(filtered, role)
-                    _isLoading.value = false
-                }
-            }
-            return
-        }
-
         loadJob = viewModelScope.launch {
+            val user = userRepository.getUserProfile(userId)
+            val role = user?.role ?: Constants.ROLE_CREATOR
+            _userRole.value = role
+
             val flow = if (role == Constants.ROLE_CREATOR) {
                 dealRepository.getDealsForCreator(userId)
             } else {
                 dealRepository.getDealsForBrand(userId)
             }
 
-            flow.catch { _isLoading.value = false }
-                .collect { deals ->
-                    partition(deals, role)
-                    _isLoading.value = false
-                }
+            flow.catch { 
+                android.util.Log.e("DealHistoryVM", "Error loading history", it)
+                _isLoading.value = false 
+            }.collect { deals ->
+                partition(deals, role)
+                _isLoading.value = false
+            }
         }
     }
 

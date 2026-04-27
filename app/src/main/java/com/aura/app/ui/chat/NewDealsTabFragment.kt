@@ -23,6 +23,9 @@ class NewDealsTabFragment : Fragment() {
     private val dashboardViewModel: DealDashboardViewModel by viewModels({ requireParentFragment() })
     private lateinit var adapter: DealOfferAdapter
 
+    private val authRepository = com.aura.app.data.repository.AuthRepository()
+    private val userRepository = com.aura.app.data.repository.UserRepository()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDealTabBinding.inflate(inflater, container, false)
         return binding.root
@@ -31,30 +34,39 @@ class NewDealsTabFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (com.aura.app.utils.StubSession.role() == com.aura.app.utils.Constants.ROLE_BRAND) {
-            binding.tvEmpty.setText(R.string.empty_sent_deals)
-        } else {
-            binding.tvEmpty.setText(R.string.empty_new_deals)
-        }
-
-        adapter = DealOfferAdapter(
-            mode = OfferCardMode.NEW_DEALS,
-            onItemClick = { item ->
-                CampaignInfoBottomSheet.newInstance(item.deal.dealId)
-                    .show(parentFragmentManager, "campaign_info")
-            },
-            onAccept = { dealId -> dashboardViewModel.acceptDeal(dealId) },
-            onReject = { dealId -> confirmReject(dealId) },
-        )
         binding.rvDeals.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvDeals.adapter = adapter
+
+        dashboardViewModel.userRole.observe(viewLifecycleOwner) { role ->
+            if (role == null) return@observe
+            
+            val isBrand = role == com.aura.app.utils.Constants.ROLE_BRAND
+            if (isBrand) {
+                binding.tvEmpty.setText(R.string.empty_sent_deals)
+            } else {
+                binding.tvEmpty.setText(R.string.empty_new_deals)
+            }
+
+            adapter = DealOfferAdapter(
+                mode = OfferCardMode.NEW_DEALS,
+                currentRole = role,
+                onItemClick = { item ->
+                    CampaignInfoBottomSheet.newInstance(item.deal.dealId)
+                        .show(parentFragmentManager, "campaign_info")
+                },
+                onAccept = { dealId -> dashboardViewModel.acceptDeal(dealId) },
+                onReject = { dealId -> confirmReject(dealId) },
+            )
+            binding.rvDeals.adapter = adapter
+        }
 
         dashboardViewModel.isLoading.observe(viewLifecycleOwner) { loading ->
             binding.pbLoading.isVisible = loading
         }
 
         dashboardViewModel.newDeals.observe(viewLifecycleOwner) { items ->
-            adapter.submitList(items)
+            if (::adapter.isInitialized) {
+                adapter.submitList(items)
+            }
             binding.rvDeals.isVisible = items.isNotEmpty()
             binding.layoutEmpty.isVisible = items.isEmpty() && dashboardViewModel.isLoading.value == false
         }

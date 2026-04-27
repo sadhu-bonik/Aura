@@ -28,6 +28,9 @@ class CampaignRepository(private val db: FirebaseFirestore) {
     }
 
     suspend fun getCampaign(campaignId: String): Campaign? {
+        if (Constants.USE_STUBS) {
+            return StubData.campaigns.firstOrNull { it.campaignId == campaignId }
+        }
         return try {
             db.collection(Constants.COLLECTION_CAMPAIGNS)
                 .document(campaignId)

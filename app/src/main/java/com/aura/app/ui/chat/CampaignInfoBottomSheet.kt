@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aura.app.R
 import com.aura.app.databinding.FragmentCampaignInfoBottomSheetBinding
@@ -38,9 +39,10 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
 
         binding.btnClose.setOnClickListener { dismiss() }
         binding.btnViewProfile.isEnabled = false
+        binding.btnViewProfile.setOnClickListener { openBrandProfile() }
 
         val dealId = arguments?.getString(ARG_DEAL_ID) ?: return
-        viewModel.load(dealId, StubSession.userId())
+        viewModel.load(dealId, currentUserId())
 
         setupEditControls()
         setupActionButtons()
@@ -60,34 +62,84 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
+    private fun currentUserId(): String =
+        if (Constants.USE_STUBS) StubSession.userId()
+        else com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: ""
+
+    private fun openBrandProfile() {
+        val targetId = viewModel.otherParty.value?.userId?.takeIf { it.isNotBlank() } ?: return
+        val parent = parentFragment ?: return
+        val navController = parent.findNavController()
+        val bundle = Bundle().apply { putString("creatorId", targetId) }
+        // The bottom sheet is hosted from two different nav graphs (deals dashboard vs chat).
+        // Each graph has its own action id pointing to a profile destination on its own back stack.
+        val actionId = when (navController.currentDestination?.id) {
+            R.id.navigation_deals -> R.id.action_deals_to_brand_profile
+            R.id.chatFragment -> R.id.action_chat_to_profile
+            else -> return
+        }
+        navController.navigate(actionId, bundle)
+        dismiss()
+    }
+
     private fun setupActionButtons() {
-        binding.btnCancelDeal.setOnClickListener { showCancelDialog() }
+        binding.btnCancelDeal.setOnClickListener {
+            val deal = viewModel.deal.value ?: return@setOnClickListener
+            val myId = currentUserId()
+            when (deal.status) {
+                Constants.STATUS_PENDING -> {
+                    // Brand withdraws; creator declines (reject)
+                    if (deal.brandId == myId) {
+                        showWithdrawDialog()
+                    } else {
+                        viewModel.rejectDeal()
+                    }
+                }
+                Constants.STATUS_ACCEPTED -> showCancelRequestDialog()
+            }
+        }
         binding.btnCompleteDeal.setOnClickListener { viewModel.requestCompletion() }
     }
 
-    private fun showCancelDialog() {
-        val reasonInput = EditText(requireContext()).apply {
-            hint = getString(R.string.hint_cancel_reason)
-            inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE
-            maxLines = 3
-            filters = arrayOf(android.text.InputFilter.LengthFilter(140))
-        }
-        val container = android.widget.FrameLayout(requireContext()).apply {
-            val padding = resources.getDimensionPixelSize(R.dimen.space_md)
-            setPadding(padding, 0, padding, 0)
-            addView(reasonInput)
-        }
-
+    private fun showCancelRequestDialog() {
+        val reasonInput = buildReasonInput()
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.dialog_cancel_reason_title)
-            .setView(container)
+            .setMessage(R.string.dialog_cancel_reason_body)
+            .setView(wrapWithPadding(reasonInput))
             .setNegativeButton(R.string.btn_cancel, null)
-            .setPositiveButton(R.string.btn_cancel_deal) { _, _ ->
-                val reason = reasonInput.text?.toString()?.trim() ?: ""
-                viewModel.cancelDeal(reason)
+            .setPositiveButton(R.string.btn_send_request) { _, _ ->
+                viewModel.requestCancellation(reasonInput.text?.toString()?.trim() ?: "")
             }
             .show()
     }
+
+    private fun showWithdrawDialog() {
+        val reasonInput = buildReasonInput()
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.dialog_withdraw_title)
+            .setMessage(R.string.dialog_withdraw_body)
+            .setView(wrapWithPadding(reasonInput))
+            .setNegativeButton(R.string.btn_cancel, null)
+            .setPositiveButton(R.string.btn_withdraw) { _, _ ->
+                viewModel.withdrawDeal(reasonInput.text?.toString()?.trim() ?: "")
+            }
+            .show()
+    }
+
+    private fun buildReasonInput(): EditText = EditText(requireContext()).apply {
+        hint = getString(R.string.hint_cancel_reason)
+        inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE
+        maxLines = 3
+        filters = arrayOf(android.text.InputFilter.LengthFilter(140))
+    }
+
+    private fun wrapWithPadding(child: View): android.widget.FrameLayout =
+        android.widget.FrameLayout(requireContext()).apply {
+            val padding = resources.getDimensionPixelSize(R.dimen.space_md)
+            setPadding(padding, 0, padding, 0)
+            addView(child)
+        }
 
     private fun enterEditMode() {
         val deal = viewModel.deal.value ?: return
@@ -120,30 +172,62 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
         viewModel.deal.observe(viewLifecycleOwner) { deal ->
             binding.tvCampaignTitle.text = deal.title
             binding.tvCampaignDescription.text = deal.description
+            binding.tvBudgetValue.text = getString(R.string.format_budget_value, deal.budget)
 
             val isEditable = deal.status == Constants.STATUS_ACCEPTED
             binding.ivEditTitle.isVisible = isEditable
             binding.ivEditDescription.isVisible = isEditable
 
-            val myId = StubSession.userId()
+            val myId = currentUserId()
             val isAccepted = deal.status == Constants.STATUS_ACCEPTED
+            val isPending = deal.status == Constants.STATUS_PENDING
 
             when {
+                isPending -> {
+                    // Pending deals — show role-appropriate cancel action, no complete button
+                    binding.llDealActions.isVisible = true
+                    binding.btnCancelDeal.isEnabled = true
+                    binding.btnCancelDeal.text = if (deal.brandId == myId) {
+                        getString(R.string.btn_withdraw_deal)
+                    } else {
+                        getString(R.string.btn_reject_deal)
+                    }
+                    binding.btnCompleteDeal.isVisible = false
+                    binding.tvWaitingHelper.isVisible = false
+                }
                 !isAccepted -> {
-                    // Not accepted — no actions available
+                    // Not accepted and not pending — no actions available
+                    binding.llDealActions.isVisible = false
+                    binding.tvWaitingHelper.isVisible = false
+                }
+                deal.cancelRequestedBy == myId -> {
+                    // I requested cancellation — waiting for other party
+                    binding.llDealActions.isVisible = true
+                    binding.btnCancelDeal.isEnabled = false
+                    binding.btnCancelDeal.text = getString(R.string.btn_waiting_response)
+                    binding.btnCompleteDeal.isVisible = true
+                    binding.btnCompleteDeal.isEnabled = false
+                    binding.tvWaitingHelper.isVisible = true
+                    binding.tvWaitingHelper.text = getString(R.string.helper_waiting_response)
+                }
+                deal.cancelRequestedBy.isNotEmpty() && deal.cancelRequestedBy != myId -> {
+                    // Other party requested cancellation — respond via chat bar
                     binding.llDealActions.isVisible = false
                     binding.tvWaitingHelper.isVisible = false
                 }
                 deal.completionRequestedBy == myId -> {
-                    // I'm waiting — show waiting helper, disable actions
+                    // I'm waiting for completion approval — show waiting helper, disable actions
                     binding.llDealActions.isVisible = true
                     binding.btnCancelDeal.isEnabled = false
+                    binding.btnCancelDeal.text = getString(R.string.btn_cancel_deal)
+                    binding.btnCompleteDeal.isVisible = true
                     binding.btnCompleteDeal.isEnabled = false
                     binding.btnCompleteDeal.text = getString(R.string.btn_waiting_response)
                     binding.tvWaitingHelper.isVisible = true
+                    binding.tvWaitingHelper.text = getString(R.string.helper_waiting_response)
                 }
                 deal.completionRequestedBy.isNotEmpty() && deal.completionRequestedBy != myId -> {
-                    // Other party is waiting — hide action buttons (respond via chat bar)
+                    // Other party is waiting for completion — hide action buttons (respond via chat bar)
                     binding.llDealActions.isVisible = false
                     binding.tvWaitingHelper.isVisible = false
                 }
@@ -151,6 +235,8 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
                     // Normal accepted state — both buttons enabled
                     binding.llDealActions.isVisible = true
                     binding.btnCancelDeal.isEnabled = true
+                    binding.btnCancelDeal.text = getString(R.string.btn_cancel_deal)
+                    binding.btnCompleteDeal.isVisible = true
                     binding.btnCompleteDeal.isEnabled = true
                     binding.btnCompleteDeal.text = getString(R.string.btn_complete_deal)
                     binding.tvWaitingHelper.isVisible = false
@@ -199,13 +285,14 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
 
         viewModel.otherParty.observe(viewLifecycleOwner) { user ->
             binding.tvProfileName.text = user?.displayName ?: ""
+            binding.btnViewProfile.isEnabled = !user?.userId.isNullOrBlank()
             Glide.with(binding.ivProfilePhoto)
                 .load(user?.profileImageUrl)
                 .circleCrop()
                 .into(binding.ivProfilePhoto)
 
             val deal = viewModel.deal.value ?: return@observe
-            val myId = StubSession.userId()
+            val myId = currentUserId()
             if (deal.status == Constants.STATUS_CANCELLED && deal.cancelledBy != myId && binding.tvReasonText.isVisible) {
                 val name = user?.displayName ?: "the other party"
                 val baseText = "Cancelled by $name"
@@ -214,6 +301,21 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
                 } else {
                     "$baseText."
                 }
+            }
+        }
+
+        viewModel.campaign.observe(viewLifecycleOwner) { campaign ->
+            if (campaign == null) {
+                binding.groupCampaignInfo.isVisible = false
+            } else {
+                binding.groupCampaignInfo.isVisible = true
+                binding.tvCampaignName.text = campaign.title
+                binding.tvCampaignSectionDescription.text = campaign.description
+                binding.tvCampaignBudgetValue.text = getString(
+                    R.string.format_budget_range,
+                    campaign.budgetMin,
+                    campaign.budgetMax,
+                )
             }
         }
 

@@ -37,15 +37,13 @@ class ProfileFragment : Fragment() {
     }
 
     private val portfolioAdapter = PortfolioAdapter()
+    // Initialized with no-op callbacks; owner-only navigation is wired in render()
+    // once we know whether this fragment is showing the user's own profile or a
+    // public viewer.  This prevents crashes when ProfileFragment is used on
+    // destinations that lack the profile-specific nav actions.
     private val campaignAdapter = com.aura.app.adapters.CampaignAdapter(
-        onCampaignClick = { campaign ->
-            val bundle = Bundle().apply { putString("campaignId", campaign.campaignId) }
-            findNavController().navigate(R.id.action_profile_to_setupCampaign, bundle)
-        },
-        onEditClick = { campaign ->
-            val bundle = Bundle().apply { putString("campaignId", campaign.campaignId) }
-            findNavController().navigate(R.id.action_profile_to_setupCampaign, bundle)
-        }
+        onCampaignClick = { /* wired later for owner */ },
+        onEditClick   = { /* wired later for owner */ }
     )
 
     private val videoPickerLauncher = registerForActivityResult(
@@ -113,7 +111,7 @@ class ProfileFragment : Fragment() {
             AddVideoBottomSheet().show(childFragmentManager, AddVideoBottomSheet.TAG)
         }
         binding.btnAddCampaign.setOnClickListener {
-            findNavController().navigate(R.id.action_profile_to_setupCampaign)
+            navigateSafe(R.id.action_profile_to_setupCampaign)
         }
         binding.btnMoreOptions.setOnClickListener { view ->
             showMoreOptionsMenu(view)
@@ -128,7 +126,7 @@ class ProfileFragment : Fragment() {
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 1 -> {
-                    findNavController().navigate(R.id.action_profile_to_editProfile)
+                    navigateSafe(R.id.action_profile_to_editProfile)
                     true
                 }
                 2 -> {
@@ -363,6 +361,20 @@ class ProfileFragment : Fragment() {
 
                 // Campaigns (Brands)
                 if (isBrand) {
+                    // Wire owner-only campaign click navigation
+                    if (state.isOwner) {
+                        campaignAdapter.onCampaignClick = { campaign ->
+                            val bundle = Bundle().apply { putString("campaignId", campaign.campaignId) }
+                            navigateSafe(R.id.action_profile_to_setupCampaign, bundle)
+                        }
+                        campaignAdapter.onEditClick = { campaign ->
+                            val bundle = Bundle().apply { putString("campaignId", campaign.campaignId) }
+                            navigateSafe(R.id.action_profile_to_setupCampaign, bundle)
+                        }
+                    } else {
+                        campaignAdapter.onCampaignClick = {}
+                        campaignAdapter.onEditClick = {}
+                    }
                     campaignAdapter.submitList(state.campaigns)
                     val hasCampaigns = state.campaigns.isNotEmpty()
                     binding.rvCampaigns.visibility = if (hasCampaigns) View.VISIBLE else View.GONE
@@ -403,6 +415,20 @@ class ProfileFragment : Fragment() {
             navController.navigateUp()
         }
     }
+
+    /**
+     * Navigates only if the current destination has the requested action.
+     * Prevents crashes when ProfileFragment is hosted on a destination
+     * that doesn't have owner-specific nav actions (e.g. public profile).
+     */
+    private fun navigateSafe(actionId: Int, args: Bundle? = null) {
+        val navController = findNavController()
+        val current = navController.currentDestination ?: return
+        if (current.getAction(actionId) != null) {
+            navController.navigate(actionId, args)
+        }
+    }
+
     private fun formatCount(count: Long): String {
         return when {
             count >= 1_000_000 -> String.format("%.1fM", count / 1_000_000.0)

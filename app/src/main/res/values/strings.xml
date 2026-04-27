@@ -35,6 +35,9 @@
     <string name="dashboard_action_switch_user">Switch user</string>
     <string name="dashboard_action_filter">Filter deals</string>
     <string name="dashboard_filter_coming_soon">Filters coming soon</string>
+    <string name="notif_title">Notifications</string>
+    <string name="notif_mark_all_read">Mark all read</string>
+    <string name="notif_empty">No notifications yet</string>
     <string name="empty_new_deals">No new offers yet</string>
     <string name="empty_sent_deals">No deals sent yet</string>
     <string name="title_deal_history">Deal History</string>
@@ -74,7 +77,12 @@
     <!-- Campaign info bottom sheet -->
     <string name="title_campaign_info">Campaign Info</string>
     <string name="btn_view_profile">View Profile</string>
-    <string name="label_campaign_description">Campaign</string>
+    <string name="label_campaign_description">Deal</string>
+    <string name="label_campaign_section">Campaign</string>
+    <string name="label_budget">Budget</string>
+    <string name="label_campaign_budget_range">Budget range</string>
+    <string name="format_budget_range">$%1$d – $%2$d</string>
+    <string name="format_budget_value">$%1$d</string>
     <string name="label_shared_media">Shared Media</string>
     <string name="empty_shared_media">No media shared yet</string>
     <string name="content_description_close">Close</string>
@@ -89,13 +97,19 @@
     <!-- Deal actions -->
     <string name="btn_accept_deal">Accept</string>
     <string name="btn_reject_deal">Decline</string>
-    <string name="btn_complete_deal">Complete Deal</string>
+    <string name="btn_complete_deal">Close Deal</string>
+    <string name="btn_withdraw_deal">Withdraw Offer</string>
 
     <!-- Deal actions — cancel + complete -->
     <string name="btn_cancel_deal">Cancel Deal</string>
     <string name="btn_waiting_response">Waiting for response…</string>
     <string name="helper_waiting_response">Waiting for other party to agree.</string>
-    <string name="dialog_cancel_reason_title">Cancel this deal?</string>
+    <string name="dialog_cancel_reason_title">Request to cancel this deal?</string>
+    <string name="dialog_cancel_reason_body">Both parties must agree before an accepted deal can be cancelled.</string>
+    <string name="dialog_withdraw_title">Withdraw this offer?</string>
+    <string name="dialog_withdraw_body">The creator hasn\'t accepted yet — withdrawing closes the offer immediately.</string>
+    <string name="btn_send_request">Send Request</string>
+    <string name="btn_withdraw">Withdraw</string>
     <string name="hint_cancel_reason">Reason for cancellation…</string>
 
     <!-- Deal actions — reject confirm dialog -->
@@ -103,16 +117,19 @@
     <string name="dialog_reject_body">Once declined, this deal moves to history and can\'t be restored.</string>
     <string name="btn_decline">Decline</string>
 
-    <!-- Completion request banner -->
-    <string name="completion_prompt">The other party wants to complete this deal. Do you agree?</string>
+    <!-- Completion + cancellation request banners -->
+    <string name="completion_prompt">The other party wants to close this deal. Do you agree?</string>
+    <string name="cancellation_prompt">The other party wants to cancel this deal. Do you agree?</string>
+    <string name="cancellation_prompt_with_reason">The other party wants to cancel this deal: \"%1$s\". Do you agree?</string>
     <string name="btn_yes">Yes</string>
     <string name="btn_no">No</string>
 
     <!-- System messages in chat -->
-    <string name="system_msg_completion_requested">COMPLETION REQUEST TRIGGERED</string>
-    <string name="system_msg_completion_declined">COMPLETION REQUEST DECLINED</string>
-    <string name="system_msg_deal_completed">DEAL COMPLETED</string>
+    <string name="system_msg_completion_requested">CLOSE-DEAL REQUEST TRIGGERED</string>
+    <string name="system_msg_completion_declined">CLOSE-DEAL REQUEST DECLINED</string>
+    <string name="system_msg_deal_completed">DEAL CLOSED</string>
     <string name="system_msg_deal_cancelled">%1$s cancelled the deal — \"%2$s\"</string>
+    <string name="system_msg_cancellation_declined">CANCELLATION REQUEST DECLINED</string>
 
     <!-- Conversation closed footer -->
     <string name="conversation_closed_title">CONVERSATION CLOSED</string>

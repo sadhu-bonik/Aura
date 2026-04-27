@@ -44,6 +44,12 @@ sealed class CompletionRequestState {
     data class IncomingFromOther(val initiatorName: String) : CompletionRequestState()
 }
 
+sealed class CancellationRequestState {
+    object None : CancellationRequestState()
+    object OutgoingFromMe : CancellationRequestState()
+    data class IncomingFromOther(val initiatorName: String, val reason: String) : CancellationRequestState()
+}
+
 class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
     private val dealRepository = DealRepository()
@@ -75,6 +81,9 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private val _completionRequest = MutableLiveData<CompletionRequestState>(CompletionRequestState.None)
     val completionRequest: LiveData<CompletionRequestState> = _completionRequest
 
+    private val _cancellationRequest = MutableLiveData<CancellationRequestState>(CancellationRequestState.None)
+    val cancellationRequest: LiveData<CancellationRequestState> = _cancellationRequest
+
     private var dealId: String = ""
     private var currentUserId: String = ""
     private var dealObserveJob: Job? = null
@@ -99,6 +108,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                     if (deal != null) {
                         _deal.value = deal
                         updateCompletionState(deal, currentUserId)
+                        updateCancellationState(deal, currentUserId)
                     }
                 }
             }
@@ -111,6 +121,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
             }
             _deal.value = deal
             updateCompletionState(deal, currentUserId)
+            updateCancellationState(deal, currentUserId)
 
             viewModelScope.launch {
                 val otherUserId = if (deal.creatorId == currentUserId) deal.brandId else deal.creatorId
@@ -138,10 +149,13 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                 return@launch
             }
             _deal.value = deal
-            updateCompletionState(deal, currentUserId)
 
             val otherUserId = if (deal.creatorId == currentUserId) deal.brandId else deal.creatorId
             _otherUser.value = userRepository.getUserLite(otherUserId)
+
+            // Re-evaluate request states now that we have the other user's name
+            updateCompletionState(deal, currentUserId)
+            updateCancellationState(deal, currentUserId)
 
             messageRepository.streamMessages(dealId)
                 .catch { e ->
@@ -161,26 +175,96 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
             deal.completionRequestedBy.isEmpty() -> CompletionRequestState.None
             deal.completionRequestedBy == myUserId -> CompletionRequestState.OutgoingFromMe
             else -> {
-                val name = StubSession.displayName()
+                val name = _otherUser.value?.displayName ?: "The other party"
                 CompletionRequestState.IncomingFromOther(name)
             }
         }
     }
 
+    private fun updateCancellationState(deal: Deal, myUserId: String) {
+        _cancellationRequest.value = when {
+            deal.cancelRequestedBy.isEmpty() -> CancellationRequestState.None
+            deal.cancelRequestedBy == myUserId -> CancellationRequestState.OutgoingFromMe
+            else -> {
+                val name = _otherUser.value?.displayName ?: "The other party"
+                CancellationRequestState.IncomingFromOther(name, deal.cancelReason)
+            }
+        }
+    }
+
     fun respondToCompletion(accepted: Boolean) {
+        val previousDeal = _deal.value ?: return
         viewModelScope.launch {
             if (accepted) {
-                if (Constants.USE_STUBS) {
+                // Optimistic: immediately show closed state
+                _deal.value = previousDeal.copy(
+                    status = Constants.STATUS_COMPLETED,
+                    completionRequestedBy = "",
+                )
+                _completionRequest.value = CompletionRequestState.None
+
+                val result = if (Constants.USE_STUBS) {
                     StubState.updateDealStatus(dealId, Constants.STATUS_COMPLETED, chatUnlocked = true)
+                    Result.success(Unit)
                 } else {
                     dealRepository.confirmCompletion(dealId)
                 }
+                result.onFailure {
+                    // Revert on error
+                    _deal.value = previousDeal
+                    updateCompletionState(previousDeal, currentUserId)
+                    _error.value = it.message ?: "Failed to complete deal"
+                }
             } else {
+                // Decline — clear the bar immediately
+                _deal.value = previousDeal.copy(completionRequestedBy = "")
+                _completionRequest.value = CompletionRequestState.None
+
                 val systemText = getApplication<Application>().getString(R.string.system_msg_completion_declined)
                 if (Constants.USE_STUBS) {
                     StubState.clearCompletionRequest(dealId)
                 } else {
                     dealRepository.declineCompletion(dealId)
+                }
+                messageRepository.sendSystemMessage(dealId, systemText)
+            }
+        }
+    }
+
+    fun respondToCancellation(accepted: Boolean) {
+        val previousDeal = _deal.value ?: return
+        viewModelScope.launch {
+            if (accepted) {
+                // Optimistic: immediately show closed state
+                _deal.value = previousDeal.copy(
+                    status = Constants.STATUS_CANCELLED,
+                    cancelRequestedBy = "",
+                    cancelledBy = previousDeal.cancelRequestedBy,
+                )
+                _cancellationRequest.value = CancellationRequestState.None
+
+                val result = if (Constants.USE_STUBS) {
+                    StubState.updateDealStatus(dealId, Constants.STATUS_CANCELLED, chatUnlocked = true)
+                    Result.success(Unit)
+                } else {
+                    dealRepository.confirmCancellation(dealId)
+                }
+                result.onFailure {
+                    // Revert on error
+                    _deal.value = previousDeal
+                    updateCancellationState(previousDeal, currentUserId)
+                    _error.value = it.message ?: "Failed to cancel deal"
+                }
+            } else {
+                // Decline — clear the bar immediately
+                _deal.value = previousDeal.copy(cancelRequestedBy = "", cancelReason = "")
+                _cancellationRequest.value = CancellationRequestState.None
+
+                val systemText = getApplication<Application>().getString(R.string.system_msg_cancellation_declined)
+                if (Constants.USE_STUBS) {
+                    // stub: clear cancel request
+                } else {
+                    dealRepository.declineCancellation(dealId)
                 }
                 messageRepository.sendSystemMessage(dealId, systemText)
             }

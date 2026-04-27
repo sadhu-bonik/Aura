@@ -79,7 +79,8 @@ class EditProfileViewModel(
         youtubeUrl: String,
         profileImageUri: Uri?,
         website: String = "",
-        industry: String = ""
+        industry: String = "",
+        nicheTags: List<String> = emptyList()
     ) {
         val uid = auth.currentUser?.uid ?: return
         if (displayName.isBlank()) {
@@ -120,6 +121,7 @@ class EditProfileViewModel(
                     )
                     if (website.isNotBlank()) brandUpdates["website"] = website
                     if (industry.isNotBlank()) brandUpdates["industry"] = industry
+                    if (nicheTags.isNotEmpty()) brandUpdates["industryTags"] = nicheTags
                     
                     Log.d(TAG, "saveProfile brand payload → $brandUpdates")
                     userRepository.updateBrandProfilePartial(uid, brandUpdates)
@@ -127,13 +129,14 @@ class EditProfileViewModel(
                     _event.value = EditProfileEvent.SaveSuccess
                 } else {
                     // Creator profile update
-                    val creatorUpdates = mapOf(
+                    val creatorUpdates = mutableMapOf<String, Any>(
                         "bio" to bio,
                         "motto" to headline,
                         "youtubeHandle" to youtubeUrl,
                         "isProfileComplete" to true,
                         "updatedAt" to Timestamp.now(),
                     )
+                    if (nicheTags.isNotEmpty()) creatorUpdates["tags"] = nicheTags
                     Log.d(TAG, "saveProfile creator payload → $creatorUpdates")
                     userRepository.updateCreatorProfilePartial(uid, creatorUpdates)
 

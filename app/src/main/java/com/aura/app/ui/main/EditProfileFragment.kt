@@ -18,6 +18,8 @@ import com.aura.app.R
 import com.aura.app.databinding.FragmentEditProfileBinding
 import android.widget.ArrayAdapter
 import com.bumptech.glide.Glide
+import com.aura.app.utils.CreatorNicheTags
+import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
@@ -66,8 +68,31 @@ class EditProfileFragment : Fragment() {
 
         setupSecurityQuestions()
         setupListeners()
+        setupNicheTags()
         observeState()
         observeEvents()
+    }
+
+    private fun setupNicheTags() {
+        binding.cgEditNicheTags.removeAllViews()
+        CreatorNicheTags.NICHE_TAGS.forEach { tag ->
+            val chip = Chip(requireContext()).apply {
+                text = tag
+                isCheckable = true
+                setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) {
+                        val selectedCount = (0 until binding.cgEditNicheTags.childCount).count {
+                            (binding.cgEditNicheTags.getChildAt(it) as? Chip)?.isChecked == true
+                        }
+                        if (selectedCount > 5) {
+                            this.isChecked = false
+                            Toast.makeText(requireContext(), "Max 5 tags allowed", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+            binding.cgEditNicheTags.addView(chip)
+        }
     }
 
     private fun setupSecurityQuestions() {
@@ -103,6 +128,12 @@ class EditProfileFragment : Fragment() {
             val website = binding.etWebsite.text.toString()
             val industry = binding.etIndustry.text.toString()
 
+            val selectedTags = mutableListOf<String>()
+            for (i in 0 until binding.cgEditNicheTags.childCount) {
+                val chip = binding.cgEditNicheTags.getChildAt(i) as? Chip ?: continue
+                if (chip.isChecked) selectedTags.add(chip.text.toString())
+            }
+
             viewModel.saveProfile(
                 displayName = name,
                 headline = headline,
@@ -113,7 +144,8 @@ class EditProfileFragment : Fragment() {
                 youtubeUrl = youtube,
                 profileImageUri = selectedImageUri,
                 website = website,
-                industry = industry
+                industry = industry,
+                nicheTags = selectedTags
             )
         }
 
@@ -204,6 +236,15 @@ class EditProfileFragment : Fragment() {
             binding.layoutCreatorYoutube.visibility = View.VISIBLE
             binding.layoutBrandWebsite.visibility = View.GONE
             binding.layoutBrandIndustry.visibility = View.GONE
+        }
+
+        // Pre-select niche tags
+        val currentTags = if (isBrand) state.brandProfile?.industryTags ?: emptyList() else state.creatorProfile?.tags ?: emptyList()
+        for (i in 0 until binding.cgEditNicheTags.childCount) {
+            val chip = binding.cgEditNicheTags.getChildAt(i) as? Chip ?: continue
+            if (currentTags.contains(chip.text.toString())) {
+                chip.isChecked = true
+            }
         }
 
         // Only prefill if fields haven't been touched (guards against config-change overwrites)

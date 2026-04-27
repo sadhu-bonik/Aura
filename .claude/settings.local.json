@@ -12,7 +12,14 @@
       "Bash(./gradlew compileDebugKotlin)",
       "Bash(grep -v \"Registration\\\\|BrandReg\\\\|BrandProfile\\\\.kt$\")",
       "Bash(xargs cat *)",
-      "Bash(xargs ls *)"
+      "Bash(xargs ls *)",
+      "Bash(git -C /Users/nievanik/Desktop/Aura/Aura/ diff app/src/main/res/layout/fragment_campaign_info_bottom_sheet.xml)",
+      "Bash(grep -rn '\"\\\\$%,d\"\\\\|\\\\$\"\\\\$%' /Users/nievanik/Desktop/Aura/Aura/app/src/main/java/com/aura/app/ --include=\"*.kt\")",
+      "Bash(grep -rn 'budget\\\\|Budget\\\\|\\\\$%,' /Users/nievanik/Desktop/Aura/Aura/app/src/main/java/com/aura/app/adapters/ --include=\"*.kt\")",
+      "Bash(./gradlew :app:assembleDebug)",
+      "Bash(grep -rn \"shortlist\\\\|filter\" /Users/nievanik/Desktop/Aura/Aura/app/src/main/res/layout/fragment_video_feed.xml /Users/nievanik/Desktop/Aura/Aura/app/src/main/res/layout/overlay_feed_actions.xml echo \"---\" grep -rn \"navigation_shortlist\\\\|btn_filter\\\\|filter_options\\\\|btnFilter\" /Users/nievanik/Desktop/Aura/Aura/app/src/main/res/ /Users/nievanik/Desktop/Aura/Aura/app/src/main/java/)",
+      "Bash(grep -n \"bg_pill_tertiary_container\" /Users/nievanik/Desktop/Aura/Aura/app/src/main/res/layout/fragment_brand_reg_step3.xml /Users/nievanik/Desktop/Aura/Aura/app/src/main/res/drawable/ echo \"---\" ls /Users/nievanik/Desktop/Aura/Aura/app/src/main/res/drawable/)",
+      "Bash(./gradlew lintDebug -q)"
     ]
   }
 }

@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aura.app.R
 import com.aura.app.databinding.FragmentDealTabBinding
-import com.aura.app.utils.StubSession
 import com.aura.app.utils.rootNavController
 
 class ActiveDealsTabFragment : Fragment() {
@@ -31,22 +30,28 @@ class ActiveDealsTabFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.tvEmpty.setText(R.string.empty_active_deals_title)
-
-        adapter = ActiveDealAdapter { item ->
-            rootNavController().navigate(
-                R.id.action_homeContainer_to_chat,
-                android.os.Bundle().apply { putString("dealId", item.deal.dealId) }
-            )
-        }
         binding.rvDeals.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvDeals.adapter = adapter
+
+        dashboardViewModel.userRole.observe(viewLifecycleOwner) { role ->
+            if (role == null) return@observe
+
+            adapter = ActiveDealAdapter { item ->
+                rootNavController().navigate(
+                    R.id.action_homeContainer_to_chat,
+                    android.os.Bundle().apply { putString("dealId", item.deal.dealId) }
+                )
+            }
+            binding.rvDeals.adapter = adapter
+        }
 
         dashboardViewModel.isLoading.observe(viewLifecycleOwner) { loading ->
             binding.pbLoading.isVisible = loading
         }
 
         dashboardViewModel.activeDeals.observe(viewLifecycleOwner) { items ->
-            adapter.submitList(items)
+            if (::adapter.isInitialized) {
+                adapter.submitList(items)
+            }
             binding.rvDeals.isVisible = items.isNotEmpty()
             binding.layoutEmpty.isVisible = items.isEmpty() && dashboardViewModel.isLoading.value == false
         }

@@ -31,36 +31,43 @@ class PastDealsTabFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.tvEmpty.setText(R.string.empty_past_deals)
+        binding.rvDeals.layoutManager = LinearLayoutManager(requireContext())
 
-        adapter = DealOfferAdapter(
-            mode = OfferCardMode.PAST,
-            onItemClick = { item ->
-                // CANCELLED rows → open chat read-only (closed footer handles the locked state)
-                if (item.deal.status == Constants.STATUS_CANCELLED) {
-                    findNavController().navigate(
-                        R.id.action_history_to_chat,
-                        bundleOf("dealId" to item.deal.dealId)
-                    )
-                } else {
+        historyViewModel.userRole.observe(viewLifecycleOwner) { role ->
+            if (role == null) return@observe
+
+            adapter = DealOfferAdapter(
+                mode = OfferCardMode.PAST,
+                currentRole = role,
+                onItemClick = { item ->
+                    // CANCELLED rows → open chat read-only (closed footer handles the locked state)
+                    if (item.deal.status == Constants.STATUS_CANCELLED) {
+                        findNavController().navigate(
+                            R.id.action_history_to_chat,
+                            bundleOf("dealId" to item.deal.dealId)
+                        )
+                    } else {
+                        CampaignInfoBottomSheet.newInstance(item.deal.dealId)
+                            .show(parentFragmentManager, "campaign_info")
+                    }
+                },
+                onChevronClick = { item ->
+                    // Chevron always opens the info sheet for all past statuses
                     CampaignInfoBottomSheet.newInstance(item.deal.dealId)
                         .show(parentFragmentManager, "campaign_info")
-                }
-            },
-            onChevronClick = { item ->
-                // Chevron always opens the info sheet for all past statuses
-                CampaignInfoBottomSheet.newInstance(item.deal.dealId)
-                    .show(parentFragmentManager, "campaign_info")
-            },
-        )
-        binding.rvDeals.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvDeals.adapter = adapter
+                },
+            )
+            binding.rvDeals.adapter = adapter
+        }
 
         historyViewModel.isLoading.observe(viewLifecycleOwner) { loading ->
             binding.pbLoading.isVisible = loading
         }
 
         historyViewModel.pastDeals.observe(viewLifecycleOwner) { items ->
-            adapter.submitList(items)
+            if (::adapter.isInitialized) {
+                adapter.submitList(items)
+            }
             binding.rvDeals.isVisible = items.isNotEmpty()
             binding.layoutEmpty.isVisible = items.isEmpty() && historyViewModel.isLoading.value == false
             binding.layoutEndOfHistory.isVisible = items.isNotEmpty()

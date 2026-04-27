@@ -224,6 +224,11 @@
             android:id="@+id/include_completion_bar"
             layout="@layout/layout_completion_request_bar" />
 
+        <!-- Cancellation request card (Party B sees this) -->
+        <include
+            android:id="@+id/include_cancellation_bar"
+            layout="@layout/layout_cancellation_request_bar" />
+
         <!-- Input bar (hidden when deal is closed) -->
         <LinearLayout
             android:id="@+id/ll_input_bar"
