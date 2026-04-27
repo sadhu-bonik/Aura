@@ -135,7 +135,7 @@ class ProfileFragment : Fragment() {
             when (item.itemId) {
 
                 2 -> {
-                    navigateSafe(R.id.action_profile_to_settings)
+                    findNavController().navigate(R.id.action_profile_to_settings)
                     true
                 }
                 else -> false
@@ -298,7 +298,7 @@ class ProfileFragment : Fragment() {
                         it.status == com.aura.app.utils.Constants.STATUS_PENDING || 
                         it.status == com.aura.app.utils.Constants.STATUS_ACCEPTED 
                     }.toString()
-                    binding.tvStatsRating.text = "4.8" // Placeholder rating for now
+                    binding.tvStatsRating.text = String.format(java.util.Locale.US, "%.1f", state.brandProfile?.averageRating ?: 0.0)
                     binding.tvStatsFollowersLabel.text = "CAMPAIGNS"
                     binding.tvStatsDealsLabel.text = "DEALS"
                     binding.tvStatsRatingLabel.text = "RATING"
@@ -307,7 +307,7 @@ class ProfileFragment : Fragment() {
                     binding.tvStatsDeals.text = state.deals.count { 
                         it.status == com.aura.app.utils.Constants.STATUS_COMPLETED 
                     }.toString()
-                    binding.tvStatsRating.text = state.creatorProfile?.averageRating?.toString() ?: "0.0"
+                    binding.tvStatsRating.text = String.format(java.util.Locale.US, "%.1f", state.creatorProfile?.averageRating ?: 0.0)
                     binding.tvStatsFollowersLabel.text = "VIEWS"
                     binding.tvStatsDealsLabel.text = "DEALS"
                     binding.tvStatsRatingLabel.text = "RATING"
@@ -320,7 +320,7 @@ class ProfileFragment : Fragment() {
                         putFloat("averageRating", (if (isBrand) state.brandProfile?.averageRating else state.creatorProfile?.averageRating)?.toFloat() ?: 0f)
                         putLong("totalReviews", (if (isBrand) state.brandProfile?.totalReviews else state.creatorProfile?.totalReviews) ?: 0L)
                     }
-                    navigateSafe(R.id.action_profile_to_userReviews, bundle)
+                    findNavController().navigate(R.id.action_profile_to_userReviews, bundle)
                 }
 
                 binding.btnMoreOptions.visibility =

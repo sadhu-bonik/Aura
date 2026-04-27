@@ -35,7 +35,7 @@ class UserReviewsFragment : Fragment() {
 
         val revieweeId = arguments?.getString("revieweeId") ?: return
         val displayName = arguments?.getString("displayName") ?: "User"
-        val averageRating = arguments?.getDouble("averageRating") ?: 0.0
+        val averageRating = arguments?.getFloat("averageRating")?.toDouble() ?: 0.0
         val totalReviews = arguments?.getLong("totalReviews") ?: 0L
 
         setupUI(displayName, averageRating, totalReviews)
