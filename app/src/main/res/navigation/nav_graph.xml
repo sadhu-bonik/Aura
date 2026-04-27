@@ -278,6 +278,10 @@
             android:name="dealId"
             app:argType="string"
             android:defaultValue="" />
+        <argument
+            android:name="openReviewPopup"
+            app:argType="boolean"
+            android:defaultValue="false" />
         <action
             android:id="@+id/action_chatFragment_to_videoPlayerFragment"
             app:destination="@id/videoPlayerFragment" />

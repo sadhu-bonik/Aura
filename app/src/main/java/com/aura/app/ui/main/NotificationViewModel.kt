@@ -50,7 +50,13 @@ class NotificationViewModel(
         }
     }
 
-    /** Called when the user opens the notification inbox — clears the badge. */
+    /** Mark a single notification as read (called when the user taps it). */
+    fun markRead(notifId: String) {
+        if (notifId.isBlank()) return
+        viewModelScope.launch { notifRepo.markRead(notifId) }
+    }
+
+    /** Bulk clear — wired to the "Mark all read" link in the inbox header. */
     fun markAllRead() {
         val uid = authRepo.currentUser?.uid ?: return
         viewModelScope.launch {

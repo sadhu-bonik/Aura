@@ -5,6 +5,7 @@ import com.aura.app.data.model.Review
 import com.aura.app.utils.Constants
 import com.aura.app.utils.StubState
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.snapshots
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -63,7 +64,14 @@ class ReviewRepository(private val app: Application) {
                 list.filter { it.reviewerId == reviewerId }.associateBy { it.dealId }
             }
         }
-        return flowOf(emptyMap())
+        return firestore.collection(Constants.COLLECTION_REVIEWS)
+            .whereEqualTo("reviewerId", reviewerId)
+            .snapshots()
+            .map { snap ->
+                snap.documents
+                    .mapNotNull { it.toObject(Review::class.java) }
+                    .associateBy { it.dealId }
+            }
     }
 
     suspend fun getExistingReview(dealId: String, reviewerId: String): Result<Review?> = runCatching {

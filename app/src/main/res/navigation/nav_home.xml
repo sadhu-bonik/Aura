@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_profile_to_setupCampaign"
             app:destination="@id/navigation_setup_campaign" />
+        <action
+            android:id="@+id/action_profile_to_settings"
+            app:destination="@id/navigation_settings" />
     </fragment>
 
     <fragment
@@ -94,5 +97,15 @@
         android:name="com.aura.app.ui.main.DiscoverFragment"
         android:label="@string/tab_search"
         tools:layout="@layout/fragment_discover" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.aura.app.ui.main.SettingsFragment"
+        android:label="@string/settings_title"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settings_to_editProfile"
+            app:destination="@id/navigation_edit_profile" />
+    </fragment>
 
 </navigation>

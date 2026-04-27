@@ -33,6 +33,9 @@ class ChatFragment : Fragment() {
     private var hasShownReviewPrompt = false
 
     private val dealId: String by lazy { arguments?.getString("dealId") ?: "" }
+    private val openReviewPopupArg: Boolean by lazy {
+        arguments?.getBoolean("openReviewPopup", false) ?: false
+    }
 
     private val pickMedia = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
@@ -189,13 +192,19 @@ class ChatFragment : Fragment() {
                 updateClosedSubtitle(deal)
             }
 
-            if (deal.status == Constants.STATUS_COMPLETED && !hasShownReviewPrompt) {
+            // Auto-open review popup either when the deal just transitioned to COMPLETED,
+            // or when navigated here from a REVIEW_REQUESTED notification.
+            val shouldPrompt = deal.status == Constants.STATUS_COMPLETED &&
+                    (openReviewPopupArg || !hasShownReviewPrompt)
+            if (shouldPrompt) {
                 val alreadyReviewed = reviewViewModel.reviewsByDealId.value.containsKey(deal.dealId)
                 if (!alreadyReviewed) {
                     hasShownReviewPrompt = true
                     reviewViewModel.markReviewPromptShown(deal.dealId)
                     val otherParty = viewModel.otherUser.value
                     if (otherParty != null) {
+                        // Clear the arg so back-navigation/recompose doesn't re-pop the sheet.
+                        arguments?.putBoolean("openReviewPopup", false)
                         ReviewFlow.newInstance(deal.dealId, otherParty.userId, otherParty.displayName, otherParty.profileImageUrl)
                             .show(childFragmentManager, "review_flow")
                     }

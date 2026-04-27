@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide
 import androidx.appcompat.widget.PopupMenu
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.aura.app.R
+import com.aura.app.data.model.Deal
 import com.aura.app.ui.feed.SelectCampaignBottomSheet
 import kotlinx.coroutines.launch
 
@@ -120,17 +121,12 @@ class ProfileFragment : Fragment() {
 
     private fun showMoreOptionsMenu(view: View) {
         val popup = PopupMenu(requireContext(), view)
-        popup.menu.add(0, 1, 0, "Edit Profile")
         popup.menu.add(0, 2, 0, "Settings")
         
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                1 -> {
-                    navigateSafe(R.id.action_profile_to_editProfile)
-                    true
-                }
                 2 -> {
-                    Toast.makeText(requireContext(), "Settings coming soon", Toast.LENGTH_SHORT).show()
+                    navigateSafe(R.id.action_profile_to_settings)
                     true
                 }
                 else -> false
@@ -288,15 +284,20 @@ class ProfileFragment : Fragment() {
 
                 // Stats: brands show deal/campaign counts; creators show social stats
                 if (isBrand) {
-                    binding.tvStatsFollowers.text = state.brandProfile?.totalCampaigns?.toString() ?: "0"
-                    binding.tvStatsDeals.text = state.brandProfile?.activeDeals?.toString() ?: "0"
+                    binding.tvStatsFollowers.text = state.campaigns.size.toString()
+                    binding.tvStatsDeals.text = state.deals.count { 
+                        it.status == com.aura.app.utils.Constants.STATUS_PENDING || 
+                        it.status == com.aura.app.utils.Constants.STATUS_ACCEPTED 
+                    }.toString()
                     binding.tvStatsRating.text = "4.8" // Placeholder rating for now
                     binding.tvStatsFollowersLabel.text = "CAMPAIGNS"
                     binding.tvStatsDealsLabel.text = "DEALS"
                     binding.tvStatsRatingLabel.text = "RATING"
                 } else {
                     binding.tvStatsFollowers.text = state.creatorProfile?.youtubeTotalViews?.let { formatCount(it) } ?: "0"
-                    binding.tvStatsDeals.text = state.creatorProfile?.completedDeals?.toString() ?: "0"
+                    binding.tvStatsDeals.text = state.deals.count { 
+                        it.status == com.aura.app.utils.Constants.STATUS_COMPLETED 
+                    }.toString()
                     binding.tvStatsRating.text = state.creatorProfile?.averageRating?.toString() ?: "0.0"
                     binding.tvStatsFollowersLabel.text = "VIEWS"
                     binding.tvStatsDealsLabel.text = "DEALS"

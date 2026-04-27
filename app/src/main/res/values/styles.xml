@@ -348,4 +348,10 @@
         <item name="cornerSizeTopRight">32dp</item>
     </style>
 
+    <!-- Circle shape overlay for ShapeableImageView avatars -->
+    <style name="ShapeAppearance.Aura.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
 </resources>

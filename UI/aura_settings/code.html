@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#ffdff6",
+                    "on-secondary-fixed": "#413d51",
+                    "surface-container-low": "#141318",
+                    "background": "#0f0e12",
+                    "on-secondary-fixed-variant": "#5d596e",
+                    "surface": "#0f0e12",
+                    "surface-container": "#1a191f",
+                    "surface-tint": "#cac1ed",
+                    "secondary-dim": "#bcb5ce",
+                    "outline": "#77747e",
+                    "secondary-fixed": "#e6dff9",
+                    "tertiary-fixed": "#fdcbf2",
+                    "on-tertiary": "#6f4969",
+                    "surface-container-lowest": "#000000",
+                    "on-surface-variant": "#aea9b5",
+                    "primary-fixed": "#d6ccf9",
+                    "surface-container-high": "#201f26",
+                    "primary-container": "#554d73",
+                    "on-error-container": "#ff97a3",
+                    "tertiary-dim": "#eebde3",
+                    "inverse-surface": "#fdf8fe",
+                    "error": "#f97386",
+                    "inverse-primary": "#615a80",
+                    "error-dim": "#c44b5f",
+                    "tertiary-fixed-dim": "#eebde3",
+                    "primary-dim": "#bcb3df",
+                    "on-tertiary-fixed": "#512e4c",
+                    "on-error": "#490013",
+                    "surface-container-highest": "#27252d",
+                    "on-primary-fixed": "#362f53",
+                    "secondary": "#cac3dc",
+                    "on-primary": "#423b60",
+                    "on-tertiary-fixed-variant": "#704a6a",
+                    "surface-dim": "#0f0e12",
+                    "on-tertiary-container": "#654060",
+                    "on-primary-container": "#e7dfff",
+                    "surface-variant": "#27252d",
+                    "on-secondary": "#423d52",
+                    "on-primary-fixed-variant": "#534b71",
+                    "tertiary-container": "#fdcbf2",
+                    "secondary-container": "#3d394d",
+                    "on-surface": "#e9e3ef",
+                    "inverse-on-surface": "#565459",
+                    "primary": "#cac1ed",
+                    "outline-variant": "#494650",
+                    "error-container": "#871c34",
+                    "on-secondary-container": "#c3bcd5",
+                    "secondary-fixed-dim": "#d8d1ea",
+                    "primary-fixed-dim": "#c8beea",
+                    "surface-bright": "#2d2b34",
+                    "on-background": "#e9e3ef"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "display": ["Manrope"],
+                    "body": ["Manrope"],
+                    "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .aura-glass {
+            background: linear-gradient(135deg, rgba(26, 25, 31, 0.8) 0%, rgba(15, 14, 18, 0.9) 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-neutral-950/80 backdrop-blur-xl shadow-[0_12px_24px_rgba(86,32,224,0.05)] docked full-width top-0 z-50 flex items-center justify-between px-6 h-20 w-full">
+<div class="flex items-center gap-4">
+<button class="text-violet-500 hover:bg-neutral-800/50 transition-colors p-2 rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-['Manrope'] font-bold tracking-tight text-neutral-100 text-xl">Settings and Privacy</h1>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-violet-400 font-semibold text-xl">Aura</span>
+</div>
+</header>
+<main class="max-w-2xl mx-auto px-6 pt-8 space-y-8">
+<!-- Profile Overview Section (Asymmetric / Bento Style) -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-surface-container-low p-6 rounded-lg flex items-center gap-6 group hover:bg-surface-container transition-all duration-300">
+<div class="relative">
+<img alt="User profile" class="w-20 h-20 rounded-full object-cover shadow-2xl ring-2 ring-primary/20" data-alt="Stunning editorial portrait of a woman with cinematic lighting, ethereal violet glow, and high fashion aesthetic against dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8C2VvFDB4Larg4uPdsKVqDu1nsigjQD3fJbnwImAImWu-Pr-3k1LCd4osSEWTx5iVjXTktJknyymSAdLd7JD_Dsqj2mXf-kMQlVATGzCzupDd6-vKoLVDbY6KHN7WAXYzrnhzqyiKDDLzqOfb1eQPBwhMZTKwEmN-IVW-lzRo5G7ApMU44NJ3kZiTnF4eVUQMHfYRLwXZfd9fkkCFeNOjImJXi4219ZEaCiEEw6-2bp2PZqVGIrJ_LpF-Ph2RO-P1-usXzImvxRyU"/>
+<div class="absolute -bottom-1 -right-1 bg-primary text-on-primary p-1 rounded-full text-[10px]">
+<span class="material-symbols-outlined !text-sm" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div>
+<h2 class="text-xl font-bold text-on-surface">Alex Rivera</h2>
+<p class="text-on-surface-variant text-sm font-medium">Pro Member • Aura Elite</p>
+</div>
+</div>
+</section>
+<!-- Menu Section -->
+<section class="space-y-4">
+<p class="text-on-surface-variant text-[11px] font-extrabold uppercase tracking-[0.2em] px-2">Account Preferences</p>
+<div class="space-y-2"><!-- Account -->
+<button class="w-full group flex items-center justify-between p-5 bg-surface-container-low hover:bg-surface-container rounded-lg transition-all duration-300 active:scale-[0.98]">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</div>
+<span class="font-bold text-on-surface">Account</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+</button>
+<!-- Edit Profile -->
+<button class="w-full group flex items-center justify-between p-5 bg-surface-container-low hover:bg-surface-container rounded-lg transition-all duration-300 active:scale-[0.98]">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</div>
+<span class="font-bold text-on-surface">Edit Profile</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+</button>
+<!-- Privacy -->
+<button class="w-full group flex items-center justify-between p-5 bg-surface-container-low hover:bg-surface-container rounded-lg transition-all duration-300 active:scale-[0.98]">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+</div>
+<span class="font-bold text-on-surface">Privacy</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- Danger Zone Section -->
+<section class="space-y-4">
+<p class="text-on-surface-variant text-[11px] font-extrabold uppercase tracking-[0.2em] px-2">Access &amp; Safety</p>
+<div class="space-y-2">
+<!-- Log Out -->
+<button class="w-full group flex items-center justify-between p-5 bg-surface-container-low hover:bg-surface-container rounded-lg transition-all duration-300 active:scale-[0.98]">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-surface-variant group-hover:bg-neutral-800 transition-colors">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+</div>
+<span class="font-bold text-on-surface">Log Out</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+</button>
+<!-- Delete Account -->
+<button class="w-full group flex items-center justify-between p-5 bg-error-container/10 hover:bg-error-container/20 border border-error-dim/10 rounded-lg transition-all duration-300 active:scale-[0.98]">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-error-container/30 flex items-center justify-center text-error group-hover:bg-error group-hover:text-on-error transition-colors">
+<span class="material-symbols-outlined" data-icon="delete_forever">delete_forever</span>
+</div>
+<span class="font-bold text-error">Delete Account</span>
+</div>
+<span class="material-symbols-outlined text-error/60 group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- Info Card (Glassmorphism) -->
+<section class="aura-glass p-6 rounded-lg border border-outline-variant/15">
+<h3 class="text-primary font-bold mb-2">Did you know?</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Your privacy settings are automatically optimized for the best experience. Changing them might affect your Aura visibility score.</p>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pb-8 pt-4 bg-neutral-950/70 backdrop-blur-2xl rounded-t-[32px] shadow-[0_-8px_30px_rgb(0,0,0,0.5)]">
+<a class="flex flex-col items-center justify-center text-neutral-500 hover:text-neutral-200" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Manrope'] text-[11px] font-medium uppercase tracking-widest mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-500 hover:text-neutral-200" href="#">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-['Manrope'] text-[11px] font-medium uppercase tracking-widest mt-1">Aura</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-500 hover:text-neutral-200" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-['Manrope'] text-[11px] font-medium uppercase tracking-widest mt-1">Alerts</span>
+</a>
+<!-- Active Tab: Profile -->
+<a class="flex flex-col items-center justify-center text-violet-400 bg-violet-500/10 rounded-full px-4 py-2 Active: scale-98 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-['Manrope'] text-[11px] font-medium uppercase tracking-widest mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

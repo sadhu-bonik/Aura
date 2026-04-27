@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.aura.app.data.model.Deal
 import com.aura.app.data.model.Review
+import com.aura.app.data.repository.AuthRepository
 import com.aura.app.data.repository.DealRepository
 import com.aura.app.data.repository.ReviewRepository
 import com.aura.app.utils.Constants
@@ -18,6 +19,12 @@ import kotlinx.coroutines.launch
 class ReviewViewModel(application: Application) : AndroidViewModel(application) {
     private val reviewRepo = ReviewRepository(application)
     private val dealRepo = DealRepository()
+    private val authRepo = AuthRepository()
+
+    // Real auth uid in non-stub mode; falls back to the stub session id otherwise.
+    private fun currentUserId(): String =
+        if (Constants.USE_STUBS) StubSession.userId()
+        else authRepo.currentUser?.uid.orEmpty()
 
     private val _reviewsByDealId = MutableStateFlow<Map<String, Review>>(emptyMap())
     val reviewsByDealId: StateFlow<Map<String, Review>> = _reviewsByDealId.asStateFlow()
@@ -29,11 +36,11 @@ class ReviewViewModel(application: Application) : AndroidViewModel(application) 
 
     init {
         viewModelScope.launch {
-            val currentUserId = StubSession.userId()
-            if (currentUserId.isNotEmpty()) {
-                reviewRepo.streamMyReviews(currentUserId).collect { map ->
+            val uid = currentUserId()
+            if (uid.isNotEmpty()) {
+                reviewRepo.streamMyReviews(uid).collect { map ->
                     _reviewsByDealId.value = map
-                    checkPendingDeals(currentUserId, map)
+                    checkPendingDeals(uid, map)
                 }
             }
         }
@@ -62,7 +69,7 @@ class ReviewViewModel(application: Application) : AndroidViewModel(application) 
     fun submitRating(dealId: String, revieweeId: String, rating: Double): StateFlow<Result<String>?> {
         val resultFlow = MutableStateFlow<Result<String>?>(null)
         viewModelScope.launch {
-            val currentUserId = StubSession.userId()
+            val currentUserId = currentUserId()
             if (currentUserId.isNotEmpty()) {
                 val review = Review(
                     dealId = dealId,
@@ -89,7 +96,7 @@ class ReviewViewModel(application: Application) : AndroidViewModel(application) 
                 Result.success(Unit)
             }
             if (result.isSuccess) {
-                val userId = StubSession.userId()
+                val userId = currentUserId()
                 if (Constants.USE_STUBS) {
                     com.aura.app.utils.StubState.markUserReviewed(dealId, userId)
                 } else {

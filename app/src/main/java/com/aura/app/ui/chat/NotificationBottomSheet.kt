@@ -57,17 +57,21 @@ class NotificationBottomSheet : BottomSheetDialogFragment() {
         binding.tvMarkAllRead.setOnClickListener {
             notifViewModel.markAllRead()
         }
-
-        // Mark all read as soon as the sheet is opened
-        notifViewModel.markAllRead()
     }
 
     private fun onNotifTapped(notif: Notification) {
+        // Mark this single notification as read so the badge count stays accurate.
+        if (!notif.read) notifViewModel.markRead(notif.notifId)
+
         if (notif.dealId.isNotBlank()) {
             dismiss()
             rootNavController().navigate(
                 R.id.action_homeContainer_to_chat,
-                bundleOf("dealId" to notif.dealId)
+                bundleOf(
+                    "dealId" to notif.dealId,
+                    // ChatFragment opens ReviewFlow automatically when this flag is set.
+                    "openReviewPopup" to notif.openReviewPopup,
+                ),
             )
         }
     }
