@@ -22,7 +22,8 @@
       "Bash(./gradlew lintDebug -q)",
       "Bash(./gradlew :app:compileDebugKotlin -q)",
       "Bash(./gradlew :app:compileDebugKotlin :app:processDebugResources -q)",
-      "Bash(./gradlew :app:assembleDebug -q)"
+      "Bash(./gradlew :app:assembleDebug -q)",
+      "Bash(./gradlew :app:compileDebugKotlin)"
     ]
   }
 }

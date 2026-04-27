@@ -134,7 +134,7 @@
             android:textSize="11sp"
             android:textStyle="bold" />
 
-        <!-- Account (disabled) -->
+        <!-- Account (enabled — opens Account Settings) -->
         <LinearLayout
             android:id="@+id/row_account"
             android:layout_width="match_parent"
@@ -142,8 +142,10 @@
             android:layout_marginStart="@dimen/space_md"
             android:layout_marginTop="@dimen/space_md"
             android:layout_marginEnd="@dimen/space_md"
-            android:alpha="0.5"
             android:background="@drawable/bg_settings_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="20dp">
