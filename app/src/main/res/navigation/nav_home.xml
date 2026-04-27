@@ -18,6 +18,27 @@
         <action
             android:id="@+id/action_profile_to_editProfile"
             app:destination="@id/navigation_edit_profile" />
+        <action
+            android:id="@+id/action_profile_to_setupCampaign"
+            app:destination="@id/navigation_setup_campaign" />
+        <action
+            android:id="@+id/action_profile_to_settings"
+            app:destination="@id/navigation_settings" />
+        <action
+            android:id="@+id/action_profile_to_userReviews"
+            app:destination="@id/navigation_user_reviews" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_setup_campaign"
+        android:name="com.aura.app.ui.main.SetupCampaignFragment"
+        android:label="Setup Campaign"
+        tools:layout="@layout/fragment_setup_campaign">
+        <argument
+            android:name="campaignId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
     <fragment
@@ -48,6 +69,9 @@
             app:argType="string"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_profile_to_userReviews"
+            app:destination="@id/navigation_user_reviews" />
     </fragment>
 
     <fragment
@@ -72,6 +96,9 @@
             app:argType="string"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_profile_to_userReviews"
+            app:destination="@id/navigation_user_reviews" />
     </fragment>
 
     <fragment
@@ -79,5 +106,36 @@
         android:name="com.aura.app.ui.main.DiscoverFragment"
         android:label="@string/tab_search"
         tools:layout="@layout/fragment_discover" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.aura.app.ui.main.SettingsFragment"
+        android:label="@string/settings_title"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settings_to_editProfile"
+            app:destination="@id/navigation_edit_profile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_user_reviews"
+        android:name="com.aura.app.ui.main.UserReviewsFragment"
+        android:label="Reviews"
+        tools:layout="@layout/fragment_user_reviews">
+        <argument
+            android:name="revieweeId"
+            app:argType="string" />
+        <argument
+            android:name="displayName"
+            app:argType="string" />
+        <argument
+            android:name="averageRating"
+            app:argType="float"
+            android:defaultValue="0.0" />
+        <argument
+            android:name="totalReviews"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
 
 </navigation>

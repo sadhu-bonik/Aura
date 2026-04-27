@@ -2,6 +2,7 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cv_conversation_closed"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -54,6 +55,34 @@
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.Aura.BodySmall"
             android:alpha="0.7" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_rate_now"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_md"
+            android:textColor="@color/colorOnPrimary"
+            app:backgroundTint="@color/colorPrimary"
+            app:cornerRadius="@dimen/corner_radius_md"
+            app:icon="@drawable/ic_aura_star_outline"
+            app:iconTint="@color/colorOnPrimary"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_review_submitted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_sm"
+            android:drawablePadding="@dimen/space_xs"
+            android:gravity="center_vertical"
+            android:text="@string/review_already_submitted"
+            android:textAppearance="@style/TextAppearance.Aura.LabelMedium"
+            android:textColor="@color/colorPrimary"
+            app:drawableStartCompat="@drawable/ic_check_circle"
+            app:drawableTint="@color/colorPrimary"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
     </LinearLayout>
 
