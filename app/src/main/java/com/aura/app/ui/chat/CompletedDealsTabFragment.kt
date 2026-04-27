@@ -33,36 +33,45 @@ class CompletedDealsTabFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.tvEmpty.setText(R.string.empty_completed_deals)
-
-        adapter = DealOfferAdapter(
-            mode = OfferCardMode.COMPLETED,
-            onItemClick = { item ->
-                findNavController().navigate(
-                    R.id.action_history_to_chat,
-                    bundleOf("dealId" to item.deal.dealId)
-                )
-            },
-            onChevronClick = { item ->
-                CampaignInfoBottomSheet.newInstance(item.deal.dealId)
-                    .show(parentFragmentManager, "campaign_info")
-            }
-        )
         binding.rvDeals.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvDeals.adapter = adapter
+
+        historyViewModel.userRole.observe(viewLifecycleOwner) { role ->
+            if (role == null) return@observe
+
+            adapter = DealOfferAdapter(
+                mode = OfferCardMode.COMPLETED,
+                currentRole = role,
+                onItemClick = { item ->
+                    findNavController().navigate(
+                        R.id.action_history_to_chat,
+                        bundleOf("dealId" to item.deal.dealId)
+                    )
+                },
+                onChevronClick = { item ->
+                    CampaignInfoBottomSheet.newInstance(item.deal.dealId)
+                        .show(parentFragmentManager, "campaign_info")
+                }
+            )
+            binding.rvDeals.adapter = adapter
+        }
 
         historyViewModel.isLoading.observe(viewLifecycleOwner) { loading ->
             binding.pbLoading.isVisible = loading
         }
 
         historyViewModel.completedDeals.observe(viewLifecycleOwner) { items ->
-            adapter.submitList(items)
+            if (::adapter.isInitialized) {
+                adapter.submitList(items)
+            }
             binding.rvDeals.isVisible = items.isNotEmpty()
             binding.layoutEmpty.isVisible = items.isEmpty() && historyViewModel.isLoading.value == false
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             reviewViewModel.reviewsByDealId.collect { map ->
-                adapter.setReviewsData(true, map)
+                if (::adapter.isInitialized) {
+                    adapter.setReviewsData(true, map)
+                }
             }
         }
     }

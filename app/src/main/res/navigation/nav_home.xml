@@ -30,7 +30,25 @@
         android:id="@+id/navigation_deals"
         android:name="com.aura.app.ui.chat.DealDashboardFragment"
         android:label="@string/tab_deals"
-        tools:layout="@layout/fragment_deal_dashboard" />
+        tools:layout="@layout/fragment_deal_dashboard">
+        <action
+            android:id="@+id/action_deals_to_brand_profile"
+            app:destination="@id/navigation_brand_public_profile" />
+    </fragment>
+
+    <!-- Separate destination for viewing a brand's profile from the deals tab.
+         Lives on the deals back stack so the back button works correctly. -->
+    <fragment
+        android:id="@+id/navigation_brand_public_profile"
+        android:name="com.aura.app.ui.main.ProfileFragment"
+        android:label="Brand Profile"
+        tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="creatorId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_feed"

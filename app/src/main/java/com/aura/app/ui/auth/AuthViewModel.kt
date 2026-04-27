@@ -105,6 +105,23 @@ class AuthViewModel(
 
             // Step 3: Persist session
             com.aura.app.utils.SessionManager(context).saveUserId(firebaseUser.uid)
+
+            // Step 4: Refresh & save FCM token so push notifications can reach this device
+            try {
+                com.google.firebase.messaging.FirebaseMessaging.getInstance().token
+                    .addOnSuccessListener { token ->
+                        if (token.isNotBlank()) {
+                            android.util.Log.d("AuthViewModel", "Saving FCM token")
+                            com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                                .collection("users")
+                                .document(firebaseUser.uid)
+                                .update("fcmToken", token)
+                        }
+                    }
+            } catch (e: Exception) {
+                android.util.Log.w("AuthViewModel", "FCM token fetch failed (non-fatal): ${e.message}")
+            }
+
             _authState.value = AuthState.Success(userProfile)
         }
     }

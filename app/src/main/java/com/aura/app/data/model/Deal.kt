@@ -19,6 +19,7 @@ data class Deal(
     val lastMessageTime: Timestamp? = null,
     val unreadCounts: Map<String, Long> = emptyMap(),
     val completionRequestedBy: String = "",
+    val cancelRequestedBy: String = "",
     val cancelledBy: String = "",
     val cancelReason: String = "",
     val creatorReviewedAt: com.google.firebase.Timestamp? = null,

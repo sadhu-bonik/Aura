@@ -11,13 +11,13 @@ import com.aura.app.R
 import com.aura.app.data.model.Deal
 import com.aura.app.databinding.ItemDealOfferBinding
 import com.aura.app.utils.Constants
-import com.aura.app.utils.StubSession
 import com.bumptech.glide.Glide
 
 enum class OfferCardMode { NEW_DEALS, COMPLETED, PAST }
 
 class DealOfferAdapter(
     private val mode: OfferCardMode,
+    private val currentRole: String,
     private val onItemClick: ((DealOfferItem) -> Unit)? = null,
     private val onChevronClick: ((DealOfferItem) -> Unit)? = null,
     private val onAccept: ((String) -> Unit)? = null,
@@ -38,7 +38,7 @@ class DealOfferAdapter(
 
         fun bind(item: DealOfferItem) {
             val deal = item.deal
-            val role = StubSession.role()
+            val role = currentRole
 
             if (role == Constants.ROLE_CREATOR) {
                 binding.tvPrimary.text = item.otherUser?.displayName ?: "—"

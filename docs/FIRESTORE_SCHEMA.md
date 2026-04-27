@@ -123,14 +123,16 @@ Authoritative schema. Any change here must be announced in the team chat and ref
 
 ## `deals/{dealId}`
 
+A deal is one offer the brand sends to one creator under a specific campaign. The same campaign can spawn many deals — one per creator the brand targets — so deals share a `campaignId` but always differ in `creatorId`.
+
 | Field | Type | Req | Notes |
 |---|---|---|---|
-| `dealId` | String | ✅ | |
-| `brandId` | String | ✅ | |
-| `creatorId` | String | ✅ | |
-| `campaignId` | String | | Optional link |
-| `title` | String | ✅ | |
-| `description` | String | ✅ | |
+| `dealId` | String | ✅ | Auto-generated Firestore doc id |
+| `brandId` | String | ✅ | Sender |
+| `creatorId` | String | ✅ | Recipient |
+| `campaignId` | String | ✅ | Parent campaign (`campaigns/{campaignId}`) |
+| `title` | String | ✅ | Copied from campaign at send time; editable while accepted |
+| `description` | String | ✅ | Copied from campaign at send time; editable while accepted |
 | `budget` | Long | ✅ | USD cents |
 | `status` | String | ✅ | `"pending"`, `"accepted"`, `"rejected"`, `"completed"`, `"cancelled"`, `"expired"` |
 | `chatUnlocked` | Boolean | ✅ | `true` iff status is `"accepted"` or `"completed"` |
@@ -141,6 +143,7 @@ Authoritative schema. Any change here must be announced in the team chat and ref
 **Invariants** (from `AGENTS.md` §4):
 - `chatUnlocked` flips to `true` only on the `pending → accepted` transition, in the same write as the status change.
 - A deal in `pending` for 7 days transitions to `expired`.
+- The tuple `(campaignId, brandId, creatorId)` is unique among deals in `pending` or `accepted`. Once a deal closes (`rejected`, `cancelled`, `expired`, `completed`), the brand may resend the same campaign to the same creator. Enforced client-side in `DealRepository.createDeal`.
 
 ---
 

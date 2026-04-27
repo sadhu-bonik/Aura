@@ -62,6 +62,16 @@ class SelectCampaignBottomSheet : BottomSheetDialogFragment() {
                         binding.btnSendDeal.isEnabled = selectedId != null
                     }
                 }
+                launch {
+                    viewModel.dealSentEvent.collect { result ->
+                        result.onSuccess {
+                            Toast.makeText(requireContext(), "Deal sent successfully!", Toast.LENGTH_SHORT).show()
+                            dismiss()
+                        }.onFailure { e ->
+                            Toast.makeText(requireContext(), "Failed to send deal: ${e.message}", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
             }
         }
 
@@ -95,6 +105,9 @@ class SelectCampaignBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun setupListeners() {
+        val brandId = arguments?.getString(ARG_BRAND_ID) ?: ""
+        val creatorId = arguments?.getString(ARG_CREATOR_ID) ?: ""
+
         binding.btnClose.setOnClickListener { dismiss() }
         binding.btnCreateCampaign.setOnClickListener {
             SetupCampaignFragment.newInstance()
@@ -102,11 +115,7 @@ class SelectCampaignBottomSheet : BottomSheetDialogFragment() {
             dismiss()
         }
         binding.btnSendDeal.setOnClickListener {
-            val selectedId = viewModel.selectedCampaignId.value
-            if (selectedId != null) {
-                Toast.makeText(requireContext(), "Deal sent for campaign: $selectedId", Toast.LENGTH_SHORT).show()
-                dismiss()
-            }
+            viewModel.sendDeal(brandId, creatorId)
         }
     }
 

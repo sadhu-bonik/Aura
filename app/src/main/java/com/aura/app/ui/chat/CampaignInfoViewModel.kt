@@ -4,15 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aura.app.data.model.Campaign
 import com.aura.app.data.model.Deal
 import com.aura.app.data.model.Message
 import com.aura.app.data.model.UserLite
+import com.aura.app.data.repository.AuthRepository
+import com.aura.app.data.repository.CampaignRepository
 import com.aura.app.data.repository.DealRepository
 import com.aura.app.data.repository.MessageRepository
 import com.aura.app.data.repository.UserRepository
 import com.aura.app.utils.Constants
-import com.aura.app.utils.StubSession
-import com.aura.app.utils.StubState
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
 sealed class DealActionResult {
@@ -24,6 +26,8 @@ class CampaignInfoViewModel(
     private val dealRepository: DealRepository = DealRepository(),
     private val messageRepository: MessageRepository = MessageRepository(),
     private val userRepository: UserRepository = UserRepository(),
+    private val authRepository: AuthRepository = AuthRepository(),
+    private val campaignRepository: CampaignRepository = CampaignRepository(FirebaseFirestore.getInstance()),
 ) : ViewModel() {
 
     private val _deal = MutableLiveData<Deal>()
@@ -31,6 +35,13 @@ class CampaignInfoViewModel(
 
     private val _otherParty = MutableLiveData<UserLite?>()
     val otherParty: LiveData<UserLite?> = _otherParty
+
+    /** The brand's userId — exposed so the sheet can navigate to their profile. */
+    private val _brandId = MutableLiveData<String>()
+    val brandId: LiveData<String> = _brandId
+
+    private val _campaign = MutableLiveData<Campaign?>()
+    val campaign: LiveData<Campaign?> = _campaign
 
     private val _sharedMedia = MutableLiveData<List<Message>>()
     val sharedMedia: LiveData<List<Message>> = _sharedMedia
@@ -47,20 +58,23 @@ class CampaignInfoViewModel(
     private lateinit var dealId: String
     private lateinit var currentUserId: String
 
-    fun load(dealId: String, currentUserId: String) {
+    fun load(dealId: String, currentUserId: String = authRepository.currentUser?.uid ?: "") {
         this.dealId = dealId
         this.currentUserId = currentUserId
         viewModelScope.launch {
-            val deal = if (Constants.USE_STUBS) {
-                StubState.currentDeals().firstOrNull { it.dealId == dealId }
-            } else {
-                dealRepository.getDeal(dealId).getOrNull()
-            } ?: return@launch
+            val deal = dealRepository.getDeal(dealId).getOrNull() ?: return@launch
 
             _deal.value = deal
+            _brandId.value = deal.brandId
             val otherUserId = if (deal.creatorId == currentUserId) deal.brandId else deal.creatorId
             _otherParty.value = userRepository.getUserLite(otherUserId)
             _sharedMedia.value = messageRepository.getSharedMedia(dealId)
+
+            if (deal.campaignId.isNotBlank()) {
+                _campaign.value = campaignRepository.getCampaign(deal.campaignId)
+            } else {
+                _campaign.value = null
+            }
         }
     }
 
@@ -77,47 +91,66 @@ class CampaignInfoViewModel(
         }
     }
 
-    fun cancelDeal(reason: String) {
+    /**
+     * Pre-acceptance: brand withdraws their pending offer. Goes straight to CANCELLED — no
+     * approval needed because the creator hasn't engaged yet.
+     */
+    fun withdrawDeal(reason: String) {
         viewModelScope.launch {
-            if (Constants.USE_STUBS) {
-                StubState.cancelDeal(dealId, cancelledBy = currentUserId, reason = reason)
-                _deal.value = _deal.value?.copy(
-                    status = Constants.STATUS_CANCELLED,
-                    chatUnlocked = true,
-                    cancelledBy = currentUserId,
-                    cancelReason = reason,
-                )
-                _actionResult.value = DealActionResult.Success
-            } else {
-                dealRepository.cancelDeal(dealId, cancelledBy = currentUserId, reason = reason)
-                    .onSuccess {
-                        _deal.value = _deal.value?.copy(
-                            status = Constants.STATUS_CANCELLED,
-                            chatUnlocked = true,
-                            cancelledBy = currentUserId,
-                            cancelReason = reason,
-                        )
-                        _actionResult.value = DealActionResult.Success
-                    }
-                    .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to cancel deal") }
-            }
+            dealRepository.cancelDeal(dealId, cancelledBy = currentUserId, reason = reason)
+                .onSuccess {
+                    _deal.value = _deal.value?.copy(
+                        status = Constants.STATUS_CANCELLED,
+                        chatUnlocked = true,
+                        cancelledBy = currentUserId,
+                        cancelReason = reason,
+                    )
+                    _actionResult.value = DealActionResult.Success
+                }
+                .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to withdraw deal") }
+        }
+    }
+
+    /**
+     * Pre-acceptance: creator declines (rejects) a pending offer.
+     */
+    fun rejectDeal() {
+        viewModelScope.launch {
+            dealRepository.rejectDeal(dealId)
+                .onSuccess {
+                    _deal.value = _deal.value?.copy(status = Constants.STATUS_REJECTED)
+                    _actionResult.value = DealActionResult.Success
+                }
+                .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to decline deal") }
+        }
+    }
+
+    /**
+     * Post-acceptance: open a cancellation request. Status stays ACCEPTED until the other
+     * party confirms via the chat bar.
+     */
+    fun requestCancellation(reason: String) {
+        viewModelScope.launch {
+            dealRepository.requestCancellation(dealId, currentUserId, reason)
+                .onSuccess {
+                    _deal.value = _deal.value?.copy(
+                        cancelRequestedBy = currentUserId,
+                        cancelReason = reason,
+                    )
+                    _actionResult.value = DealActionResult.Success
+                }
+                .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to send cancellation request") }
         }
     }
 
     fun requestCompletion() {
         viewModelScope.launch {
-            if (Constants.USE_STUBS) {
-                StubState.requestCompletion(dealId, currentUserId)
-                _deal.value = _deal.value?.copy(completionRequestedBy = currentUserId)
-                _actionResult.value = DealActionResult.Success
-            } else {
-                dealRepository.requestCompletion(dealId, currentUserId)
-                    .onSuccess {
-                        _deal.value = _deal.value?.copy(completionRequestedBy = currentUserId)
-                        _actionResult.value = DealActionResult.Success
-                    }
-                    .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to request completion") }
-            }
+            dealRepository.requestCompletion(dealId, currentUserId)
+                .onSuccess {
+                    _deal.value = _deal.value?.copy(completionRequestedBy = currentUserId)
+                    _actionResult.value = DealActionResult.Success
+                }
+                .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to request completion") }
         }
     }
 

@@ -12,9 +12,9 @@ import com.bumptech.glide.Glide
 import com.aura.app.R
 
 class CampaignAdapter(
-    private val onCampaignClick: (Campaign) -> Unit,
-    private val onEditClick: (Campaign) -> Unit = {},
-    private val onDeleteClick: (Campaign) -> Unit = {}
+    var onCampaignClick: (Campaign) -> Unit = {},
+    var onEditClick: (Campaign) -> Unit = {},
+    var onDeleteClick: (Campaign) -> Unit = {}
 ) : ListAdapter<Campaign, CampaignAdapter.CampaignViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CampaignViewHolder {
