@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -13,6 +12,7 @@ import com.aura.app.R
 import com.aura.app.databinding.FragmentCreatorRegStep3Binding
 import com.aura.app.ui.auth.RegistrationViewModel
 import com.aura.app.utils.CreatorNicheTags
+import com.aura.app.utils.TargetAudienceTags
 import com.google.android.material.chip.Chip
 
 class CreatorRegStep3Fragment : Fragment() {
@@ -28,8 +28,8 @@ class CreatorRegStep3Fragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupAudienceDropdown()
         setupNicheChips()
+        setupTargetAudienceChips()
 
         // Pre-fill location (stored as "City, State, Country")
         if (registrationViewModel.location.isNotEmpty()) {
@@ -38,9 +38,7 @@ class CreatorRegStep3Fragment : Fragment() {
             if (parts.size >= 2) binding.etState.setText(parts[1])
             if (parts.size >= 3) binding.etCountry.setText(parts[2])
         }
-        if (registrationViewModel.audienceRegion.isNotEmpty()) {
-            binding.acvAudienceRegion.setText(registrationViewModel.audienceRegion, false)
-        }
+        binding.etPortfolioLink.setText(registrationViewModel.portfolioLink)
 
         binding.ivBack.setOnClickListener { findNavController().navigateUp() }
         binding.layoutBottomNav.btnNavCancel.setOnClickListener { findNavController().navigateUp() }
@@ -56,17 +54,16 @@ class CreatorRegStep3Fragment : Fragment() {
 
             if (!valid) return@setOnClickListener
 
-            // Collect selected chips
-            val selectedNiches = mutableListOf<String>()
-            for (i in 0 until binding.chipGroupNiches.childCount) {
-                val chip = binding.chipGroupNiches.getChildAt(i) as? Chip ?: continue
-                if (chip.isChecked) {
-                    selectedNiches.add(chip.text.toString())
-                }
-            }
+            val selectedNiches = collectCheckedChips(binding.chipGroupNiches)
 
             if (selectedNiches.isEmpty()) {
-                Toast.makeText(requireContext(), "Please select at least one niche", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.error_categories_min_one), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val selectedAudience = collectCheckedChips(binding.chipGroupTargetAudience)
+            if (selectedAudience.isEmpty()) {
+                Toast.makeText(requireContext(), getString(R.string.error_target_audience_required), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -77,16 +74,13 @@ class CreatorRegStep3Fragment : Fragment() {
             parts.addAll(countryStr.split(",").map { it.trim() })
             registrationViewModel.location = parts.filter { it.isNotBlank() }.distinct().joinToString(", ")
 
-            registrationViewModel.audienceRegion = binding.acvAudienceRegion.text.toString()
+            registrationViewModel.targetAudience = selectedAudience
+            registrationViewModel.audienceRegion = selectedAudience.joinToString(", ")
             registrationViewModel.niches = selectedNiches
+            registrationViewModel.portfolioLink = binding.etPortfolioLink.text.toString().trim()
 
             findNavController().navigate(R.id.action_creator_step3_to_step2)
         }
-    }
-
-    private fun setupAudienceDropdown() {
-        val regions = listOf(getString(R.string.region_north_america), getString(R.string.region_europe), getString(R.string.region_asia_pacific), getString(R.string.region_latin_america), getString(R.string.region_mea))
-        binding.acvAudienceRegion.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, regions))
     }
 
     private fun setupNicheChips() {
@@ -109,6 +103,28 @@ class CreatorRegStep3Fragment : Fragment() {
             }
             binding.chipGroupNiches.addView(chip)
         }
+    }
+
+    private fun setupTargetAudienceChips() {
+        binding.chipGroupTargetAudience.removeAllViews()
+        TargetAudienceTags.AUDIENCE_TAGS.forEach { audience ->
+            val chip = Chip(requireContext()).apply {
+                text = audience
+                isCheckable = true
+                isChecked = registrationViewModel.targetAudience.contains(audience) ||
+                    registrationViewModel.audienceRegion.split(", ").contains(audience)
+            }
+            binding.chipGroupTargetAudience.addView(chip)
+        }
+    }
+
+    private fun collectCheckedChips(group: com.google.android.material.chip.ChipGroup): List<String> {
+        val selected = mutableListOf<String>()
+        for (i in 0 until group.childCount) {
+            val chip = group.getChildAt(i) as? Chip ?: continue
+            if (chip.isChecked) selected.add(chip.text.toString())
+        }
+        return selected
     }
 
     override fun onDestroyView() { super.onDestroyView(); _binding = null }

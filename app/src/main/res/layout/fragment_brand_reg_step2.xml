@@ -256,6 +256,38 @@
                 android:fontFamily="@font/manrope_bold"
                 android:layout_marginBottom="24dp" />
 
+            <!-- Brand Name -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brand_setup_brand_name_label"
+                android:textColor="@color/colorOutline"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="4dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_brand_name"
+                style="@style/Widget.Aura.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintEnabled="false"
+                android:layout_marginBottom="24dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_brand_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:hint="@string/brand_setup_brand_name_hint"
+                    android:textColorHint="@color/colorOutline"
+                    android:inputType="text"
+                    android:fontFamily="@font/manrope_medium"
+                    android:textColor="@color/colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <!-- Motto -->
             <TextView
                 android:layout_width="match_parent"

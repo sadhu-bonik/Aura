@@ -450,7 +450,7 @@
                 style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
-                android:text="Delete Profile"
+                android:text="@string/btn_delete_account"
                 android:textColor="@color/colorError"
                 app:strokeColor="#33f97386"
                 app:backgroundTint="#0Df97386"

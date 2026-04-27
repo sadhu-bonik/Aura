@@ -380,6 +380,9 @@
     <string name="dialog_confirm_photo_message">Upload this as your new profile picture?</string>
     <string name="btn_remove">Remove</string>
     <string name="btn_upload">Upload</string>
+    <string name="dialog_delete_account_title">Delete account?</string>
+    <string name="dialog_delete_account_message">This removes your Aura profile and account. This action can\'t be undone.</string>
+    <string name="btn_delete_account">Delete account</string>
     <string name="toast_portfolio_video_required">Add at least one portfolio video to finish setup.</string>
     <string name="toast_portfolio_full">Portfolio is full (10 videos max). Remove one first.</string>
     <string name="cd_remove_video">Remove video</string>
@@ -390,4 +393,144 @@
     <string name="empty_default_title">Nothing here yet</string>
     <string name="empty_default_subtitle">Pull to refresh or check back later.</string>
     <string name="error_default_message">Something went wrong. Please try again.</string>
+
+    <!-- Profile Setup — Aura Create Password -->
+    <string name="password_create_title">Create your account</string>
+    <string name="password_create_subtitle">Secure your Aura with a password.</string>
+    <string name="password_email_label">Email</string>
+    <string name="password_email_hint">you@example.com</string>
+    <string name="password_password_label">Password</string>
+    <string name="password_password_hint">At least 8 characters</string>
+    <string name="password_confirm_label">Confirm password</string>
+    <string name="password_confirm_hint">Re-enter password</string>
+    <string name="password_strength_hint">Use 8+ characters with at least one uppercase letter and a number.</string>
+
+    <!-- Profile Setup — Common (pre-role) -->
+    <string name="common_profile_title">A little about you</string>
+    <string name="common_profile_subtitle">We use this to personalize your Aura.</string>
+    <string name="common_profile_step_label">Identity Verification</string>
+    <string name="common_profile_step_count">Step 2 of 4</string>
+    <string name="common_profile_hero_body">Secure your recovery details before choosing how you want to use Aura.</string>
+    <string name="common_profile_security_section">Security Question</string>
+    <string name="common_profile_phone_prefix">+1</string>
+    <string name="common_first_name_label">First name</string>
+    <string name="common_first_name_hint">Enter your first name</string>
+    <string name="common_last_name_label">Last name</string>
+    <string name="common_last_name_hint">Enter your last name</string>
+    <string name="common_phone_label">Phone</string>
+    <string name="common_phone_hint">e.g. +1 555 123 4567</string>
+    <string name="common_security_question_label">Security question</string>
+    <string name="common_security_answer_label">Your answer</string>
+    <string name="common_security_answer_hint">Used for account recovery</string>
+
+    <!-- Profile Setup — Role choosing (extra) -->
+    <string name="role_setup_title">Choose your role</string>
+    <string name="role_setup_subtitle">How will you use Aura?</string>
+
+    <!-- Profile Setup — Creator screen 1 -->
+    <string name="creator_setup_1_title">Tell us your craft</string>
+    <string name="creator_setup_1_subtitle">Pick the categories that match your content.</string>
+    <string name="creator_setup_categories_label">Categories</string>
+    <string name="creator_setup_target_audience_label">Target audience</string>
+    <string name="creator_setup_location_label">Location</string>
+    <string name="creator_setup_location_hint">City, Country</string>
+    <string name="creator_setup_portfolio_link_label">Portfolio link (optional)</string>
+    <string name="creator_setup_portfolio_link_hint">https://</string>
+
+    <!-- Profile Setup — Creator screen 2 -->
+    <string name="creator_setup_2_title">Showcase your work</string>
+    <string name="creator_setup_2_subtitle">Add a photo, headline, and a short bio.</string>
+    <string name="creator_setup_avatar_label">Profile photo</string>
+    <string name="creator_setup_headline_label">Headline</string>
+    <string name="creator_setup_headline_hint">e.g. Digital Creator</string>
+    <string name="creator_setup_bio_label">Bio</string>
+    <string name="creator_setup_bio_hint">A short tagline that describes your style…</string>
+    <string name="creator_setup_youtube_label">YouTube handle</string>
+    <string name="creator_setup_youtube_hint">@yourhandle</string>
+    <string name="creator_setup_featured_videos_label">Featured videos (up to 3)</string>
+    <string name="creator_setup_video_slot_empty">Tap to upload</string>
+
+    <!-- Profile Setup — Creator advanced -->
+    <string name="creator_advanced_title">Advanced details</string>
+    <string name="creator_advanced_subtitle">Optional. You can skip and add these later.</string>
+    <string name="creator_advanced_motto_label">Motto (optional)</string>
+    <string name="creator_advanced_motto_hint">A line that captures your style</string>
+
+    <!-- Profile Setup — Brand screen 1 -->
+    <string name="brand_setup_1_title">Define your brand</string>
+    <string name="brand_setup_1_subtitle">Pick the industries that fit your business.</string>
+    <string name="brand_setup_industry_label">Industry</string>
+    <string name="brand_setup_target_audience_label">Target audience</string>
+    <string name="brand_setup_location_label">Location</string>
+    <string name="brand_setup_location_hint">City, Country</string>
+    <string name="brand_setup_website_label">Brand website</string>
+    <string name="brand_setup_website_hint">https://</string>
+
+    <!-- Profile Setup — Brand screen 2 -->
+    <string name="brand_setup_2_title">Brand identity</string>
+    <string name="brand_setup_2_subtitle">Add your logo, name, and a verification document.</string>
+    <string name="brand_setup_logo_label">Logo</string>
+    <string name="brand_setup_brand_name_label">Brand name</string>
+    <string name="brand_setup_brand_name_hint">e.g. Aura Studios</string>
+    <string name="brand_setup_verification_label">Verification document</string>
+    <string name="brand_setup_verification_hint">PDF, JPG or PNG</string>
+    <string name="brand_setup_upload_doc">Upload document</string>
+
+    <!-- Profile Setup — Brand advanced -->
+    <string name="brand_advanced_title">Advanced details</string>
+    <string name="brand_advanced_subtitle">Optional. Helps us verify and showcase your brand.</string>
+    <string name="brand_advanced_legal_name_label">Legal name (optional)</string>
+    <string name="brand_advanced_rep_name_label">Representative name (optional)</string>
+    <string name="brand_advanced_company_email_label">Company email (optional)</string>
+    <string name="brand_advanced_linkedin_label">LinkedIn (optional)</string>
+    <string name="brand_advanced_twitter_label">Twitter / X handle (optional)</string>
+
+    <!-- Profile Setup — Campaign setup -->
+    <string name="campaign_setup_title">Launch your first campaign</string>
+    <string name="campaign_setup_subtitle">Define what you\'re looking for. Creators will see this when you send them deals.</string>
+    <string name="campaign_title_label">Campaign title</string>
+    <string name="campaign_title_hint">e.g. Summer Equinox 2024</string>
+    <string name="campaign_description_label">Description</string>
+    <string name="campaign_description_hint">What\'s the campaign about?</string>
+    <string name="campaign_goals_label">Goals</string>
+    <string name="campaign_budget_label">Budget</string>
+    <string name="campaign_budget_hint">Select a range</string>
+    <string name="campaign_timeline_label">Timeline</string>
+    <string name="campaign_timeline_hint">Pick a deadline</string>
+    <string name="campaign_deliverables_label">Deliverables</string>
+
+    <!-- Profile Setup — Buttons -->
+    <string name="button_next">Next</string>
+    <string name="button_finish_setup">Finish setup</string>
+    <string name="button_save_continue">Save &amp; continue</string>
+    <string name="button_skip">Skip</string>
+    <string name="button_save_campaign">Save campaign</string>
+    <string name="button_create_account">Create account</string>
+
+    <!-- Profile Setup — Validation -->
+    <string name="error_email_required">Email is required</string>
+    <string name="error_email_invalid">Enter a valid email</string>
+    <string name="error_password_required">Password is required</string>
+    <string name="error_password_weak">Use 8+ chars with 1 uppercase and 1 number</string>
+    <string name="error_password_mismatch">Passwords don\'t match</string>
+    <string name="error_first_name_required">First name is required</string>
+    <string name="error_last_name_required">Last name is required</string>
+    <string name="error_phone_required">Phone number is required</string>
+    <string name="error_phone_invalid">Enter a valid phone number</string>
+    <string name="error_security_question_required">Pick a security question</string>
+    <string name="error_security_answer_required">Answer is required</string>
+    <string name="error_categories_min_one">Pick at least one category</string>
+    <string name="error_industry_min_one">Pick at least one industry</string>
+    <string name="error_target_audience_required">Pick at least one audience</string>
+    <string name="error_location_required">Location is required</string>
+    <string name="error_headline_required">Headline is required</string>
+    <string name="error_bio_required">Bio is required</string>
+    <string name="error_brand_name_required">Brand name is required</string>
+    <string name="error_verification_required">Verification document is required</string>
+    <string name="error_campaign_title_required">Campaign title is required</string>
+    <string name="error_campaign_description_required">Description is required</string>
+    <string name="error_campaign_goals_required">Pick at least one goal</string>
+    <string name="error_budget_required">Select a budget range</string>
+    <string name="error_timeline_required">Pick a timeline</string>
+    <string name="error_deliverables_required">Pick at least one deliverable</string>
 </resources>

@@ -13,12 +13,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.aura.app.R
 import com.aura.app.databinding.FragmentEditProfileBinding
 import android.widget.ArrayAdapter
 import com.bumptech.glide.Glide
 import com.aura.app.utils.CreatorNicheTags
+import com.aura.app.utils.rootNavController
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
@@ -29,7 +31,7 @@ class EditProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: EditProfileViewModel by viewModels {
-        EditProfileViewModel.Factory()
+        EditProfileViewModel.Factory(requireContext().applicationContext)
     }
 
     private val feedViewModel: com.aura.app.ui.feed.VideoFeedViewModel by activityViewModels {
@@ -150,7 +152,7 @@ class EditProfileFragment : Fragment() {
         }
 
         binding.btnDeleteProfile.setOnClickListener {
-            Toast.makeText(requireContext(), "Delete profile coming soon", Toast.LENGTH_SHORT).show()
+            showDeleteAccountDialog()
         }
     }
 
@@ -184,10 +186,26 @@ class EditProfileFragment : Fragment() {
                         is EditProfileEvent.Saving -> {
                             binding.layoutLoading.root.visibility = View.VISIBLE
                         }
+                        is EditProfileEvent.Deleting -> {
+                            binding.layoutLoading.root.visibility = View.VISIBLE
+                        }
                         is EditProfileEvent.SaveError -> {
                             binding.layoutLoading.root.visibility = View.GONE
                             Toast.makeText(requireContext(), event.message, Toast.LENGTH_LONG).show()
                             viewModel.resetEvent()
+                        }
+                        is EditProfileEvent.DeleteError -> {
+                            binding.layoutLoading.root.visibility = View.GONE
+                            Toast.makeText(requireContext(), event.message, Toast.LENGTH_LONG).show()
+                            viewModel.resetEvent()
+                        }
+                        is EditProfileEvent.DeleteSuccess -> {
+                            binding.layoutLoading.root.visibility = View.GONE
+                            viewModel.resetEvent()
+                            val navOptions = NavOptions.Builder()
+                                .setPopUpTo(R.id.homeContainerFragment, true)
+                                .build()
+                            rootNavController().navigate(R.id.welcomeFragment, null, navOptions)
                         }
                         is EditProfileEvent.SaveSuccessWithTagChange -> {
                             binding.layoutLoading.root.visibility = View.GONE
@@ -208,6 +226,17 @@ class EditProfileFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showDeleteAccountDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.dialog_delete_account_title)
+            .setMessage(R.string.dialog_delete_account_message)
+            .setNegativeButton(R.string.btn_cancel, null)
+            .setPositiveButton(R.string.btn_delete_account) { _, _ ->
+                viewModel.deleteAccount()
+            }
+            .show()
     }
 
     private fun populateForm(state: EditProfileUiState.Success) {

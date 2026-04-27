@@ -11,7 +11,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.aura.app.R
 import com.aura.app.databinding.FragmentBrandRegStep4Binding
-import com.aura.app.utils.CreatorNicheTags
+import com.aura.app.utils.BrandIndustryTags
+import com.aura.app.utils.TargetAudienceTags
 import com.google.android.material.chip.Chip
 
 class BrandRegStep4Fragment : Fragment() {
@@ -31,6 +32,7 @@ class BrandRegStep4Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupNicheChips()
+        setupTargetAudienceChips()
         prefillFields()
         setupObservers()
         setupClickListeners()
@@ -39,7 +41,7 @@ class BrandRegStep4Fragment : Fragment() {
     private fun setupNicheChips() {
         val chipGroup = binding.chipGroupIndustries
         chipGroup.removeAllViews()
-        CreatorNicheTags.NICHE_TAGS.forEach { tag ->
+        BrandIndustryTags.INDUSTRY_TAGS.forEach { tag ->
             val chip = Chip(requireContext()).apply {
                 text = tag
                 isCheckable = true
@@ -53,6 +55,20 @@ class BrandRegStep4Fragment : Fragment() {
         binding.etCity.setText(vm.city)
         binding.etState.setText(vm.state)
         binding.etCountry.setText(vm.country)
+        binding.etWebsite.setText(vm.website)
+    }
+
+    private fun setupTargetAudienceChips() {
+        val chipGroup = binding.chipGroupTargetAudience
+        chipGroup.removeAllViews()
+        TargetAudienceTags.AUDIENCE_TAGS.forEach { audience ->
+            val chip = Chip(requireContext()).apply {
+                text = audience
+                isCheckable = true
+                isChecked = vm.targetAudience.contains(audience)
+            }
+            chipGroup.addView(chip)
+        }
     }
 
     private fun setupObservers() {
@@ -95,6 +111,7 @@ class BrandRegStep4Fragment : Fragment() {
         val city = binding.etCity.text.toString().trim()
         val state = binding.etState.text.toString().trim()
         val country = binding.etCountry.text.toString().trim()
+        val website = binding.etWebsite.text.toString().trim()
 
         if (city.isBlank() || state.isBlank() || country.isBlank()) {
             Toast.makeText(requireContext(), "Please fill all location fields", Toast.LENGTH_SHORT).show()
@@ -109,15 +126,32 @@ class BrandRegStep4Fragment : Fragment() {
         }
 
         if (selectedTags.isEmpty()) {
-            Toast.makeText(requireContext(), "Please select at least one industry", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.error_industry_min_one), Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        val selectedAudience = collectCheckedChips(binding.chipGroupTargetAudience)
+        if (selectedAudience.isEmpty()) {
+            Toast.makeText(requireContext(), getString(R.string.error_target_audience_required), Toast.LENGTH_SHORT).show()
             return false
         }
 
         vm.industryTags = selectedTags
+        vm.targetAudience = selectedAudience
+        vm.website = website
         vm.city = city
         vm.state = state
         vm.country = country
         return true
+    }
+
+    private fun collectCheckedChips(group: com.google.android.material.chip.ChipGroup): List<String> {
+        val selected = mutableListOf<String>()
+        for (i in 0 until group.childCount) {
+            val chip = group.getChildAt(i) as? Chip ?: continue
+            if (chip.isChecked) selected.add(chip.text.toString())
+        }
+        return selected
     }
 
     override fun onDestroyView() { super.onDestroyView(); _binding = null }

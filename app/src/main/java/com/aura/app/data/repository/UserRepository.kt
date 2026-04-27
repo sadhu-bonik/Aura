@@ -185,9 +185,39 @@ class UserRepository(
         }
     }
 
+    suspend fun deleteAccountData(userId: String, role: String): Result<Unit> {
+        return try {
+            firestore.collection(COLLECTION).document(userId).delete().await()
+
+            if (role == Constants.ROLE_CREATOR) {
+                firestore.collection("creatorProfiles").document(userId).delete().await()
+                deleteWhere("portfolioItems", "creatorId", userId)
+                deleteWhere("shortlists", "creatorId", userId)
+            } else if (role == Constants.ROLE_BRAND) {
+                firestore.collection("brandProfiles").document(userId).delete().await()
+                deleteWhere("campaigns", "brandId", userId)
+                deleteWhere("shortlists", "brandId", userId)
+            }
+
+            deleteWhere("reviews", "reviewerId", userId)
+            deleteWhere("reviews", "revieweeId", userId)
+            cache.remove(userId)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    private suspend fun deleteWhere(collection: String, field: String, value: String) {
+        val snapshot = firestore.collection(collection)
+            .whereEqualTo(field, value)
+            .get()
+            .await()
+        snapshot.documents.forEach { it.reference.delete().await() }
+    }
+
     private companion object {
         const val COLLECTION = "users"
         const val TAG = "UserRepository"
     }
 }
-

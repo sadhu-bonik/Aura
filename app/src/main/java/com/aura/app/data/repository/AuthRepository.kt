@@ -1,6 +1,7 @@
 package com.aura.app.data.repository
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.tasks.await
 
@@ -61,5 +62,18 @@ class AuthRepository(
      */
     fun logout() {
         auth.signOut()
+    }
+
+    suspend fun deleteCurrentUser(): Result<Unit> {
+        return try {
+            val user = auth.currentUser
+                ?: return Result.failure(Exception("No signed-in user found."))
+            user.delete().await()
+            Result.success(Unit)
+        } catch (e: FirebaseAuthRecentLoginRequiredException) {
+            Result.failure(Exception("Please log out and log back in before deleting this account."))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

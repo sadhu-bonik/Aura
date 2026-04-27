@@ -58,11 +58,14 @@ class RegistrationViewModel(
     var securityAnswer = ""
 
     var creatorMotto = ""
+    var creatorHeadline = ""
     var creatorBio = ""
     var youtubeHandle = ""
     var niches = listOf<String>()
+    var targetAudience = listOf<String>()
     var location = ""
     var audienceRegion = ""
+    var portfolioLink = ""
 
     /** Optional profile photo — upload attempted but never fatal if it fails. */
     var profileImageUri: Uri? = null
@@ -95,8 +98,9 @@ class RegistrationViewModel(
     fun resetDraft() {
         email = ""; password = ""; fullName = ""; phone = ""
         securityQuestion = ""; securityAnswer = ""
-        creatorMotto = ""; creatorBio = ""; youtubeHandle = ""
-        niches = listOf(); location = ""; audienceRegion = ""
+        creatorMotto = ""; creatorHeadline = ""; creatorBio = ""; youtubeHandle = ""
+        niches = listOf(); targetAudience = listOf(); location = ""; audienceRegion = ""
+        portfolioLink = ""
         profileImageUri = null
         portfolioVideoUris.clear()
         _pendingVideoCount.value = 0
@@ -197,10 +201,13 @@ class RegistrationViewModel(
                 val creatorProfile = CreatorProfile(
                     userId = userId,
                     motto = creatorMotto,
+                    headline = creatorHeadline.ifBlank { creatorMotto },
                     bio = creatorBio,
                     youtubeHandle = youtubeHandle,
                     niche = niches.joinToString(", "),
                     tags = niches,
+                    targetAudience = targetAudience,
+                    portfolioLink = portfolioLink,
                     location = location,
                     portfolioCount = successfulItems.size,
                     isProfileComplete = isComplete

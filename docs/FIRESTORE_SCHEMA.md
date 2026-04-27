@@ -48,12 +48,15 @@ Authoritative schema. Any change here must be announced in the team chat and ref
 | Field | Type | Req | Notes |
 |---|---|---|---|
 | `userId` | String | ✅ | |
+| `motto` | String | | Short tagline (legacy / Advanced details) |
+| `headline` | String | ✅ | Primary creator headline (e.g. `"Digital Creator"`) |
 | `bio` | String | ✅ | |
 | `niche` | String | ✅ | e.g. `"fashion"`, `"tech"` |
-| `tags` | List\<String\> | | Discoverability keywords |
-| `instagramHandle` | String | | Without `@` |
+| `tags` | List\<String\> | | Categories chosen at setup |
+| `targetAudience` | List\<String\> | | e.g. `["Gen Z", "Millennials"]` |
 | `youtubeHandle` | String | | Without `@` |
 | `tiktokHandle` | String | | Without `@` |
+| `portfolioLink` | String | | External portfolio URL |
 | `followerCount` | Long | | Combined estimate |
 | `averageRating` | Double | | 0.0–5.0, computed from reviews |
 | `totalReviews` | Long | | |
@@ -69,15 +72,32 @@ Authoritative schema. Any change here must be announced in the team chat and ref
 
 | Field | Type | Req | Notes |
 |---|---|---|---|
-| `userId` | String | ✅ | |
-| `companyName` | String | ✅ | |
-| `industry` | String | ✅ | |
-| `companyBio` | String | ✅ | |
+| `uid` | String | ✅ | Matches document ID |
+| `brandName` | String | ✅ | Display name |
+| `legalName` | String | | Legal business name (Advanced details) |
+| `repName` | String | | Representative name (Advanced details) |
+| `companyEmail` | String | | Business email (Advanced details) |
+| `motto` | String | | |
+| `bio` | String | | |
+| `industryTags` | List\<String\> | ✅ | e.g. `["Fashion", "Tech"]` |
+| `targetAudience` | List\<String\> | | e.g. `["Gen Z", "Professionals"]` |
 | `website` | String | | |
+| `linkedinUrl` | String | | Advanced details |
+| `twitterHandle` | String | | Advanced details, without `@` |
+| `city` | String | | |
+| `state` | String | | |
+| `country` | String | | |
+| `firstCampaignName` | String | | Legacy onboarding cache (now stored in `campaigns/`) |
+| `firstCampaignBrief` | String | | Legacy onboarding cache |
 | `logoUrl` | String | | Storage URL |
-| `location` | String | | |
+| `logoPath` | String | | Storage path for rollback |
+| `verificationFileUrl` | String | | Storage URL |
+| `verificationFilePath` | String | | Storage path for rollback |
+| `verificationFileName` | String | | Display name |
+| `verificationMimeType` | String | | |
 | `totalCampaigns` | Long | | |
 | `activeDeals` | Long | | |
+| `industry` | String | | Compatibility shim — derived from `industryTags[0]` |
 | `updatedAt` | Timestamp | ✅ | |
 
 ---
@@ -111,13 +131,15 @@ Authoritative schema. Any change here must be announced in the team chat and ref
 | `brandId` | String | ✅ | |
 | `title` | String | ✅ | |
 | `description` | String | ✅ | |
-| `niche` | String | ✅ | Target creator niche |
-| `budget` | Long | ✅ | USD cents |
-| `deadline` | Timestamp | ✅ | |
-| `status` | String | ✅ | `"active"`, `"paused"`, `"completed"` |
-| `targetFollowerCount` | Long | | Minimum |
+| `goals` | List\<String\> | | e.g. `["Brand Awareness", "Product Launch"]` |
+| `deliverables` | List\<String\> | | e.g. `["Instagram Post", "Reel"]` |
+| `budgetRange` | String | | Display label, e.g. `"$1000 - $5000"` |
+| `budgetMin` | Long | | USD cents |
+| `budgetMax` | Long | | USD cents |
+| `timeline` | Timestamp | | Deadline date |
+| `imageUrl` | String | | Storage URL (post-onboarding edit) |
+| `imagePath` | String | | Storage path |
 | `createdAt` | Timestamp | ✅ | |
-| `updatedAt` | Timestamp | ✅ | |
 
 ---
 

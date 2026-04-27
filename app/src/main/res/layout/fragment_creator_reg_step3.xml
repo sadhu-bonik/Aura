@@ -327,6 +327,38 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Portfolio link -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/creator_setup_portfolio_link_label"
+                android:textColor="@color/colorOutline"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="4dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_portfolio_link"
+                style="@style/Widget.Aura.TextInputLayout"
+                app:hintEnabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_portfolio_link"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:hint="@string/creator_setup_portfolio_link_hint"
+                    android:textColorHint="@color/colorOutline"
+                    android:fontFamily="@font/manrope_medium"
+                    android:inputType="textUri"
+                    android:textColor="@color/colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <!-- Audience section -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -370,7 +402,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/creator_reg_audience_label"
+                        android:text="@string/creator_setup_target_audience_label"
                         android:textColor="@color/colorOutline"
                         android:textSize="11sp"
                         android:fontFamily="@font/manrope_bold"
@@ -379,11 +411,19 @@
                         android:layout_marginBottom="8dp"
                         android:layout_marginStart="4dp" />
 
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chip_group_target_audience"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:singleSelection="false" />
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/til_audience_region"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         app:boxBackgroundColor="@color/colorSurfaceContainerHighest"
                         app:boxStrokeWidth="0dp"
                         app:boxCornerRadiusTopStart="32dp"

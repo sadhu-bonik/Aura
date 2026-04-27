@@ -12,6 +12,7 @@ import com.aura.app.data.repository.AuthRepository
 import com.aura.app.data.repository.DealRepository
 import com.aura.app.data.repository.UserRepository
 import com.aura.app.utils.Constants
+import com.aura.app.utils.SessionManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -24,7 +25,8 @@ data class DealOfferItem(
 class DealDashboardViewModel(
     private val dealRepository: DealRepository = DealRepository(),
     private val userRepository: UserRepository = UserRepository(),
-    private val authRepository: AuthRepository = AuthRepository()
+    private val authRepository: AuthRepository = AuthRepository(),
+    private val sessionManager: SessionManager? = null
 ) : ViewModel() {
 
     private val _activeDeals = MutableLiveData<List<ActiveDealItem>>(emptyList())
@@ -48,6 +50,9 @@ class DealDashboardViewModel(
     private val _isLoading = MutableLiveData(true)
     val isLoading: LiveData<Boolean> = _isLoading
 
+    private val _error = MutableLiveData<String?>(null)
+    val error: LiveData<String?> = _error
+
     private val _acceptEvent = MutableLiveData<String?>()
     val acceptEvent: LiveData<String?> = _acceptEvent
 
@@ -59,8 +64,14 @@ class DealDashboardViewModel(
 
     fun load() {
         loadJob?.cancel()
-        val userId = authRepository.currentUser?.uid ?: return
+        val userId = resolveUserId()
+        if (userId == null) {
+            _isLoading.value = false
+            _error.value = "No signed-in user found."
+            return
+        }
         _isLoading.value = true
+        _error.value = null
 
         loadJob = viewModelScope.launch {
             // Get user profile to determine role
@@ -76,6 +87,7 @@ class DealDashboardViewModel(
 
             flow.catch { 
                 android.util.Log.e("DealDashboardVM", "Error loading deals", it)
+                _error.value = it.message ?: "Failed to load deals."
                 _isLoading.value = false 
             }.collect { deals ->
                 partition(deals, userId, role)
@@ -83,6 +95,9 @@ class DealDashboardViewModel(
             }
         }
     }
+
+    private fun resolveUserId(): String? =
+        authRepository.currentUser?.uid ?: sessionManager?.getUserId()
 
     fun acceptDeal(dealId: String) {
         viewModelScope.launch {
@@ -141,5 +156,13 @@ class DealDashboardViewModel(
         _completedDeals.value = completed.sortedByDescending { it.deal.completedAt?.seconds ?: 0L }
         _pastDeals.value = past.sortedByDescending { it.deal.updatedAt?.seconds ?: 0L }
         _hasNewPendingForCreator.value = new.isNotEmpty() && role == Constants.ROLE_CREATOR
+    }
+
+    class Factory(private val context: Context) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T =
+            DealDashboardViewModel(
+                sessionManager = SessionManager(context.applicationContext)
+            ) as T
     }
 }

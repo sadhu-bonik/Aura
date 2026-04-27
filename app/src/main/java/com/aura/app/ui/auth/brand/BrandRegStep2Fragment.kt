@@ -45,6 +45,7 @@ class BrandRegStep2Fragment : Fragment() {
     }
 
     private fun prefillFields() {
+        binding.etBrandName.setText(vm.brandName)
         binding.etMotto.setText(vm.motto)
         binding.etBio.setText(vm.bio)
     }
@@ -69,6 +70,7 @@ class BrandRegStep2Fragment : Fragment() {
         binding.layoutBottomNav.btnNavNext.setOnClickListener {
             if (!validateForm()) return@setOnClickListener
 
+            vm.brandName = binding.etBrandName.text.toString().trim()
             vm.motto = binding.etMotto.text.toString().trim()
             vm.bio = binding.etBio.text.toString().trim()
 
@@ -77,7 +79,12 @@ class BrandRegStep2Fragment : Fragment() {
     }
 
     private fun validateForm(): Boolean {
+        binding.tilBrandName.error = null
         binding.tilMotto.error = null
+        if (binding.etBrandName.text.isNullOrBlank()) {
+            binding.tilBrandName.error = getString(R.string.error_brand_name_required)
+            return false
+        }
         if (binding.etMotto.text.isNullOrBlank()) {
             binding.tilMotto.error = "Required"
             return false

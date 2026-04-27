@@ -16,6 +16,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.aura.app.R
 import com.aura.app.databinding.FragmentDealDashboardBinding
 import com.aura.app.utils.Constants
+import com.aura.app.utils.SessionManager
 import com.aura.app.utils.rootNavController
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
@@ -25,13 +26,16 @@ class DealDashboardFragment : Fragment() {
     private var _binding: FragmentDealDashboardBinding? = null
     private val binding get() = _binding!!
 
-    val viewModel: DealDashboardViewModel by viewModels()
+    val viewModel: DealDashboardViewModel by viewModels {
+        DealDashboardViewModel.Factory(requireContext().applicationContext)
+    }
     private val reviewViewModel: ReviewViewModel by activityViewModels()
 
     private var pageChangeCallback: ViewPager2.OnPageChangeCallback? = null
 
     private val authRepository = com.aura.app.data.repository.AuthRepository()
     private val userRepository = com.aura.app.data.repository.UserRepository()
+    private val sessionManager by lazy { SessionManager(requireContext().applicationContext) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDealDashboardBinding.inflate(inflater, container, false)
@@ -84,11 +88,16 @@ class DealDashboardFragment : Fragment() {
         viewModel.completedDeals.observe(viewLifecycleOwner) { items ->
             binding.tvStatCompleted.text = items.size.toString().padStart(2, '0')
         }
+        viewModel.error.observe(viewLifecycleOwner) { message ->
+            if (!message.isNullOrBlank()) {
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+            }
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             reviewViewModel.pendingReviewDeal.filterNotNull().collect { deal ->
                 reviewViewModel.markReviewPromptShown(deal.dealId)
-                val currentUserId = authRepository.currentUser?.uid ?: return@collect
+                val currentUserId = resolveUserId() ?: return@collect
                 val otherPartyId = if (currentUserId == deal.creatorId) deal.brandId else deal.creatorId
                 val otherParty = userRepository.getUserProfile(otherPartyId) ?: return@collect
                 ReviewFlow.newInstance(deal.dealId, otherPartyId, otherParty.displayName, otherParty.profileImageUrl)
@@ -104,7 +113,7 @@ class DealDashboardFragment : Fragment() {
 
     private fun applyRoleLabels() {
         viewLifecycleOwner.lifecycleScope.launch {
-            val userId = authRepository.currentUser?.uid ?: return@launch
+            val userId = resolveUserId() ?: return@launch
             val user = userRepository.getUserProfile(userId)
             val isBrand = user?.role == Constants.ROLE_BRAND
             
@@ -116,6 +125,9 @@ class DealDashboardFragment : Fragment() {
             )
         }
     }
+
+    private fun resolveUserId(): String? =
+        authRepository.currentUser?.uid ?: sessionManager.getUserId()
 
     private fun renderPillSelection(position: Int) {
         val ctx = requireContext()

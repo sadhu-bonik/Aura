@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import android.widget.Toast
 import com.aura.app.R
 import com.aura.app.databinding.FragmentRoleSelectionBinding
+import com.aura.app.ui.auth.brand.BrandRegistrationViewModel
 
 /** RoleSelectionFragment — Creator or Brand role picker. */
 class RoleSelectionFragment : Fragment() {
@@ -18,6 +19,10 @@ class RoleSelectionFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val registrationViewModel: RegistrationViewModel by activityViewModels()
+    private val onboardingDraftViewModel: OnboardingDraftViewModel by activityViewModels()
+    private val brandRegistrationViewModel: BrandRegistrationViewModel by activityViewModels {
+        BrandRegistrationViewModel.Factory()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -43,8 +48,16 @@ class RoleSelectionFragment : Fragment() {
 
         binding.btnContinue.setOnClickListener {
             when (registrationViewModel.userRole.value) {
-                "creator" -> findNavController().navigate(R.id.action_role_to_creator_step1)
-                "brand" -> findNavController().navigate(R.id.action_role_to_brand_step1)
+                "creator" -> {
+                    onboardingDraftViewModel.role = "creator"
+                    onboardingDraftViewModel.applyToCreator(registrationViewModel)
+                    findNavController().navigate(R.id.action_role_to_creator_step3)
+                }
+                "brand" -> {
+                    onboardingDraftViewModel.role = "brand"
+                    onboardingDraftViewModel.applyToBrand(brandRegistrationViewModel)
+                    findNavController().navigate(R.id.action_role_to_brand_step2)
+                }
                 else -> Toast.makeText(requireContext(), "Please select a role to continue", Toast.LENGTH_SHORT).show()
             }
         }

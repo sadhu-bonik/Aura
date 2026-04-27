@@ -209,7 +209,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/creator_reg_motto_label"
+                android:text="@string/creator_setup_headline_label"
                 android:textColor="@color/colorOutline"
                 android:textSize="11sp"
                 android:fontFamily="@font/manrope_bold"
@@ -231,7 +231,7 @@
                     android:id="@+id/et_motto"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
-                    android:hint="@string/creator_reg_motto_hint"
+                    android:hint="@string/creator_setup_headline_hint"
                     android:textColorHint="@color/colorOutline"
                     android:inputType="text"
                     android:textColor="@color/colorOnSurface"

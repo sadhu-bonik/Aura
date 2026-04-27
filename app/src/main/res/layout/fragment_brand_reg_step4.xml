@@ -147,10 +147,29 @@
                 android:id="@+id/chip_group_industries"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="32dp"
                 app:singleSelection="false">
-                <!-- Chips populated programmatically from CreatorNicheTags.NICHE_TAGS -->
+                <!-- Chips populated programmatically from BrandIndustryTags.INDUSTRY_TAGS -->
             </com.google.android.material.chip.ChipGroup>
+
+            <!-- Target audience -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brand_setup_target_audience_label"
+                android:textColor="@color/colorSecondary"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="16dp" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group_target_audience"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                app:singleSelection="false" />
 
             <!-- Target Location section -->
             <TextView
@@ -317,6 +336,37 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
+
+            <!-- Brand Website -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brand_setup_website_label"
+                android:textColor="@color/colorSecondary"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="16dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_website"
+                style="@style/Widget.Aura.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintEnabled="false"
+                android:layout_marginBottom="24dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_website"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:hint="@string/brand_setup_website_hint"
+                    android:inputType="textUri"
+                    android:textColor="@color/colorOnSurface"
+                    android:textColorHint="@color/colorOutline"
+                    android:fontFamily="@font/manrope_medium" />
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
     </ScrollView>

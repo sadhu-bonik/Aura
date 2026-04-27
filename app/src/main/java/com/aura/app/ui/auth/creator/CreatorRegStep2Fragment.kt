@@ -57,7 +57,7 @@ class CreatorRegStep2Fragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Pre-fill text fields from ViewModel draft
-        binding.etMotto.setText(registrationViewModel.creatorMotto)
+        binding.etMotto.setText(registrationViewModel.creatorHeadline.ifBlank { registrationViewModel.creatorMotto })
         binding.etBio.setText(registrationViewModel.creatorBio)
         binding.etYoutube.setText(registrationViewModel.youtubeHandle)
 
@@ -83,18 +83,18 @@ class CreatorRegStep2Fragment : Fragment() {
         }
 
         binding.layoutBottomNav.btnNavNext.setOnClickListener {
-            val motto = binding.etMotto.text.toString().trim()
+            val headline = binding.etMotto.text.toString().trim()
             val bio = binding.etBio.text.toString().trim()
 
-            if (motto.isBlank()) {
-                binding.tilMotto.error = "Required"
+            if (headline.isBlank()) {
+                binding.tilMotto.error = getString(R.string.error_headline_required)
                 return@setOnClickListener
             } else {
                 binding.tilMotto.error = null
             }
 
             if (bio.isBlank()) {
-                binding.tilBio.error = "Required"
+                binding.tilBio.error = getString(R.string.error_bio_required)
                 return@setOnClickListener
             } else {
                 binding.tilBio.error = null
@@ -105,7 +105,7 @@ class CreatorRegStep2Fragment : Fragment() {
                 return@setOnClickListener
             }
 
-            registrationViewModel.creatorMotto = motto
+            registrationViewModel.creatorHeadline = headline
             registrationViewModel.creatorBio = bio
             registrationViewModel.youtubeHandle = binding.etYoutube.text.toString().trim()
 

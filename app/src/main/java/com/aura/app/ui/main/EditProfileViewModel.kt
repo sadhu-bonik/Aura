@@ -1,5 +1,6 @@
 package com.aura.app.ui.main
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -8,8 +9,10 @@ import androidx.lifecycle.viewModelScope
 import com.aura.app.data.model.BrandProfile
 import com.aura.app.data.model.CreatorProfile
 import com.aura.app.data.model.User
+import com.aura.app.data.repository.AuthRepository
 import com.aura.app.data.repository.StorageRepository
 import com.aura.app.data.repository.UserRepository
+import com.aura.app.utils.SessionManager
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,11 +34,16 @@ sealed class EditProfileEvent {
     object SaveSuccess : EditProfileEvent()
     object SaveSuccessWithTagChange : EditProfileEvent()
     data class SaveError(val message: String) : EditProfileEvent()
+    object Deleting : EditProfileEvent()
+    object DeleteSuccess : EditProfileEvent()
+    data class DeleteError(val message: String) : EditProfileEvent()
 }
 
 class EditProfileViewModel(
     private val userRepository: UserRepository,
-    private val storageRepository: StorageRepository
+    private val storageRepository: StorageRepository,
+    private val sessionManager: SessionManager,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val auth = FirebaseAuth.getInstance()
@@ -51,7 +59,11 @@ class EditProfileViewModel(
     }
 
     private fun loadProfile() {
-        val uid = auth.currentUser?.uid ?: return
+        val uid = resolveUserId()
+        if (uid == null) {
+            _state.value = EditProfileUiState.Error("No signed-in user found.")
+            return
+        }
         viewModelScope.launch {
             _state.value = EditProfileUiState.Loading
             val user = userRepository.getUserProfile(uid)
@@ -82,7 +94,11 @@ class EditProfileViewModel(
         industry: String = "",
         nicheTags: List<String> = emptyList()
     ) {
-        val uid = auth.currentUser?.uid ?: return
+        val uid = resolveUserId()
+        if (uid == null) {
+            _event.value = EditProfileEvent.SaveError("No signed-in user found.")
+            return
+        }
         if (displayName.isBlank()) {
             _event.value = EditProfileEvent.SaveError("Name cannot be empty")
             return
@@ -153,9 +169,49 @@ class EditProfileViewModel(
         _event.value = null
     }
 
-    class Factory : ViewModelProvider.Factory {
+    fun deleteAccount() {
+        val uid = resolveUserId()
+        if (uid == null) {
+            _event.value = EditProfileEvent.DeleteError("No signed-in user found.")
+            return
+        }
+        val role = (_state.value as? EditProfileUiState.Success)?.user?.role.orEmpty()
+
+        viewModelScope.launch {
+            _event.value = EditProfileEvent.Deleting
+
+            val dataResult = userRepository.deleteAccountData(uid, role)
+            if (dataResult.isFailure) {
+                _event.value = EditProfileEvent.DeleteError(
+                    dataResult.exceptionOrNull()?.message ?: "Failed to delete profile data."
+                )
+                return@launch
+            }
+
+            val authResult = authRepository.deleteCurrentUser()
+            if (authResult.isFailure) {
+                _event.value = EditProfileEvent.DeleteError(
+                    authResult.exceptionOrNull()?.message ?: "Failed to delete account."
+                )
+                return@launch
+            }
+
+            sessionManager.clearSession()
+            _event.value = EditProfileEvent.DeleteSuccess
+        }
+    }
+
+    private fun resolveUserId(): String? =
+        auth.currentUser?.uid ?: sessionManager.getUserId()
+
+    class Factory(private val context: Context) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return EditProfileViewModel(UserRepository(), StorageRepository()) as T
+            return EditProfileViewModel(
+                UserRepository(),
+                StorageRepository(),
+                SessionManager(context.applicationContext),
+                AuthRepository()
+            ) as T
         }
     }
 
