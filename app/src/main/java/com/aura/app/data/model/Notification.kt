@@ -29,6 +29,8 @@ data class Notification(
         const val TYPE_DEAL_ACCEPTED = "deal_accepted"        // creator → brand: accepted
         const val TYPE_DEAL_REJECTED = "deal_rejected"        // creator → brand: declined
         const val TYPE_DEAL_RETRACTED = "deal_retracted"      // brand → creator: pre-accept withdraw
+        const val TYPE_DEAL_CANCEL_REQUESTED = "deal_cancel_requested" // one side proposes cancel, awaiting confirm
+        const val TYPE_DEAL_CANCEL_DECLINED = "deal_cancel_declined"   // other side rejected the cancel proposal
         const val TYPE_DEAL_CANCELED = "deal_canceled"        // mutual cancel confirmation
         const val TYPE_DEAL_COMPLETION_REQUESTED = "deal_completion_requested" // one side asks to mark complete
         const val TYPE_DEAL_COMPLETED = "deal_completed"      // both sides confirmed

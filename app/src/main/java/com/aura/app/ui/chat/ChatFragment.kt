@@ -13,6 +13,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aura.app.R
@@ -20,6 +21,7 @@ import com.aura.app.databinding.FragmentChatBinding
 import com.aura.app.utils.Constants
 import com.aura.app.utils.StubSession
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.launch
 
 class ChatFragment : Fragment() {
 
@@ -118,6 +120,13 @@ class ChatFragment : Fragment() {
 
         observeViewModel()
         viewModel.load(dealId, currentUserId())
+
+        // Re-render the Rate-Now CTA whenever the user's reviews map updates (e.g. after submit).
+        viewLifecycleOwner.lifecycleScope.launch {
+            reviewViewModel.reviewsByDealId.collect {
+                viewModel.deal.value?.let { renderRatePrompt(it) }
+            }
+        }
     }
 
     override fun onResume() {
@@ -267,6 +276,43 @@ class ChatFragment : Fragment() {
             }
         }
         binding.includeConversationClosed.tvClosedSubtitle.text = subtitle
+
+        renderRatePrompt(deal)
+    }
+
+    /** Show the "Rate this brand/creator" CTA on the closed card for completed deals. */
+    private fun renderRatePrompt(deal: com.aura.app.data.model.Deal) {
+        val rateBtn = binding.includeConversationClosed.btnRateNow
+        val submittedTv = binding.includeConversationClosed.tvReviewSubmitted
+
+        if (deal.status != Constants.STATUS_COMPLETED) {
+            rateBtn.isVisible = false
+            submittedTv.isVisible = false
+            return
+        }
+
+        val alreadyReviewed = reviewViewModel.reviewsByDealId.value.containsKey(deal.dealId)
+        if (alreadyReviewed) {
+            rateBtn.isVisible = false
+            submittedTv.isVisible = true
+            return
+        }
+
+        // Brand sees "Rate this creator", creator sees "Rate this brand"
+        val myId = currentUserId()
+        val labelRes = if (myId == deal.brandId) R.string.review_rate_creator_button
+                       else R.string.review_rate_brand_button
+        rateBtn.text = getString(labelRes)
+        rateBtn.isVisible = true
+        submittedTv.isVisible = false
+        rateBtn.setOnClickListener { openReviewFlow(deal) }
+    }
+
+    private fun openReviewFlow(deal: com.aura.app.data.model.Deal) {
+        val other = viewModel.otherUser.value ?: return
+        if (childFragmentManager.findFragmentByTag("review_flow") != null) return
+        ReviewFlow.newInstance(deal.dealId, other.userId, other.displayName, other.profileImageUrl)
+            .show(childFragmentManager, "review_flow")
     }
 
     private fun currentUserId(): String =

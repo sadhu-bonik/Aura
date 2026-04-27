@@ -5,6 +5,7 @@ import com.aura.app.data.model.Review
 import com.aura.app.utils.Constants
 import com.aura.app.utils.StubState
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.snapshots
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -25,7 +26,7 @@ class ReviewRepository(private val app: Application) {
         }
 
         val reviewsRef = firestore.collection(Constants.COLLECTION_REVIEWS)
-        
+
         val existing = getExistingReview(review.dealId, review.reviewerId).getOrNull()
         if (existing != null) {
             throw IllegalStateException("Already reviewed")
@@ -34,7 +35,15 @@ class ReviewRepository(private val app: Application) {
         val newRef = reviewsRef.document(reviewId)
         newRef.set(newReview).await()
 
-        val profileRef = firestore.collection(Constants.COLLECTION_USERS).document(review.revieweeId)
+        // Aggregate rating goes onto the reviewee's role-specific profile doc
+        // (creatorProfiles/{id} or brandProfiles/{id}). This is what the profile screen reads.
+        val profileCollection = when (review.revieweeRole) {
+            Constants.ROLE_CREATOR -> Constants.COLLECTION_CREATOR_PROFILES
+            Constants.ROLE_BRAND -> Constants.COLLECTION_BRAND_PROFILES
+            else -> Constants.COLLECTION_USERS // fallback if role missing — keeps old behavior
+        }
+        val profileRef = firestore.collection(profileCollection).document(review.revieweeId)
+
         firestore.runTransaction { transaction ->
             val snapshot = transaction.get(profileRef)
             val currentAvg = snapshot.getDouble("averageRating") ?: 0.0
@@ -43,10 +52,14 @@ class ReviewRepository(private val app: Application) {
             val newTotal = currentTotal + 1
             val newAvg = ((currentAvg * currentTotal) + review.rating) / newTotal
 
-            transaction.update(profileRef, "averageRating", newAvg)
-            transaction.update(profileRef, "totalReviews", newTotal)
+            // Set (not update) to also create the field if the doc lacks it.
+            transaction.set(
+                profileRef,
+                mapOf("averageRating" to newAvg, "totalReviews" to newTotal),
+                com.google.firebase.firestore.SetOptions.merge(),
+            )
         }.await()
-        
+
         reviewId
     }
 
@@ -58,6 +71,7 @@ class ReviewRepository(private val app: Application) {
         firestore.collection(Constants.COLLECTION_REVIEWS).document(reviewId).update("comment", comment).await()
     }
 
+    /** Reviews authored by [reviewerId] — used for duplicate detection. */
     fun streamMyReviews(reviewerId: String): Flow<Map<String, Review>> {
         if (Constants.USE_STUBS) {
             return StubState.stubReviews.map { list ->
@@ -74,10 +88,26 @@ class ReviewRepository(private val app: Application) {
             }
     }
 
+    /** Reviews received by [revieweeId] — feeds the user's reviews list screen. */
+    fun streamReviewsForUser(revieweeId: String): Flow<List<Review>> {
+        if (Constants.USE_STUBS) {
+            return StubState.stubReviews.map { list ->
+                list.filter { it.revieweeId == revieweeId }.sortedByDescending { it.createdAt?.seconds ?: 0L }
+            }
+        }
+        return firestore.collection(Constants.COLLECTION_REVIEWS)
+            .whereEqualTo("revieweeId", revieweeId)
+            .orderBy("createdAt", Query.Direction.DESCENDING)
+            .snapshots()
+            .map { snap ->
+                snap.documents.mapNotNull { it.toObject(Review::class.java) }
+            }
+    }
+
     suspend fun getExistingReview(dealId: String, reviewerId: String): Result<Review?> = runCatching {
         if (Constants.USE_STUBS) {
-            return@runCatching StubState.stubReviews.value.firstOrNull { 
-                it.dealId == dealId && it.reviewerId == reviewerId 
+            return@runCatching StubState.stubReviews.value.firstOrNull {
+                it.dealId == dealId && it.reviewerId == reviewerId
             }
         }
 

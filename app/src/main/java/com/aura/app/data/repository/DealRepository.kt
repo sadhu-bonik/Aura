@@ -305,6 +305,10 @@ class DealRepository(
     // After acceptance, cancellation needs both-party approval. The initiator opens a request,
     // the other side confirms or declines.
     suspend fun requestCancellation(dealId: String, initiatorId: String, reason: String = ""): Result<Unit> = runCatching {
+        val dealSnap = deals.document(dealId).get().await()
+        val deal = dealSnap.toObject(Deal::class.java)?.copy(dealId = dealSnap.id)
+            ?: error("Deal not found")
+
         firestore.runTransaction { tx ->
             val ref = deals.document(dealId)
             val snap = tx.get(ref)
@@ -320,6 +324,26 @@ class DealRepository(
                 )
             )
         }.await()
+
+        // Notify the other party that a cancellation has been proposed and needs their decision.
+        val recipientId = if (initiatorId == deal.creatorId) deal.brandId else deal.creatorId
+        val actorName = userRepo.getUserLite(initiatorId)?.displayName
+            ?: if (initiatorId == deal.creatorId) "The creator" else "The brand"
+        val msg = if (reason.isNotBlank())
+            "\"$actorName\" wants to cancel ${deal.title}. Reason: $reason"
+        else
+            "\"$actorName\" wants to cancel ${deal.title}."
+        notifRepo.createNotification(
+            Notification(
+                recipientId = recipientId,
+                actorId = initiatorId,
+                actorName = actorName,
+                type = Notification.TYPE_DEAL_CANCEL_REQUESTED,
+                dealId = dealId,
+                dealTitle = deal.title,
+                message = msg,
+            )
+        )
     }
 
     suspend fun confirmCancellation(dealId: String): Result<Unit> = runCatching {
@@ -365,6 +389,11 @@ class DealRepository(
     }
 
     suspend fun declineCancellation(dealId: String): Result<Unit> = runCatching {
+        val dealSnap = deals.document(dealId).get().await()
+        val deal = dealSnap.toObject(Deal::class.java)?.copy(dealId = dealSnap.id)
+            ?: error("Deal not found")
+        val initiator = deal.cancelRequestedBy
+
         deals.document(dealId).update(
             mapOf(
                 "cancelRequestedBy" to "",
@@ -372,6 +401,24 @@ class DealRepository(
                 "updatedAt" to Timestamp.now(),
             )
         ).await()
+
+        // Tell the original initiator that the other side rejected the cancellation.
+        if (initiator.isNotBlank()) {
+            val declinerId = if (initiator == deal.creatorId) deal.brandId else deal.creatorId
+            val declinerName = userRepo.getUserLite(declinerId)?.displayName
+                ?: if (declinerId == deal.brandId) "The brand" else "The creator"
+            notifRepo.createNotification(
+                Notification(
+                    recipientId = initiator,
+                    actorId = declinerId,
+                    actorName = declinerName,
+                    type = Notification.TYPE_DEAL_CANCEL_DECLINED,
+                    dealId = dealId,
+                    dealTitle = deal.title,
+                    message = "\"$declinerName\" declined your request to cancel ${deal.title}.",
+                )
+            )
+        }
     }
 
     suspend fun updateDealDetails(dealId: String, title: String, description: String): Result<Unit> = runCatching {

@@ -270,6 +270,17 @@
     <string name="review_done_button">Done</string>
     <string name="review_comment_hint">Add a message (optional)</string>
     <string name="review_success_snackbar">Aura rating saved!</string>
+    <string name="review_rate_creator_button">Rate this creator</string>
+    <string name="review_rate_brand_button">Rate this brand</string>
+    <string name="review_already_submitted">Review submitted</string>
+    <string name="notif_deal_label">Deal</string>
+    <string name="reviews_title_creator">Creator Reviews</string>
+    <string name="reviews_title_brand">Brand Reviews</string>
+    <string name="reviews_header_label">Verified Testimonials</string>
+    <string name="reviews_section_label">All Reviews</string>
+    <string name="reviews_empty">No reviews yet</string>
+    <string name="reviews_total_count">%1$d reviews</string>
+    <string name="reviews_total_count_one">1 review</string>
     <string name="review_aura_reviewed_badge">Aura Reviewed</string>
     <string name="chip_review_required">Review</string>
 

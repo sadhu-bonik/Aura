@@ -304,6 +304,16 @@ class ProfileFragment : Fragment() {
                     binding.tvStatsRatingLabel.text = "RATING"
                 }
 
+                binding.layoutStatsRating.setOnClickListener {
+                    val bundle = Bundle().apply {
+                        putString("revieweeId", user.userId)
+                        putString("displayName", user.displayName)
+                        putFloat("averageRating", (if (isBrand) state.brandProfile?.averageRating else state.creatorProfile?.averageRating)?.toFloat() ?: 0f)
+                        putLong("totalReviews", (if (isBrand) state.brandProfile?.totalReviews else state.creatorProfile?.totalReviews) ?: 0L)
+                    }
+                    navigateSafe(R.id.action_profile_to_userReviews, bundle)
+                }
+
                 binding.btnMoreOptions.visibility =
                     if (state.isOwner) View.VISIBLE else View.GONE
 

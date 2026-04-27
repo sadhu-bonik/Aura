@@ -84,9 +84,12 @@ class SettingsFragment : Fragment() {
             findNavController().navigate(R.id.action_settings_to_editProfile)
         }
 
-        // Logout — reuses AuthViewModel.logout(), then navigates to Welcome
+        // Logout — reuses AuthViewModel.logout(), then navigates to Welcome.
+        // Wipe the activity ViewModelStore so any user-scoped state (notifications,
+        // reviews, deal dashboard) doesn't leak from the previous account into the next.
         binding.rowLogout.setOnClickListener {
             authViewModel.logout(requireContext())
+            requireActivity().viewModelStore.clear()
             val navOptions = androidx.navigation.NavOptions.Builder()
                 .setPopUpTo(R.id.homeContainerFragment, true)
                 .build()
