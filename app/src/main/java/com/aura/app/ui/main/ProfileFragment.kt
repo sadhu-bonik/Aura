@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.aura.app.adapters.PortfolioAdapter
 import com.aura.app.databinding.FragmentProfileBinding
 import com.bumptech.glide.Glide
+import androidx.appcompat.widget.PopupMenu
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.aura.app.R
 import com.aura.app.ui.feed.SelectCampaignBottomSheet
@@ -36,6 +37,16 @@ class ProfileFragment : Fragment() {
     }
 
     private val portfolioAdapter = PortfolioAdapter()
+    private val campaignAdapter = com.aura.app.adapters.CampaignAdapter(
+        onCampaignClick = { campaign ->
+            val bundle = Bundle().apply { putString("campaignId", campaign.campaignId) }
+            findNavController().navigate(R.id.action_profile_to_setupCampaign, bundle)
+        },
+        onEditClick = { campaign ->
+            val bundle = Bundle().apply { putString("campaignId", campaign.campaignId) }
+            findNavController().navigate(R.id.action_profile_to_setupCampaign, bundle)
+        }
+    )
 
     private val videoPickerLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
@@ -54,7 +65,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
+        setupRecyclerViews()
         setupListeners()
         setupBottomSheetListener()
         observeUploadEvents()
@@ -86,10 +97,14 @@ class ProfileFragment : Fragment() {
         viewModel.loadProfile(creatorId)
     }
 
-    private fun setupRecyclerView() {
+    private fun setupRecyclerViews() {
         binding.rvPortfolio.apply {
             layoutManager = GridLayoutManager(requireContext(), 3)
             adapter = portfolioAdapter
+        }
+        binding.rvCampaigns.apply {
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext(), androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
+            adapter = campaignAdapter
         }
     }
 
@@ -97,9 +112,33 @@ class ProfileFragment : Fragment() {
         binding.btnAddPortfolio.setOnClickListener {
             AddVideoBottomSheet().show(childFragmentManager, AddVideoBottomSheet.TAG)
         }
-        binding.btnEditProfile.setOnClickListener {
-            findNavController().navigate(R.id.action_profile_to_editProfile)
+        binding.btnAddCampaign.setOnClickListener {
+            findNavController().navigate(R.id.action_profile_to_setupCampaign)
         }
+        binding.btnMoreOptions.setOnClickListener { view ->
+            showMoreOptionsMenu(view)
+        }
+    }
+
+    private fun showMoreOptionsMenu(view: View) {
+        val popup = PopupMenu(requireContext(), view)
+        popup.menu.add(0, 1, 0, "Edit Profile")
+        popup.menu.add(0, 2, 0, "Settings")
+        
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                1 -> {
+                    findNavController().navigate(R.id.action_profile_to_editProfile)
+                    true
+                }
+                2 -> {
+                    Toast.makeText(requireContext(), "Settings coming soon", Toast.LENGTH_SHORT).show()
+                    true
+                }
+                else -> false
+            }
+        }
+        popup.show()
     }
 
 
@@ -236,7 +275,7 @@ class ProfileFragment : Fragment() {
                     state.brandProfile?.motto?.takeIf { it.isNotBlank() }
                         ?: user.role.replaceFirstChar { it.uppercase() }
                 } else {
-                    state.creatorProfile?.niche?.takeIf { it.isNotBlank() }
+                    state.creatorProfile?.motto?.takeIf { it.isNotBlank() }
                         ?: user.role.replaceFirstChar { it.uppercase() }
                 }
                 binding.tvProfileHeadline.text = headlineText
@@ -253,14 +292,20 @@ class ProfileFragment : Fragment() {
                 if (isBrand) {
                     binding.tvStatsFollowers.text = state.brandProfile?.totalCampaigns?.toString() ?: "0"
                     binding.tvStatsDeals.text = state.brandProfile?.activeDeals?.toString() ?: "0"
-                    binding.tvStatsRating.text = "—"
+                    binding.tvStatsRating.text = "4.8" // Placeholder rating for now
+                    binding.tvStatsFollowersLabel.text = "CAMPAIGNS"
+                    binding.tvStatsDealsLabel.text = "DEALS"
+                    binding.tvStatsRatingLabel.text = "RATING"
                 } else {
-                    binding.tvStatsFollowers.text = state.creatorProfile?.followerCount?.toString() ?: "0"
+                    binding.tvStatsFollowers.text = state.creatorProfile?.youtubeTotalViews?.let { formatCount(it) } ?: "0"
                     binding.tvStatsDeals.text = state.creatorProfile?.completedDeals?.toString() ?: "0"
                     binding.tvStatsRating.text = state.creatorProfile?.averageRating?.toString() ?: "0.0"
+                    binding.tvStatsFollowersLabel.text = "VIEWS"
+                    binding.tvStatsDealsLabel.text = "DEALS"
+                    binding.tvStatsRatingLabel.text = "RATING"
                 }
 
-                binding.btnEditProfile.visibility =
+                binding.btnMoreOptions.visibility =
                     if (state.isOwner) View.VISIBLE else View.GONE
 
                 binding.btnSendDeal.visibility =
@@ -272,8 +317,14 @@ class ProfileFragment : Fragment() {
                         .show(childFragmentManager, SelectCampaignBottomSheet.TAG)
                 }
 
+                // Section Visibility: Portfolio for Creators, Campaigns for Brands
+                binding.layoutPortfolioHeader.visibility = if (!isBrand) View.VISIBLE else View.GONE
+                binding.layoutCampaignsHeader.visibility = if (isBrand) View.VISIBLE else View.GONE
+                
                 binding.btnAddPortfolio.visibility =
                     if (state.isOwner && !isBrand) View.VISIBLE else View.GONE
+                binding.btnAddCampaign.visibility =
+                    if (state.isOwner && isBrand) View.VISIBLE else View.GONE
 
                 if (user.profileImageUrl.isNotEmpty()) {
                     Glide.with(this)
@@ -291,10 +342,8 @@ class ProfileFragment : Fragment() {
                     state.creatorProfile?.tags ?: emptyList()
                 }
                 if (tags.isEmpty()) {
-                    binding.tvTagsLabel.visibility = View.GONE
                     binding.cgTags.visibility = View.GONE
                 } else {
-                    binding.tvTagsLabel.visibility = View.VISIBLE
                     binding.cgTags.visibility = View.VISIBLE
                     binding.cgTags.removeAllViews()
                     tags.forEach { tag ->
@@ -303,29 +352,41 @@ class ProfileFragment : Fragment() {
                         chip.isClickable = false
                         chip.isCheckable = false
                         chip.setChipBackgroundColorResource(R.color.colorSurfaceVariant)
-                        chip.setTextColor(requireContext().getColor(R.color.colorOnSurface))
+                        chip.setTextColor(requireContext().getColor(R.color.colorOnSurfaceVariant))
+                        chip.textSize = 10f
+                        chip.chipStrokeWidth = 1f
+                        chip.setChipStrokeColorResource(R.color.colorOutlineVariant)
+                        chip.ensureAccessibleTouchTarget(10)
                         binding.cgTags.addView(chip)
                     }
                 }
 
-                // Arm delete callback for the owner (creator only); disable for viewer / brand
-                portfolioAdapter.onDeleteClick = if (state.isOwner && !isBrand) { item ->
-                    MaterialAlertDialogBuilder(requireContext())
-                        .setTitle(R.string.dialog_remove_video_title)
-                        .setMessage(R.string.dialog_remove_video_message)
-                        .setPositiveButton(R.string.btn_remove) { _, _ ->
-                            viewModel.deletePortfolioItem(item)
-                        }
-                        .setNegativeButton(R.string.btn_cancel, null)
-                        .show()
-                } else null
+                // Campaigns (Brands)
+                if (isBrand) {
+                    campaignAdapter.submitList(state.campaigns)
+                    val hasCampaigns = state.campaigns.isNotEmpty()
+                    binding.rvCampaigns.visibility = if (hasCampaigns) View.VISIBLE else View.GONE
+                    binding.tvNoCampaigns.visibility = if (!hasCampaigns) View.VISIBLE else View.GONE
+                }
 
-                portfolioAdapter.submitList(state.portfolio)
+                // Portfolio (Creators)
+                if (!isBrand) {
+                    portfolioAdapter.onDeleteClick = if (state.isOwner) { item ->
+                        MaterialAlertDialogBuilder(requireContext())
+                            .setTitle(R.string.dialog_remove_video_title)
+                            .setMessage(R.string.dialog_remove_video_message)
+                            .setPositiveButton(R.string.btn_remove) { _, _ ->
+                                viewModel.deletePortfolioItem(item)
+                            }
+                            .setNegativeButton(R.string.btn_cancel, null)
+                            .show()
+                    } else null
 
-                val hasPortfolio = state.portfolio.isNotEmpty()
-                binding.rvPortfolio.visibility = if (hasPortfolio) View.VISIBLE else View.GONE
-                binding.tvNoPortfolio.visibility =
-                    if (hasPortfolio || isBrand) View.GONE else View.VISIBLE
+                    portfolioAdapter.submitList(state.portfolio)
+                    val hasPortfolio = state.portfolio.isNotEmpty()
+                    binding.rvPortfolio.visibility = if (hasPortfolio) View.VISIBLE else View.GONE
+                    binding.tvNoPortfolio.visibility = if (!hasPortfolio) View.VISIBLE else View.GONE
+                }
             }
         }
     }
@@ -340,6 +401,13 @@ class ProfileFragment : Fragment() {
         val popped = navController.popBackStack()
         if (!popped) {
             navController.navigateUp()
+        }
+    }
+    private fun formatCount(count: Long): String {
+        return when {
+            count >= 1_000_000 -> String.format("%.1fM", count / 1_000_000.0)
+            count >= 1_000 -> String.format("%.1fK", count / 1_000.0)
+            else -> count.toString()
         }
     }
 }

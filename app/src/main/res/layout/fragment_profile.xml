@@ -27,280 +27,401 @@
         <View
             android:id="@+id/cover_gradient"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="140dp"
             android:background="@drawable/bg_cover_gradient"
             app:layout_constraintBottom_toBottomOf="@id/iv_cover_image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Back Button (visible only in viewer mode, top-left) -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_back"
-            style="@style/Widget.Material3.Button.IconButton.Filled"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space_md"
-            android:visibility="gone"
-            app:icon="@drawable/ic_arrow_back"
-            app:backgroundTint="@color/colorSurface"
-            app:iconTint="@color/colorOnSurface"
-            app:cornerRadius="@dimen/corner_radius_full"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <!-- Edit Profile Button (overlaid, top-right, owner only) -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_edit_profile"
-            style="@style/Widget.Material3.Button.IconButton.Filled"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space_md"
-            app:icon="@drawable/ic_edit"
-            app:backgroundTint="@color/colorPrimary"
-            app:iconTint="@color/colorOnPrimary"
-            app:cornerRadius="@dimen/corner_radius_full"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Send Deal Button (overlaid, top-right, for brands viewing creators) -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_send_deal"
-            style="@style/Widget.Material3.Button.IconButton.Filled"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space_md"
-            android:visibility="gone"
-            app:icon="@drawable/ic_nav_deals"
-            app:backgroundTint="@color/colorPrimary"
-            app:iconTint="@color/colorOnPrimary"
-            app:cornerRadius="@dimen/corner_radius_full"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Creator Name on Cover -->
-        <TextView
-            android:id="@+id/tv_profile_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_lg"
-            android:layout_marginEnd="@dimen/space_lg"
-            android:layout_marginBottom="4dp"
-            android:text="Creator Name"
-            android:textAppearance="@style/TextAppearance.Aura.HeadlineMedium"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@id/tv_profile_headline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Creator Headline / Niche on Cover -->
-        <TextView
-            android:id="@+id/tv_profile_headline"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_lg"
-            android:layout_marginEnd="@dimen/space_lg"
-            android:layout_marginBottom="@dimen/space_md"
-            android:text="Headline / Niche"
-            android:textAppearance="@style/TextAppearance.Aura.BodyMedium"
-            android:textColor="#E0E0E0"
-            app:layout_constraintBottom_toBottomOf="@id/iv_cover_image"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Stats Section -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_stats"
+        <!-- Top Nav Bar Container -->
+        <LinearLayout
+            android:id="@+id/layout_top_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/space_md"
-            android:layout_marginTop="@dimen/space_lg"
-            app:cardBackgroundColor="@color/colorSurface"
-            app:cardCornerRadius="@dimen/corner_radius_md"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/colorDivider"
-            app:strokeWidth="1dp"
-            app:layout_constraintTop_toBottomOf="@id/iv_cover_image"
+            android:layout_height="64dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/space_md"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- Back Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_back"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:icon="@drawable/ic_arrow_back"
+                app:backgroundTint="@color/colorSurface"
+                app:iconTint="@color/colorOnSurface"
+                app:cornerRadius="@dimen/corner_radius_full" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <!-- Send Deal Button (for brands viewing creators) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_send_deal"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/space_sm"
+                android:visibility="gone"
+                app:icon="@drawable/ic_nav_deals"
+                app:backgroundTint="@color/colorPrimary"
+                app:iconTint="@color/colorOnPrimary"
+                app:cornerRadius="@dimen/corner_radius_full" />
+
+            <!-- More Options Menu Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_more_options"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@android:drawable/ic_menu_more"
+                app:backgroundTint="@color/colorSurface"
+                app:iconTint="@color/colorOnSurface"
+                app:cornerRadius="@dimen/corner_radius_full" />
+        </LinearLayout>
+
+        <!-- Profile Info Overlaid on Cover -->
+        <LinearLayout
+            android:id="@+id/layout_profile_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/space_lg"
+            android:paddingBottom="@dimen/space_md"
+            app:layout_constraintBottom_toBottomOf="@id/iv_cover_image">
+
+            <!-- Name -->
+            <TextView
+                android:id="@+id/tv_profile_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Creator Name"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:fontFamily="@font/manrope_extrabold"
+                android:letterSpacing="-0.02" />
+
+            <!-- Headline -->
+            <TextView
+                android:id="@+id/tv_profile_headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Headline / Niche"
+                android:textColor="#E0E0E0"
+                android:textSize="14sp"
+                android:fontFamily="@font/manrope_medium"
+                android:layout_marginTop="2dp" />
+
+            <!-- Specialty Tags (Now placed right under the name/headline) -->
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/cg_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- Stats Row (Stitch Design) -->
+        <LinearLayout
+            android:id="@+id/layout_stats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            android:paddingHorizontal="@dimen/space_lg"
+            android:layout_marginTop="@dimen/space_lg"
+            app:layout_constraintTop_toBottomOf="@id/iv_cover_image">
+
+            <!-- Deals Stat -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_pill_surface_low"
+                android:paddingVertical="@dimen/space_md"
+                android:layout_marginEnd="6dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_nav_deals"
+                    android:tint="@color/colorPrimary"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/tv_stats_deals"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/manrope_bold" />
+
+                <TextView
+                    android:id="@+id/tv_stats_deals_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DEALS"
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/manrope_bold"
+                    android:letterSpacing="0.1"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <!-- Views Stat -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_pill_surface_low"
+                android:paddingVertical="@dimen/space_md"
+                android:layout_marginEnd="6dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_search"
+                    android:tint="@color/colorPrimary"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/tv_stats_followers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/manrope_bold" />
+
+                <TextView
+                    android:id="@+id/tv_stats_followers_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="VIEWS"
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/manrope_bold"
+                    android:letterSpacing="0.1"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <!-- Rating Stat -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_pill_surface_low"
+                android:paddingVertical="@dimen/space_md">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@android:drawable/btn_star_big_on"
+                    android:tint="@color/colorPrimary"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/tv_stats_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.0"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/manrope_bold" />
+
+                <TextView
+                    android:id="@+id/tv_stats_rating_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="RATING"
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/manrope_bold"
+                    android:letterSpacing="0.1"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- About Section -->
+        <LinearLayout
+            android:id="@+id/layout_about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/space_lg"
+            android:layout_marginTop="@dimen/space_xl"
+            app:layout_constraintTop_toBottomOf="@id/layout_stats">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingVertical="@dimen/space_md"
-                android:gravity="center">
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
 
-                <!-- Followers -->
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/tv_stats_followers"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textColor="@color/colorOnSurface"
-                        android:textAppearance="@style/TextAppearance.Aura.TitleLarge" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Followers"
-                        android:layout_marginTop="2dp"
-                        android:textColor="@color/colorTextSecondary"
-                        android:textAppearance="@style/TextAppearance.Aura.LabelSmall" />
-                </LinearLayout>
+                    android:text="ABOUT"
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/manrope_bold"
+                    android:letterSpacing="0.1" />
 
                 <View
-                    android:layout_width="1dp"
-                    android:layout_height="24dp"
-                    android:background="@color/colorDivider" />
-
-                <!-- Deals -->
-                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="1dp"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/tv_stats_deals"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textColor="@color/colorOnSurface"
-                        android:textAppearance="@style/TextAppearance.Aura.TitleLarge" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Deals"
-                        android:layout_marginTop="2dp"
-                        android:textColor="@color/colorTextSecondary"
-                        android:textAppearance="@style/TextAppearance.Aura.LabelSmall" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="24dp"
-                    android:background="@color/colorDivider" />
-
-                <!-- Rating -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/tv_stats_rating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0.0"
-                        android:textColor="@color/colorOnSurface"
-                        android:textAppearance="@style/TextAppearance.Aura.TitleLarge" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Rating"
-                        android:layout_marginTop="2dp"
-                        android:textColor="@color/colorTextSecondary"
-                        android:textAppearance="@style/TextAppearance.Aura.LabelSmall" />
-                </LinearLayout>
+                    android:background="@color/colorOutlineVariant"
+                    android:alpha="0.3"
+                    android:layout_marginStart="16dp" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-        <!-- About Section -->
-        <TextView
-            android:id="@+id/tv_about_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_lg"
-            android:layout_marginTop="@dimen/space_xl"
-            android:text="About"
-            android:textAppearance="@style/TextAppearance.Aura.TitleMedium"
-            android:textColor="@color/colorOnSurface"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/card_stats" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_bio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/space_md"
-            android:layout_marginTop="@dimen/space_sm"
-            app:cardBackgroundColor="@color/colorSurface"
-            app:cardCornerRadius="@dimen/corner_radius_md"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/colorDivider"
-            app:strokeWidth="1dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_about_label">
-            
             <TextView
                 android:id="@+id/tv_profile_bio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/space_md"
                 android:text="No bio added yet"
-                android:textAppearance="@style/TextAppearance.Aura.BodyMedium"
-                android:lineSpacingExtra="4dp"
-                android:textColor="@color/colorOnSurface" />
-        </com.google.android.material.card.MaterialCardView>
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="14sp"
+                android:fontFamily="@font/manrope_medium"
+                android:lineSpacingMultiplier="1.4" />
+        </LinearLayout>
 
-        <!-- Specialties / Tags Section -->
-        <TextView
-            android:id="@+id/tv_tags_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_lg"
-            android:layout_marginTop="@dimen/space_xl"
-            android:text="Specialties"
-            android:textAppearance="@style/TextAppearance.Aura.TitleMedium"
-            android:textColor="@color/colorOnSurface"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/card_bio" />
-            
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/cg_tags"
+        <!-- Featured Campaigns Header (Brands) -->
+        <LinearLayout
+            android:id="@+id/layout_campaigns_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/space_md"
-            android:layout_marginTop="@dimen/space_sm"
-            app:layout_constraintTop_toBottomOf="@id/tv_tags_label" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/space_lg"
+            android:layout_marginTop="@dimen/space_xl"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/layout_about">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FEATURED CAMPAIGNS"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="12sp"
+                android:fontFamily="@font/manrope_bold"
+                android:letterSpacing="0.1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorOutlineVariant"
+                android:alpha="0.3"
+                android:layout_marginHorizontal="16dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_campaign"
+                style="@style/Widget.Material3.Button.TextButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Campaign"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"
+                android:fontFamily="@font/manrope_bold"
+                android:paddingStart="4dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:icon="@drawable/ic_add"
+                app:iconTint="@color/colorPrimary"
+                app:iconSize="18dp" />
+        </LinearLayout>
+
+        <!-- Campaigns RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_campaigns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingHorizontal="@dimen/space_lg"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/layout_campaigns_header"
+            tools:listitem="@layout/item_campaign" />
+
+        <!-- Empty State for Campaigns -->
+        <TextView
+            android:id="@+id/tv_no_campaigns"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xl"
+            android:text="No featured campaigns yet"
+            android:textAppearance="@style/TextAppearance.Aura.BodyMedium"
+            android:textColor="@color/colorTextSecondary"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_campaigns_header" />
 
         <!-- Featured Work (Portfolio) Header -->
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/layout_portfolio_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/space_lg"
             android:layout_marginTop="@dimen/space_xl"
-            app:layout_constraintTop_toBottomOf="@id/cg_tags">
+            app:layout_constraintTop_toBottomOf="@id/layout_about">
 
             <TextView
-                android:id="@+id/tv_portfolio_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_lg"
-                android:text="Featured Work"
-                android:textAppearance="@style/TextAppearance.Aura.TitleMedium"
-                android:textColor="@color/colorOnSurface"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                android:text="POSTS"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="12sp"
+                android:fontFamily="@font/manrope_bold"
+                android:letterSpacing="0.1" />
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorOutlineVariant"
+                android:alpha="0.3"
+                android:layout_marginHorizontal="16dp" />
+
+            <!-- Clearer Add Video Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_add_portfolio"
-                style="@style/Widget.Material3.Button.TextButton"
+                style="@style/Widget.Material3.Button.TextButton.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/space_md"
                 android:text="Add Video"
-                app:icon="@drawable/ic_feed_play"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"
+                android:fontFamily="@font/manrope_bold"
+                android:paddingStart="4dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:icon="@drawable/ic_add"
+                app:iconTint="@color/colorPrimary"
+                app:iconSize="18dp" />
+        </LinearLayout>
 
         <!-- Upload Progress -->
         <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -320,7 +441,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_sm"
-            android:layout_marginHorizontal="2dp"
+            android:layout_marginHorizontal="@dimen/space_md"
             android:nestedScrollingEnabled="false"
             app:layout_constraintTop_toBottomOf="@id/progress_upload"
             tools:listitem="@layout/item_portfolio_video" />

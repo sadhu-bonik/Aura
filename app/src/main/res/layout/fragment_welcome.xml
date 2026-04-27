@@ -1,180 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     Welcome/Email Entry Screen
-    Design ref: welcome_sign_up_option/screen.png
+    Design ref: aura_landing_standardized_button
 -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    android:fillViewport="true">
+    android:background="@color/colorBackground">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/space_xxl">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <!-- Background blur decor – top-left primary glow -->
-        <View
-            android:id="@+id/view_blur_primary"
-            android:layout_width="280dp"
-            android:layout_height="280dp"
-            android:alpha="0.15"
-            android:background="@drawable/bg_blur_primary"
-            app:layout_constraintEnd_toStartOf="@id/view_blur_primary"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="-80dp"
-            android:layout_marginTop="-80dp"
-            android:importantForAccessibility="no"
-            tools:layout_constraintStart_toStartOf="parent" />
-
-        <!-- Top App Bar -->
-        <LinearLayout
-            android:id="@+id/layout_top_bar"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/top_app_bar_height"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingStart="@dimen/space_lg"
-            android:paddingEnd="@dimen/space_lg"
-            android:background="#B20B1326"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <TextView
-                android:id="@+id/tv_app_bar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login_title"
-                android:textColor="@color/colorOnSurface"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:letterSpacing="-0.03"
-                android:contentDescription="@string/cd_app_logo" />
-        </LinearLayout>
-
-        <!-- Hero Section -->
-        <LinearLayout
-            android:id="@+id/layout_hero"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="@dimen/space_lg"
-            android:paddingEnd="@dimen/space_lg"
-            android:paddingTop="@dimen/space_xl"
-            app:layout_constraintTop_toBottomOf="@id/layout_top_bar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:paddingBottom="@dimen/space_xxl">
 
-            <TextView
-                android:id="@+id/tv_welcome_title"
+            <!-- Background blur decor - Top Left -->
+            <View
+                android:id="@+id/view_blur_primary"
+                android:layout_width="280dp"
+                android:layout_height="280dp"
+                android:alpha="0.15"
+                android:background="@drawable/bg_blur_primary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="-80dp"
+                android:layout_marginTop="-80dp"
+                android:importantForAccessibility="no" />
+
+            <!-- Top Navigation -->
+            <LinearLayout
+                android:id="@+id/layout_top_bar"
                 android:layout_width="match_parent"
+                android:layout_height="@dimen/top_app_bar_height"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingStart="@dimen/space_lg"
+                android:paddingEnd="@dimen/space_lg"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_close"
+                    android:layout_width="@dimen/icon_size_md"
+                    android:layout_height="@dimen/icon_size_md"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    android:tint="@color/colorOutline"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="4dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/login_title"
+                    android:textColor="@color/colorPrimaryDim"
+                    android:textSize="24sp"
+                    android:gravity="center"
+                    android:fontFamily="@font/manrope_extrabold"
+                    android:letterSpacing="-0.02" />
+
+                <View
+                    android:layout_width="@dimen/icon_size_md"
+                    android:layout_height="@dimen/icon_size_md" />
+            </LinearLayout>
+
+            <!-- Main Content Area -->
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/auth_welcome_title"
-                android:textColor="@color/colorOnSurface"
-                android:textSize="34sp"
-                android:textStyle="bold"
-                android:letterSpacing="-0.03"
-                android:lineSpacingMultiplier="1.1"
-                android:layout_marginBottom="@dimen/space_md" />
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:paddingStart="@dimen/space_xl"
+                android:paddingEnd="@dimen/space_xl"
+                app:layout_constraintTop_toBottomOf="@id/layout_top_bar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_bias="0.4">
 
-            <TextView
-                android:id="@+id/tv_welcome_subtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/auth_welcome_subtitle"
-                android:textColor="@color/colorOnSurfaceVariant"
-                android:textSize="16sp"
-                android:lineSpacingMultiplier="1.5"
-                android:layout_marginBottom="@dimen/space_xl" />
+                <!-- Hero Section -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="THE ETHEREAL ATELIER"
+                    android:textColor="@color/colorOnTertiaryContainer"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/manrope_bold"
+                    android:textAllCaps="true"
+                    android:letterSpacing="0.1"
+                    android:background="@drawable/bg_chip_selected"
+                    android:backgroundTint="@color/colorTertiaryContainer"
+                    android:paddingStart="@dimen/space_md"
+                    android:paddingEnd="@dimen/space_md"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:layout_marginBottom="@dimen/space_lg" />
 
-        </LinearLayout>
-
-        <!-- Email Form -->
-        <LinearLayout
-            android:id="@+id/layout_email_form"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="@dimen/space_lg"
-            android:paddingEnd="@dimen/space_lg"
-            android:paddingBottom="@dimen/space_lg"
-            app:layout_constraintTop_toBottomOf="@id/layout_hero"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <TextView
-                android:id="@+id/tv_email_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/auth_email_label"
-                android:textColor="@color/colorOnSurfaceVariant"
-                android:textSize="12sp"
-                android:letterSpacing="0.04"
-                android:layout_marginBottom="@dimen/space_sm"
-                android:layout_marginStart="4dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_email"
-                style="@style/Widget.Aura.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/space_lg">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
-                    android:hint="@string/auth_email_hint"
-                    android:inputType="textEmailAddress"
+                <TextView
+                    android:id="@+id/tv_welcome_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Welcome to Aura"
                     android:textColor="@color/colorOnSurface"
-                    android:imeOptions="actionDone" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:textSize="36sp"
+                    android:fontFamily="@font/manrope_extrabold"
+                    android:letterSpacing="-0.02"
+                    android:layout_marginBottom="@dimen/space_md"
+                    android:gravity="center" />
 
-            <!-- Continue Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_continue"
-                style="@style/Widget.Aura.Button.Primary.Gradient"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height"
-                android:text="@string/auth_continue_btn"
-                android:layout_marginBottom="@dimen/space_xl" />
+                <TextView
+                    android:id="@+id/tv_welcome_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/auth_welcome_subtitle"
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/manrope_medium"
+                    android:layout_marginBottom="32dp"
+                    android:gravity="center" />
 
-        </LinearLayout>
+                <!-- Email Input Form -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_email"
+                    style="@style/Widget.Aura.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="false"
+                    app:startIconDrawable="@android:drawable/ic_dialog_email"
+                    app:startIconTint="@color/colorOutline"
+                    android:layout_marginBottom="8dp">
 
-        <!-- Sign-up prompt -->
-        <LinearLayout
-            android:id="@+id/layout_signup_prompt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/layout_email_form"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:hint="@string/auth_email_hint"
+                        android:textColorHint="@color/colorOutline"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/colorOnSurface"
+                        android:fontFamily="@font/manrope_medium"
+                        android:imeOptions="actionDone" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/tv_no_account"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/auth_sign_up_prompt"
-                android:textColor="@color/colorOutline"
-                android:textSize="14sp" />
+                <!-- Helper Text -->
+                <TextView
+                    android:id="@+id/tv_email_helper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Enter a valid email address (e.g., name@email.com)"
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/manrope_medium"
+                    android:paddingStart="@dimen/space_lg"
+                    android:paddingEnd="@dimen/space_lg"
+                    android:layout_marginBottom="@dimen/space_xl" />
 
-            <TextView
-                android:id="@+id/tv_sign_up_link"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/auth_sign_up_link"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:clickable="true"
-                android:focusable="true" />
-        </LinearLayout>
+                <!-- Continue Button -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/space_lg">
+                    
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_continue"
+                        style="@style/Widget.Aura.Button.Primary.Gradient"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:text="@string/auth_continue_btn"
+                        android:textSize="18sp"
+                        app:icon="@android:drawable/ic_media_play"
+                        app:iconGravity="textEnd"
+                        app:iconPadding="8dp" />
+                </FrameLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+                <!-- Sign up prompt -->
+                <LinearLayout
+                    android:id="@+id/layout_signup_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/space_xl">
+
+                    <TextView
+                        android:id="@+id/tv_no_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/auth_sign_up_prompt"
+                        android:textColor="@color/colorOnSurfaceVariant"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/manrope_medium" />
+
+                    <TextView
+                        android:id="@+id/tv_sign_up_link"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/auth_sign_up_link"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/manrope_bold"
+                        android:layout_marginStart="4dp"
+                        android:clickable="true"
+                        android:focusable="true" />
+                </LinearLayout>
+
+                <!-- Footer Legal -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="By continuing, you agree to our Terms of Service and Privacy Policy."
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/manrope_medium"
+                    android:gravity="center"
+                    android:maxWidth="240dp" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

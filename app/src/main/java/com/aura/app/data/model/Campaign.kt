@@ -10,5 +10,7 @@ data class Campaign(
     val deliverables: List<String> = emptyList(),
     val budgetMin: Long = 0L,
     val budgetMax: Long = 0L,
+    val imageUrl: String = "",
+    val imagePath: String = "",
     val createdAt: Timestamp? = null
 )

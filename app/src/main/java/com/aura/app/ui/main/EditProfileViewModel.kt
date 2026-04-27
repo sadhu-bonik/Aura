@@ -69,9 +69,20 @@ class EditProfileViewModel(
         }
     }
 
-    fun saveProfile(name: String, bio: String, selectedTags: List<String>, uri: Uri?) {
+    fun saveProfile(
+        displayName: String,
+        headline: String,
+        bio: String,
+        phone: String,
+        securityQuestion: String,
+        securityAnswer: String,
+        youtubeUrl: String,
+        profileImageUri: Uri?,
+        website: String = "",
+        industry: String = ""
+    ) {
         val uid = auth.currentUser?.uid ?: return
-        if (name.isBlank()) {
+        if (displayName.isBlank()) {
             _event.value = EditProfileEvent.SaveError("Name cannot be empty")
             return
         }
@@ -83,61 +94,50 @@ class EditProfileViewModel(
             try {
                 // Upload Image
                 var updatedImageUrl: String? = null
-                if (uri != null) {
-                    updatedImageUrl = storageRepository.uploadProfilePicture(uid, uri)
+                if (profileImageUri != null) {
+                    updatedImageUrl = storageRepository.uploadProfilePicture(uid, profileImageUri)
                 }
 
                 // Update User display name / photo
                 val userUpdates = mutableMapOf<String, Any>()
-                if (name.isNotBlank()) userUpdates["displayName"] = name
+                if (displayName.isNotBlank()) userUpdates["displayName"] = displayName
+                if (phone.isNotBlank()) userUpdates["phone"] = phone
+                if (securityQuestion.isNotBlank() && securityQuestion != "Select a security question") userUpdates["securityQuestion"] = securityQuestion
+                if (securityAnswer.isNotBlank()) userUpdates["securityAnswer"] = securityAnswer
+                
                 updatedImageUrl?.let { userUpdates["profileImageUrl"] = it }
                 if (userUpdates.isNotEmpty()) {
                     userRepository.updateUserPartial(uid, userUpdates)
                 }
 
                 if (currentRole == "brand") {
-                    val oldBrandTags = (_state.value as? EditProfileUiState.Success)?.brandProfile?.industryTags ?: emptyList()
-                    val brandTagsChanged = oldBrandTags.toSet() != selectedTags.toSet()
-
                     // Route brand edits to brandProfiles collection.
-                    // isProfileComplete requires motto (from registration, never cleared here)
-                    // AND at least 1 industry tag — recomputed on every save.
-                    val isComplete = selectedTags.isNotEmpty()
-                    val brandUpdates = mapOf(
+                    val brandUpdates = mutableMapOf<String, Any>(
                         "bio" to bio,
-                        "industryTags" to selectedTags,
-                        "brandName" to name,
+                        "motto" to headline,
+                        "brandName" to displayName,
                         "updatedAt" to Timestamp.now(),
                     )
-                    Log.d(TAG, "saveProfile brand payload → $brandUpdates isComplete=$isComplete")
+                    if (website.isNotBlank()) brandUpdates["website"] = website
+                    if (industry.isNotBlank()) brandUpdates["industry"] = industry
+                    
+                    Log.d(TAG, "saveProfile brand payload → $brandUpdates")
                     userRepository.updateBrandProfilePartial(uid, brandUpdates)
-                    // Mirror completion flag and display name in the users/{uid} doc
-                    userUpdates["isProfileComplete"] = isComplete
 
-                    if (brandTagsChanged) {
-                        _event.value = EditProfileEvent.SaveSuccessWithTagChange
-                    } else {
-                        _event.value = EditProfileEvent.SaveSuccess
-                    }
+                    _event.value = EditProfileEvent.SaveSuccess
                 } else {
                     // Creator profile update
-                    val oldTags = (_state.value as? EditProfileUiState.Success)?.creatorProfile?.tags ?: emptyList()
-                    val tagsChanged = oldTags.toSet() != selectedTags.toSet()
-
                     val creatorUpdates = mapOf(
                         "bio" to bio,
-                        "niche" to selectedTags.joinToString(", "),
-                        "tags" to selectedTags,
+                        "motto" to headline,
+                        "youtubeHandle" to youtubeUrl,
                         "isProfileComplete" to true,
+                        "updatedAt" to Timestamp.now(),
                     )
                     Log.d(TAG, "saveProfile creator payload → $creatorUpdates")
                     userRepository.updateCreatorProfilePartial(uid, creatorUpdates)
 
-                    if (tagsChanged) {
-                        _event.value = EditProfileEvent.SaveSuccessWithTagChange
-                    } else {
-                        _event.value = EditProfileEvent.SaveSuccess
-                    }
+                    _event.value = EditProfileEvent.SaveSuccess
                 }
 
             } catch (e: Exception) {

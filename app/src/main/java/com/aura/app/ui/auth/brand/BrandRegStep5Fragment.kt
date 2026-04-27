@@ -69,6 +69,15 @@ class BrandRegStep5Fragment : Fragment() {
         vm.isLoading.observe(viewLifecycleOwner) { loading ->
             binding.layoutBottomNav.btnNavNext.isEnabled = !loading
             binding.layoutBottomNav.btnNavNext.alpha = if (loading) 0.5f else 1.0f
+            
+            if (loading) {
+                binding.layoutBottomNav.btnNavNext.text = ""
+                binding.layoutBottomNav.btnNavNext.icon = null
+                binding.layoutBottomNav.progressLoading.visibility = View.VISIBLE
+            } else {
+                binding.layoutBottomNav.btnNavNext.text = "Finish"
+                binding.layoutBottomNav.progressLoading.visibility = View.GONE
+            }
         }
 
         // Show any error from the Firebase call
@@ -100,12 +109,7 @@ class BrandRegStep5Fragment : Fragment() {
             Toast.makeText(requireContext(), "Multiple campaigns coming soon", Toast.LENGTH_SHORT).show()
         }
 
-        binding.layoutBottomNav.btnNavSaveExit.setOnClickListener {
-            Toast.makeText(requireContext(), "Progress saved. You can resume later.", Toast.LENGTH_SHORT).show()
-            findNavController().popBackStack(R.id.welcomeFragment, false)
-        }
-
-        binding.layoutBottomNav.btnNavBack.setOnClickListener {
+        binding.layoutBottomNav.btnNavCancel.setOnClickListener {
             findNavController().navigateUp()
         }
 

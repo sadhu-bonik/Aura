@@ -18,6 +18,21 @@
         <action
             android:id="@+id/action_profile_to_editProfile"
             app:destination="@id/navigation_edit_profile" />
+        <action
+            android:id="@+id/action_profile_to_setupCampaign"
+            app:destination="@id/navigation_setup_campaign" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_setup_campaign"
+        android:name="com.aura.app.ui.main.SetupCampaignFragment"
+        android:label="Setup Campaign"
+        tools:layout="@layout/fragment_setup_campaign">
+        <argument
+            android:name="campaignId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
     <fragment

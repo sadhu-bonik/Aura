@@ -16,9 +16,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.aura.app.R
 import com.aura.app.databinding.FragmentEditProfileBinding
-import com.aura.app.utils.CreatorNicheTags
+import android.widget.ArrayAdapter
 import com.bumptech.glide.Glide
-import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
@@ -65,9 +64,22 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupSecurityQuestions()
         setupListeners()
         observeState()
         observeEvents()
+    }
+
+    private fun setupSecurityQuestions() {
+        val questions = arrayOf(
+            "What is your mother's maiden name?",
+            "What was your first pet's name?",
+            "In what city were you born?",
+            "What is your favorite book?",
+            "What was your childhood nickname?"
+        )
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, questions)
+        binding.etSecurityQuestion.setAdapter(adapter)
     }
 
     private fun setupListeners() {
@@ -81,22 +93,32 @@ class EditProfileFragment : Fragment() {
 
         binding.btnSave.setOnClickListener {
             val name = binding.etName.text.toString()
+            val headline = binding.etHeadline.text.toString()
             val bio = binding.etBio.text.toString()
+            val phone = binding.etPhone.text.toString()
+            val secQuestion = binding.etSecurityQuestion.text.toString()
+            val secAnswer = binding.etSecurityAnswer.text.toString()
+            val youtube = binding.etYoutube.text.toString()
+            
+            val website = binding.etWebsite.text.toString()
+            val industry = binding.etIndustry.text.toString()
 
-            val selectedTags = mutableListOf<String>()
-            for (i in 0 until binding.cgNicheTags.childCount) {
-                val chip = binding.cgNicheTags.getChildAt(i) as? Chip ?: continue
-                if (chip.isChecked) selectedTags.add(chip.text.toString())
-            }
+            viewModel.saveProfile(
+                displayName = name,
+                headline = headline,
+                bio = bio,
+                phone = phone,
+                securityQuestion = secQuestion,
+                securityAnswer = secAnswer,
+                youtubeUrl = youtube,
+                profileImageUri = selectedImageUri,
+                website = website,
+                industry = industry
+            )
+        }
 
-            val isBrand = (viewModel.state.value as? EditProfileUiState.Success)?.user?.role == "brand"
-            if (selectedTags.isEmpty()) {
-                val msg = if (isBrand) "Select at least 1 industry tag" else "Select at least 1 specialty tag"
-                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            viewModel.saveProfile(name, bio, selectedTags, selectedImageUri)
+        binding.btnDeleteProfile.setOnClickListener {
+            Toast.makeText(requireContext(), "Delete profile coming soon", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -160,12 +182,28 @@ class EditProfileFragment : Fragment() {
         val user = state.user
         val isBrand = user.role == "brand"
 
-        // Bio and tags: source depends on role
+        // Bio and headline: source depends on role
         val bio = if (isBrand) state.brandProfile?.bio ?: "" else state.creatorProfile?.bio ?: ""
-        val activeTags: List<String> = if (isBrand) {
-            state.brandProfile?.industryTags ?: emptyList()
+        val headline = if (isBrand) state.brandProfile?.motto ?: "" else state.creatorProfile?.motto ?: ""
+        val youtube = if (!isBrand) state.creatorProfile?.youtubeHandle ?: "" else ""
+
+        if (isBrand) {
+            binding.tilHeadline.visibility = View.GONE
+            binding.layoutCreatorYoutube.visibility = View.GONE
+            binding.layoutBrandWebsite.visibility = View.VISIBLE
+            binding.layoutBrandIndustry.visibility = View.VISIBLE
+
+            if (binding.etWebsite.text.isNullOrBlank()) {
+                binding.etWebsite.setText(state.brandProfile?.website ?: "")
+            }
+            if (binding.etIndustry.text.isNullOrBlank()) {
+                binding.etIndustry.setText(state.brandProfile?.industry ?: "")
+            }
         } else {
-            state.creatorProfile?.tags ?: emptyList()
+            binding.tilHeadline.visibility = View.VISIBLE
+            binding.layoutCreatorYoutube.visibility = View.VISIBLE
+            binding.layoutBrandWebsite.visibility = View.GONE
+            binding.layoutBrandIndustry.visibility = View.GONE
         }
 
         // Only prefill if fields haven't been touched (guards against config-change overwrites)
@@ -173,39 +211,28 @@ class EditProfileFragment : Fragment() {
             binding.etName.setText(user.displayName.ifBlank { user.email })
         }
 
+        if (binding.etHeadline.text.isNullOrBlank()) {
+            binding.etHeadline.setText(headline)
+        }
+
         if (binding.etBio.text.isNullOrBlank()) {
             binding.etBio.setText(bio)
         }
 
-        // Update label to reflect role-appropriate copy
-        binding.tvNicheLabel.text = if (isBrand) {
-            "Industry Tags (Select at least 1)"
-        } else {
-            "Specialties (Select 1–5)"
+        if (binding.etPhone.text.isNullOrBlank()) {
+            binding.etPhone.setText(user.phone)
         }
 
-        if (binding.cgNicheTags.childCount == 0) {
-            CreatorNicheTags.NICHE_TAGS.forEach { niche ->
-                val chip = Chip(requireContext()).apply {
-                    text = niche
-                    isCheckable = true
-                    isChecked = activeTags.contains(niche)
-                    if (!isBrand) {
-                        setOnCheckedChangeListener { buttonView, checked ->
-                            if (checked) {
-                                val selectedCount = (0 until binding.cgNicheTags.childCount).count {
-                                    (binding.cgNicheTags.getChildAt(it) as? Chip)?.isChecked == true
-                                }
-                                if (selectedCount > 5) {
-                                    buttonView.isChecked = false
-                                    Toast.makeText(requireContext(), "You can pick up to 5 specialties", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                        }
-                    }
-                }
-                binding.cgNicheTags.addView(chip)
-            }
+        if (binding.etSecurityQuestion.text.isNullOrBlank() && user.securityQuestion.isNotBlank()) {
+            binding.etSecurityQuestion.setText(user.securityQuestion, false) // false to prevent showing dropdown
+        }
+
+        if (binding.etSecurityAnswer.text.isNullOrBlank()) {
+            binding.etSecurityAnswer.setText(user.securityAnswer)
+        }
+
+        if (binding.etYoutube.text.isNullOrBlank()) {
+            binding.etYoutube.setText(youtube)
         }
 
         // Only load Glide if user hasn't selected a new local image

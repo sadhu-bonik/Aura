@@ -62,7 +62,7 @@ class BrandRegStep2Fragment : Fragment() {
             imagePickerLauncher.launch("image/*")
         }
 
-        binding.layoutBottomNav.btnNavBack.setOnClickListener {
+        binding.layoutBottomNav.btnNavCancel.setOnClickListener {
             findNavController().navigateUp()
         }
 

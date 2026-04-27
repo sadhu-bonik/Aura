@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     Brand Registration - Step 2: Brand Identity
-    Design ref: brand_brand_identity_2_5/screen.png
 -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,73 +8,78 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
+    <!-- Background Decor -->
+    <View
+        android:layout_width="384dp"
+        android:layout_height="384dp"
+        android:background="@drawable/bg_blur_primary"
+        android:alpha="0.10"
+        android:layout_marginTop="-100dp"
+        android:layout_marginStart="-100dp" />
+
+    <!-- Top Navigation Bar -->
+    <LinearLayout
+        android:id="@+id/layout_top_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#B20B1326"
-        app:elevation="0dp">
+        android:layout_height="@dimen/top_app_bar_height"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/space_lg"
+        android:paddingEnd="@dimen/space_lg">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/top_app_bar_height"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingStart="@dimen/space_lg"
-            android:paddingEnd="@dimen/space_lg">
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="@dimen/icon_size_md"
+            android:layout_height="@dimen/icon_size_md"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:tint="@color/colorOnSurface"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp" />
 
-            <ImageView
-                android:id="@+id/iv_close"
-                android:layout_width="@dimen/icon_size_md"
-                android:layout_height="@dimen/icon_size_md"
-                android:src="@android:drawable/ic_menu_close_clear_cancel"
-                android:tint="@color/colorOnSurface"
-                android:contentDescription="@string/cd_back_button"
-                android:layout_marginEnd="@dimen/space_md" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/login_title"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:fontFamily="@font/manrope_bold"
+            android:layout_marginStart="@dimen/space_md" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/login_title"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Onboarding"
-                android:textColor="@color/colorOnSurface"
-                android:textSize="11sp"
-                android:textAllCaps="true"
-                android:letterSpacing="0.08"
-                android:alpha="0.6" />
-        </LinearLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Onboarding"
+            android:textColor="@color/colorOnSurface"
+            android:textSize="11sp"
+            android:fontFamily="@font/manrope_bold"
+            android:textAllCaps="true"
+            android:letterSpacing="0.08"
+            android:alpha="0.6" />
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/bottom_nav_height"
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_marginTop="@dimen/top_app_bar_height"
+        android:paddingBottom="160dp"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="@dimen/space_lg"
-            android:paddingEnd="@dimen/space_lg"
+            android:paddingStart="@dimen/space_xl"
+            android:paddingEnd="@dimen/space_xl"
             android:paddingTop="@dimen/space_lg"
-            android:paddingBottom="@dimen/space_lg">
+            android:paddingBottom="@dimen/space_xl">
 
             <!-- Step header -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginBottom="@dimen/space_md">
+                android:layout_marginBottom="32dp">
 
                 <TextView
                     android:id="@+id/tv_step_tag"
@@ -84,9 +88,9 @@
                     android:text="@string/brand_reg_step2_tag"
                     android:textColor="@color/colorTertiary"
                     android:textSize="12sp"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/manrope_bold"
                     android:textAllCaps="true"
-                    android:letterSpacing="0.12"
+                    android:letterSpacing="0.1"
                     android:layout_marginBottom="4dp" />
 
                 <TextView
@@ -96,9 +100,9 @@
                     android:text="@string/brand_reg_step2_title"
                     android:textColor="@color/colorOnSurface"
                     android:textSize="36sp"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/manrope_extrabold"
                     android:letterSpacing="-0.03"
-                    android:layout_marginBottom="@dimen/space_sm" />
+                    android:layout_marginBottom="8dp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -106,124 +110,141 @@
                     android:text="@string/brand_reg_step2_subtitle"
                     android:textColor="@color/colorOnSurfaceVariant"
                     android:textSize="14sp"
-                    android:lineSpacingMultiplier="1.5"
-                    android:layout_marginBottom="@dimen/space_xl" />
+                    android:fontFamily="@font/manrope_medium"
+                    android:lineSpacingMultiplier="1.5" />
             </LinearLayout>
 
             <!-- Logo upload section -->
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/bg_card_surface"
-                android:padding="@dimen/space_lg"
-                android:gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/space_md">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/brand_reg_logo_label"
-                    android:textColor="@color/colorOnSurface"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="@dimen/space_lg" />
-
-                <!-- Circular logo upload zone -->
-                <FrameLayout
-                    android:id="@+id/layout_logo_upload"
-                    android:layout_width="160dp"
-                    android:layout_height="160dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@color/colorSurfaceContainerHighest"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:layout_marginBottom="@dimen/space_md">
-
-                    <LinearLayout
-                        android:id="@+id/layout_logo_prompt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal">
-
-                        <ImageView
-                            android:layout_width="@dimen/icon_size_xl"
-                            android:layout_height="@dimen/icon_size_xl"
-                            android:src="@android:drawable/ic_menu_camera"
-                            android:tint="@color/colorOnSurfaceVariant"
-                            android:layout_marginBottom="@dimen/space_sm"
-                            android:contentDescription="@string/cd_upload_photo" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/brand_reg_upload_logo_label"
-                            android:textColor="@color/colorOnSurfaceVariant"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/iv_logo_preview"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:visibility="gone"
-                        android:contentDescription="@string/cd_upload_photo" />
-                </FrameLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/brand_reg_logo_spec"
-                    android:textColor="@color/colorOnSurfaceVariant"
-                    android:textSize="11sp"
-                    android:gravity="center"
-                    android:lineSpacingMultiplier="1.4" />
-            </LinearLayout>
-
-            <!-- Editorial Tip -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/bg_card_surface"
-                android:padding="@dimen/space_md"
-                android:layout_marginBottom="@dimen/space_lg">
+                style="@style/Widget.Aura.Card"
+                app:cardBackgroundColor="@color/colorSurfaceContainerLowest"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/colorOutlineVariant"
+                app:cardCornerRadius="24dp"
+                android:layout_marginBottom="24dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/space_sm">
-
-                    <ImageView
-                        android:layout_width="@dimen/icon_size_md"
-                        android:layout_height="@dimen/icon_size_md"
-                        android:src="@android:drawable/ic_dialog_info"
-                        android:tint="@color/colorTertiary"
-                        android:layout_marginEnd="@dimen/space_sm"
-                        android:contentDescription="@null" />
+                    android:orientation="vertical"
+                    android:padding="@dimen/space_lg"
+                    android:gravity="center_horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/brand_reg_editorial_tip_title"
+                        android:text="@string/brand_reg_logo_label"
                         android:textColor="@color/colorOnSurface"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                        android:textSize="16sp"
+                        android:fontFamily="@font/manrope_bold"
+                        android:layout_marginBottom="24dp" />
 
-                <TextView
+                    <!-- Circular logo upload zone -->
+                    <FrameLayout
+                        android:id="@+id/layout_logo_upload"
+                        android:layout_width="160dp"
+                        android:layout_height="160dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/bg_circle_surface"
+                        android:backgroundTint="@color/colorSurfaceContainerHighest"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout
+                            android:id="@+id/layout_logo_prompt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/icon_size_xl"
+                                android:layout_height="@dimen/icon_size_xl"
+                                android:src="@android:drawable/ic_menu_camera"
+                                android:tint="@color/colorOnSurfaceVariant"
+                                android:layout_marginBottom="8dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/brand_reg_upload_logo_label"
+                                android:textColor="@color/colorOnSurfaceVariant"
+                                android:fontFamily="@font/manrope_bold"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/iv_logo_preview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/brand_reg_logo_spec"
+                        android:textColor="@color/colorOnSurfaceVariant"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/manrope_medium"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="1.4" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Editorial Tip -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Aura.Card"
+                app:cardBackgroundColor="@color/colorSurfaceContainerLow"
+                app:cardCornerRadius="16dp"
+                android:layout_marginBottom="32dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/brand_reg_editorial_tip_body"
-                    android:textColor="@color/colorOnSurfaceVariant"
-                    android:textSize="12sp"
-                    android:lineSpacingMultiplier="1.5" />
-            </LinearLayout>
+                    android:orientation="vertical"
+                    android:padding="@dimen/space_md">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size_md"
+                            android:layout_height="@dimen/icon_size_md"
+                            android:src="@android:drawable/ic_dialog_info"
+                            android:tint="@color/colorTertiary"
+                            android:layout_marginEnd="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/brand_reg_editorial_tip_title"
+                            android:textColor="@color/colorOnSurface"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/manrope_bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/brand_reg_editorial_tip_body"
+                        android:textColor="@color/colorOnSurfaceVariant"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/manrope_medium"
+                        android:lineSpacingMultiplier="1.5" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Core Identity fields section -->
             <TextView
@@ -232,32 +253,38 @@
                 android:text="Core Identity"
                 android:textColor="@color/colorOnSurface"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="@dimen/space_lg" />
+                android:fontFamily="@font/manrope_bold"
+                android:layout_marginBottom="24dp" />
 
             <!-- Motto -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/brand_reg_motto_label"
-                android:textColor="@color/colorOnSurface"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="@dimen/space_sm" />
+                android:textColor="@color/colorOutline"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="4dp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_motto"
                 style="@style/Widget.Aura.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/space_lg">
+                app:hintEnabled="false"
+                android:layout_marginBottom="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_motto"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
+                    android:layout_height="64dp"
                     android:hint="@string/brand_reg_motto_hint"
+                    android:textColorHint="@color/colorOutline"
                     android:inputType="text"
+                    android:fontFamily="@font/manrope_medium"
                     android:textColor="@color/colorOnSurface" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -266,17 +293,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/brand_reg_bio_label"
-                android:textColor="@color/colorOnSurface"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="@dimen/space_sm" />
+                android:textColor="@color/colorOutline"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="4dp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_bio"
                 style="@style/Widget.Aura.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp">
+                app:hintEnabled="false"
+                android:layout_marginBottom="4dp"
+                app:boxCornerRadiusTopStart="24dp"
+                app:boxCornerRadiusTopEnd="24dp"
+                app:boxCornerRadiusBottomStart="24dp"
+                app:boxCornerRadiusBottomEnd="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_bio"
@@ -284,8 +319,11 @@
                     android:layout_height="wrap_content"
                     android:minLines="5"
                     android:hint="@string/brand_reg_bio_hint"
+                    android:textColorHint="@color/colorOutline"
                     android:inputType="textMultiLine"
                     android:gravity="top"
+                    android:paddingTop="16dp"
+                    android:fontFamily="@font/manrope_medium"
                     android:textColor="@color/colorOnSurface" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -295,10 +333,11 @@
                 android:text="@string/brand_reg_bio_char_limit"
                 android:textColor="@color/colorOnSurfaceVariant"
                 android:textSize="10sp"
+                android:fontFamily="@font/manrope_bold"
                 android:textAllCaps="true"
                 android:letterSpacing="0.1"
                 android:gravity="end"
-                android:layout_marginBottom="@dimen/space_lg" />
+                android:layout_marginBottom="24dp" />
 
         </LinearLayout>
     </ScrollView>
@@ -307,7 +346,7 @@
         android:id="@+id/layout_bottom_nav"
         layout="@layout/component_reg_bottom_nav"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/bottom_nav_height"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

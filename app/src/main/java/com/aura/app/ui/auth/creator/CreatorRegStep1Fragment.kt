@@ -34,9 +34,9 @@ class CreatorRegStep1Fragment : Fragment() {
         binding.etPhone.setText(registrationViewModel.phone)
         binding.etSecurityAnswer.setText(registrationViewModel.securityAnswer)
 
-        binding.toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
+        binding.ivBack.setOnClickListener { findNavController().navigateUp() }
         binding.btnCancel.setOnClickListener { findNavController().popBackStack(R.id.welcomeFragment, false) }
-        binding.layoutBottomNav.btnNavBack.setOnClickListener { findNavController().navigateUp() }
+        binding.layoutBottomNav.btnNavCancel.setOnClickListener { findNavController().navigateUp() }
         binding.layoutBottomNav.btnNavNext.setOnClickListener {
             if (validateForm()) {
                 // Save to ViewModel
@@ -47,7 +47,7 @@ class CreatorRegStep1Fragment : Fragment() {
                 registrationViewModel.securityQuestion = binding.acvSecurityQuestion.text.toString()
                 registrationViewModel.securityAnswer = binding.etSecurityAnswer.text.toString().trim()
 
-                findNavController().navigate(R.id.action_creator_step1_to_step2)
+                findNavController().navigate(R.id.action_creator_step1_to_step3)
             }
         }
     }

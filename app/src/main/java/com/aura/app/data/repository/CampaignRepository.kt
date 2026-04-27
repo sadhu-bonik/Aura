@@ -21,14 +21,42 @@ class CampaignRepository(private val db: FirebaseFirestore) {
                 .whereEqualTo("brandId", brandId)
                 .get()
                 .await()
-            val campaigns = snapshot.toObjects(Campaign::class.java)
-            if (campaigns.isNotEmpty()) {
-                emit(campaigns)
-            } else {
-                emit(StubData.campaigns)
-            }
+            emit(snapshot.toObjects(Campaign::class.java))
         } catch (e: Exception) {
-            emit(StubData.campaigns)
+            emit(emptyList())
+        }
+    }
+
+    suspend fun getCampaign(campaignId: String): Campaign? {
+        return try {
+            db.collection(Constants.COLLECTION_CAMPAIGNS)
+                .document(campaignId)
+                .get()
+                .await()
+                .toObject(Campaign::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    suspend fun saveCampaign(campaign: Campaign): Result<Unit> {
+        return try {
+            val ref = if (campaign.campaignId.isEmpty()) {
+                db.collection(Constants.COLLECTION_CAMPAIGNS).document()
+            } else {
+                db.collection(Constants.COLLECTION_CAMPAIGNS).document(campaign.campaignId)
+            }
+            
+            val finalCampaign = if (campaign.campaignId.isEmpty()) {
+                campaign.copy(campaignId = ref.id, createdAt = com.google.firebase.Timestamp.now())
+            } else {
+                campaign
+            }
+            
+            ref.set(finalCampaign).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 }

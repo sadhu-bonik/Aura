@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     Brand Registration - Step 1: Create Brand Account
-    Design ref: brand_create_account_1_5/screen.png
 -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,138 +8,147 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
 
-    <!-- Top App Bar with progress bar underneath -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
+    <!-- Background Decor -->
+    <View
+        android:layout_width="384dp"
+        android:layout_height="384dp"
+        android:background="@drawable/bg_blur_primary"
+        android:alpha="0.10"
+        android:layout_marginTop="-100dp"
+        android:layout_marginStart="-100dp" />
+
+    <!-- Top Navigation Bar -->
+    <LinearLayout
+        android:id="@+id/layout_top_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#B20B1326"
-        app:elevation="0dp">
+        android:layout_height="@dimen/top_app_bar_height"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/space_lg"
+        android:paddingEnd="@dimen/space_lg">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/iv_nav_back"
+            android:layout_width="@dimen/icon_size_md"
+            android:layout_height="@dimen/icon_size_md"
+            android:src="@android:drawable/ic_media_previous"
+            android:tint="@color/colorGradientStart"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp" />
+
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_weight="1"
+            android:text="@string/brand_reg_step1_tag"
+            android:textColor="@color/colorOnSurface"
+            android:textSize="16sp"
+            android:fontFamily="@font/manrope_bold"
+            android:layout_marginStart="@dimen/space_md" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/top_app_bar_height"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingStart="@dimen/space_lg"
-                android:paddingEnd="@dimen/space_lg">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textColor="@color/colorOnSurface"
+            android:textSize="20sp"
+            android:fontFamily="@font/manrope_extrabold"
+            android:letterSpacing="-0.03"
+            android:layout_marginEnd="@dimen/space_md" />
 
-                <ImageView
-                    android:id="@+id/iv_nav_back"
-                    android:layout_width="@dimen/icon_size_md"
-                    android:layout_height="@dimen/icon_size_md"
-                    android:src="@android:drawable/ic_media_previous"
-                    android:tint="@color/colorOnSurfaceVariant"
-                    android:contentDescription="@string/cd_back_button"
-                    android:layout_marginEnd="@dimen/space_md" />
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="@dimen/icon_size_md"
+            android:layout_height="@dimen/icon_size_md"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:tint="@color/colorOnSurfaceVariant"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp" />
+    </LinearLayout>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/brand_reg_step1_tag"
-                    android:textColor="@color/colorOnSurface"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_name"
-                    android:textColor="@color/colorOnSurface"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="-0.03"
-                    android:layout_marginEnd="@dimen/space_md" />
-
-                <ImageView
-                    android:id="@+id/iv_close"
-                    android:layout_width="@dimen/icon_size_md"
-                    android:layout_height="@dimen/icon_size_md"
-                    android:src="@android:drawable/ic_menu_close_clear_cancel"
-                    android:tint="@color/colorOnSurfaceVariant"
-                    android:contentDescription="@null" />
-            </LinearLayout>
-
-            <!-- Progress bar -->
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/progress_bar"
-                style="@style/Widget.Aura.ProgressBar"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:progress="20" />
-        </LinearLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+    <!-- Progress bar -->
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_bar"
+        style="@style/Widget.Aura.ProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_marginTop="@dimen/top_app_bar_height"
+        android:progress="20"
+        app:trackCornerRadius="4dp" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_marginTop="64dp"
+        android:paddingBottom="160dp"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="@dimen/space_lg"
-            android:paddingEnd="@dimen/space_lg"
-            android:paddingTop="@dimen/space_xl"
-            android:paddingBottom="120dp">
+            android:paddingStart="@dimen/space_xl"
+            android:paddingEnd="@dimen/space_xl"
+            android:paddingTop="@dimen/space_lg"
+            android:paddingBottom="@dimen/space_xl">
 
             <!-- Secure Onboarding Banner -->
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="top"
-                android:padding="@dimen/space_md"
-                android:background="@drawable/bg_banner_primary_left"
-                android:layout_marginBottom="@dimen/space_xl">
-
-                <FrameLayout
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="@color/colorPrimaryContainer"
-                    android:layout_marginEnd="@dimen/space_md">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@android:drawable/ic_lock_lock"
-                        android:tint="@color/colorPrimary"
-                        android:contentDescription="@null" />
-                </FrameLayout>
+                style="@style/Widget.Aura.Card"
+                app:cardBackgroundColor="@color/colorSurfaceContainerLow"
+                app:cardCornerRadius="16dp"
+                android:layout_marginBottom="32dp">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:gravity="top"
+                    android:padding="@dimen/space_md">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/brand_reg_secure_banner_title"
-                        android:textColor="@color/colorOnSurface"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
+                    <FrameLayout
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_circle_primary_tint"
+                        android:backgroundTint="@color/colorPrimaryContainer"
+                        android:layout_marginEnd="@dimen/space_md">
 
-                    <TextView
-                        android:layout_width="match_parent"
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@android:drawable/ic_lock_lock"
+                            android:tint="@color/colorPrimary" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/brand_reg_secure_banner_body"
-                        android:textColor="@color/colorOnSurfaceVariant"
-                        android:textSize="12sp"
-                        android:lineSpacingMultiplier="1.4" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/brand_reg_secure_banner_title"
+                            android:textColor="@color/colorOnSurface"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/manrope_bold"
+                            android:layout_marginBottom="4dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/brand_reg_secure_banner_body"
+                            android:textColor="@color/colorOnSurfaceVariant"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/manrope_medium"
+                            android:lineSpacingMultiplier="1.4" />
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Title -->
             <TextView
@@ -150,9 +158,9 @@
                 android:text="@string/brand_reg_step1_title"
                 android:textColor="@color/colorOnSurface"
                 android:textSize="32sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/manrope_extrabold"
                 android:letterSpacing="-0.02"
-                android:layout_marginBottom="@dimen/space_sm" />
+                android:layout_marginBottom="8dp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -160,16 +168,20 @@
                 android:text="@string/brand_reg_step1_subtitle"
                 android:textColor="@color/colorOnSurfaceVariant"
                 android:textSize="14sp"
-                android:layout_marginBottom="@dimen/space_xl" />
+                android:fontFamily="@font/manrope_medium"
+                android:layout_marginBottom="32dp" />
 
             <!-- Brand Name -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/brand_reg_name_label"
-                android:textColor="@color/colorOnSurfaceVariant"
-                android:textSize="13sp"
-                android:layout_marginBottom="@dimen/space_xs"
+                android:textColor="@color/colorOutline"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
                 android:layout_marginStart="4dp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -177,14 +189,17 @@
                 style="@style/Widget.Aura.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/space_lg">
+                app:hintEnabled="false"
+                android:layout_marginBottom="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_brand_name"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
+                    android:layout_height="64dp"
                     android:hint="@string/brand_reg_name_hint"
+                    android:textColorHint="@color/colorOutline"
                     android:inputType="textCapWords"
+                    android:fontFamily="@font/manrope_medium"
                     android:textColor="@color/colorOnSurface" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -193,9 +208,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/brand_reg_email_label"
-                android:textColor="@color/colorOnSurfaceVariant"
-                android:textSize="13sp"
-                android:layout_marginBottom="@dimen/space_xs"
+                android:textColor="@color/colorOutline"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
                 android:layout_marginStart="4dp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -203,14 +221,17 @@
                 style="@style/Widget.Aura.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/space_lg">
+                app:hintEnabled="false"
+                android:layout_marginBottom="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_email"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
+                    android:layout_height="64dp"
                     android:hint="@string/brand_reg_email_hint"
+                    android:textColorHint="@color/colorOutline"
                     android:inputType="textEmailAddress"
+                    android:fontFamily="@font/manrope_medium"
                     android:textColor="@color/colorOnSurface" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -219,9 +240,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/brand_reg_phone_label"
-                android:textColor="@color/colorOnSurfaceVariant"
-                android:textSize="13sp"
-                android:layout_marginBottom="@dimen/space_xs"
+                android:textColor="@color/colorOutline"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
                 android:layout_marginStart="4dp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -229,14 +253,17 @@
                 style="@style/Widget.Aura.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/space_lg">
+                app:hintEnabled="false"
+                android:layout_marginBottom="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_phone"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
+                    android:layout_height="64dp"
                     android:hint="@string/brand_reg_phone_hint"
+                    android:textColorHint="@color/colorOutline"
                     android:inputType="phone"
+                    android:fontFamily="@font/manrope_medium"
                     android:textColor="@color/colorOnSurface" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -245,7 +272,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="@dimen/space_md">
+                android:layout_marginBottom="16dp"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -258,9 +286,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/brand_reg_password_label"
-                        android:textColor="@color/colorOnSurfaceVariant"
-                        android:textSize="13sp"
-                        android:layout_marginBottom="@dimen/space_xs"
+                        android:textColor="@color/colorOutline"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/manrope_bold"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.1"
+                        android:layout_marginBottom="8dp"
                         android:layout_marginStart="4dp" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -268,14 +299,18 @@
                         style="@style/Widget.Aura.TextInputLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:endIconMode="password_toggle">
+                        app:hintEnabled="false"
+                        app:endIconMode="password_toggle"
+                        app:endIconTint="@color/colorOutline">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_password"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/input_height"
+                            android:layout_height="64dp"
                             android:hint="••••••••"
+                            android:textColorHint="@color/colorOutline"
                             android:inputType="textPassword"
+                            android:fontFamily="@font/manrope_medium"
                             android:textColor="@color/colorOnSurface" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -290,9 +325,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/brand_reg_confirm_password_label"
-                        android:textColor="@color/colorOnSurfaceVariant"
-                        android:textSize="13sp"
-                        android:layout_marginBottom="@dimen/space_xs"
+                        android:textColor="@color/colorOutline"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/manrope_bold"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.1"
+                        android:layout_marginBottom="8dp"
                         android:layout_marginStart="4dp" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -300,14 +338,18 @@
                         style="@style/Widget.Aura.TextInputLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:endIconMode="password_toggle">
+                        app:hintEnabled="false"
+                        app:endIconMode="password_toggle"
+                        app:endIconTint="@color/colorOutline">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_confirm_password"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/input_height"
+                            android:layout_height="64dp"
                             android:hint="••••••••"
+                            android:textColorHint="@color/colorOutline"
                             android:inputType="textPassword"
+                            android:fontFamily="@font/manrope_medium"
                             android:textColor="@color/colorOnSurface" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -318,7 +360,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="@dimen/space_lg">
+                android:layout_marginBottom="32dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -332,14 +374,14 @@
                         android:layout_height="16dp"
                         android:src="@android:drawable/checkbox_on_background"
                         android:tint="@color/colorPrimary"
-                        android:layout_marginEnd="@dimen/space_sm"
-                        android:contentDescription="@null" />
+                        android:layout_marginEnd="6dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/brand_reg_password_req_length"
                         android:textColor="@color/colorOnSurfaceVariant"
+                        android:fontFamily="@font/manrope_medium"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -355,14 +397,14 @@
                         android:layout_height="16dp"
                         android:src="@android:drawable/radiobutton_off_background"
                         android:tint="@color/colorOutlineVariant"
-                        android:layout_marginEnd="@dimen/space_sm"
-                        android:contentDescription="@null" />
+                        android:layout_marginEnd="6dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/brand_reg_password_req_uppercase"
                         android:textColor="@color/colorOnSurfaceVariant"
+                        android:fontFamily="@font/manrope_medium"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -377,14 +419,14 @@
                         android:layout_height="16dp"
                         android:src="@android:drawable/radiobutton_off_background"
                         android:tint="@color/colorOutlineVariant"
-                        android:layout_marginEnd="@dimen/space_sm"
-                        android:contentDescription="@null" />
+                        android:layout_marginEnd="6dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/brand_reg_password_req_number"
                         android:textColor="@color/colorOnSurfaceVariant"
+                        android:fontFamily="@font/manrope_medium"
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -394,17 +436,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/colorOutlineVariant"
-                android:alpha="0.3"
-                android:layout_marginBottom="@dimen/space_lg" />
+                android:alpha="0.2"
+                android:layout_marginBottom="32dp" />
 
             <!-- Security Question -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/brand_reg_security_question_label"
-                android:textColor="@color/colorOnSurfaceVariant"
-                android:textSize="13sp"
-                android:layout_marginBottom="@dimen/space_xs"
+                android:textColor="@color/colorOutline"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
                 android:layout_marginStart="4dp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -412,15 +457,21 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/space_lg"
-                app:boxBackgroundColor="@color/colorSurfaceContainerHighest"
-                app:boxStrokeWidth="0dp">
+                android:layout_marginBottom="24dp"
+                app:hintEnabled="false"
+                app:boxBackgroundColor="@color/colorSurfaceContainerLow"
+                app:boxStrokeWidth="0dp"
+                app:boxCornerRadiusTopStart="28dp"
+                app:boxCornerRadiusTopEnd="28dp"
+                app:boxCornerRadiusBottomStart="28dp"
+                app:boxCornerRadiusBottomEnd="28dp">
 
                 <AutoCompleteTextView
                     android:id="@+id/acv_security_question"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
+                    android:layout_height="64dp"
                     android:inputType="none"
+                    android:fontFamily="@font/manrope_medium"
                     android:textColor="@color/colorOnSurface" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -429,9 +480,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/brand_reg_security_answer_label"
-                android:textColor="@color/colorOnSurfaceVariant"
-                android:textSize="13sp"
-                android:layout_marginBottom="@dimen/space_xs"
+                android:textColor="@color/colorOutline"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
                 android:layout_marginStart="4dp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -439,26 +493,29 @@
                 style="@style/Widget.Aura.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/space_xl">
+                app:hintEnabled="false"
+                android:layout_marginBottom="32dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_security_answer"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
+                    android:layout_height="64dp"
                     android:hint="@string/brand_reg_security_answer_hint"
+                    android:textColorHint="@color/colorOutline"
                     android:inputType="text"
+                    android:fontFamily="@font/manrope_medium"
                     android:textColor="@color/colorOnSurface" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Standardized Bottom Actions -->
-            <include
-                android:id="@+id/layout_bottom_nav"
-                layout="@layout/component_reg_bottom_nav"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/bottom_nav_height"
-                android:layout_marginTop="@dimen/space_xl" />
-
         </LinearLayout>
     </ScrollView>
+
+    <!-- Fixed bottom nav bar -->
+    <include
+        android:id="@+id/layout_bottom_nav"
+        layout="@layout/component_reg_bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -53,14 +53,33 @@ class RoleSelectionFragment : Fragment() {
     }
 
     private fun updateCardState(selected: String) {
-        binding.cardCreator.setBackgroundResource(
-            if (selected == "creator") R.drawable.bg_card_role_selected else R.drawable.bg_card_glass
-        )
-        binding.cardBrand.setBackgroundResource(
-            if (selected == "brand") R.drawable.bg_card_role_selected else R.drawable.bg_card_glass
-        )
-        binding.ivCreatorCheck.visibility = if (selected == "creator") View.VISIBLE else View.GONE
-        binding.ivBrandCheck.visibility = if (selected == "brand") View.VISIBLE else View.GONE
+        val dp2 = (2 * resources.displayMetrics.density).toInt()
+        val dp1 = (1 * resources.displayMetrics.density).toInt()
+        val colorPrimary = requireContext().getColor(R.color.colorPrimary)
+        val colorTertiary = requireContext().getColor(R.color.colorTertiary)
+        val colorOutlineVariant = requireContext().getColor(R.color.colorOutlineVariant)
+
+        // Creator card
+        if (selected == "creator") {
+            binding.cardCreator.strokeWidth = dp2
+            binding.cardCreator.strokeColor = colorPrimary
+            binding.ivCreatorCheck.visibility = View.VISIBLE
+        } else {
+            binding.cardCreator.strokeWidth = dp1
+            binding.cardCreator.strokeColor = colorOutlineVariant
+            binding.ivCreatorCheck.visibility = View.GONE
+        }
+
+        // Brand card
+        if (selected == "brand") {
+            binding.cardBrand.strokeWidth = dp2
+            binding.cardBrand.strokeColor = colorTertiary
+            binding.ivBrandCheck.visibility = View.VISIBLE
+        } else {
+            binding.cardBrand.strokeWidth = dp1
+            binding.cardBrand.strokeColor = colorOutlineVariant
+            binding.ivBrandCheck.visibility = View.GONE
+        }
     }
 
 

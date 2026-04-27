@@ -62,6 +62,21 @@ class StorageRepository(
     }
 
     /**
+     * Uploads a campaign image and returns download URL + storage path.
+     */
+    suspend fun uploadCampaignImage(
+        brandId: String,
+        campaignId: String,
+        uri: Uri
+    ): UploadResult {
+        val path = "campaigns/$brandId/$campaignId.jpg"
+        val ref = storage.reference.child(path)
+        ref.putFile(uri).await()
+        val downloadUrl = ref.downloadUrl.await().toString()
+        return UploadResult(downloadUrl = downloadUrl, storagePath = path)
+    }
+
+    /**
      * Uploads a verification document and returns download URL + storage path.
      * Mirrors uploadVerificationDoc() but returns UploadResult for callers that
      * need the storage path (e.g. brand registration).

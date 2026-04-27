@@ -7,9 +7,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import android.util.Log
 import com.aura.app.data.model.BrandProfile
+import com.aura.app.data.model.Campaign
 import com.aura.app.data.model.CreatorProfile
 import com.aura.app.data.model.PortfolioItem
 import com.aura.app.data.model.User
+import com.aura.app.data.repository.CampaignRepository
 import com.aura.app.data.repository.PortfolioRepository
 import com.aura.app.data.repository.StorageRepository
 import com.aura.app.data.repository.UserRepository
@@ -32,6 +34,7 @@ sealed class ProfileUiState {
         val creatorProfile: CreatorProfile? = null,
         val brandProfile: BrandProfile? = null,
         val portfolio: List<PortfolioItem> = emptyList(),
+        val campaigns: List<Campaign> = emptyList(),
         val isOwner: Boolean = true,
         val viewerRole: String? = null,
         val viewerId: String? = null
@@ -54,6 +57,7 @@ class ProfileViewModel(
     private val userRepository: UserRepository = UserRepository(),
     private val portfolioRepository: PortfolioRepository = PortfolioRepository(),
     private val storageRepository: StorageRepository = StorageRepository(),
+    private val campaignRepository: CampaignRepository = CampaignRepository(com.google.firebase.firestore.FirebaseFirestore.getInstance()),
     private val sessionManager: SessionManager,
 ) : ViewModel() {
 
@@ -114,11 +118,32 @@ class ProfileViewModel(
             val viewerUser = userRepository.getUserProfile(currentUserId)
             val viewerRole = viewerUser?.role
 
-            // Show the user info immediately, then stream portfolio items
-            _state.value = ProfileUiState.Success(user, creatorProfile, brandProfile, emptyList(), isOwner, viewerRole, currentUserId)
+            // Show the user info immediately, then stream data
+            _state.value = ProfileUiState.Success(
+                user = user,
+                creatorProfile = creatorProfile,
+                brandProfile = brandProfile,
+                portfolio = emptyList(),
+                campaigns = emptyList(),
+                isOwner = isOwner,
+                viewerRole = viewerRole,
+                viewerId = currentUserId
+            )
 
-            portfolioRepository.getCreatorPortfolio(targetId).collect { portfolio ->
-                _state.value = ProfileUiState.Success(user, creatorProfile, brandProfile, portfolio, isOwner, viewerRole, currentUserId)
+            if (user.role == "brand") {
+                campaignRepository.getCampaignsForBrand(targetId).collect { campaigns ->
+                    val currentState = _state.value
+                    if (currentState is ProfileUiState.Success) {
+                        _state.value = currentState.copy(campaigns = campaigns)
+                    }
+                }
+            } else {
+                portfolioRepository.getCreatorPortfolio(targetId).collect { portfolio ->
+                    val currentState = _state.value
+                    if (currentState is ProfileUiState.Success) {
+                        _state.value = currentState.copy(portfolio = portfolio)
+                    }
+                }
             }
         }
     }

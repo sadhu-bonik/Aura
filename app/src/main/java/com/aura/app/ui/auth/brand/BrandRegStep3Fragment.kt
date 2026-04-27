@@ -22,7 +22,7 @@ class BrandRegStep3Fragment : Fragment() {
     private val vm: BrandRegistrationViewModel by activityViewModels { BrandRegistrationViewModel.Factory() }
 
     private val filePickerLauncher = registerForActivityResult(
-        ActivityResultContracts.GetContent()
+        ActivityResultContracts.OpenDocument()
     ) { uri: Uri? ->
         uri?.let { handleSelectedFile(it) }
     }
@@ -81,10 +81,10 @@ class BrandRegStep3Fragment : Fragment() {
         binding.ivClose.setOnClickListener { findNavController().navigateUp() }
 
         binding.layoutFileUpload.setOnClickListener {
-            filePickerLauncher.launch("*/*")
+            filePickerLauncher.launch(arrayOf("application/pdf", "image/*"))
         }
 
-        binding.layoutBottomNav.btnNavBack.setOnClickListener {
+        binding.layoutBottomNav.btnNavCancel.setOnClickListener {
             findNavController().navigateUp()
         }
 
@@ -119,6 +119,11 @@ class BrandRegStep3Fragment : Fragment() {
             binding.tilCompanyEmail.error = "Required"; valid = false
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.tilCompanyEmail.error = "Enter a valid email"; valid = false
+        }
+
+        if (vm.verificationFileUri == null) {
+            android.widget.Toast.makeText(requireContext(), "Please upload a verification document (PDF or Image)", android.widget.Toast.LENGTH_SHORT).show()
+            valid = false
         }
 
         return valid

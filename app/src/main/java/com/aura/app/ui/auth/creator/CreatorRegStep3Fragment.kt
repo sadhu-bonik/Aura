@@ -42,8 +42,8 @@ class CreatorRegStep3Fragment : Fragment() {
             binding.acvAudienceRegion.setText(registrationViewModel.audienceRegion, false)
         }
 
-        binding.toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
-        binding.layoutBottomNav.btnNavBack.setOnClickListener { findNavController().navigateUp() }
+        binding.ivBack.setOnClickListener { findNavController().navigateUp() }
+        binding.layoutBottomNav.btnNavCancel.setOnClickListener { findNavController().navigateUp() }
         binding.layoutBottomNav.btnNavNext.setOnClickListener {
             val cityStr = binding.etCity.text.toString().trim()
             val stateStr = binding.etState.text.toString().trim()
@@ -80,7 +80,7 @@ class CreatorRegStep3Fragment : Fragment() {
             registrationViewModel.audienceRegion = binding.acvAudienceRegion.text.toString()
             registrationViewModel.niches = selectedNiches
 
-            findNavController().navigate(R.id.action_creator_step3_to_step4)
+            findNavController().navigate(R.id.action_creator_step3_to_step2)
         }
     }
 

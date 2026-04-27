@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorSurface">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSurface"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_setup_campaign"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Setup Campaign"
+            app:titleCentered="true"
+            app:titleTextColor="@color/colorOnSurface"
+            app:navigationIcon="@drawable/ic_arrow_back" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/space_xl"
+            android:paddingBottom="120dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Campaign Details"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="24sp"
+                android:fontFamily="@font/manrope_bold"
+                android:layout_marginTop="@dimen/space_md"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Define what you're looking for in creators"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="14sp"
+                android:fontFamily="@font/manrope_medium"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Campaign Image Picker -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_campaign_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="32dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/colorOutlineVariant">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/iv_campaign_preview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/bg_pill_surface_low" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_gradient_overlay" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_add_image_placeholder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_add"
+                            app:tint="@color/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Add Campaign Image"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/manrope_bold" />
+                    </LinearLayout>
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Campaign Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CAMPAIGN TITLE"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_title"
+                style="@style/Widget.Aura.TextInputLayout"
+                app:hintEnabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:hint="e.g. Summer Collection 2024"
+                    android:inputType="textCapWords"
+                    android:fontFamily="@font/manrope_medium"
+                    android:textColor="@color/colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Description -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DESCRIPTION"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_description"
+                style="@style/Widget.Aura.TextInputLayout"
+                app:hintEnabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="120dp"
+                    android:gravity="top|start"
+                    android:hint="Describe the campaign goals, theme, and requirements..."
+                    android:inputType="textMultiLine"
+                    android:fontFamily="@font/manrope_medium"
+                    android:textColor="@color/colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Budget Range -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BUDGET RANGE ($)"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="24dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_budget_min"
+                    style="@style/Widget.Aura.TextInputLayout"
+                    app:hintEnabled="false"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_budget_min"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:hint="Min"
+                        android:inputType="number"
+                        android:fontFamily="@font/manrope_medium"
+                        android:textColor="@color/colorOnSurface" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_budget_max"
+                    style="@style/Widget.Aura.TextInputLayout"
+                    app:hintEnabled="false"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_budget_max"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:hint="Max"
+                        android:inputType="number"
+                        android:fontFamily="@font/manrope_medium"
+                        android:textColor="@color/colorOnSurface" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <!-- Deliverables -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DELIVERABLES"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/cg_deliverables"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:chipSpacingHorizontal="8dp"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_post"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Post"
+                    android:checkable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_reel"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reel"
+                    android:checkable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_story"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Story"
+                    android:checkable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_video"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="YouTube Video"
+                    android:checkable="true" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- Save Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_save_campaign"
+                style="@style/Widget.Aura.Button.Primary.Gradient"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:text="Save Campaign"
+                android:textSize="16sp"
+                android:layout_marginTop="32dp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

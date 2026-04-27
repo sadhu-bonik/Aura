@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="@color/colorSurface">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -28,120 +28,413 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:fillViewport="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingHorizontal="@dimen/space_xl"
-            android:paddingBottom="@dimen/space_xxl">
+            android:paddingBottom="120dp">
 
-            <!-- Profile Photo Preview -->
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/iv_edit_photo"
-                android:layout_width="@dimen/avatar_lg"
-                android:layout_height="@dimen/avatar_lg"
-                android:layout_marginTop="@dimen/space_xl"
-                android:scaleType="centerCrop"
-                android:background="@color/colorSurfaceContainerHigh"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <!-- Upload Photo Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_upload_photo"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_sm"
-                android:text="Change Profile Photo"
-                android:textColor="@color/colorPrimary"
-                app:layout_constraintTop_toBottomOf="@id/iv_edit_photo"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <!-- Spacer -->
-            <View
-                android:id="@+id/space_photo_inputs"
+            <!-- Hero Visual Section -->
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/space_lg"
-                app:layout_constraintTop_toBottomOf="@id/btn_upload_photo" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_md"
+                android:layout_marginBottom="32dp"
+                android:gravity="center">
+
+                <FrameLayout
+                    android:id="@+id/btn_upload_photo"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_circle_surface"
+                    android:backgroundTint="@color/colorSurfaceContainerHighest"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/iv_edit_photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
+
+                    <!-- Edit Badge -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="bottom|end"
+                        app:cardBackgroundColor="@color/colorPrimary"
+                        app:cardCornerRadius="18dp"
+                        app:strokeWidth="2dp"
+                        app:strokeColor="@color/colorSurface">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_edit"
+                            android:tint="@color/colorOnPrimary" />
+                    </com.google.android.material.card.MaterialCardView>
+                </FrameLayout>
+            </FrameLayout>
 
             <!-- Name Input -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FULL NAME"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_name"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.Aura.TextInputLayout"
+                app:hintEnabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Full Name"
-                app:boxBackgroundColor="@color/colorSurfaceVariant"
-                app:boxCornerRadiusTopStart="@dimen/corner_radius_sm"
-                app:boxCornerRadiusTopEnd="@dimen/corner_radius_sm"
-                app:layout_constraintTop_toBottomOf="@id/space_photo_inputs">
+                android:layout_marginBottom="16dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="64dp"
+                    android:hint="Full Name"
                     android:inputType="textPersonName"
+                    android:fontFamily="@font/manrope_medium"
+                    android:textColor="@color/colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Headline Input -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HEADLINE"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_headline"
+                style="@style/Widget.Aura.TextInputLayout"
+                app:hintEnabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_headline"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:hint="Digital Creator"
+                    android:inputType="text"
+                    android:fontFamily="@font/manrope_medium"
                     android:textColor="@color/colorOnSurface" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Bio Input -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BIO"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_bio"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.Aura.TextInputLayout"
+                app:hintEnabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_md"
-                android:hint="Bio"
-                app:boxBackgroundColor="@color/colorSurfaceVariant"
-                app:boxCornerRadiusTopStart="@dimen/corner_radius_sm"
-                app:boxCornerRadiusTopEnd="@dimen/corner_radius_sm"
-                app:layout_constraintTop_toBottomOf="@id/til_name">
+                android:layout_marginBottom="16dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_bio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:minLines="3"
-                    android:maxLines="6"
+                    android:minHeight="120dp"
                     android:gravity="top|start"
+                    android:hint="Tell your story"
+                    android:inputType="textMultiLine"
+                    android:fontFamily="@font/manrope_medium"
                     android:textColor="@color/colorOnSurface" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Niche Tags Selection -->
+            <!-- Phone Number -->
             <TextView
-                android:id="@+id/tv_niche_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_md"
-                android:text="Specialties (Select 1-5)"
+                android:text="PHONE NUMBER"
                 android:textColor="@color/colorOnSurfaceVariant"
-                android:textSize="12sp"
-                app:layout_constraintTop_toBottomOf="@id/til_bio"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp" />
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/cg_niche_tags"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_phone"
+                style="@style/Widget.Aura.TextInputLayout"
+                app:hintEnabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_sm"
-                app:singleSelection="false"
-                app:layout_constraintTop_toBottomOf="@id/tv_niche_label" />
+                app:startIconDrawable="@drawable/ic_call"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:hint="+1 (555) 000-0000"
+                    android:inputType="phone"
+                    android:fontFamily="@font/manrope_medium"
+                    android:textColor="@color/colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Security Question -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SECURITY QUESTION"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_security_question"
+                style="@style/Widget.Aura.TextInputLayout"
+                app:hintEnabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/et_security_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:hint="Select a security question"
+                    android:inputType="none"
+                    android:fontFamily="@font/manrope_medium"
+                    android:textColor="@color/colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Security Answer -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SECURITY ANSWER"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_security_answer"
+                style="@style/Widget.Aura.TextInputLayout"
+                app:hintEnabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_security_answer"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:hint="Your answer"
+                    android:inputType="text"
+                    android:fontFamily="@font/manrope_medium"
+                    android:textColor="@color/colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Brand Website (Brands Only) -->
+            <LinearLayout
+                android:id="@+id/layout_brand_website"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BRAND WEBSITE"
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="11sp"
+                    android:fontFamily="@font/manrope_bold"
+                    android:letterSpacing="0.1"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="16dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_website"
+                    style="@style/Widget.Aura.TextInputLayout"
+                    app:hintEnabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:startIconDrawable="@drawable/ic_search"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_website"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:hint="https://yourbrand.com"
+                        android:inputType="textUri"
+                        android:fontFamily="@font/manrope_medium"
+                        android:textColor="@color/colorOnSurface" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <!-- Industry Category (Brands Only) -->
+            <LinearLayout
+                android:id="@+id/layout_brand_industry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="INDUSTRY / CATEGORY"
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="11sp"
+                    android:fontFamily="@font/manrope_bold"
+                    android:letterSpacing="0.1"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="16dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_industry"
+                    style="@style/Widget.Aura.TextInputLayout"
+                    app:hintEnabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_industry"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:hint="e.g. Fashion, Tech"
+                        android:inputType="text"
+                        android:fontFamily="@font/manrope_medium"
+                        android:textColor="@color/colorOnSurface" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+
+            <!-- YouTube URL (Creators Only) -->
+            <LinearLayout
+                android:id="@+id/layout_creator_youtube"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="YOUTUBE"
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="11sp"
+                    android:fontFamily="@font/manrope_bold"
+                    android:letterSpacing="0.1"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="16dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_youtube"
+                    style="@style/Widget.Aura.TextInputLayout"
+                    app:hintEnabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:startIconDrawable="@drawable/ic_feed_play"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_youtube"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:hint="YouTube channel link"
+                        android:inputType="textUri"
+                        android:fontFamily="@font/manrope_medium"
+                        android:textColor="@color/colorOnSurface" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+
+            <!-- Password (Read-Only) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PASSWORD"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="11sp"
+                android:fontFamily="@font/manrope_bold"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_password"
+                style="@style/Widget.Aura.TextInputLayout"
+                app:hintEnabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:startIconDrawable="@android:drawable/ic_lock_lock"
+                android:layout_marginBottom="32dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="••••••••"
+                    android:inputType="textPassword"
+                    android:enabled="false"
+                    android:letterSpacing="0.2"
+                    android:fontFamily="@font/manrope_medium"
+                    android:textColor="@color/colorOutline" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Save Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_save"
+                style="@style/Widget.Aura.Button.Primary.Gradient"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="@dimen/space_xl"
-                android:text="Save Profile"
-                app:cornerRadius="@dimen/corner_radius_md"
-                app:layout_constraintTop_toBottomOf="@id/cg_niche_tags" />
+                android:layout_height="64dp"
+                android:text="Save Changes"
+                android:textSize="16sp"
+                android:layout_marginBottom="16dp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- Delete Profile Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_delete_profile"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:text="Delete Profile"
+                android:textColor="@color/colorError"
+                app:strokeColor="#33f97386"
+                app:backgroundTint="#0Df97386"
+                android:textSize="14sp" />
+
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <!-- Full Screen Loading Overlay -->

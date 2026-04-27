@@ -81,7 +81,7 @@ class BrandRegStep4Fragment : Fragment() {
     private fun setupClickListeners() {
         binding.ivClose.setOnClickListener { findNavController().navigateUp() }
 
-        binding.layoutBottomNav.btnNavBack.setOnClickListener {
+        binding.layoutBottomNav.btnNavCancel.setOnClickListener {
             findNavController().navigateUp()
         }
 

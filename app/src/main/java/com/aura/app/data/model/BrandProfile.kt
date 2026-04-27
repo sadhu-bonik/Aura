@@ -20,12 +20,14 @@ data class BrandProfile(
     val motto: String = "",
     val bio: String = "",
 
-    // Social links (Step 3 — text only for now)
+    // Social & web links
+    val website: String = "",
     val linkedinUrl: String = "",
     val twitterHandle: String = "",
 
     // Market presence (Step 4)
     val industryTags: List<String> = emptyList(),
+    val targetAudience: List<String> = emptyList(),
     val city: String = "",
     val state: String = "",
     val country: String = "",
@@ -45,5 +47,6 @@ data class BrandProfile(
     // Metadata
     val totalCampaigns: Long = 0,
     val activeDeals: Long = 0,
+    val industry: String = "", // Compatibility field
     val updatedAt: Timestamp = Timestamp.now()
 )
