@@ -83,12 +83,14 @@ class NotificationBottomSheet : BottomSheetDialogFragment() {
 
     private fun Notification.opensMessaging(): Boolean =
         type in setOf(
+            Notification.TYPE_NEW_MESSAGE,
             Notification.TYPE_DEAL_ACCEPTED,
             Notification.TYPE_DEAL_RETRACTED,
             Notification.TYPE_DEAL_CANCEL_REQUESTED,
             Notification.TYPE_DEAL_CANCEL_DECLINED,
             Notification.TYPE_DEAL_CANCELED,
             Notification.TYPE_DEAL_COMPLETION_REQUESTED,
+            Notification.TYPE_DEAL_COMPLETION_DECLINED,
             Notification.TYPE_DEAL_COMPLETED,
             Notification.TYPE_REVIEW_REQUESTED,
         )

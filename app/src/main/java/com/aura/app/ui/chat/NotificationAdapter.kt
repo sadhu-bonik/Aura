@@ -50,7 +50,10 @@ class NotificationAdapter(
                 Notification.TYPE_DEAL_RETRACTED,
                 Notification.TYPE_DEAL_CANCEL_REQUESTED,
                 Notification.TYPE_DEAL_CANCEL_DECLINED,
-                Notification.TYPE_DEAL_CANCELED -> R.drawable.ic_close
+                Notification.TYPE_DEAL_CANCELED,
+                Notification.TYPE_DEAL_COMPLETION_DECLINED,
+                Notification.TYPE_DEAL_EXPIRED -> R.drawable.ic_close
+                Notification.TYPE_NEW_MESSAGE -> R.drawable.ic_handshake
                 else -> R.drawable.ic_handshake
             }
             binding.ivNotifIcon.setImageResource(iconRes)

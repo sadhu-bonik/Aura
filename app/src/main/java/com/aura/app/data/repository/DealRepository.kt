@@ -156,6 +156,10 @@ class DealRepository(
     }
 
     suspend fun completeDeal(dealId: String): Result<Unit> = runCatching {
+        val dealSnap = deals.document(dealId).get().await()
+        val deal = dealSnap.toObject(Deal::class.java)?.copy(dealId = dealSnap.id)
+            ?: error("Deal not found")
+
         deals.document(dealId).update(
             mapOf(
                 "status" to Constants.STATUS_COMPLETED,
@@ -163,11 +167,36 @@ class DealRepository(
                 "completedAt" to Timestamp.now(),
             )
         ).await()
+
+        val message = "Your deal \"${deal.title}\" is now complete. Great work!"
+        notifRepo.createNotification(Notification(
+            recipientId = deal.creatorId,
+            actorId = deal.brandId,
+            actorName = userRepo.getUserLite(deal.brandId)?.displayName ?: "The brand",
+            type = Notification.TYPE_DEAL_COMPLETED,
+            dealId = dealId,
+            dealTitle = deal.title,
+            message = message,
+        ))
+        notifRepo.createNotification(Notification(
+            recipientId = deal.brandId,
+            actorId = deal.creatorId,
+            actorName = userRepo.getUserLite(deal.creatorId)?.displayName ?: "The creator",
+            type = Notification.TYPE_DEAL_COMPLETED,
+            dealId = dealId,
+            dealTitle = deal.title,
+            message = message,
+        ))
     }
 
     // Direct cancel. Pending offers close immediately; accepted deals stay active until both
     // parties submit the required review rating, then markUserReviewed() finalizes cancellation.
     suspend fun cancelDeal(dealId: String, cancelledBy: String = "", reason: String = ""): Result<Unit> = runCatching {
+        val dealSnap = deals.document(dealId).get().await()
+        val deal = dealSnap.toObject(Deal::class.java)?.copy(dealId = dealSnap.id)
+            ?: error("Deal not found")
+
+        var isPendingCancel = false
         firestore.runTransaction { tx ->
             val ref = deals.document(dealId)
             val snap = tx.get(ref)
@@ -175,7 +204,8 @@ class DealRepository(
             check(currentStatus in listOf(Constants.STATUS_PENDING, Constants.STATUS_ACCEPTED)) {
                 "Only pending or active deals can be cancelled"
             }
-            val updates = if (currentStatus == Constants.STATUS_PENDING) {
+            isPendingCancel = currentStatus == Constants.STATUS_PENDING
+            val updates = if (isPendingCancel) {
                 mapOf(
                     "status" to Constants.STATUS_CANCELLED,
                     "cancelledBy" to cancelledBy,
@@ -195,6 +225,30 @@ class DealRepository(
             }
             tx.update(ref, updates)
         }.await()
+
+        val otherPartyId = if (cancelledBy == deal.creatorId) deal.brandId else deal.creatorId
+        val actorName = userRepo.getUserLite(cancelledBy)?.displayName ?: "The other party"
+        if (isPendingCancel) {
+            notifRepo.createNotification(Notification(
+                recipientId = otherPartyId,
+                actorId = cancelledBy,
+                actorName = actorName,
+                type = Notification.TYPE_DEAL_RETRACTED,
+                dealId = dealId,
+                dealTitle = deal.title,
+                message = "\"$actorName\" withdrew the deal \"${deal.title}\".",
+            ))
+        } else {
+            notifRepo.createNotification(Notification(
+                recipientId = otherPartyId,
+                actorId = cancelledBy,
+                actorName = actorName,
+                type = Notification.TYPE_DEAL_CANCEL_REQUESTED,
+                dealId = dealId,
+                dealTitle = deal.title,
+                message = "\"$actorName\" requested to cancel \"${deal.title}\".",
+            ))
+        }
     }
 
     suspend fun requestCompletion(dealId: String, initiatorId: String): Result<Unit> = runCatching {
@@ -238,12 +292,31 @@ class DealRepository(
     }
 
     suspend fun declineCompletion(dealId: String): Result<Unit> = runCatching {
+        val dealSnap = deals.document(dealId).get().await()
+        val deal = dealSnap.toObject(Deal::class.java)?.copy(dealId = dealSnap.id)
+            ?: error("Deal not found")
+        val requesterId = deal.completionRequestedBy
+
         deals.document(dealId).update(
             mapOf(
                 "completionRequestedBy" to "",
                 "updatedAt" to Timestamp.now(),
             )
         ).await()
+
+        if (requesterId.isNotBlank()) {
+            val actorId = if (requesterId == deal.creatorId) deal.brandId else deal.creatorId
+            val actorName = userRepo.getUserLite(actorId)?.displayName ?: "The other party"
+            notifRepo.createNotification(Notification(
+                recipientId = requesterId,
+                actorId = actorId,
+                actorName = actorName,
+                type = Notification.TYPE_DEAL_COMPLETION_DECLINED,
+                dealId = dealId,
+                dealTitle = deal.title,
+                message = "\"$actorName\" declined completion for \"${deal.title}\". The deal remains active.",
+            ))
+        }
     }
 
     // Kept for older callers; now cancellation is immediate and unilateral.
@@ -260,6 +333,11 @@ class DealRepository(
     }
 
     suspend fun declineCancellation(dealId: String): Result<Unit> = runCatching {
+        val dealSnap = deals.document(dealId).get().await()
+        val deal = dealSnap.toObject(Deal::class.java)?.copy(dealId = dealSnap.id)
+            ?: error("Deal not found")
+        val requesterId = deal.cancelRequestedBy
+
         deals.document(dealId).update(
             mapOf(
                 "cancelRequestedBy" to "",
@@ -267,6 +345,20 @@ class DealRepository(
                 "updatedAt" to Timestamp.now(),
             )
         ).await()
+
+        if (requesterId.isNotBlank()) {
+            val actorId = if (requesterId == deal.creatorId) deal.brandId else deal.creatorId
+            val actorName = userRepo.getUserLite(actorId)?.displayName ?: "The other party"
+            notifRepo.createNotification(Notification(
+                recipientId = requesterId,
+                actorId = actorId,
+                actorName = actorName,
+                type = Notification.TYPE_DEAL_CANCEL_DECLINED,
+                dealId = dealId,
+                dealTitle = deal.title,
+                message = "\"$actorName\" declined your cancellation request for \"${deal.title}\".",
+            ))
+        }
     }
 
     suspend fun updateDealDetails(dealId: String, title: String, description: String): Result<Unit> = runCatching {
@@ -287,7 +379,14 @@ class DealRepository(
         val snap = deals.document(dealId).get().await()
         val deal = snap.toObject(Deal::class.java)?.copy(dealId = snap.id)
             ?: error("Deal not found")
-        val field = if (deal.creatorId == userId) "creatorReviewedAt" else "brandReviewedAt"
+
+        val isCreator = deal.creatorId == userId
+        val field = if (isCreator) "creatorReviewedAt" else "brandReviewedAt"
+        val otherPartyId = if (isCreator) deal.brandId else deal.creatorId
+        val otherHasReviewed = if (isCreator) deal.brandReviewedAt != null else deal.creatorReviewedAt != null
+
+        var dealSettled = false
+        var settledAsCompleted = false
         firestore.runTransaction { tx ->
             val ref = deals.document(dealId)
             val fresh = tx.get(ref)
@@ -311,21 +410,55 @@ class DealRepository(
                         updates["status"] = Constants.STATUS_COMPLETED
                         updates["completedAt"] = now
                         updates["completionRequestedBy"] = ""
+                        dealSettled = true
+                        settledAsCompleted = true
                     }
                     cancelRequestedBy.isNotBlank() -> {
                         updates["status"] = Constants.STATUS_CANCELLED
                         updates["cancelledBy"] = cancelRequestedBy
                         updates["cancelRequestedBy"] = ""
+                        dealSettled = true
+                        settledAsCompleted = false
                     }
                 }
             }
             tx.update(ref, updates)
         }.await()
+
+        val myName = userRepo.getUserLite(userId)?.displayName ?: "The other party"
+        if (dealSettled) {
+            // Both reviews are in and the deal transitioned — notify both parties
+            val settledMsg = if (settledAsCompleted)
+                "\"${deal.title}\" is now complete. Thanks for using Aura!"
+            else
+                "\"${deal.title}\" has been cancelled and both reviews are submitted."
+            notifRepo.createNotification(Notification(
+                recipientId = otherPartyId,
+                actorId = userId,
+                actorName = myName,
+                type = if (settledAsCompleted) Notification.TYPE_DEAL_COMPLETED else Notification.TYPE_DEAL_CANCELED,
+                dealId = dealId,
+                dealTitle = deal.title,
+                message = settledMsg,
+            ))
+        } else if (!otherHasReviewed) {
+            // First reviewer — prompt the other party to submit their review
+            notifRepo.createNotification(Notification(
+                recipientId = otherPartyId,
+                actorId = userId,
+                actorName = myName,
+                type = Notification.TYPE_REVIEW_REQUESTED,
+                dealId = dealId,
+                dealTitle = deal.title,
+                message = "\"$myName\" left a review for \"${deal.title}\". Leave yours to close the deal!",
+                openReviewPopup = true,
+            ))
+        }
     }
 
     // Checks if a pending deal is older than 7 days and marks it expired locally.
-    // The Firestore write is fire-and-forget; the returned deal reflects the new status.
-    private fun expireIfStale(deal: Deal): Deal {
+    // Suspend so it can also write expiry notifications for both parties.
+    private suspend fun expireIfStale(deal: Deal): Deal {
         if (deal.status != Constants.STATUS_PENDING) return deal
         val createdAt = deal.createdAt?.toDate() ?: return deal
         val sevenDaysMs = 7L * 24 * 60 * 60 * 1000
@@ -337,6 +470,27 @@ class DealRepository(
                 "updatedAt" to Timestamp.now(),
             )
         )
+
+        val expiryMsg = "The deal \"${deal.title}\" expired before it was accepted."
+        notifRepo.createNotification(Notification(
+            recipientId = deal.creatorId,
+            actorId = "",
+            actorName = "Aura",
+            type = Notification.TYPE_DEAL_EXPIRED,
+            dealId = deal.dealId,
+            dealTitle = deal.title,
+            message = expiryMsg,
+        ))
+        notifRepo.createNotification(Notification(
+            recipientId = deal.brandId,
+            actorId = "",
+            actorName = "Aura",
+            type = Notification.TYPE_DEAL_EXPIRED,
+            dealId = deal.dealId,
+            dealTitle = deal.title,
+            message = "Your deal \"${deal.title}\" expired before the creator accepted it.",
+        ))
+
         return deal.copy(status = Constants.STATUS_EXPIRED)
     }
 }

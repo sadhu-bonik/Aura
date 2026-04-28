@@ -1,6 +1,7 @@
 package com.aura.app.data.repository
 
 import com.aura.app.data.model.Message
+import com.aura.app.data.model.Notification
 import com.aura.app.utils.Constants
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
@@ -12,6 +13,7 @@ import kotlinx.coroutines.tasks.await
 
 class MessageRepository(
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance(),
+    private val notifRepo: NotificationRepository = NotificationRepository(),
 ) {
     private val messages = firestore.collection(Constants.COLLECTION_MESSAGES)
     private val deals = firestore.collection(Constants.COLLECTION_DEALS)
@@ -62,6 +64,21 @@ class MessageRepository(
                 "updatedAt" to FieldValue.serverTimestamp(),
             ))
         }.commit().await()
+
+        val dealTitle = dealSnap.getString("title") ?: ""
+        notifRepo.upsertMessageNotification(
+            Notification(
+                recipientId = receiverId,
+                actorId = senderId,
+                actorName = "",
+                type = Notification.TYPE_NEW_MESSAGE,
+                dealId = dealId,
+                dealTitle = dealTitle,
+                message = content.ifBlank { "📎 Media" }.take(120),
+            ),
+            dealId = dealId,
+            recipientId = receiverId,
+        )
     }
 
     suspend fun sendMessageDirect(
@@ -150,6 +167,21 @@ class MessageRepository(
                 "updatedAt" to FieldValue.serverTimestamp(),
             ))
         }.commit().await()
+
+        val dealTitle = dealSnap.getString("title") ?: ""
+        notifRepo.upsertMessageNotification(
+            Notification(
+                recipientId = receiverId,
+                actorId = senderId,
+                actorName = "",
+                type = Notification.TYPE_NEW_MESSAGE,
+                dealId = dealId,
+                dealTitle = dealTitle,
+                message = preview,
+            ),
+            dealId = dealId,
+            recipientId = receiverId,
+        )
     }
 
     suspend fun getSharedMedia(dealId: String): List<Message> = runCatching {

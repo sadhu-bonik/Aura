@@ -35,5 +35,8 @@ data class Notification(
         const val TYPE_DEAL_COMPLETION_REQUESTED = "deal_completion_requested" // one side asks to mark complete
         const val TYPE_DEAL_COMPLETED = "deal_completed"      // both sides confirmed
         const val TYPE_REVIEW_REQUESTED = "review_requested"  // prompt to leave a review
+        const val TYPE_DEAL_COMPLETION_DECLINED = "deal_completion_declined" // other side rejected completion
+        const val TYPE_DEAL_EXPIRED = "deal_expired"          // deal timed out without acceptance
+        const val TYPE_NEW_MESSAGE = "new_message"            // new chat message
     }
 }

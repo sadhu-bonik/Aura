@@ -19,6 +19,11 @@ import com.google.firebase.auth.FirebaseAuth
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        const val EXTRA_NOTIF_ID = "notifId"
+        const val EXTRA_DEAL_ID = "dealId"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)

@@ -56,6 +56,21 @@ class NotificationRepository(
                 }
             }
 
+    /**
+     * Create or overwrite a coalesced notification using a stable document ID.
+     * Used for chat messages so the inbox shows one entry per deal, not one per message.
+     * Each new message resets the timestamp and read flag on the same document.
+     */
+    suspend fun upsertMessageNotification(notif: Notification, dealId: String, recipientId: String): Result<Unit> = runCatching {
+        val stableId = "msg_${recipientId}_$dealId"
+        val withId = notif.copy(
+            notifId = stableId,
+            createdAt = Timestamp.now(),
+            read = false,
+        )
+        col.document(stableId).set(withId).await()
+    }
+
     /** Mark a single notification as read. */
     suspend fun markRead(notifId: String): Result<Unit> = runCatching {
         col.document(notifId).update("read", true).await()
