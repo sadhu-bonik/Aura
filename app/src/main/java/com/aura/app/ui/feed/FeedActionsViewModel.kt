@@ -50,6 +50,7 @@ class FeedActionsViewModel(
     fun toggleShortlist() {
         val uid = auth.currentUser?.uid ?: return
         val creatorId = currentCreatorId ?: return
+        if (uid == creatorId) return // Cannot save yourself
         viewModelScope.launch {
             val newState = withContext(Dispatchers.IO) {
                 runCatching { shortlistRepository.toggleShortlist(uid, creatorId) }.getOrNull()

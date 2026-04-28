@@ -33,8 +33,17 @@ class FeedActionsOverlay(
     fun setup() {
         applyActionRailInsets()
 
-        viewModel.isBrand.observe(lifecycleOwner) {
+        viewModel.isBrand.observe(lifecycleOwner) { isBrand ->
             container.visibility = View.VISIBLE
+            
+            if (isBrand) {
+                btnDeal.visibility = View.VISIBLE
+                dealGlow.visibility = View.VISIBLE
+            } else {
+                btnDeal.visibility = View.GONE
+                dealGlow.visibility = View.GONE
+            }
+
             // Reset deal state whenever we switch to a new creator
             isDealSent = false
             btnDeal.setImageResource(R.drawable.ic_nav_deals)
@@ -49,7 +58,20 @@ class FeedActionsOverlay(
             )
         }
 
-        btnShortlist.setOnClickListener { viewModel.toggleShortlist() }
+        btnShortlist.setOnClickListener {
+            val uid = viewModel.getCurrentUserId()
+            val creatorId = viewModel.getCurrentCreatorId()
+            if (uid != null && creatorId != null) {
+                if (uid == creatorId) {
+                    Toast.makeText(fragment.requireContext(), "Cannot save yourself", Toast.LENGTH_SHORT).show()
+                } else {
+                    val currentlyShortlisted = viewModel.isShortlisted.value == true
+                    val msg = if (currentlyShortlisted) "Creator unsaved" else "Creator saved"
+                    Toast.makeText(fragment.requireContext(), msg, Toast.LENGTH_SHORT).show()
+                    viewModel.toggleShortlist()
+                }
+            }
+        }
 
         btnDeal.setOnClickListener {
             val brandId = viewModel.getCurrentUserId()

@@ -13,7 +13,7 @@
         android:icon="@drawable/ic_nav_home"
         android:title="@string/tab_feed" />
     <item
-        android:id="@+id/navigation_search"
-        android:icon="@drawable/ic_nav_search"
-        android:title="@string/tab_search" />
+        android:id="@+id/navigation_saved"
+        android:icon="@drawable/ic_shortlist_filled"
+        android:title="Saved" />
 </menu>

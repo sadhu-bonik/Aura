@@ -105,11 +105,12 @@ class SettingsFragment : Fragment() {
                 .navigate(R.id.welcomeFragment, null, navOptions)
         }
 
-        // === Disabled options — show "Coming soon" Toast ===
-
+        // Account — opens the Account Settings screen
         binding.rowAccount.setOnClickListener {
-            Toast.makeText(requireContext(), R.string.settings_coming_soon, Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_settings_to_accountSettings)
         }
+
+        // === Disabled options — show "Coming soon" Toast ===
 
         binding.rowPrivacy.setOnClickListener {
             Toast.makeText(requireContext(), R.string.settings_coming_soon, Toast.LENGTH_SHORT).show()

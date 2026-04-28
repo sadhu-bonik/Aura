@@ -102,10 +102,14 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_search"
-        android:name="com.aura.app.ui.main.DiscoverFragment"
-        android:label="@string/tab_search"
-        tools:layout="@layout/fragment_discover" />
+        android:id="@+id/navigation_saved"
+        android:name="com.aura.app.ui.main.SavedFragment"
+        android:label="Saved"
+        tools:layout="@layout/fragment_saved">
+        <action
+            android:id="@+id/action_saved_to_creator_profile"
+            app:destination="@id/navigation_creator_public_profile" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_settings"
@@ -115,7 +119,16 @@
         <action
             android:id="@+id/action_settings_to_editProfile"
             app:destination="@id/navigation_edit_profile" />
+        <action
+            android:id="@+id/action_settings_to_accountSettings"
+            app:destination="@id/navigation_account_settings" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_account_settings"
+        android:name="com.aura.app.ui.main.AccountSettingsFragment"
+        android:label="@string/account_settings_title"
+        tools:layout="@layout/fragment_account_settings" />
 
     <fragment
         android:id="@+id/navigation_user_reviews"
