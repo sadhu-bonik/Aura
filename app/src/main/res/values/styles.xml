@@ -30,6 +30,8 @@
         <item name="android:colorBackground">@color/colorBackground</item>
         <item name="android:windowBackground">@color/colorBackground</item>
         <item name="fontFamily">@font/manrope</item>
+        <item name="android:editTextStyle">@style/Widget.Aura.EditText</item>
+        <item name="editTextStyle">@style/Widget.Aura.EditText</item>
     </style>
 
     <style name="Theme.Aura2" parent="Base.Theme.Aura2" />
@@ -219,6 +221,16 @@
         <item name="errorTextAppearance">@style/TextAppearance.Aura.Error</item>
         <item name="errorTextColor">@color/colorErrorDim</item>
         <item name="errorIconDrawable">@null</item>
+    </style>
+
+    <style name="Widget.Aura.EditText">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Minimal base style for Aura widgets (some layouts reference Widget.Aura) -->
+    <style name="Widget.Aura" parent="">
+        <!-- intentionally minimal; specific widgets extend this -->
     </style>
 
     <!-- ============================================================ -->
