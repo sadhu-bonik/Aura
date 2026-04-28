@@ -133,10 +133,10 @@
     <string name="system_msg_cancellation_declined">CANCELLATION REQUEST DECLINED</string>
 
     <!-- Conversation closed footer -->
-    <string name="conversation_closed_title">CONVERSATION CLOSED</string>
+    <string name="conversation_closed_title">DEAL CLOSED</string>
     <string name="conversation_closed_cancelled_by_other">You can no longer send messages to this thread because the deal was cancelled by %1$s.</string>
     <string name="conversation_closed_cancelled_by_self">You can no longer send messages to this thread because you cancelled this deal.</string>
-    <string name="conversation_closed_completed">You can no longer send messages to this thread because the deal has been completed.</string>
+    <string name="conversation_closed_completed">The deal has been closed. Please leave your review to finalize everything.</string>
     <string name="conversation_closed_pending">Chat opens once the deal is accepted.</string>
 
     <!-- Past deal history footer -->

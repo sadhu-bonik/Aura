@@ -12,6 +12,7 @@ object Constants {
     const val COLLECTION_SHORTLISTS = "shortlists"
     const val COLLECTION_REVIEWS = "reviews"
     const val COLLECTION_RECOMMENDATIONS = "recommendations"
+    const val COLLECTION_NOTIFICATIONS = "notifications"
 
     // Roles
     const val ROLE_CREATOR = "creator"
@@ -32,8 +33,8 @@ object Constants {
             else -> false
         }
 
-    fun canSendChatMessage(status: String, chatUnlocked: Boolean): Boolean =
-        status == STATUS_ACCEPTED && chatUnlocked
+    fun canSendChatMessage(deal: com.aura.app.data.model.Deal): Boolean =
+        deal.status == STATUS_ACCEPTED && deal.chatUnlocked && !deal.isClosureReviewPending()
 
     // Storage paths
     const val STORAGE_PROFILE_IMAGES = "profileImages"

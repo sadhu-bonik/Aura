@@ -22,7 +22,7 @@ import com.aura.app.utils.rootNavController
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
-import kotlinx.coroutines.flow.filterNotNull
+
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalBadgeUtils::class)
@@ -122,16 +122,7 @@ class DealDashboardFragment : Fragment() {
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            reviewViewModel.pendingReviewDeal.filterNotNull().collect { deal ->
-                reviewViewModel.markReviewPromptShown(deal.dealId)
-                val currentUserId = resolveUserId() ?: return@collect
-                val otherPartyId = if (currentUserId == deal.creatorId) deal.brandId else deal.creatorId
-                val otherParty = userRepository.getUserProfile(otherPartyId) ?: return@collect
-                ReviewFlow.newInstance(deal.dealId, otherPartyId, otherParty.displayName, otherParty.profileImageUrl)
-                    .show(childFragmentManager, "review_flow")
-            }
-        }
+
     }
 
     override fun onResume() {

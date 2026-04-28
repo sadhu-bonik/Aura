@@ -9,6 +9,7 @@ import com.aura.app.data.repository.NotificationRepository
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 /**
@@ -53,19 +54,27 @@ class NotificationViewModel(
 
         unreadJob?.cancel()
         listJob?.cancel()
-        _unreadCount.value = 0
-        _notifications.value = emptyList()
+        _unreadCount.postValue(0)
+        _notifications.postValue(emptyList())
 
         if (uid.isNullOrBlank()) return
 
         unreadJob = viewModelScope.launch {
             notifRepo.getUnreadCount(uid)
-                .catch { android.util.Log.e("NotifVM", "Badge error", it) }
+                .distinctUntilChanged()
+                .catch { 
+                    android.util.Log.e("NotifVM", "Badge error", it)
+                    _unreadCount.postValue(0)
+                }
                 .collect { count -> _unreadCount.postValue(count) }
         }
         listJob = viewModelScope.launch {
             notifRepo.getNotifications(uid)
-                .catch { android.util.Log.e("NotifVM", "Inbox error", it) }
+                .distinctUntilChanged()
+                .catch { 
+                    android.util.Log.e("NotifVM", "Inbox error", it)
+                    _notifications.postValue(emptyList())
+                }
                 .collect { list -> _notifications.postValue(list) }
         }
     }

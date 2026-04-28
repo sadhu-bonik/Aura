@@ -26,13 +26,26 @@ object StubState {
 
     fun requestCompletion(dealId: String, initiatorId: String) {
         _deals.value = _deals.value.map { deal ->
-            if (deal.dealId == dealId) deal.copy(completionRequestedBy = initiatorId) else deal
+            if (deal.dealId == dealId) {
+                val isBrand = initiatorId == deal.brandId
+                deal.copy(
+                    brandCloseConfirmed = if (isBrand) true else deal.brandCloseConfirmed,
+                    creatorCloseConfirmed = if (!isBrand) true else deal.creatorCloseConfirmed,
+                    completionRequestedBy = ""
+                )
+            } else deal
         }
     }
 
     fun clearCompletionRequest(dealId: String) {
         _deals.value = _deals.value.map { deal ->
-            if (deal.dealId == dealId) deal.copy(completionRequestedBy = "") else deal
+            if (deal.dealId == dealId) {
+                deal.copy(
+                    brandCloseConfirmed = false,
+                    creatorCloseConfirmed = false,
+                    completionRequestedBy = ""
+                )
+            } else deal
         }
     }
 
@@ -93,7 +106,7 @@ object StubState {
 
                 if (reviewedDeal.areBothPartiesReviewed() && reviewedDeal.status == Constants.STATUS_ACCEPTED) {
                     when {
-                        reviewedDeal.completionRequestedBy.isNotBlank() ->
+                        reviewedDeal.bothCloseConfirmed() ->
                             reviewedDeal.copy(
                                 status = Constants.STATUS_COMPLETED,
                                 completedAt = now,

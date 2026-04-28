@@ -180,12 +180,29 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                     _isLoading.value = false
                 }
         }
+
+        // Live deal updates — keeps the close-confirm/completion banner in sync when the
+        // other party clicks Complete from their device.
+        dealObserveJob?.cancel()
+        dealObserveJob = viewModelScope.launch {
+            dealRepository.streamDeal(dealId)
+                .catch { android.util.Log.e("ChatVM", "deal stream error", it) }
+                .collect { fresh ->
+                    _deal.value = fresh
+                    updateCompletionState(fresh, currentUserId)
+                    updateCancellationState(fresh, currentUserId)
+                }
+        }
     }
 
     private fun updateCompletionState(deal: Deal, myUserId: String) {
+        // Both flags set = review-pending phase, no chat bar prompt.
+        // Only my flag set = waiting for the other party's confirmation.
+        // Only other party's flag set = show "Confirm completion?" prompt to me.
         _completionRequest.value = when {
-            deal.completionRequestedBy.isEmpty() -> CompletionRequestState.None
-            deal.completionRequestedBy == myUserId -> CompletionRequestState.OutgoingFromMe
+            deal.bothCloseConfirmed() -> CompletionRequestState.None
+            !deal.brandCloseConfirmed && !deal.creatorCloseConfirmed -> CompletionRequestState.None
+            deal.userHasConfirmedClose(myUserId) -> CompletionRequestState.OutgoingFromMe
             else -> {
                 val name = _otherUser.value?.displayName ?: "The other party"
                 CompletionRequestState.IncomingFromOther(name)
@@ -193,17 +210,27 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun updateCancellationState(_deal: Deal, _myUserId: String) {
-        _cancellationRequest.value = CancellationRequestState.None
+    private fun updateCancellationState(deal: Deal, myUserId: String) {
+        _cancellationRequest.value = when {
+            deal.status == Constants.STATUS_CANCELLED -> CancellationRequestState.None
+            deal.cancelRequestedBy.isBlank() -> CancellationRequestState.None
+            deal.cancelRequestedBy == myUserId -> CancellationRequestState.OutgoingFromMe
+            else -> {
+                val name = _otherUser.value?.displayName ?: "The other party"
+                CancellationRequestState.IncomingFromOther(name, deal.cancelReason)
+            }
+        }
     }
 
     fun respondToCompletion(accepted: Boolean) {
         val previousDeal = _deal.value ?: return
         viewModelScope.launch {
             if (accepted) {
-                // Optimistic: immediately show closed state
+                // Optimistic: flip my own per-role close flag.
+                val isCreator = currentUserId == previousDeal.creatorId
                 _deal.value = previousDeal.copy(
-                    completionRequestedBy = previousDeal.completionRequestedBy.ifBlank { currentUserId },
+                    brandCloseConfirmed = previousDeal.brandCloseConfirmed || !isCreator,
+                    creatorCloseConfirmed = previousDeal.creatorCloseConfirmed || isCreator,
                 )
                 _completionRequest.value = CompletionRequestState.None
 
@@ -211,7 +238,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                     StubState.updateDealStatus(dealId, Constants.STATUS_COMPLETED, chatUnlocked = true)
                     Result.success(Unit)
                 } else {
-                    dealRepository.confirmCompletion(dealId)
+                    dealRepository.confirmCompletion(dealId, currentUserId)
                 }
                 result.onFailure {
                     // Revert on error
@@ -220,15 +247,19 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                     _error.value = it.message ?: "Failed to complete deal"
                 }
             } else {
-                // Decline — clear the bar immediately
-                _deal.value = previousDeal.copy(completionRequestedBy = "")
+                // Decline — clear both flags immediately so the deal is fully active again.
+                _deal.value = previousDeal.copy(
+                    completionRequestedBy = "",
+                    brandCloseConfirmed = false,
+                    creatorCloseConfirmed = false,
+                )
                 _completionRequest.value = CompletionRequestState.None
 
                 val systemText = getApplication<Application>().getString(R.string.system_msg_completion_declined)
                 if (Constants.USE_STUBS) {
                     StubState.clearCompletionRequest(dealId)
                 } else {
-                    dealRepository.declineCompletion(dealId)
+                    dealRepository.declineCompletion(dealId, currentUserId)
                 }
                 messageRepository.sendSystemMessage(dealId, systemText)
             }
@@ -278,7 +309,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     fun sendMessage(content: String, senderId: String, receiverId: String) {
         if (content.isBlank() || _isUploading.value == true) return
         val deal = _deal.value
-        if (deal == null || !Constants.canSendChatMessage(deal.status, deal.chatUnlocked)) return
+        if (deal == null || !Constants.canSendChatMessage(deal)) return
         viewModelScope.launch {
             val result = if (Constants.USE_STUBS) {
                 val res = messageRepository.sendMessageDirect(dealId, senderId, receiverId, content.trim())
@@ -302,7 +333,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
     fun retryFailed(item: ChatListItem.FailedMessage) {
         val deal = _deal.value
-        if (deal == null || !Constants.canSendChatMessage(deal.status, deal.chatUnlocked)) return
+        if (deal == null || !Constants.canSendChatMessage(deal)) return
         removeFailedMessage(item.tempId)
         viewModelScope.launch {
             val result = if (Constants.USE_STUBS) {
@@ -319,7 +350,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     fun sendAttachment(uri: Uri, mimeType: String, fileName: String, senderId: String, receiverId: String) {
         if (_isUploading.value == true) return
         val deal = _deal.value
-        if (deal == null || !Constants.canSendChatMessage(deal.status, deal.chatUnlocked)) return
+        if (deal == null || !Constants.canSendChatMessage(deal)) return
         _isUploading.value = true
         viewModelScope.launch {
             storageManager.uploadChatAttachment(dealId, uri, mimeType)

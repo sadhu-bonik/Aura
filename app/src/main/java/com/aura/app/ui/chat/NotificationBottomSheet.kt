@@ -70,8 +70,6 @@ class NotificationBottomSheet : BottomSheetDialogFragment() {
                     R.id.action_homeContainer_to_chat,
                     bundleOf(
                         "dealId" to notif.dealId,
-                        // ChatFragment opens ReviewFlow automatically when this flag is set.
-                        "openReviewPopup" to notif.openReviewPopup,
                     ),
                 )
             } else {

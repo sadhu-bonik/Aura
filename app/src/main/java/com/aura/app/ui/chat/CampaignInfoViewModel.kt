@@ -57,23 +57,38 @@ class CampaignInfoViewModel(
 
     private lateinit var dealId: String
     private lateinit var currentUserId: String
+    private var loadJob: kotlinx.coroutines.Job? = null
 
     fun load(dealId: String, currentUserId: String = authRepository.currentUser?.uid ?: "") {
         this.dealId = dealId
         this.currentUserId = currentUserId
-        viewModelScope.launch {
-            val deal = dealRepository.getDeal(dealId).getOrNull() ?: return@launch
+        loadJob?.cancel()
+        loadJob = viewModelScope.launch {
+            var fetchedOtherUser = false
+            var fetchedCampaign = false
+            var fetchedMedia = false
+            dealRepository.streamDeal(dealId).collect { deal ->
+                _deal.value = deal
+                _brandId.value = deal.brandId
+                
+                if (!fetchedOtherUser) {
+                    val otherUserId = if (deal.creatorId == currentUserId) deal.brandId else deal.creatorId
+                    _otherParty.value = userRepository.getUserLite(otherUserId)
+                    fetchedOtherUser = true
+                }
+                if (!fetchedMedia) {
+                    _sharedMedia.value = messageRepository.getSharedMedia(dealId)
+                    fetchedMedia = true
+                }
 
-            _deal.value = deal
-            _brandId.value = deal.brandId
-            val otherUserId = if (deal.creatorId == currentUserId) deal.brandId else deal.creatorId
-            _otherParty.value = userRepository.getUserLite(otherUserId)
-            _sharedMedia.value = messageRepository.getSharedMedia(dealId)
-
-            if (deal.campaignId.isNotBlank()) {
-                _campaign.value = campaignRepository.getCampaign(deal.campaignId)
-            } else {
-                _campaign.value = null
+                if (!fetchedCampaign) {
+                    if (deal.campaignId.isNotBlank()) {
+                        _campaign.value = campaignRepository.getCampaign(deal.campaignId)
+                    } else {
+                        _campaign.value = null
+                    }
+                    fetchedCampaign = true
+                }
             }
         }
     }
@@ -126,21 +141,35 @@ class CampaignInfoViewModel(
     }
 
     /**
-     * Post-acceptance: cancel immediately. No counterparty approval or notification is needed.
+     * Post-acceptance: Request cancellation from the other party.
      */
-    fun cancelAcceptedDeal(reason: String) {
+    fun requestCancellation(reason: String) {
         viewModelScope.launch {
-            dealRepository.cancelDeal(dealId, cancelledBy = currentUserId, reason = reason)
+            dealRepository.requestCancellation(dealId, initiatorId = currentUserId, reason = reason)
                 .onSuccess {
-                    _deal.value = _deal.value?.copy(
-                        chatUnlocked = true,
-                        cancelRequestedBy = currentUserId,
-                        cancelReason = reason,
-                        completionRequestedBy = "",
-                    )
                     _actionResult.value = DealActionResult.Success
                 }
-                .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to cancel deal") }
+                .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to request cancellation") }
+        }
+    }
+
+    fun confirmCancellation() {
+        viewModelScope.launch {
+            dealRepository.confirmCancellation(dealId)
+                .onSuccess {
+                    _actionResult.value = DealActionResult.Success
+                }
+                .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to confirm cancellation") }
+        }
+    }
+
+    fun declineCancellation() {
+        viewModelScope.launch {
+            dealRepository.declineCancellation(dealId, declinerId = currentUserId)
+                .onSuccess {
+                    _actionResult.value = DealActionResult.Success
+                }
+                .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to decline cancellation") }
         }
     }
 
@@ -148,10 +177,19 @@ class CampaignInfoViewModel(
         viewModelScope.launch {
             dealRepository.requestCompletion(dealId, currentUserId)
                 .onSuccess {
-                    _deal.value = _deal.value?.copy(completionRequestedBy = currentUserId)
                     _actionResult.value = DealActionResult.Success
                 }
                 .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to request completion") }
+        }
+    }
+
+    fun declineCompletion() {
+        viewModelScope.launch {
+            dealRepository.declineCompletion(dealId, currentUserId)
+                .onSuccess {
+                    _actionResult.value = DealActionResult.Success
+                }
+                .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to decline completion") }
         }
     }
 

@@ -38,7 +38,7 @@ class ActiveDealsViewModel(
             loadJob = viewModelScope.launch {
                 StubState.dealsFlow.collect { deals ->
                     val activeDeals = deals.filter {
-                        Constants.canSendChatMessage(it.status, it.chatUnlocked) &&
+                        Constants.canSendChatMessage(it) &&
                         (it.creatorId == userId || it.brandId == userId)
                     }
                     val items = activeDeals.map { deal ->
@@ -75,7 +75,7 @@ class ActiveDealsViewModel(
                 }
                 .collect { deals ->
                     val activeDeals = deals.filter {
-                        Constants.canSendChatMessage(it.status, it.chatUnlocked)
+                        Constants.canSendChatMessage(it)
                     }
                     val items = activeDeals.map { deal ->
                         val otherUserId = if (role == Constants.ROLE_CREATOR) deal.brandId else deal.creatorId

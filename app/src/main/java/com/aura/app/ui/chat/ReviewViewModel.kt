@@ -34,14 +34,8 @@ class ReviewViewModel(application: Application) : AndroidViewModel(application) 
     private val _reviewsByDealId = MutableStateFlow<Map<String, Review>>(emptyMap())
     val reviewsByDealId: StateFlow<Map<String, Review>> = _reviewsByDealId.asStateFlow()
 
-    private val _pendingReviewDeal = MutableStateFlow<Deal?>(null)
-    val pendingReviewDeal: StateFlow<Deal?> = _pendingReviewDeal.asStateFlow()
-
-    private val shownDealIds = mutableSetOf<String>()
-
     private var boundUid: String? = null
     private var reviewsJob: Job? = null
-    private var pendingJob: Job? = null
 
     private val authListener = FirebaseAuth.AuthStateListener { fa ->
         rebind(fa.currentUser?.uid.orEmpty().ifEmpty { if (Constants.USE_STUBS) StubSession.userId() else "" })
@@ -61,50 +55,21 @@ class ReviewViewModel(application: Application) : AndroidViewModel(application) 
         boundUid = uid
 
         reviewsJob?.cancel()
-        pendingJob?.cancel()
         _reviewsByDealId.value = emptyMap()
-        _pendingReviewDeal.value = null
-        shownDealIds.clear()
 
         if (uid.isBlank()) return
 
         reviewsJob = viewModelScope.launch {
             reviewRepo.streamMyReviews(uid).collect { map ->
                 _reviewsByDealId.value = map
-                checkPendingDeals(uid, map)
             }
         }
     }
 
-    private fun checkPendingDeals(currentUserId: String, reviewsMap: Map<String, Review>) {
-        pendingJob?.cancel()
-        pendingJob = viewModelScope.launch {
-            val role = if (Constants.USE_STUBS) {
-                StubSession.role()
-            } else {
-                userRepo.getUserProfile(currentUserId)?.role.orEmpty()
-            }
-            val isCreator = role == Constants.ROLE_CREATOR
-            val dealsFlow = if (isCreator) {
-                dealRepo.getDealsForCreator(currentUserId)
-            } else {
-                dealRepo.getDealsForBrand(currentUserId)
-            }
 
-            dealsFlow.collectLatest { deals ->
-                val pendingDeal = deals.firstOrNull { deal ->
-                    isReviewRequired(deal) &&
-                            !reviewsMap.containsKey(deal.dealId) &&
-                            (deal.isClosureReviewPending() || deal.status == Constants.STATUS_CANCELLED || !shownDealIds.contains(deal.dealId))
-                }
-                _pendingReviewDeal.value = pendingDeal
-            }
-        }
-    }
 
     private fun isReviewRequired(deal: Deal): Boolean =
-        deal.status in setOf(Constants.STATUS_COMPLETED, Constants.STATUS_CANCELLED) ||
-                deal.isClosureReviewPending()
+        deal.status == Constants.STATUS_COMPLETED || deal.bothCloseConfirmed()
 
     override fun onCleared() {
         auth.removeAuthStateListener(authListener)
@@ -121,7 +86,6 @@ class ReviewViewModel(application: Application) : AndroidViewModel(application) 
             }
 
             // Look up role + display-name metadata so the review is self-contained
-            // (the reviews list screen can render without an extra profile fetch per row).
             val reviewer = userRepo.getUserProfile(currentUserId)
             val deal = dealRepo.getDeal(dealId).getOrNull()
             if (deal == null) {
@@ -129,7 +93,7 @@ class ReviewViewModel(application: Application) : AndroidViewModel(application) 
                 return@launch
             }
             if (!isReviewRequired(deal)) {
-                resultFlow.value = Result.failure(Exception("Reviews can only be submitted when completion or cancellation is pending"))
+                resultFlow.value = Result.failure(Exception("Please ensure both parties have confirmed the deal closure before submitting a review."))
                 return@launch
             }
 
@@ -193,16 +157,5 @@ class ReviewViewModel(application: Application) : AndroidViewModel(application) 
         return resultFlow
     }
 
-    fun markReviewPromptShown(dealId: String) {
-        val pendingDeal = _pendingReviewDeal.value
-        if (pendingDeal?.dealId == dealId &&
-            (pendingDeal.isClosureReviewPending() || pendingDeal.status == Constants.STATUS_CANCELLED)
-        ) {
-            return
-        }
-        shownDealIds.add(dealId)
-        if (pendingDeal?.dealId == dealId) {
-            _pendingReviewDeal.value = null
-        }
-    }
+
 }

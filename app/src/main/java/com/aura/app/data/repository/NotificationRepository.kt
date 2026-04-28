@@ -18,7 +18,7 @@ import kotlinx.coroutines.tasks.await
 class NotificationRepository(
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance(),
 ) {
-    private val col = firestore.collection(COLLECTION)
+    private val col = firestore.collection(com.aura.app.utils.Constants.COLLECTION_NOTIFICATIONS)
 
     /** Write a new notification for another user. */
     suspend fun createNotification(notif: Notification): Result<Unit> = runCatching {
@@ -96,6 +96,5 @@ class NotificationRepository(
     }
 
     private companion object {
-        const val COLLECTION = "notifications"
     }
 }

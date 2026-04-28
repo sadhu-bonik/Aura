@@ -126,7 +126,7 @@ class DealDashboardViewModel(
             val otherUserId = if (role == Constants.ROLE_CREATOR) deal.brandId else deal.creatorId
             val otherUser = userRepository.getUserLite(otherUserId)
             when {
-                Constants.canSendChatMessage(deal.status, deal.chatUnlocked) -> {
+                Constants.canSendChatMessage(deal) -> {
                     val unread = (deal.unreadCounts[userId] ?: 0L).toInt()
                     active.add(
                         ActiveDealItem(

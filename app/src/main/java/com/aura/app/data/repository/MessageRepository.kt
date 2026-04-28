@@ -35,9 +35,9 @@ class MessageRepository(
         mediaUrl: String = "",
     ): Result<Unit> = runCatching {
         val dealSnap = deals.document(dealId).get().await()
-        val chatUnlocked = dealSnap.getBoolean("chatUnlocked") ?: false
-        val status = dealSnap.getString("status").orEmpty()
-        check(Constants.canSendChatMessage(status, chatUnlocked)) {
+        val deal = dealSnap.toObject(com.aura.app.data.model.Deal::class.java)?.copy(dealId = dealSnap.id)
+            ?: error("Deal not found")
+        check(Constants.canSendChatMessage(deal)) {
             "Messages can only be sent while the deal is active"
         }
 
@@ -137,9 +137,9 @@ class MessageRepository(
         fileName: String = "",
     ): Result<Unit> = runCatching {
         val dealSnap = deals.document(dealId).get().await()
-        val chatUnlocked = dealSnap.getBoolean("chatUnlocked") ?: false
-        val status = dealSnap.getString("status").orEmpty()
-        check(Constants.canSendChatMessage(status, chatUnlocked)) {
+        val deal = dealSnap.toObject(com.aura.app.data.model.Deal::class.java)?.copy(dealId = dealSnap.id)
+            ?: error("Deal not found")
+        check(Constants.canSendChatMessage(deal)) {
             "Messages can only be sent while the deal is active"
         }
 

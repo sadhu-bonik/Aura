@@ -32,12 +32,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.nav_host_fragment)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            // Keep the host edge-to-edge so screens can draw into the full display height.
-            // Bottom-nav screens handle their own navigation-bar padding, so only preserve
-            // horizontal insets here.
-            v.setPadding(systemBars.left, 0, systemBars.right, 0)
-            insets
+            val insetsType = WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
+            val windowInsets = insets.getInsets(insetsType)
+            v.setPadding(windowInsets.left, windowInsets.top, windowInsets.right, windowInsets.bottom)
+            WindowInsetsCompat.CONSUMED
         }
 
         if (savedInstanceState == null) {

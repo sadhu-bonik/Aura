@@ -95,10 +95,28 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
                         viewModel.rejectDeal()
                     }
                 }
-                Constants.STATUS_ACCEPTED -> showCancelDialog()
+                Constants.STATUS_ACCEPTED -> {
+                    if (deal.closurePartiallyRequested() && !deal.userHasConfirmedClose(myId)) {
+                        viewModel.declineCompletion()
+                    } else if (deal.cancelRequestedBy.isNotBlank() && deal.cancelRequestedBy != myId) {
+                        viewModel.declineCancellation()
+                    } else {
+                        showCancelDialog()
+                    }
+                }
             }
         }
-        binding.btnCompleteDeal.setOnClickListener { viewModel.requestCompletion() }
+        binding.btnCompleteDeal.setOnClickListener { 
+            val deal = viewModel.deal.value ?: return@setOnClickListener
+            val myId = currentUserId()
+            if (deal.isClosureReviewPending()) {
+                dismiss()
+            } else if (deal.cancelRequestedBy.isNotBlank() && deal.cancelRequestedBy != myId) {
+                viewModel.confirmCancellation()
+            } else {
+                viewModel.requestCompletion() 
+            }
+        }
     }
 
     private fun showCancelDialog() {
@@ -109,7 +127,7 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
             .setView(wrapWithPadding(reasonInput))
             .setNegativeButton(R.string.btn_cancel, null)
             .setPositiveButton(R.string.btn_cancel_deal) { _, _ ->
-                viewModel.cancelAcceptedDeal(reasonInput.text?.toString()?.trim() ?: "")
+                viewModel.requestCancellation(reasonInput.text?.toString()?.trim() ?: "")
             }
             .show()
     }
@@ -202,15 +220,14 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
                 }
                 deal.isClosureReviewPending() -> {
                     binding.llDealActions.isVisible = true
-                    binding.btnCancelDeal.isEnabled = false
-                    binding.btnCancelDeal.text = getString(R.string.chip_review_required)
+                    binding.btnCancelDeal.isVisible = false
                     binding.btnCompleteDeal.isVisible = true
-                    binding.btnCompleteDeal.isEnabled = false
-                    binding.btnCompleteDeal.text = getString(R.string.btn_waiting_response)
+                    binding.btnCompleteDeal.isEnabled = true
+                    binding.btnCompleteDeal.text = "Leave Review"
                     binding.tvWaitingHelper.isVisible = true
-                    binding.tvWaitingHelper.text = getString(R.string.helper_review_required_before_close)
+                    binding.tvWaitingHelper.text = "Close this sheet and click 'Rate' in the chat to leave your review."
                 }
-                deal.completionRequestedBy == myId -> {
+                deal.userHasConfirmedClose(myId) && !deal.bothCloseConfirmed() -> {
                     // I'm waiting for completion approval — show waiting helper, disable actions
                     binding.llDealActions.isVisible = true
                     binding.btnCancelDeal.isEnabled = false
@@ -221,10 +238,36 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
                     binding.tvWaitingHelper.isVisible = true
                     binding.tvWaitingHelper.text = getString(R.string.helper_waiting_response)
                 }
-                deal.completionRequestedBy.isNotEmpty() && deal.completionRequestedBy != myId -> {
-                    // Other party is waiting for completion — hide action buttons (respond via chat bar)
-                    binding.llDealActions.isVisible = false
-                    binding.tvWaitingHelper.isVisible = false
+                deal.cancelRequestedBy.isNotBlank() && deal.cancelRequestedBy == myId -> {
+                    // I requested cancellation, waiting for response
+                    binding.llDealActions.isVisible = true
+                    binding.btnCancelDeal.isEnabled = false
+                    binding.btnCancelDeal.text = "Cancel Requested"
+                    binding.btnCompleteDeal.isVisible = false
+                    binding.tvWaitingHelper.isVisible = true
+                    binding.tvWaitingHelper.text = getString(R.string.helper_waiting_response)
+                }
+                deal.cancelRequestedBy.isNotBlank() && deal.cancelRequestedBy != myId -> {
+                    // Other party requested cancellation, I need to accept or decline
+                    binding.llDealActions.isVisible = true
+                    binding.btnCancelDeal.isEnabled = true
+                    binding.btnCancelDeal.text = "Decline Cancel"
+                    binding.btnCompleteDeal.isVisible = true
+                    binding.btnCompleteDeal.isEnabled = true
+                    binding.btnCompleteDeal.text = "Accept Cancel"
+                    binding.tvWaitingHelper.isVisible = true
+                    binding.tvWaitingHelper.text = "The other party wants to cancel this deal."
+                }
+                deal.closurePartiallyRequested() && !deal.userHasConfirmedClose(myId) -> {
+                    // Other party is waiting for completion — allow user to decline or accept here
+                    binding.llDealActions.isVisible = true
+                    binding.btnCancelDeal.isEnabled = true
+                    binding.btnCancelDeal.text = "Decline"
+                    binding.btnCompleteDeal.isVisible = true
+                    binding.btnCompleteDeal.isEnabled = true
+                    binding.btnCompleteDeal.text = "Accept"
+                    binding.tvWaitingHelper.isVisible = true
+                    binding.tvWaitingHelper.text = "The other party wants to close this deal."
                 }
                 else -> {
                     // Normal accepted state — both buttons enabled

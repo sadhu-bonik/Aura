@@ -1,11 +1,14 @@
 package com.aura.app.ui.chat
 
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
@@ -32,12 +35,7 @@ class ChatFragment : Fragment() {
     private val reviewViewModel: ReviewViewModel by activityViewModels()
     private lateinit var messageAdapter: MessageAdapter
 
-    private var hasShownReviewPrompt = false
-
     private val dealId: String by lazy { arguments?.getString("dealId") ?: "" }
-    private val openReviewPopupArg: Boolean by lazy {
-        arguments?.getBoolean("openReviewPopup", false) ?: false
-    }
 
     private val pickMedia = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
@@ -70,6 +68,14 @@ class ChatFragment : Fragment() {
             stackFromEnd = true
         }
         binding.rvMessages.adapter = messageAdapter
+
+        // Dismiss keyboard when tapping the message list
+        binding.rvMessages.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                hideKeyboard()
+            }
+            false // don't consume — scrolling still works
+        }
 
         binding.ivBack.setOnClickListener { findNavController().navigateUp() }
 
@@ -199,34 +205,15 @@ class ChatFragment : Fragment() {
         viewModel.deal.observe(viewLifecycleOwner) { deal ->
             binding.tvDealTitleBanner.text = deal.title
 
-            val isClosed = deal.status in setOf(Constants.STATUS_COMPLETED, Constants.STATUS_CANCELLED)
-            binding.llInputBar.isVisible = Constants.canSendChatMessage(deal.status, deal.chatUnlocked)
+            val isClosed = deal.status in setOf(Constants.STATUS_COMPLETED, Constants.STATUS_CANCELLED) || deal.isClosureReviewPending()
+            binding.llInputBar.isVisible = Constants.canSendChatMessage(deal)
             binding.includeConversationClosed.root.isVisible = isClosed
 
             if (isClosed) {
                 updateClosedSubtitle(deal)
             }
 
-            // Auto-open review popup when a deal closes through completion or cancellation.
-            // Cancelled deals keep prompting until this user submits their review.
-            val isReviewRequired = deal.status in setOf(Constants.STATUS_COMPLETED, Constants.STATUS_CANCELLED) ||
-                    deal.isClosureReviewPending()
-            val shouldPrompt = isReviewRequired &&
-                    (deal.isClosureReviewPending() || deal.status == Constants.STATUS_CANCELLED || openReviewPopupArg || !hasShownReviewPrompt)
-            if (shouldPrompt) {
-                val alreadyReviewed = reviewViewModel.reviewsByDealId.value.containsKey(deal.dealId)
-                if (!alreadyReviewed) {
-                    hasShownReviewPrompt = true
-                    reviewViewModel.markReviewPromptShown(deal.dealId)
-                    val otherParty = viewModel.otherUser.value
-                    if (otherParty != null && childFragmentManager.findFragmentByTag("review_flow") == null) {
-                        // Clear the arg so back-navigation/recompose doesn't re-pop the sheet.
-                        arguments?.putBoolean("openReviewPopup", false)
-                        ReviewFlow.newInstance(deal.dealId, otherParty.userId, otherParty.displayName, otherParty.profileImageUrl)
-                            .show(childFragmentManager, "review_flow")
-                    }
-                }
-            }
+
         }
 
         viewModel.completionRequest.observe(viewLifecycleOwner) { state ->
@@ -276,6 +263,8 @@ class ChatFragment : Fragment() {
         val subtitle = when {
             deal.status == Constants.STATUS_COMPLETED ->
                 getString(R.string.conversation_closed_completed)
+            deal.isClosureReviewPending() ->
+                getString(R.string.conversation_closed_completed)
             deal.cancelledBy == myId ->
                 getString(R.string.conversation_closed_cancelled_by_self)
             else -> {
@@ -293,9 +282,7 @@ class ChatFragment : Fragment() {
         val rateBtn = binding.includeConversationClosed.btnRateNow
         val submittedTv = binding.includeConversationClosed.tvReviewSubmitted
 
-        if (deal.status !in setOf(Constants.STATUS_COMPLETED, Constants.STATUS_CANCELLED) &&
-            !deal.isClosureReviewPending()
-        ) {
+        if (deal.status != Constants.STATUS_COMPLETED && !deal.isClosureReviewPending()) {
             rateBtn.isVisible = false
             submittedTv.isVisible = false
             return
@@ -328,6 +315,13 @@ class ChatFragment : Fragment() {
     private fun currentUserId(): String =
         if (Constants.USE_STUBS) StubSession.userId()
         else com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: ""
+
+    private fun hideKeyboard() {
+        val focused = activity?.currentFocus ?: return
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(focused.windowToken, 0)
+        focused.clearFocus()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
