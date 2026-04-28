@@ -34,6 +34,13 @@
 
     <style name="Theme.Aura2" parent="Base.Theme.Aura2" />
 
+    <style name="Theme.Aura2.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/colorBackground</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/aura_logo_splash</item>
+        <item name="windowSplashScreenIconBackgroundColor">@android:color/transparent</item>
+        <item name="postSplashScreenTheme">@style/Theme.Aura2</item>
+    </style>
+
     <!-- ============================================================ -->
     <!-- TEXT APPEARANCES — Manrope                                   -->
     <!-- ============================================================ -->

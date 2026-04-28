@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.aura.app.adapters.PortfolioAdapter
 import com.aura.app.databinding.FragmentProfileBinding
 import com.bumptech.glide.Glide
-import androidx.appcompat.widget.PopupMenu
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.aura.app.R
 import com.aura.app.data.model.Deal
@@ -132,8 +131,8 @@ class ProfileFragment : Fragment() {
         binding.btnAddCampaign.setOnClickListener {
             openSetupCampaignPopup()
         }
-        binding.btnMoreOptions.setOnClickListener { view ->
-            showMoreOptionsMenu(view)
+        binding.btnMoreOptions.setOnClickListener {
+            findNavController().navigate(R.id.action_profile_to_settings)
         }
     }
 
@@ -141,25 +140,6 @@ class ProfileFragment : Fragment() {
         SetupCampaignFragment.newInstance(campaignId)
             .show(childFragmentManager, SetupCampaignFragment.TAG)
     }
-
-    private fun showMoreOptionsMenu(view: View) {
-        val popup = PopupMenu(requireContext(), view)
-        popup.menu.add(0, 2, 0, "Settings")
-        
-        popup.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-
-                2 -> {
-                    findNavController().navigate(R.id.action_profile_to_settings)
-                    true
-                }
-                else -> false
-            }
-        }
-        popup.show()
-    }
-
-
 
     private fun setupBottomSheetListener() {
         childFragmentManager.setFragmentResultListener(

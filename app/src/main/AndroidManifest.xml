@@ -18,6 +18,7 @@
             android:resource="@array/preloaded_fonts" />
         <activity
             android:name=".ui.common.MainActivity"
+            android:theme="@style/Theme.Aura2.Splash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

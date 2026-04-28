@@ -16,9 +16,11 @@ import com.aura.app.R
 import com.aura.app.utils.SessionManager
 import com.aura.app.utils.StubSession
 import com.google.firebase.auth.FirebaseAuth
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         StubSession.init(this)
         enableEdgeToEdge()
