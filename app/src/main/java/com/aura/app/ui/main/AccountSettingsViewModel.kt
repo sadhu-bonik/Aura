@@ -119,7 +119,6 @@ class AccountSettingsViewModel(
         securityQuestion: String,
         securityAnswer: String,
         // creator-only
-        bio: String,
         youtubeHandle: String,
         // brand-only
         website: String,
@@ -138,7 +137,6 @@ class AccountSettingsViewModel(
         val phoneTrim = phone.trim()
         val sqTrim = securityQuestion.trim()
         val saTrim = securityAnswer.trim()
-        val bioTrim = bio.trim()
         val ytTrim = youtubeHandle.trim()
         val webTrim = website.trim()
         val liTrim = linkedin.trim()
@@ -195,14 +193,12 @@ class AccountSettingsViewModel(
             val roleResult = when (role) {
                 "creator" -> {
                     val updates = mutableMapOf<String, Any>(
-                        "bio" to bioTrim,
                         "youtubeHandle" to ytTrim
                     )
                     accountRepository.saveCreatorFields(uid, updates)
                 }
                 "brand" -> {
                     val updates = mutableMapOf<String, Any>(
-                        "bio" to bioTrim,
                         "brandName" to nameTrim,
                         "website" to webTrim,
                         "linkedinUrl" to liTrim

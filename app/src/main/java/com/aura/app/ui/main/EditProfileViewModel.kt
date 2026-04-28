@@ -135,6 +135,7 @@ class EditProfileViewModel(
                         "brandName" to displayName,
                         "updatedAt" to Timestamp.now(),
                     )
+                    updatedImageUrl?.let { brandUpdates["logoUrl"] = it }
                     if (website.isNotBlank()) brandUpdates["website"] = website
                     if (industry.isNotBlank()) brandUpdates["industry"] = industry
                     if (nicheTags.isNotEmpty()) brandUpdates["industryTags"] = nicheTags

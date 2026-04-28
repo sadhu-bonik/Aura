@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 sealed class ProfileUiState {
@@ -72,6 +73,7 @@ class ProfileViewModel(
 
     /** Guards against double-tap uploads. */
     private var isUploading = false
+    private var loadJob: Job? = null
 
     companion object {
         const val MAX_PORTFOLIO_ITEMS = 10
@@ -80,7 +82,8 @@ class ProfileViewModel(
     }
 
     fun loadProfile(creatorId: String? = null) {
-        viewModelScope.launch {
+        loadJob?.cancel()
+        loadJob = viewModelScope.launch {
             _state.value = ProfileUiState.Loading
             
             val currentUserId = if (Constants.USE_STUBS) {

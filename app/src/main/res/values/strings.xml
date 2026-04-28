@@ -423,6 +423,32 @@
     <string name="settings_aura_label">Aura</string>
     <string name="cd_settings_back">Navigate back</string>
 
+    <!-- Account Settings -->
+    <string name="account_settings_title">Account Settings</string>
+    <string name="account_settings_subtitle">Update your profile and account details.</string>
+    <string name="account_settings_full_name">Full name</string>
+    <string name="account_settings_email">Email</string>
+    <string name="account_settings_email_readonly_helper">Email cannot be changed here.</string>
+    <string name="account_settings_phone">Phone</string>
+    <string name="account_settings_phone_hint">+1 (555) 000-0000</string>
+    <string name="account_settings_security_question">Security question</string>
+    <string name="account_settings_security_answer">Security answer</string>
+    <string name="account_settings_security_answer_hint">Used for account recovery</string>
+    <string name="account_settings_youtube">YouTube</string>
+    <string name="account_settings_youtube_hint">@yourhandle or channel URL</string>
+    <string name="account_settings_website">Website</string>
+    <string name="account_settings_website_hint">https://example.com</string>
+    <string name="account_settings_linkedin">LinkedIn</string>
+    <string name="account_settings_linkedin_hint">https://linkedin.com/company/example</string>
+    <string name="account_settings_save_btn">Save Changes</string>
+    <string name="account_settings_change_password_section">Change Password</string>
+    <string name="account_settings_current_password">Current password</string>
+    <string name="account_settings_new_password">New password</string>
+    <string name="account_settings_confirm_password">Confirm new password</string>
+    <string name="account_settings_change_password_btn">Update Password</string>
+    <string name="account_settings_saved">Account settings saved</string>
+    <string name="account_settings_password_updated">Password updated</string>
+
     <!-- Profile Setup — Aura Create Password -->
     <string name="password_create_title">Create your account</string>
     <string name="password_create_subtitle">Secure your Aura with a password.</string>

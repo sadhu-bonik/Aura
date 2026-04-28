@@ -163,33 +163,6 @@
 
             <TextView
                 style="@style/AccountSettings.FieldLabel"
-                android:text="@string/account_settings_bio" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_bio"
-                style="@style/Widget.Aura.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/space_md"
-                android:hint="@string/account_settings_bio_hint"
-                app:boxCornerRadiusBottomEnd="20dp"
-                app:boxCornerRadiusBottomStart="20dp"
-                app:boxCornerRadiusTopEnd="20dp"
-                app:boxCornerRadiusTopStart="20dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_bio"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top|start"
-                    android:inputType="textMultiLine|textCapSentences"
-                    android:maxLength="200"
-                    android:minLines="3"
-                    android:textColor="@color/colorOnSurface" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                style="@style/AccountSettings.FieldLabel"
                 android:text="@string/account_settings_security_question" />
 
             <com.google.android.material.textfield.TextInputLayout

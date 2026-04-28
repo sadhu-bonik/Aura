@@ -79,7 +79,6 @@ class AccountSettingsFragment : Fragment() {
                 phone = binding.etPhone.text?.toString().orEmpty(),
                 securityQuestion = binding.etSecurityQuestion.text?.toString().orEmpty(),
                 securityAnswer = binding.etSecurityAnswer.text?.toString().orEmpty(),
-                bio = binding.etBio.text?.toString().orEmpty(),
                 youtubeHandle = binding.etYoutube.text?.toString().orEmpty(),
                 website = binding.etWebsite.text?.toString().orEmpty(),
                 linkedin = binding.etLinkedin.text?.toString().orEmpty()
@@ -155,11 +154,9 @@ class AccountSettingsFragment : Fragment() {
 
         when (user.role) {
             "creator" -> {
-                binding.etBio.setText(state.creatorProfile?.bio.orEmpty())
                 binding.etYoutube.setText(state.creatorProfile?.youtubeHandle.orEmpty())
             }
             "brand" -> {
-                binding.etBio.setText(state.brandProfile?.bio.orEmpty())
                 binding.etWebsite.setText(state.brandProfile?.website.orEmpty())
                 binding.etLinkedin.setText(state.brandProfile?.linkedinUrl.orEmpty())
             }

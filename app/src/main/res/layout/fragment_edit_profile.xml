@@ -400,40 +400,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-
-            <!-- Password (Read-Only) -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="PASSWORD"
-                android:textColor="@color/colorOnSurfaceVariant"
-                android:textSize="11sp"
-                android:fontFamily="@font/manrope_bold"
-                android:letterSpacing="0.1"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="16dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_password"
-                style="@style/Widget.Aura.TextInputLayout"
-                app:hintEnabled="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:startIconDrawable="@android:drawable/ic_lock_lock"
-                android:layout_marginBottom="32dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:text="••••••••"
-                    android:inputType="textPassword"
-                    android:enabled="false"
-                    android:letterSpacing="0.2"
-                    android:fontFamily="@font/manrope_medium"
-                    android:textColor="@color/colorOutline" />
-            </com.google.android.material.textfield.TextInputLayout>
-
             <!-- Save Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_save"

@@ -57,6 +57,11 @@ class SettingsFragment : Fragment() {
         observeDeleteEvents()
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadUserProfile()
+    }
+
     /**
      * Loads the current user's profile to populate the avatar, name, and subtitle.
      */

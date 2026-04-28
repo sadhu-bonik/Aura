@@ -100,6 +100,11 @@ class ProfileFragment : Fragment() {
         viewModel.loadProfile(creatorId)
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadProfile(arguments?.getString("creatorId"))
+    }
+
     private fun setupRecyclerViews() {
         portfolioAdapter.onItemClick = { item ->
             if (item.mediaUrl.isNotBlank()) {

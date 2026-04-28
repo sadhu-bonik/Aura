@@ -42,6 +42,7 @@ class UserRepository(
     suspend fun updateUserPartial(userId: String, updates: Map<String, Any>): Result<Unit> {
         return try {
             firestore.collection(COLLECTION).document(userId).update(updates).await()
+            cache.remove(userId)
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
