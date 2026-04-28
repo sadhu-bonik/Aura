@@ -126,9 +126,16 @@ class DealDashboardViewModel(
             val otherUserId = if (role == Constants.ROLE_CREATOR) deal.brandId else deal.creatorId
             val otherUser = userRepository.getUserLite(otherUserId)
             when {
-                deal.status == Constants.STATUS_ACCEPTED && deal.chatUnlocked -> {
+                Constants.canSendChatMessage(deal.status, deal.chatUnlocked) -> {
                     val unread = (deal.unreadCounts[userId] ?: 0L).toInt()
-                    active.add(ActiveDealItem(deal, otherUser, unread))
+                    active.add(
+                        ActiveDealItem(
+                            deal = deal,
+                            otherUser = otherUser,
+                            unreadCount = unread,
+                            needsReview = deal.isClosureReviewPending() && !deal.hasUserReviewed(userId),
+                        )
+                    )
                 }
                 deal.status == Constants.STATUS_PENDING ->
                     new.add(DealOfferItem(deal, otherUser))

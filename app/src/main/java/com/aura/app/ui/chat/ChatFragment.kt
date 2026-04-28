@@ -103,6 +103,12 @@ class ChatFragment : Fragment() {
                     pickFile.launch("*/*")
             }
         }
+        childFragmentManager.setFragmentResultListener(
+            CampaignInfoBottomSheet.REQUEST_DEAL_CHANGED,
+            viewLifecycleOwner,
+        ) { _, _ ->
+            viewModel.load(dealId, currentUserId())
+        }
 
         binding.includeCompletionBar.btnCompletionYes.setOnClickListener {
             viewModel.respondToCompletion(accepted = true)
@@ -194,24 +200,26 @@ class ChatFragment : Fragment() {
             binding.tvDealTitleBanner.text = deal.title
 
             val isClosed = deal.status in setOf(Constants.STATUS_COMPLETED, Constants.STATUS_CANCELLED)
-            binding.llInputBar.isVisible = !isClosed
+            binding.llInputBar.isVisible = Constants.canSendChatMessage(deal.status, deal.chatUnlocked)
             binding.includeConversationClosed.root.isVisible = isClosed
 
             if (isClosed) {
                 updateClosedSubtitle(deal)
             }
 
-            // Auto-open review popup either when the deal just transitioned to COMPLETED,
-            // or when navigated here from a REVIEW_REQUESTED notification.
-            val shouldPrompt = deal.status == Constants.STATUS_COMPLETED &&
-                    (openReviewPopupArg || !hasShownReviewPrompt)
+            // Auto-open review popup when a deal closes through completion or cancellation.
+            // Cancelled deals keep prompting until this user submits their review.
+            val isReviewRequired = deal.status in setOf(Constants.STATUS_COMPLETED, Constants.STATUS_CANCELLED) ||
+                    deal.isClosureReviewPending()
+            val shouldPrompt = isReviewRequired &&
+                    (deal.isClosureReviewPending() || deal.status == Constants.STATUS_CANCELLED || openReviewPopupArg || !hasShownReviewPrompt)
             if (shouldPrompt) {
                 val alreadyReviewed = reviewViewModel.reviewsByDealId.value.containsKey(deal.dealId)
                 if (!alreadyReviewed) {
                     hasShownReviewPrompt = true
                     reviewViewModel.markReviewPromptShown(deal.dealId)
                     val otherParty = viewModel.otherUser.value
-                    if (otherParty != null) {
+                    if (otherParty != null && childFragmentManager.findFragmentByTag("review_flow") == null) {
                         // Clear the arg so back-navigation/recompose doesn't re-pop the sheet.
                         arguments?.putBoolean("openReviewPopup", false)
                         ReviewFlow.newInstance(deal.dealId, otherParty.userId, otherParty.displayName, otherParty.profileImageUrl)
@@ -280,12 +288,14 @@ class ChatFragment : Fragment() {
         renderRatePrompt(deal)
     }
 
-    /** Show the "Rate this brand/creator" CTA on the closed card for completed deals. */
+    /** Show the "Rate this brand/creator" CTA on the closed card for review-required deals. */
     private fun renderRatePrompt(deal: com.aura.app.data.model.Deal) {
         val rateBtn = binding.includeConversationClosed.btnRateNow
         val submittedTv = binding.includeConversationClosed.tvReviewSubmitted
 
-        if (deal.status != Constants.STATUS_COMPLETED) {
+        if (deal.status !in setOf(Constants.STATUS_COMPLETED, Constants.STATUS_CANCELLED) &&
+            !deal.isClosureReviewPending()
+        ) {
             rateBtn.isVisible = false
             submittedTv.isVisible = false
             return

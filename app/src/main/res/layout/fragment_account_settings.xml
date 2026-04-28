@@ -177,8 +177,9 @@
                     android:id="@+id/et_security_question"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
+                    android:inputType="none"
                     android:maxLines="1"
+                    android:popupBackground="@color/colorSurfaceContainerHigh"
                     android:textColor="@color/colorOnSurface" />
             </com.google.android.material.textfield.TextInputLayout>
 

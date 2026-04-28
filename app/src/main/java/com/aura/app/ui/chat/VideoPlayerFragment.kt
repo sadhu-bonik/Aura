@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import com.aura.app.databinding.FragmentVideoPlayerBinding
+import com.aura.app.utils.rootNavController
 
 class VideoPlayerFragment : Fragment() {
 
@@ -25,7 +26,11 @@ class VideoPlayerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.ivClosePlayer.setOnClickListener { findNavController().navigateUp() }
+        binding.ivClosePlayer.setOnClickListener {
+            if (!rootNavController().navigateUp()) {
+                findNavController().popBackStack()
+            }
+        }
     }
 
     override fun onStart() {

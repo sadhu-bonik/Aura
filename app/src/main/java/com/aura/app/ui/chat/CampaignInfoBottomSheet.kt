@@ -95,21 +95,21 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
                         viewModel.rejectDeal()
                     }
                 }
-                Constants.STATUS_ACCEPTED -> showCancelRequestDialog()
+                Constants.STATUS_ACCEPTED -> showCancelDialog()
             }
         }
         binding.btnCompleteDeal.setOnClickListener { viewModel.requestCompletion() }
     }
 
-    private fun showCancelRequestDialog() {
+    private fun showCancelDialog() {
         val reasonInput = buildReasonInput()
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.dialog_cancel_reason_title)
             .setMessage(R.string.dialog_cancel_reason_body)
             .setView(wrapWithPadding(reasonInput))
             .setNegativeButton(R.string.btn_cancel, null)
-            .setPositiveButton(R.string.btn_send_request) { _, _ ->
-                viewModel.requestCancellation(reasonInput.text?.toString()?.trim() ?: "")
+            .setPositiveButton(R.string.btn_cancel_deal) { _, _ ->
+                viewModel.cancelAcceptedDeal(reasonInput.text?.toString()?.trim() ?: "")
             }
             .show()
     }
@@ -200,20 +200,15 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
                     binding.llDealActions.isVisible = false
                     binding.tvWaitingHelper.isVisible = false
                 }
-                deal.cancelRequestedBy == myId -> {
-                    // I requested cancellation — waiting for other party
+                deal.isClosureReviewPending() -> {
                     binding.llDealActions.isVisible = true
                     binding.btnCancelDeal.isEnabled = false
-                    binding.btnCancelDeal.text = getString(R.string.btn_waiting_response)
+                    binding.btnCancelDeal.text = getString(R.string.chip_review_required)
                     binding.btnCompleteDeal.isVisible = true
                     binding.btnCompleteDeal.isEnabled = false
+                    binding.btnCompleteDeal.text = getString(R.string.btn_waiting_response)
                     binding.tvWaitingHelper.isVisible = true
-                    binding.tvWaitingHelper.text = getString(R.string.helper_waiting_response)
-                }
-                deal.cancelRequestedBy.isNotEmpty() && deal.cancelRequestedBy != myId -> {
-                    // Other party requested cancellation — respond via chat bar
-                    binding.llDealActions.isVisible = false
-                    binding.tvWaitingHelper.isVisible = false
+                    binding.tvWaitingHelper.text = getString(R.string.helper_review_required_before_close)
                 }
                 deal.completionRequestedBy == myId -> {
                     // I'm waiting for completion approval — show waiting helper, disable actions
@@ -342,6 +337,21 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
         viewModel.actionResult.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is DealActionResult.Success -> {
+                    val deal = viewModel.deal.value
+                    deal?.let { currentDeal ->
+                        val shouldNotifyDealChanged =
+                            currentDeal.isClosureReviewPending() ||
+                                currentDeal.status in setOf(Constants.STATUS_COMPLETED, Constants.STATUS_CANCELLED)
+                        if (shouldNotifyDealChanged) {
+                            parentFragmentManager.setFragmentResult(
+                                REQUEST_DEAL_CHANGED,
+                                Bundle().apply {
+                                    putString(ARG_DEAL_ID, currentDeal.dealId)
+                                    putString(ARG_DEAL_STATUS, currentDeal.status)
+                                },
+                            )
+                        }
+                    }
                     viewModel.consumeActionResult()
                     dismiss()
                 }
@@ -361,6 +371,8 @@ class CampaignInfoBottomSheet : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "CampaignInfoBottomSheet"
+        const val REQUEST_DEAL_CHANGED = "campaign_info_deal_changed"
+        const val ARG_DEAL_STATUS = "dealStatus"
         private const val ARG_DEAL_ID = "dealId"
 
         fun newInstance(dealId: String) = CampaignInfoBottomSheet().apply {

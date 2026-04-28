@@ -105,8 +105,14 @@ class EditProfileFragment : Fragment() {
             "What is your favorite book?",
             "What was your childhood nickname?"
         )
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, questions)
+        val adapter = ArrayAdapter(requireContext(), R.layout.item_security_question_dropdown, questions)
         binding.etSecurityQuestion.setAdapter(adapter)
+        binding.etSecurityQuestion.threshold = 0
+        binding.etSecurityQuestion.keyListener = null
+        binding.etSecurityQuestion.setOnClickListener { binding.etSecurityQuestion.showDropDown() }
+        binding.etSecurityQuestion.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) binding.etSecurityQuestion.showDropDown()
+        }
     }
 
     private fun setupListeners() {

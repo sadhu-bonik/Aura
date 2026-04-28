@@ -157,15 +157,16 @@ A deal is one offer the brand sends to one creator under a specific campaign. Th
 | `description` | String | ✅ | Copied from campaign at send time; editable while accepted |
 | `budget` | Long | ✅ | USD cents |
 | `status` | String | ✅ | `"pending"`, `"accepted"`, `"rejected"`, `"completed"`, `"cancelled"`, `"expired"` |
-| `chatUnlocked` | Boolean | ✅ | `true` iff status is `"accepted"` or `"completed"` |
+| `chatUnlocked` | Boolean | ✅ | `true` after acceptance, and remains true for `"completed"` / `"cancelled"` history |
 | `createdAt` | Timestamp | ✅ | |
 | `updatedAt` | Timestamp | ✅ | |
 | `completedAt` | Timestamp | | |
 
 **Invariants** (from `AGENTS.md` §4):
-- `chatUnlocked` flips to `true` only on the `pending → accepted` transition, in the same write as the status change.
+- `chatUnlocked` flips to `true` on acceptance and remains true for readable completed/cancelled history.
 - A deal in `pending` for 7 days transitions to `expired`.
 - The tuple `(campaignId, brandId, creatorId)` is unique among deals in `pending` or `accepted`. Once a deal closes (`rejected`, `cancelled`, `expired`, `completed`), the brand may resend the same campaign to the same creator. Enforced client-side in `DealRepository.createDeal`.
+- Cancellation is unilateral for accepted deals, but the deal remains `accepted` with `cancelRequestedBy` populated until both parties submit review ratings. Completion uses `completionRequestedBy` the same way. Only after both `creatorReviewedAt` and `brandReviewedAt` are set does the deal move to `completed` or `cancelled` history.
 
 ---
 
@@ -211,7 +212,7 @@ Query a conversation with `where("dealId", ==, <id>).orderBy("sentAt", ASCENDING
 | `comment` | String | | |
 | `createdAt` | Timestamp | ✅ | |
 
-Writes only allowed when the referenced deal's status is `"completed"`.
+Writes only allowed when the referenced deal's status is `"completed"` / `"cancelled"`, or while an accepted deal has `completionRequestedBy` or `cancelRequestedBy` populated.
 
 ---
 
@@ -249,5 +250,5 @@ Full rules live in `firestore.rules` (to be written). Key principles:
 - Only brands can write to `deals` (as sender) and `shortlists`.
 - Only creators can write to `portfolioItems`.
 - Both parties in a deal can read/write `messages` for that deal, **only if `chatUnlocked == true`**.
-- `reviews` writes are allowed only when `deals/{dealId}.status == "completed"`.
+- `reviews` writes are allowed only for completed/cancelled deals or accepted deals with a pending completion/cancellation review requirement.
 - `recommendations` are read-only from the client — written by backend/admin only.

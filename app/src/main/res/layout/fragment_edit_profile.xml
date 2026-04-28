@@ -230,6 +230,7 @@
                     android:hint="Select a security question"
                     android:inputType="none"
                     android:fontFamily="@font/manrope_medium"
+                    android:popupBackground="@color/colorSurfaceContainerHigh"
                     android:textColor="@color/colorOnSurface" />
             </com.google.android.material.textfield.TextInputLayout>
 

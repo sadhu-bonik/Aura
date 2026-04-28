@@ -57,12 +57,17 @@ class CommonProfileSetupFragment : Fragment() {
             getString(R.string.sq_high_school_mascot)
         )
         binding.acvSecurityQuestion.setAdapter(
-            ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, questions)
+            ArrayAdapter(requireContext(), R.layout.item_security_question_dropdown, questions)
         )
         binding.acvSecurityQuestion.setText(
             draftViewModel.securityQuestion.ifBlank { questions[0] },
             false
         )
+        binding.acvSecurityQuestion.threshold = 0
+        binding.acvSecurityQuestion.setOnClickListener { binding.acvSecurityQuestion.showDropDown() }
+        binding.acvSecurityQuestion.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) binding.acvSecurityQuestion.showDropDown()
+        }
     }
 
     private fun prefillFields() {

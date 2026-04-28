@@ -126,20 +126,21 @@ class CampaignInfoViewModel(
     }
 
     /**
-     * Post-acceptance: open a cancellation request. Status stays ACCEPTED until the other
-     * party confirms via the chat bar.
+     * Post-acceptance: cancel immediately. No counterparty approval or notification is needed.
      */
-    fun requestCancellation(reason: String) {
+    fun cancelAcceptedDeal(reason: String) {
         viewModelScope.launch {
-            dealRepository.requestCancellation(dealId, currentUserId, reason)
+            dealRepository.cancelDeal(dealId, cancelledBy = currentUserId, reason = reason)
                 .onSuccess {
                     _deal.value = _deal.value?.copy(
+                        chatUnlocked = true,
                         cancelRequestedBy = currentUserId,
                         cancelReason = reason,
+                        completionRequestedBy = "",
                     )
                     _actionResult.value = DealActionResult.Success
                 }
-                .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to send cancellation request") }
+                .onFailure { _actionResult.value = DealActionResult.Error(it.message ?: "Failed to cancel deal") }
         }
     }
 

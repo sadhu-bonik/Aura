@@ -7,4 +7,5 @@ data class ActiveDealItem(
     val deal: Deal,
     val otherUser: UserLite?,
     val unreadCount: Int,
+    val needsReview: Boolean = false,
 )

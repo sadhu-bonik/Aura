@@ -32,6 +32,18 @@ class ReviewRepository(private val app: Application) {
             throw IllegalStateException("Already reviewed")
         }
 
+        val dealSnap = firestore.collection(Constants.COLLECTION_DEALS).document(review.dealId).get().await()
+        val dealStatus = dealSnap.getString("status").orEmpty()
+        val hasPendingClosure =
+            dealStatus == Constants.STATUS_ACCEPTED &&
+                    (
+                        dealSnap.getString("completionRequestedBy").orEmpty().isNotBlank() ||
+                                dealSnap.getString("cancelRequestedBy").orEmpty().isNotBlank()
+                    )
+        check(dealStatus in listOf(Constants.STATUS_COMPLETED, Constants.STATUS_CANCELLED) || hasPendingClosure) {
+            "Reviews can only be submitted when completion or cancellation is pending"
+        }
+
         val newRef = reviewsRef.document(reviewId)
         newRef.set(newReview).await()
 

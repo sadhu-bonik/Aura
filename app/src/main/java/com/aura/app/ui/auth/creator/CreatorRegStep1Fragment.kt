@@ -55,8 +55,13 @@ class CreatorRegStep1Fragment : Fragment() {
 
     private fun setupSecurityQuestionDropdown() {
         val questions = listOf(getString(R.string.sq_placeholder), getString(R.string.sq_pet_name), getString(R.string.sq_mothers_maiden_name), getString(R.string.sq_birth_city), getString(R.string.sq_high_school_mascot))
-        binding.acvSecurityQuestion.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, questions))
+        binding.acvSecurityQuestion.setAdapter(ArrayAdapter(requireContext(), R.layout.item_security_question_dropdown, questions))
         binding.acvSecurityQuestion.setText(questions[0], false)
+        binding.acvSecurityQuestion.threshold = 0
+        binding.acvSecurityQuestion.setOnClickListener { binding.acvSecurityQuestion.showDropDown() }
+        binding.acvSecurityQuestion.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) binding.acvSecurityQuestion.showDropDown()
+        }
     }
 
     private fun validateForm(): Boolean {

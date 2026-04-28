@@ -65,16 +65,33 @@ class NotificationBottomSheet : BottomSheetDialogFragment() {
 
         if (notif.dealId.isNotBlank()) {
             dismiss()
-            rootNavController().navigate(
-                R.id.action_homeContainer_to_chat,
-                bundleOf(
-                    "dealId" to notif.dealId,
-                    // ChatFragment opens ReviewFlow automatically when this flag is set.
-                    "openReviewPopup" to notif.openReviewPopup,
-                ),
-            )
+            if (notif.opensMessaging()) {
+                rootNavController().navigate(
+                    R.id.action_homeContainer_to_chat,
+                    bundleOf(
+                        "dealId" to notif.dealId,
+                        // ChatFragment opens ReviewFlow automatically when this flag is set.
+                        "openReviewPopup" to notif.openReviewPopup,
+                    ),
+                )
+            } else {
+                CampaignInfoBottomSheet.newInstance(notif.dealId)
+                    .show(parentFragmentManager, "campaign_info")
+            }
         }
     }
+
+    private fun Notification.opensMessaging(): Boolean =
+        type in setOf(
+            Notification.TYPE_DEAL_ACCEPTED,
+            Notification.TYPE_DEAL_RETRACTED,
+            Notification.TYPE_DEAL_CANCEL_REQUESTED,
+            Notification.TYPE_DEAL_CANCEL_DECLINED,
+            Notification.TYPE_DEAL_CANCELED,
+            Notification.TYPE_DEAL_COMPLETION_REQUESTED,
+            Notification.TYPE_DEAL_COMPLETED,
+            Notification.TYPE_REVIEW_REQUESTED,
+        )
 
     override fun onDestroyView() {
         super.onDestroyView()

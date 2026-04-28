@@ -1,6 +1,11 @@
 package com.aura.app.ui.common
 
+import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -43,5 +48,25 @@ class MainActivity : AppCompatActivity() {
             .setPopUpTo(R.id.welcomeFragment, inclusive = true)
             .build()
         navController.navigate(R.id.homeContainerFragment, null, navOptions)
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            val focusedView = currentFocus
+            if (focusedView is EditText) {
+                val focusedBounds = Rect()
+                focusedView.getGlobalVisibleRect(focusedBounds)
+                if (!focusedBounds.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                    focusedView.clearFocus()
+                    hideKeyboard(focusedView)
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event)
+    }
+
+    private fun hideKeyboard(view: android.view.View) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

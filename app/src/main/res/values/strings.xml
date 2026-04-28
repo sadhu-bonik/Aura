@@ -104,8 +104,9 @@
     <string name="btn_cancel_deal">Cancel Deal</string>
     <string name="btn_waiting_response">Waiting for response…</string>
     <string name="helper_waiting_response">Waiting for other party to agree.</string>
-    <string name="dialog_cancel_reason_title">Request to cancel this deal?</string>
-    <string name="dialog_cancel_reason_body">Both parties must agree before an accepted deal can be cancelled.</string>
+    <string name="helper_review_required_before_close">Finish your review to close this deal.</string>
+    <string name="dialog_cancel_reason_title">Cancel this deal?</string>
+    <string name="dialog_cancel_reason_body">You will need to leave a review before this deal moves to history.</string>
     <string name="dialog_withdraw_title">Withdraw this offer?</string>
     <string name="dialog_withdraw_body">The creator hasn\'t accepted yet — withdrawing closes the offer immediately.</string>
     <string name="btn_send_request">Send Request</string>
@@ -285,6 +286,7 @@
     <string name="reviews_total_count_one">1 review</string>
     <string name="review_aura_reviewed_badge">Aura Reviewed</string>
     <string name="chip_review_required">Review</string>
+    <string name="review_required_indicator">!</string>
 
     <!-- Brand Registration -->
     <string name="brand_onboarding_title">Brand Onboarding</string>
