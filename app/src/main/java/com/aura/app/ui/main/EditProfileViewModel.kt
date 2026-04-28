@@ -175,10 +175,13 @@ class EditProfileViewModel(
             _event.value = EditProfileEvent.DeleteError("No signed-in user found.")
             return
         }
-        val role = (_state.value as? EditProfileUiState.Success)?.user?.role.orEmpty()
 
         viewModelScope.launch {
             _event.value = EditProfileEvent.Deleting
+
+            val role = (_state.value as? EditProfileUiState.Success)?.user?.role
+                ?: userRepository.getUserProfile(uid)?.role
+                ?: ""
 
             val dataResult = userRepository.deleteAccountData(uid, role)
             if (dataResult.isFailure) {
@@ -188,14 +191,10 @@ class EditProfileViewModel(
                 return@launch
             }
 
-            val authResult = authRepository.deleteCurrentUser()
-            if (authResult.isFailure) {
-                _event.value = EditProfileEvent.DeleteError(
-                    authResult.exceptionOrNull()?.message ?: "Failed to delete account."
-                )
-                return@launch
+            if (auth.currentUser != null) {
+                authRepository.deleteCurrentUser()
             }
-
+            authRepository.logout()
             sessionManager.clearSession()
             _event.value = EditProfileEvent.DeleteSuccess
         }

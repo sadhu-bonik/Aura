@@ -25,6 +25,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.aura.app.R
 import com.aura.app.data.model.Deal
 import com.aura.app.ui.feed.SelectCampaignBottomSheet
+import com.aura.app.utils.rootNavController
 import kotlinx.coroutines.launch
 
 
@@ -100,6 +101,15 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupRecyclerViews() {
+        portfolioAdapter.onItemClick = { item ->
+            if (item.mediaUrl.isNotBlank()) {
+                rootNavController().navigate(
+                    R.id.videoPlayerFragment,
+                    Bundle().apply { putString("videoUrl", item.mediaUrl) }
+                )
+            }
+        }
+
         binding.rvPortfolio.apply {
             layoutManager = GridLayoutManager(requireContext(), 3)
             adapter = portfolioAdapter

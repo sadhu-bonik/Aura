@@ -1,0 +1,120 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"surface-variant": "#2a2830", "on-surface": "#ffffff", "surface-dim": "#08070a", "surface-container-low": "#121116", secondary: "#d5cfe6", "primary-container": "#6b5fb0", surface: "#08070a", "surface-tint": "#d7cfff", "primary-dim": "#d0c6f5", "tertiary-container": "#ffccf4", "on-primary": "#ffffff", "on-secondary-container": "#e2ddef", "tertiary-dim": "#f7c8eb", "on-secondary": "#1a171f", "on-secondary-fixed": "#1a171f", "primary-fixed-dim": "#d7cfff", "error-container": "#b12c46", "on-primary-container": "#f0ebff", "outline-variant": "#5d5a66", primary: "#d7cfff", tertiary: "#ffe6f9", "surface-bright": "#36343f", "on-surface-variant": "#c9c5d0", "surface-container": "#1d1c23", "on-error": "#ffffff", "error-dim": "#e25d74", "on-secondary-fixed-variant": "#4b475a", "on-background": "#ffffff", "on-tertiary-container": "#4e2a4a", "secondary-dim": "#d5cfe6", "inverse-on-surface": "#1a171f", "inverse-surface": "#ffffff", "on-primary-fixed": "#211a3d", "on-tertiary-fixed-variant": "#5e3858", background: "#08070a", error: "#ff8d9c", outline: "#938f99", "on-primary-fixed-variant": "#4b436e", "on-error-container": "#ffdadf", "surface-container-lowest": "#000000", "secondary-fixed-dim": "#e1dbf3", "tertiary-fixed-dim": "#f7c8eb", "surface-container-highest": "#333139", "primary-fixed": "#eaddff", "surface-container-high": "#28262e", "on-tertiary-fixed": "#3a1a36", "secondary-container": "#4c475d", "tertiary-fixed": "#ffccf4", "secondary-fixed": "#f2edff", "inverse-primary": "#7c70c6", "on-tertiary": "#553051"}, borderRadius: {DEFAULT: "1rem", lg: "2rem", xl: "3rem", full: "9999px"}, fontFamily: {headline: ["Manrope"], body: ["Manrope"], label: ["Manrope"], display: "Manrope"}}}};</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-aura-gradient {
+            background: linear-gradient(135deg, #7c70c6 0%, #615a80 100%);
+        }
+    </style>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-aura-gradient {
+            background: linear-gradient(135deg, #7c70c6 0%, #615a80 100%);
+        }
+    </style>
+</head>
+<body class="bg-[#08070a] font-body text-white selection:bg-primary-container selection:text-on-primary-container min-h-screen">
+<!-- TopAppBar -->
+<nav class="flex items-center justify-between px-6 py-4 w-full z-50 fixed top-0 bg-surface/80 backdrop-blur-xl">
+<div class="flex items-center justify-start flex-1">
+<button class="p-2 -ml-2 text-outline hover:bg-surface-container-highest rounded-full transition-all duration-200 active:scale-95" style="">
+<span class="material-symbols-outlined" data-icon="close" style="">close</span>
+</button>
+</div>
+<div class="flex-1 flex justify-center">
+<span class="text-2xl font-extrabold tracking-tighter text-primary font-['Manrope'] text-primary-dim" style="">Aura</span>
+</div>
+<div class="flex-1"></div>
+</nav>
+<!-- Main Canvas -->
+<main class="min-h-screen flex flex-col items-center justify-center px-8 pt-20 pb-16">
+<!-- Hero Section -->
+<div class="w-full max-w-md text-center space-y-6 mb-12">
+<div class="inline-flex items-center px-4 py-1 rounded-full bg-tertiary-container text-on-tertiary-container">
+<span class="text-[10px] font-bold tracking-widest uppercase font-label" style="">FIND YOUR AURA</span>
+</div>
+<h1 class="text-5xl font-extrabold tracking-tight text-on-surface font-headline leading-tight" style="">
+                Welcome to Aura
+            </h1>
+<p class="text-lg font-medium leading-relaxed max-w-[280px] mx-auto text-white/80" style="">
+                Connect creators with brands
+            </p>
+</div>
+<!-- Form Area -->
+<div class="w-full max-w-md space-y-8">
+<form class="space-y-8" onsubmit="return false;">
+<!-- Input Group -->
+<div class="relative group space-y-2">
+<div class="relative">
+<div class="absolute inset-y-0 left-6 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[20px]" data-icon="mail" style="">mail</span>
+</div>
+<input class="w-full h-16 pl-14 pr-6 bg-surface-container-low border-none rounded-full text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary focus:bg-surface-container-highest transition-all duration-300 font-medium border-white/10" id="emailInput" placeholder="h123@gmail.com" type="email" value="h123@gmail.com">
+</div>
+<!-- Helper and Error Text -->
+<div class="px-6">
+<p class="text-xs font-medium text-white/80" style="">
+                            Enter a valid email address (e.g., name@email.com)
+                        </p>
+<p class="text-xs text-error font-semibold mt-1 hidden" id="errorText" style="">
+                            Invalid email format
+                        </p>
+</div>
+</div>
+<!-- CTA Button -->
+<button class="w-full h-16 bg-aura-gradient font-bold text-lg rounded-full shadow-lg shadow-primary/20 transition-all duration-300 flex items-center justify-center gap-2 group text-white active:scale-[0.98] hover:shadow-primary/30 opacity-100" id="submitBtn" style="">
+                    Continue
+                    <span class="material-symbols-outlined text-[20px] transition-transform duration-300 group-hover:translate-x-1" data-icon="arrow_forward" style="">arrow_forward</span>
+</button>
+</form>
+</div>
+<!-- Footer / Legal -->
+<footer class="mt-16 text-center">
+<p class="text-xs font-medium max-w-[240px] mx-auto leading-relaxed text-white/80" style="">
+                By continuing, you agree to our <span class="text-primary font-bold cursor-pointer" style="">Terms of Service</span> and <span class="text-primary font-bold cursor-pointer" style="">Privacy Policy</span>.
+            </p>
+</footer>
+</main>
+<script>
+        const emailInput = document.getElementById('emailInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const errorText = document.getElementById('errorText');
+
+        function validateEmail(email) {
+            const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            
+            if (email === "") {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                submitBtn.classList.remove('opacity-100', 'active:scale-[0.98]', 'hover:shadow-primary/30');
+                errorText.classList.add('hidden');
+            } else if (isValid) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                submitBtn.classList.add('opacity-100', 'active:scale-[0.98]', 'hover:shadow-primary/30');
+                errorText.classList.add('hidden');
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                submitBtn.classList.remove('opacity-100', 'active:scale-[0.98]', 'hover:shadow-primary/30');
+                errorText.classList.remove('hidden');
+            }
+        }
+
+        emailInput.addEventListener('input', (e) => {
+            validateEmail(e.target.value);
+        });
+
+        // Initialize state based on default value
+        validateEmail(emailInput.value);
+    </script>
+</body></html>

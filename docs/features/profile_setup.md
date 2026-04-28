@@ -13,7 +13,7 @@ Current implementation keeps the existing registration destinations stable while
 - `WelcomeFragment`
 - `RoleSelectionFragment`
 - Creator: `CreatorRegStep1Fragment` -> `CreatorRegStep3Fragment` -> `CreatorRegStep2Fragment`
-- Brand: `BrandRegStep1Fragment` -> `BrandRegStep2Fragment` -> `BrandRegStep3Fragment` -> `BrandRegStep4Fragment` -> `BrandRegStep5Fragment`
+- Brand: `BrandRegStep1Fragment` -> `BrandRegStep2Fragment` -> `BrandRegStep4Fragment`
 
 The final Figma split into create-password and common-profile screens is planned as a follow-up navigation pass; the current change focuses on the profile data contract and role-specific fields.
 
@@ -27,7 +27,7 @@ The final Figma split into create-password and common-profile screens is planned
 
 - Required text fields show inline errors before moving forward.
 - Creator setup requires at least one category, one target audience, location, headline, bio, and at least one featured video before account completion.
-- Brand setup requires at least one industry, one target audience, location, brand identity fields, and verification details before account completion.
+- Brand setup requires at least one industry, one target audience, location, brand identity fields, and a business license document before account completion.
 - Draft fields live in activity-scoped ViewModels so rotation preserves typed fields and selected URIs.
 
 ## Invariants Touched

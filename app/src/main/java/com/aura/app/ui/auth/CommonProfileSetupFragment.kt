@@ -33,10 +33,10 @@ class CommonProfileSetupFragment : Fragment() {
         prefillFields()
 
         binding.ivBack.setOnClickListener { findNavController().navigateUp() }
-        binding.layoutBottomNav.btnNavCancel.setOnClickListener { findNavController().navigateUp() }
-        binding.layoutBottomNav.btnNavNext.icon = null
-        binding.layoutBottomNav.btnNavNext.iconPadding = 0
-        binding.layoutBottomNav.btnNavNext.setOnClickListener {
+        binding.btnCancel.setOnClickListener { findNavController().navigateUp() }
+        binding.btnNext.icon = null
+        binding.btnNext.iconPadding = 0
+        binding.btnNext.setOnClickListener {
             if (!validateForm()) return@setOnClickListener
 
             draftViewModel.firstName = binding.etFirstName.text.toString().trim()

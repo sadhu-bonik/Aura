@@ -188,16 +188,17 @@
     <string name="forgot_password_secure_tag">Secure Recovery</string>
 
     <!-- Role Selection -->
-    <string name="role_selection_title">Join Aura</string>
-    <string name="role_selection_subtitle">Choose how you want to use the platform</string>
+    <string name="role_selection_title">Choose your role</string>
+    <string name="role_selection_subtitle">This choice cannot be changed later.</string>
+    <string name="role_selection_top_title">Choose Identity</string>
     <string name="role_creator_title">Creator</string>
-    <string name="role_creator_desc">For users who showcase content and want brand collaborations.</string>
+    <string name="role_creator_desc">Showcase your content and collaborate with brands.</string>
     <string name="role_creator_tag">Premium Access</string>
     <string name="role_brand_title">Brand</string>
-    <string name="role_brand_desc">For businesses that want to discover creators and start campaigns.</string>
+    <string name="role_brand_desc">Discover creators and launch campaigns.</string>
     <string name="role_brand_tag">Scale Fast</string>
-    <string name="role_selection_continue_btn">Continue</string>
-    <string name="role_selection_back_btn">Back</string>
+    <string name="role_selection_continue_btn">Create Account</string>
+    <string name="role_selection_back_btn">Cancel</string>
     <string name="role_selection_note">Please note: Role selection is permanent after account creation.</string>
 
     <!-- Creator Registration -->
@@ -262,6 +263,7 @@
     <string name="nav_btn_save_exit">Save &amp; Exit</string>
     <string name="nav_btn_next">Next</string>
     <string name="nav_btn_finish">Finish Setup</string>
+    <string name="nav_btn_creating_profile">Creating profile…</string>
 
     <!-- Reviews -->
     <string name="review_step1_title">What would you rate their aura?</string>
@@ -286,7 +288,7 @@
 
     <!-- Brand Registration -->
     <string name="brand_onboarding_title">Brand Onboarding</string>
-    <string name="brand_reg_step1_tag">Step 1 of 5</string>
+    <string name="brand_reg_step1_tag">Step 1 of 3</string>
     <string name="brand_reg_step1_title">Create Brand Account</string>
     <string name="brand_reg_step1_subtitle">Provide the foundational details for your Aura presence.</string>
     <string name="brand_reg_secure_banner_title">Secure Onboarding</string>
@@ -307,7 +309,7 @@
     <string name="brand_reg_password_req_number">1 Number</string>
     <string name="brand_reg_next_btn">Next Step</string>
 
-    <string name="brand_reg_step2_tag">Step 2 of 5</string>
+    <string name="brand_reg_step2_tag">Step 2 of 3</string>
     <string name="brand_reg_step2_title">Brand Identity</string>
     <string name="brand_reg_step2_subtitle">Define your brand identity and set the tone for your digital presence.</string>
     <string name="brand_reg_logo_label">Brand Mark</string>
@@ -331,15 +333,16 @@
     <string name="brand_reg_step3_company_email_label">Company Email</string>
     <string name="brand_reg_step3_company_email_hint">verify@aura.com</string>
     <string name="brand_reg_step3_doc_section">Legal Documentation</string>
-    <string name="brand_reg_step3_upload_title">Business Registration</string>
+    <string name="brand_reg_step3_upload_title">Business License</string>
     <string name="brand_reg_step3_upload_subtitle">Upload your certification in PDF, JPG, or PNG format (Max 10MB)</string>
+    <string name="error_business_license_required">Please upload a business license (PDF or image)</string>
     <string name="brand_reg_step3_social_section">Social Presence</string>
     <string name="brand_reg_step3_linkedin_hint">LinkedIn Profile URL</string>
     <string name="brand_reg_step3_twitter_hint">Twitter/X Handle</string>
     <string name="brand_reg_security_protocol_title">Aura Security Protocol</string>
     <string name="brand_reg_security_protocol_body">Verification ensures high-trust transactions within the marketplace. Your data is encrypted and only visible to our compliance curators.</string>
 
-    <string name="brand_reg_step4_tag">Step 4 of 5</string>
+    <string name="brand_reg_step4_tag">Step 3 of 3</string>
     <string name="brand_reg_step4_title">Define Your Market Presence</string>
     <string name="brand_reg_step4_subtitle">Industry tags improve creator matching. Select the sectors that best represent your brand\'s core identity.</string>
     <string name="brand_reg_industry_label">Industry Tags</string>
@@ -374,7 +377,7 @@
     <string name="sq_pet_name">What was your first pet\'s name?</string>
     <string name="sq_mothers_maiden_name">What is your mother\'s maiden name?</string>
     <string name="sq_birth_city">What city were you born in?</string>
-    <string name="sq_placeholder">Select a recovery question</string>
+    <string name="sq_placeholder">Select a security question</string>
     <string name="sq_high_school_mascot">What was your high school mascot?</string>
 
     <!-- Audience region options -->
@@ -423,8 +426,6 @@
     <!-- Profile Setup — Aura Create Password -->
     <string name="password_create_title">Create your account</string>
     <string name="password_create_subtitle">Secure your Aura with a password.</string>
-    <string name="password_email_label">Email</string>
-    <string name="password_email_hint">you@example.com</string>
     <string name="password_password_label">Password</string>
     <string name="password_password_hint">At least 8 characters</string>
     <string name="password_confirm_label">Confirm password</string>
@@ -432,8 +433,8 @@
     <string name="password_strength_hint">Use 8+ characters with at least one uppercase letter and a number.</string>
 
     <!-- Profile Setup — Common (pre-role) -->
-    <string name="common_profile_title">A little about you</string>
-    <string name="common_profile_subtitle">We use this to personalize your Aura.</string>
+    <string name="common_profile_title">Tell us about yourself</string>
+    <string name="common_profile_subtitle">Complete your basic information to personalize your Aura experience.</string>
     <string name="common_profile_step_label">Identity Verification</string>
     <string name="common_profile_step_count">Step 2 of 4</string>
     <string name="common_profile_hero_body">Secure your recovery details before choosing how you want to use Aura.</string>
@@ -443,11 +444,11 @@
     <string name="common_first_name_hint">Enter your first name</string>
     <string name="common_last_name_label">Last name</string>
     <string name="common_last_name_hint">Enter your last name</string>
-    <string name="common_phone_label">Phone</string>
-    <string name="common_phone_hint">e.g. +1 555 123 4567</string>
-    <string name="common_security_question_label">Security question</string>
-    <string name="common_security_answer_label">Your answer</string>
-    <string name="common_security_answer_hint">Used for account recovery</string>
+    <string name="common_phone_label">Phone Number</string>
+    <string name="common_phone_hint">+1 (555) 000-0000</string>
+    <string name="common_security_question_label">Security Question</string>
+    <string name="common_security_answer_label">Security Answer</string>
+    <string name="common_security_answer_hint">Your answer</string>
 
     <!-- Profile Setup — Role choosing (extra) -->
     <string name="role_setup_title">Choose your role</string>
@@ -456,25 +457,34 @@
     <!-- Profile Setup — Creator screen 1 -->
     <string name="creator_setup_1_title">Tell us your craft</string>
     <string name="creator_setup_1_subtitle">Pick the categories that match your content.</string>
+    <string name="creator_setup_title">Creator Profile Setup</string>
+    <string name="creator_setup_subtitle">Tell us what you create</string>
+    <string name="creator_setup_top_title">Profile Setup</string>
     <string name="creator_setup_categories_label">Categories</string>
     <string name="creator_setup_target_audience_label">Target audience</string>
-    <string name="creator_setup_location_label">Location</string>
-    <string name="creator_setup_location_hint">City, Country</string>
+    <string name="creator_setup_location_label">Location (Required)</string>
+    <string name="creator_setup_location_hint">e.g. New York, USA</string>
     <string name="creator_setup_portfolio_link_label">Portfolio link (optional)</string>
     <string name="creator_setup_portfolio_link_hint">https://</string>
 
     <!-- Profile Setup — Creator screen 2 -->
     <string name="creator_setup_2_title">Showcase your work</string>
     <string name="creator_setup_2_subtitle">Add a photo, headline, and a short bio.</string>
+    <string name="creator_setup_complete_top_title">Complete your profile</string>
+    <string name="creator_setup_add_photo">Add profile photo (optional)</string>
     <string name="creator_setup_avatar_label">Profile photo</string>
     <string name="creator_setup_headline_label">Headline</string>
     <string name="creator_setup_headline_hint">e.g. Digital Creator</string>
     <string name="creator_setup_bio_label">Bio</string>
-    <string name="creator_setup_bio_hint">A short tagline that describes your style…</string>
+    <string name="creator_setup_bio_hint">Passionate about storytelling and tech. 5+ years experience in social media growth.</string>
+    <string name="creator_setup_bio_helper">Tell your story (max 200 characters)</string>
     <string name="creator_setup_youtube_label">YouTube handle</string>
-    <string name="creator_setup_youtube_hint">@yourhandle</string>
-    <string name="creator_setup_featured_videos_label">Featured videos (up to 3)</string>
+    <string name="creator_setup_youtube_hint">Paste your YouTube channel link (optional)</string>
+    <string name="creator_setup_featured_videos_label">Featured Videos (Top 3)</string>
     <string name="creator_setup_video_slot_empty">Tap to upload</string>
+    <string name="creator_setup_video_helper">Select up to 3 videos to showcase on your profile</string>
+    <string name="creator_setup_access_hint">Complete your profile to access all features</string>
+    <string name="creator_setup_video_limit">You can only select up to 3 videos</string>
 
     <!-- Profile Setup — Creator advanced -->
     <string name="creator_advanced_title">Advanced details</string>

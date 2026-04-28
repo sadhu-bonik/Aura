@@ -371,6 +371,101 @@
                 android:gravity="end"
                 android:layout_marginBottom="24dp" />
 
+            <!-- Business license -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp">
+
+                <View
+                    android:layout_width="32dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimary"
+                    android:alpha="0.3"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/brand_reg_step3_doc_section"
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/manrope_bold"
+                    android:textAllCaps="true"
+                    android:letterSpacing="0.2" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/layout_file_upload"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:background="@drawable/bg_upload_zone"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout
+                    android:id="@+id/layout_file_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+
+                    <FrameLayout
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/bg_circle_primary_tint"
+                        android:backgroundTint="@color/colorPrimaryContainer"
+                        android:layout_marginBottom="16dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:src="@android:drawable/ic_menu_upload"
+                            android:tint="@color/colorPrimary"
+                            android:contentDescription="@null" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/brand_reg_step3_upload_title"
+                        android:textColor="@color/colorOnSurface"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/manrope_bold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/brand_reg_step3_upload_subtitle"
+                        android:textColor="@color/colorOnSurfaceVariant"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/manrope_medium"
+                        android:gravity="center"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_file_selected"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:padding="8dp"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/manrope_bold"
+                    android:ellipsize="middle"
+                    android:singleLine="true"
+                    android:visibility="gone" />
+            </FrameLayout>
+
         </LinearLayout>
     </ScrollView>
 

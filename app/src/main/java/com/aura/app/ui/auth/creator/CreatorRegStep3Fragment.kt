@@ -1,10 +1,11 @@
 package com.aura.app.ui.auth.creator
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -31,56 +32,49 @@ class CreatorRegStep3Fragment : Fragment() {
         setupNicheChips()
         setupTargetAudienceChips()
 
-        // Pre-fill location (stored as "City, State, Country")
-        if (registrationViewModel.location.isNotEmpty()) {
-            val parts = registrationViewModel.location.split(", ")
-            if (parts.size >= 1) binding.etCity.setText(parts[0])
-            if (parts.size >= 2) binding.etState.setText(parts[1])
-            if (parts.size >= 3) binding.etCountry.setText(parts[2])
-        }
+        binding.etLocation.setText(registrationViewModel.location)
         binding.etPortfolioLink.setText(registrationViewModel.portfolioLink)
 
         binding.ivBack.setOnClickListener { findNavController().navigateUp() }
-        binding.layoutBottomNav.btnNavCancel.setOnClickListener { findNavController().navigateUp() }
-        binding.layoutBottomNav.btnNavNext.setOnClickListener {
-            val cityStr = binding.etCity.text.toString().trim()
-            val stateStr = binding.etState.text.toString().trim()
-            val countryStr = binding.etCountry.text.toString().trim()
+        binding.btnSaveExit.setOnClickListener { findNavController().navigateUp() }
+        binding.btnFinishSetup.setOnClickListener {
+            val location = binding.etLocation.text.toString().trim()
 
             var valid = true
-            if (cityStr.isBlank()) { binding.tilCity.error = "Required"; valid = false } else { binding.tilCity.error = null }
-            if (stateStr.isBlank()) { binding.tilState.error = "Required"; valid = false } else { binding.tilState.error = null }
-            if (countryStr.isBlank()) { binding.tilCountry.error = "Required"; valid = false } else { binding.tilCountry.error = null }
-
-            if (!valid) return@setOnClickListener
+            binding.tilLocation.error = null
+            binding.tvCategoriesError.visibility = View.GONE
+            binding.tvAudienceError.visibility = View.GONE
 
             val selectedNiches = collectCheckedChips(binding.chipGroupNiches)
-
             if (selectedNiches.isEmpty()) {
-                Toast.makeText(requireContext(), getString(R.string.error_categories_min_one), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+                binding.tvCategoriesError.visibility = View.VISIBLE
+                valid = false
             }
 
             val selectedAudience = collectCheckedChips(binding.chipGroupTargetAudience)
             if (selectedAudience.isEmpty()) {
-                Toast.makeText(requireContext(), getString(R.string.error_target_audience_required), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+                binding.tvAudienceError.visibility = View.VISIBLE
+                valid = false
             }
 
-            // Deduplicate address parts
-            val parts = mutableListOf<String>()
-            parts.addAll(cityStr.split(",").map { it.trim() })
-            parts.addAll(stateStr.split(",").map { it.trim() })
-            parts.addAll(countryStr.split(",").map { it.trim() })
-            registrationViewModel.location = parts.filter { it.isNotBlank() }.distinct().joinToString(", ")
+            if (location.isBlank()) {
+                binding.tilLocation.error = getString(R.string.error_location_required)
+                valid = false
+            }
+
+            if (!valid) return@setOnClickListener
+
+            registrationViewModel.location = location
 
             registrationViewModel.targetAudience = selectedAudience
             registrationViewModel.audienceRegion = selectedAudience.joinToString(", ")
             registrationViewModel.niches = selectedNiches
             registrationViewModel.portfolioLink = binding.etPortfolioLink.text.toString().trim()
 
-            findNavController().navigate(R.id.action_creator_step3_to_step2)
+            registrationViewModel.completeRegistration(requireContext())
         }
+
+        setupObservers()
     }
 
     private fun setupNicheChips() {
@@ -90,6 +84,7 @@ class CreatorRegStep3Fragment : Fragment() {
                 text = niche
                 isCheckable = true
                 isChecked = registrationViewModel.niches.contains(niche)
+                styleCreatorChip(this)
                 setOnCheckedChangeListener { buttonView, isChecked ->
                     // Enforce max 5 selections
                     val selectedCount = (0 until binding.chipGroupNiches.childCount).count {
@@ -97,8 +92,8 @@ class CreatorRegStep3Fragment : Fragment() {
                     }
                     if (isChecked && selectedCount > 5) {
                         buttonView.isChecked = false
-                        Toast.makeText(requireContext(), "You can select up to 5 niches", Toast.LENGTH_SHORT).show()
                     }
+                    styleCreatorChip(buttonView as Chip)
                 }
             }
             binding.chipGroupNiches.addView(chip)
@@ -113,8 +108,56 @@ class CreatorRegStep3Fragment : Fragment() {
                 isCheckable = true
                 isChecked = registrationViewModel.targetAudience.contains(audience) ||
                     registrationViewModel.audienceRegion.split(", ").contains(audience)
+                styleCreatorChip(this)
+                setOnCheckedChangeListener { buttonView, _ ->
+                    styleCreatorChip(buttonView as Chip)
+                }
             }
             binding.chipGroupTargetAudience.addView(chip)
+        }
+    }
+
+    private fun styleCreatorChip(chip: Chip) {
+        val checked = chip.isChecked
+        chip.chipBackgroundColor = ColorStateList.valueOf(
+            requireContext().getColor(
+                if (checked) R.color.colorSurfaceContainerHighest else R.color.colorSurfaceContainerLow
+            )
+        )
+        chip.chipStrokeColor = ColorStateList.valueOf(
+            requireContext().getColor(if (checked) R.color.colorPrimary else android.R.color.transparent)
+        )
+        chip.chipStrokeWidth = resources.getDimension(R.dimen.role_card_unselected_stroke)
+        chip.setTextColor(
+            requireContext().getColor(if (checked) R.color.colorPrimary else R.color.colorOnSurfaceVariant)
+        )
+        chip.typeface = ResourcesCompat.getFont(
+            requireContext(),
+            if (checked) R.font.manrope_semibold else R.font.manrope_medium
+        )
+        chip.minHeight = resources.getDimensionPixelSize(R.dimen.creator_chip_height)
+    }
+
+    private fun setupObservers() {
+        registrationViewModel.registrationSuccess.observe(viewLifecycleOwner) { success ->
+            if (success) {
+                registrationViewModel.resetRegistrationSuccess()
+                findNavController().navigate(R.id.action_creator_step3_to_home)
+            }
+        }
+
+        registrationViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.btnFinishSetup.isEnabled = !isLoading
+            binding.btnSaveExit.isEnabled = !isLoading
+            binding.btnFinishSetup.text = getString(
+                if (isLoading) R.string.nav_btn_creating_profile else R.string.nav_btn_finish
+            )
+        }
+
+        registrationViewModel.error.observe(viewLifecycleOwner) { errorMsg ->
+            if (!errorMsg.isNullOrBlank()) {
+                binding.tilLocation.error = errorMsg
+            }
         }
     }
 

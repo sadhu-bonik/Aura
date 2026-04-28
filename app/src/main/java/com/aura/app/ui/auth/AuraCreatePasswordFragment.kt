@@ -1,7 +1,6 @@
 package com.aura.app.ui.auth
 
 import android.os.Bundle
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,8 +28,6 @@ class AuraCreatePasswordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.etEmail.setText(draftViewModel.email)
-
         binding.ivBack.setOnClickListener { findNavController().navigateUp() }
         binding.layoutBottomNav.btnNavCancel.setOnClickListener { findNavController().navigateUp() }
         binding.layoutBottomNav.btnNavNext.text = getString(R.string.button_create_account)
@@ -39,7 +36,6 @@ class AuraCreatePasswordFragment : Fragment() {
         binding.layoutBottomNav.btnNavNext.setOnClickListener {
             if (!validateForm()) return@setOnClickListener
 
-            draftViewModel.email = binding.etEmail.text.toString().trim()
             draftViewModel.password = binding.etPassword.text.toString()
             findNavController().navigate(R.id.action_create_password_to_common_profile)
         }
@@ -47,21 +43,11 @@ class AuraCreatePasswordFragment : Fragment() {
 
     private fun validateForm(): Boolean {
         var valid = true
-        binding.tilEmail.error = null
         binding.tilPassword.error = null
         binding.tilConfirmPassword.error = null
 
-        val email = binding.etEmail.text?.toString()?.trim() ?: ""
         val password = binding.etPassword.text?.toString() ?: ""
         val confirm = binding.etConfirmPassword.text?.toString() ?: ""
-
-        if (email.isBlank()) {
-            binding.tilEmail.error = getString(R.string.error_email_required)
-            valid = false
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.tilEmail.error = getString(R.string.error_email_invalid)
-            valid = false
-        }
 
         if (password.isBlank()) {
             binding.tilPassword.error = getString(R.string.error_password_required)

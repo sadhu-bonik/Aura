@@ -1,313 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Creator Registration - Step 2: Profile Information
--->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
 
-    <!-- Background Decor -->
-    <View
-        android:layout_width="384dp"
-        android:layout_height="384dp"
-        android:background="@drawable/bg_blur_primary"
-        android:alpha="0.10"
-        android:layout_marginTop="-100dp"
-        android:layout_marginStart="-100dp" />
-
-    <!-- Top Navigation Bar -->
     <LinearLayout
         android:id="@+id/layout_top_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/top_app_bar_height"
-        android:orientation="horizontal"
+        android:layout_height="@dimen/role_top_app_bar_height"
+        android:background="@drawable/bg_glass_top_app_bar"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingStart="@dimen/space_lg"
         android:paddingEnd="@dimen/space_lg">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/iv_back"
-            android:layout_width="@dimen/icon_size_md"
-            android:layout_height="@dimen/icon_size_md"
-            android:src="@android:drawable/ic_menu_revert"
-            android:tint="@color/colorGradientStart"
+            android:layout_width="@dimen/icon_size_xl"
+            android:layout_height="@dimen/icon_size_xl"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="4dp" />
+            android:contentDescription="@string/cd_back_button"
+            android:padding="@dimen/space_sm"
+            android:src="@drawable/ic_arrow_back"
+            android:tint="@color/colorPrimary" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_md"
+            android:layout_weight="1"
+            android:text="@string/creator_setup_complete_top_title"
+            android:textAppearance="@style/TextAppearance.Aura.TitleMedium"
+            android:textColor="@color/colorOnSurface" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/creator_onboarding_title"
-            android:textColor="@color/colorOnSurface"
-            android:textSize="20sp"
-            android:fontFamily="@font/manrope_bold"
-            android:letterSpacing="-0.03"
-            android:layout_marginStart="@dimen/space_md" />
+            android:text="@string/app_name"
+            android:textAppearance="@style/TextAppearance.Aura.TitleLarge"
+            android:textColor="@color/colorOnSurface" />
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/top_app_bar_height"
-        android:paddingBottom="160dp"
+        android:layout_marginTop="@dimen/role_top_app_bar_height"
+        android:clipToPadding="false"
         android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="@dimen/space_xl"
-            android:paddingEnd="@dimen/space_xl"
+            android:paddingStart="@dimen/space_lg"
             android:paddingTop="@dimen/space_lg"
-            android:paddingBottom="@dimen/space_xl">
+            android:paddingEnd="@dimen/space_lg"
+            android:paddingBottom="@dimen/space_xxl">
 
-            <!-- Step header with progress -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="32dp">
-
-                <TextView
-                    android:id="@+id/tv_step_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="STEP 3 OF 3"
-                    android:textColor="@color/colorTertiary"
-                    android:textSize="11sp"
-                    android:fontFamily="@font/manrope_bold"
-                    android:textAllCaps="true"
-                    android:letterSpacing="0.1"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/tv_step_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/creator_reg_step2_title"
-                    android:textColor="@color/colorOnSurface"
-                    android:textSize="32sp"
-                    android:fontFamily="@font/manrope_extrabold"
-                    android:letterSpacing="-0.02"
-                    android:layout_marginBottom="16dp" />
-
-                <com.google.android.material.progressindicator.LinearProgressIndicator
-                    android:id="@+id/progress_bar"
-                    style="@style/Widget.Aura.ProgressBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="6dp"
-                    android:progress="100"
-                    app:trackCornerRadius="4dp" />
-            </LinearLayout>
-
-            <!-- Photo Upload area -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/space_xl"
                 android:gravity="center_horizontal"
-                android:layout_marginBottom="24dp">
+                android:orientation="vertical">
 
                 <FrameLayout
                     android:id="@+id/layout_photo_upload"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:background="@drawable/bg_upload_zone"
+                    android:layout_width="@dimen/creator_profile_photo_size"
+                    android:layout_height="@dimen/creator_profile_photo_size"
                     android:clickable="true"
-                    android:focusable="true"
-                    android:layout_marginBottom="8dp">
+                    android:focusable="true">
 
-                    <!-- Default prompt -->
-                    <LinearLayout
-                        android:id="@+id/layout_photo_prompt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal">
-
-                        <ImageView
-                            android:layout_width="@dimen/icon_size_xl"
-                            android:layout_height="@dimen/icon_size_xl"
-                            android:src="@android:drawable/ic_menu_camera"
-                            android:tint="@color/colorOnSurfaceVariant"
-                            android:layout_marginBottom="8dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/creator_reg_upload_portrait_label"
-                            android:textColor="@color/colorOnSurfaceVariant"
-                            android:textSize="12sp"
-                            android:fontFamily="@font/manrope_bold"
-                            android:textAllCaps="true"
-                            android:letterSpacing="0.1" />
-                    </LinearLayout>
-
-                    <!-- Photo preview -->
-                    <ImageView
-                        android:id="@+id/iv_profile_photo_preview"
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:visibility="gone" />
+                        android:background="@drawable/bg_creator_avatar"
+                        android:clipToOutline="true">
 
+                        <LinearLayout
+                            android:id="@+id/layout_photo_prompt"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="@dimen/icon_size_xl"
+                                android:layout_height="@dimen/icon_size_xl"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_person"
+                                android:tint="@color/colorOnSurfaceVariant" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/iv_profile_photo_preview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/cd_photo_preview"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone" />
+                    </FrameLayout>
+
+                    <ImageButton
+                        android:id="@+id/btn_photo_upload"
+                        android:layout_width="@dimen/creator_photo_button_size"
+                        android:layout_height="@dimen/creator_photo_button_size"
+                        android:layout_gravity="bottom|end"
+                        android:background="@drawable/bg_creator_photo_button"
+                        android:contentDescription="@string/cd_upload_photo"
+                        android:padding="@dimen/space_md"
+                        android:src="@drawable/ic_add_a_photo"
+                        android:tint="@color/white" />
                 </FrameLayout>
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/creator_reg_portrait_spec"
-                    android:textColor="@color/colorOnSurfaceVariant"
-                    android:textSize="11sp"
-                    android:fontFamily="@font/manrope_medium"
-                    android:layout_marginBottom="16dp" />
-
-                <!-- Pro Tip card -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.Aura.Card"
-                    app:cardBackgroundColor="@color/colorSurfaceContainerLowest"
-                    app:strokeWidth="1dp"
-                    app:strokeColor="@color/colorOutlineVariant"
-                    app:cardCornerRadius="16dp"
-                    android:layout_marginBottom="16dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/space_md">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/creator_reg_pro_tip_title"
-                            android:textColor="@color/colorTertiary"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/manrope_bold"
-                            android:textAllCaps="true"
-                            android:letterSpacing="0.1"
-                            android:layout_marginBottom="4dp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/creator_reg_pro_tip_body"
-                            android:textColor="@color/colorOnSurfaceVariant"
-                            android:textSize="13sp"
-                            android:fontFamily="@font/manrope_medium"
-                            android:lineSpacingMultiplier="1.4" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
+                    android:layout_marginTop="@dimen/space_md"
+                    android:text="@string/creator_setup_add_photo"
+                    android:textAppearance="@style/TextAppearance.Aura.BodyMedium"
+                    android:textColor="@color/colorOnSurfaceVariant" />
             </LinearLayout>
 
-            <!-- Motto/Headline -->
             <TextView
+                style="@style/TextAppearance.Aura.LabelSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_md"
+                android:layout_marginBottom="@dimen/space_sm"
                 android:text="@string/creator_setup_headline_label"
-                android:textColor="@color/colorOutline"
-                android:textSize="11sp"
-                android:fontFamily="@font/manrope_bold"
-                android:textAllCaps="true"
-                android:letterSpacing="0.1"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="4dp" />
+                android:textColor="@color/colorOnSurfaceVariant" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_motto"
                 style="@style/Widget.Aura.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                app:hintEnabled="false"
-                app:helperText="">
+                android:layout_marginBottom="@dimen/space_xl"
+                app:boxBackgroundColor="@color/colorSurfaceContainerHighest"
+                app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_motto"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
+                    android:layout_height="@dimen/input_height"
+                    android:fontFamily="@font/manrope_medium"
                     android:hint="@string/creator_setup_headline_hint"
-                    android:textColorHint="@color/colorOutline"
-                    android:inputType="text"
+                    android:inputType="textCapSentences"
                     android:textColor="@color/colorOnSurface"
-                    android:fontFamily="@font/manrope_bold"
-                    android:textSize="16sp" />
+                    android:textColorHint="@color/colorOutlineVariant" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                style="@style/TextAppearance.Aura.LabelSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/creator_reg_motto_helper"
-                android:textColor="@color/colorOnSurfaceVariant"
-                android:textSize="11sp"
-                android:fontFamily="@font/manrope_medium"
-                android:textStyle="italic"
-                android:layout_marginBottom="24dp"
-                android:layout_marginStart="8dp" />
-
-            <!-- Bio -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/creator_reg_bio_label"
-                android:textColor="@color/colorOutline"
-                android:textSize="11sp"
-                android:fontFamily="@font/manrope_bold"
-                android:textAllCaps="true"
-                android:letterSpacing="0.1"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="4dp" />
+                android:layout_marginStart="@dimen/space_md"
+                android:layout_marginBottom="@dimen/space_sm"
+                android:text="@string/creator_setup_bio_label"
+                android:textColor="@color/colorOnSurfaceVariant" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_bio"
                 style="@style/Widget.Aura.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hintEnabled="false"
-                android:layout_marginBottom="24dp"
-                app:boxCornerRadiusTopStart="24dp"
-                app:boxCornerRadiusTopEnd="24dp"
-                app:boxCornerRadiusBottomStart="24dp"
-                app:boxCornerRadiusBottomEnd="24dp">
+                android:layout_marginBottom="@dimen/space_sm"
+                app:boxBackgroundColor="@color/colorSurfaceContainerHighest"
+                app:boxCornerRadiusBottomEnd="@dimen/corner_radius_md"
+                app:boxCornerRadiusBottomStart="@dimen/corner_radius_md"
+                app:boxCornerRadiusTopEnd="@dimen/corner_radius_md"
+                app:boxCornerRadiusTopStart="@dimen/corner_radius_md"
+                app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_bio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minLines="5"
-                    android:hint="@string/creator_reg_bio_hint"
-                    android:textColorHint="@color/colorOutline"
-                    android:inputType="textMultiLine"
-                    android:gravity="top"
-                    android:paddingTop="16dp"
                     android:fontFamily="@font/manrope_medium"
-                    android:textColor="@color/colorOnSurface" />
+                    android:gravity="top"
+                    android:hint="@string/creator_setup_bio_hint"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:maxLength="200"
+                    android:minLines="4"
+                    android:paddingStart="@dimen/space_lg"
+                    android:paddingTop="@dimen/space_lg"
+                    android:paddingEnd="@dimen/space_lg"
+                    android:paddingBottom="@dimen/space_lg"
+                    android:textColor="@color/colorOnSurface"
+                    android:textColorHint="@color/colorOutlineVariant" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- YouTube -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/creator_reg_youtube_label"
-                android:textColor="@color/colorOutline"
-                android:textSize="11sp"
-                android:fontFamily="@font/manrope_bold"
-                android:textAllCaps="true"
-                android:letterSpacing="0.1"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="4dp" />
+                android:layout_marginStart="@dimen/space_md"
+                android:layout_marginBottom="@dimen/space_xl"
+                android:text="@string/creator_setup_bio_helper"
+                android:textAppearance="@style/TextAppearance.Aura.BodySmall"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textStyle="italic" />
+
+            <TextView
+                style="@style/TextAppearance.Aura.LabelSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_md"
+                android:layout_marginBottom="@dimen/space_sm"
+                android:text="@string/creator_setup_youtube_label"
+                android:textColor="@color/colorOnSurfaceVariant" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_youtube"
                 style="@style/Widget.Aura.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="@dimen/space_xl"
+                app:boxBackgroundColor="@color/colorSurfaceContainerHighest"
                 app:hintEnabled="false"
                 app:startIconDrawable="@drawable/ic_feed_play"
                 app:startIconTint="@color/colorOnSurfaceVariant">
@@ -315,70 +225,142 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_youtube"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:hint="@string/creator_reg_youtube_hint"
-                    android:textColorHint="@color/colorOutline"
-                    android:inputType="text"
+                    android:layout_height="@dimen/input_height"
                     android:fontFamily="@font/manrope_medium"
-                    android:textColor="@color/colorOnSurface" />
+                    android:hint="@string/creator_setup_youtube_hint"
+                    android:inputType="textUri"
+                    android:textColor="@color/colorOnSurface"
+                    android:textColorHint="@color/colorOnSurfaceVariant" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Featured Videos -->
-            <LinearLayout
+            <TextView
+                style="@style/TextAppearance.Aura.LabelSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_md"
+                android:layout_marginBottom="@dimen/space_sm"
+                android:text="@string/creator_setup_featured_videos_label"
+                android:textColor="@color/colorOnSurfaceVariant" />
+
+            <LinearLayout
+                android:id="@+id/layout_video_slots"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="8dp">
+                android:layout_marginBottom="@dimen/space_sm">
 
-                <TextView
+                <include
+                    android:id="@+id/video_slot_1"
+                    layout="@layout/view_creator_video_slot"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Featured Videos (Top 3)"
-                    android:textColor="@color/colorOnSurface"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/manrope_extrabold" />
+                    android:layout_height="@dimen/creator_video_slot_min_height"
+                    android:layout_marginEnd="@dimen/space_sm"
+                    android:layout_weight="1" />
 
-                <ImageView
-                    android:id="@+id/btn_add_video"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@android:drawable/ic_input_add"
-                    android:tint="@color/colorPrimary"
-                    android:background="@drawable/bg_circle_surface"
-                    android:backgroundTint="@color/colorSurfaceContainerHigh"
-                    android:padding="8dp"
-                    android:clickable="true"
-                    android:focusable="true" />
+                <include
+                    android:id="@+id/video_slot_2"
+                    layout="@layout/view_creator_video_slot"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/creator_video_slot_min_height"
+                    android:layout_marginEnd="@dimen/space_sm"
+                    android:layout_weight="1" />
+
+                <include
+                    android:id="@+id/video_slot_3"
+                    layout="@layout/view_creator_video_slot"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/creator_video_slot_min_height"
+                    android:layout_weight="1" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_video_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_md"
+                android:layout_marginBottom="@dimen/space_sm"
+                android:text="@string/toast_portfolio_video_required"
+                android:textAppearance="@style/TextAppearance.Aura.Error"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Upload up to 3 short videos (e.g. TikToks or Reels) that represent your content style."
+                android:layout_marginStart="@dimen/space_md"
+                android:layout_marginBottom="@dimen/space_xl"
+                android:text="@string/creator_setup_video_helper"
+                android:textAppearance="@style/TextAppearance.Aura.BodySmall"
                 android:textColor="@color/colorOnSurfaceVariant"
-                android:textSize="12sp"
-                android:fontFamily="@font/manrope_medium"
-                android:layout_marginBottom="16dp" />
+                android:textStyle="italic" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_videos"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="false"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginTop="@dimen/space_lg"
+                android:layout_marginBottom="@dimen/space_xl"
+                android:gravity="center"
+                android:text="@string/creator_setup_access_hint"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.Aura.LabelSmall"
+                android:textColor="@color/colorOnSurfaceVariant" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_save_exit"
+                    style="@style/Widget.Aura.Button.Outlined"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/creator_inline_button_height"
+                    android:layout_marginEnd="@dimen/space_md"
+                    android:layout_weight="1"
+                    android:text="@string/nav_btn_save_exit"
+                    android:textColor="@color/colorOnSurface"
+                    app:strokeColor="@color/colorOutlineVariant" />
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/creator_inline_button_height"
+                    android:layout_weight="1.5">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_next"
+                        style="@style/Widget.Aura.Button.Primary.Gradient"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_send_deal_gradient_button"
+                        android:text="@string/nav_btn_next"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
+                        app:icon="@drawable/ic_chevron_right"
+                        app:iconGravity="textEnd"
+                        app:iconTint="@color/white" />
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/progress_loading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:indeterminate="true"
+                        android:visibility="gone"
+                        app:indicatorColor="@color/white"
+                        app:indicatorSize="@dimen/icon_size_md"
+                        app:trackColor="@android:color/transparent"
+                        app:trackThickness="@dimen/progress_track_thickness" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/space_lg"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
-
-    <include
-        android:id="@+id/layout_bottom_nav"
-        layout="@layout/component_reg_bottom_nav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

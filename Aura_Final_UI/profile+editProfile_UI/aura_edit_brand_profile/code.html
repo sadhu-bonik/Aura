@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#362f53",
+                        "background": "#0f0e12",
+                        "primary-fixed": "#d6ccf9",
+                        "primary-dim": "#bcb3df",
+                        "tertiary-dim": "#eebde3",
+                        "secondary-fixed": "#e6dff9",
+                        "primary-container": "#554d73",
+                        "on-surface": "#e9e3ef",
+                        "on-background": "#e9e3ef",
+                        "surface-tint": "#cac1ed",
+                        "on-secondary-fixed-variant": "#5d596e",
+                        "error-dim": "#c44b5f",
+                        "outline-variant": "#494650",
+                        "on-secondary": "#423d52",
+                        "on-primary": "#423b60",
+                        "secondary": "#cac3dc",
+                        "secondary-dim": "#bcb5ce",
+                        "surface": "#0f0e12",
+                        "surface-container-lowest": "#000000",
+                        "surface-container-highest": "#27252d",
+                        "tertiary-fixed": "#fdcbf2",
+                        "on-error": "#490013",
+                        "surface-container-high": "#201f26",
+                        "on-primary-fixed-variant": "#534b71",
+                        "tertiary-fixed-dim": "#eebde3",
+                        "on-secondary-fixed": "#413d51",
+                        "inverse-surface": "#fdf8fe",
+                        "inverse-on-surface": "#565459",
+                        "surface-container": "#1a191f",
+                        "on-tertiary": "#6f4969",
+                        "inverse-primary": "#615a80",
+                        "on-error-container": "#ff97a3",
+                        "on-surface-variant": "#aea9b5",
+                        "secondary-fixed-dim": "#d8d1ea",
+                        "outline": "#77747e",
+                        "tertiary-container": "#fdcbf2",
+                        "surface-dim": "#0f0e12",
+                        "on-secondary-container": "#c3bcd5",
+                        "error": "#f97386",
+                        "primary": "#cac1ed",
+                        "surface-variant": "#27252d",
+                        "surface-container-low": "#141318",
+                        "error-container": "#871c34",
+                        "surface-bright": "#2d2b34",
+                        "on-tertiary-container": "#654060",
+                        "secondary-container": "#3d394d",
+                        "on-tertiary-fixed-variant": "#704a6a",
+                        "primary-fixed-dim": "#c8beea",
+                        "on-tertiary-fixed": "#512e4c",
+                        "on-primary-container": "#e7dfff",
+                        "tertiary": "#ffdff6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "display": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #7a729a 0%, #554d73 100%);
+        }
+        body {
+            background-color: #0f0e12;
+            color: #e9e3ef;
+            font-family: 'Manrope', sans-serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-neutral-950/80 backdrop-blur-3xl sticky top-0 z-50 flex justify-between items-center w-full px-6 h-16">
+<div class="flex items-center gap-2">
+<span class="text-violet-500 font-bold font-headline tracking-tighter text-xl">Brand</span>
+</div>
+<div class="absolute left-1/2 -translate-x-1/2">
+<h1 class="font-manrope font-semibold tracking-tight text-lg text-neutral-400">Edit Brand Profile</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-violet-500 hover:bg-neutral-800/50 transition-colors p-2 rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow px-6 pt-8 pb-32 max-w-2xl mx-auto w-full space-y-8">
+<!-- Profile Picture Section -->
+<div class="flex flex-col items-center justify-center mb-8">
+<div class="relative group">
+<div class="w-32 h-32 rounded-full overflow-hidden border-2 border-primary/20 bg-surface-container-low shadow-xl">
+<img class="w-full h-full object-cover" data-alt="Modern logo of a athletic footwear brand, crisp white swoosh on a clean vibrant background with studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9tW_HN7haJDpBLcxvT-jJcJw-Z-CWdeEhujAMCjAOLu_z-bjESihKiAWUuTbyy4ovbDVCERfOW50fj6KqFnbaMhUrivxbMsX8XuuztrvFRYYWDp0ST8osoMFHSVqpqL3pfWzI_yR9UotZwNMHdZyHkTUBeGS0dJ_a-lou6rfIFoEvn8m2YX1NiMy9Tz26zq6BV14RFbUpDr_4MUJW4z-l18PCCk7aeD6jKVtI-VX8t17MZt0YTuaH9-Nz6yPhA9hlhXEjm_4vEwdD"/>
+</div>
+<button class="absolute bottom-0 right-0 p-2 bg-primary text-on-primary rounded-full shadow-lg hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+<p class="mt-4 text-on-surface-variant font-label text-sm">Update Brand Logo</p>
+</div>
+<!-- Form Sections -->
+<div class="space-y-6">
+<!-- Brand Name -->
+<div class="space-y-2">
+<label class="block px-4 text-xs font-bold uppercase tracking-widest text-primary/70">Brand Name</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-low text-on-surface border-0 rounded-full px-6 py-4 focus:ring-2 focus:ring-primary/40 transition-all font-medium" readonly="" type="text" value="Nike"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+</div>
+<!-- Website -->
+<div class="space-y-2">
+<label class="block px-4 text-xs font-bold uppercase tracking-widest text-primary/70">Brand Website</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-low text-on-surface border-0 rounded-full px-6 py-4 focus:ring-2 focus:ring-primary/40 transition-all font-medium" readonly="" type="text" value="https://nike.com"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+</div>
+<!-- Industry Category -->
+<div class="space-y-2">
+<label class="block px-4 text-xs font-bold uppercase tracking-widest text-primary/70">Industry / Category</label>
+<div class="relative group">
+<div class="w-full bg-surface-container-low text-on-surface rounded-full px-6 py-4 flex items-center justify-between">
+<span class="font-medium">Fashion</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">edit</span>
+</div>
+</div>
+</div>
+<!-- Target Audience (Aura Chips) -->
+<div class="space-y-3">
+<label class="block px-4 text-xs font-bold uppercase tracking-widest text-primary/70">Target Audience</label>
+<div class="relative group bg-surface-container-low rounded-xl p-4">
+<div class="flex flex-wrap gap-2">
+<span class="bg-tertiary-container text-on-tertiary-container px-4 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2">
+                            Gen Z <span class="material-symbols-outlined text-xs">close</span>
+</span>
+<span class="bg-tertiary-container text-on-tertiary-container px-4 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2">
+                            Millennials <span class="material-symbols-outlined text-xs">close</span>
+</span>
+<button class="text-primary-dim p-1.5 rounded-full bg-primary/10 hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+<button class="absolute right-4 top-4 text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+</div>
+<!-- Business Verification (Glass Inset) -->
+<div class="space-y-2">
+<label class="block px-4 text-xs font-bold uppercase tracking-widest text-primary/70">Business Verification Document</label>
+<div class="relative group bg-surface-container-low rounded-xl p-6 border-2 border-dashed border-outline-variant/30 hover:border-primary/30 transition-all">
+<div class="flex items-center gap-4">
+<div class="bg-primary/10 p-3 rounded-xl">
+<span class="material-symbols-outlined text-primary text-3xl">description</span>
+</div>
+<div>
+<p class="text-on-surface font-semibold">nike_business_license_2024.pdf</p>
+<p class="text-xs text-on-surface-variant">Uploaded on March 15, 2024</p>
+</div>
+</div>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+</div>
+<!-- Location -->
+<div class="space-y-2">
+<label class="block px-4 text-xs font-bold uppercase tracking-widest text-primary/70">Location</label>
+<div class="relative group">
+<div class="w-full bg-surface-container-low text-on-surface rounded-full px-6 py-4 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-dim">location_on</span>
+<span class="font-medium">Beaverton, Oregon, USA</span>
+</div>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="pt-10 space-y-4">
+<button class="w-full bg-gradient-primary text-on-primary-fixed font-bold py-5 rounded-full text-lg shadow-[0_8px_32px_rgba(122,114,154,0.3)] active:scale-95 transition-all">
+                Save Changes
+            </button>
+<button class="w-full border-2 border-error-dim/30 text-error-dim font-bold py-5 rounded-full text-lg hover:bg-error-container/10 active:scale-95 transition-all">
+                Delete Profile
+            </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-neutral-950/80 backdrop-blur-3xl fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 py-4 pb-8 rounded-t-[32px] border-t border-neutral-800/30 shadow-[0_-8px_24px_rgba(86,32,224,0.05)]">
+<div class="flex flex-col items-center justify-center text-neutral-500 p-3 hover:text-violet-300 transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined">dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-neutral-500 p-3 hover:text-violet-300 transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<div class="flex flex-col items-center justify-center text-neutral-500 p-3 hover:text-violet-300 transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-violet-500/10 text-violet-400 rounded-full p-3 active:scale-90 duration-150">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+</nav>
+</body></html>

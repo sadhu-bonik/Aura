@@ -12,6 +12,8 @@ import com.bumptech.glide.Glide
 
 class PortfolioAdapter : ListAdapter<PortfolioItem, PortfolioAdapter.ViewHolder>(DiffCallback) {
 
+    var onItemClick: ((PortfolioItem) -> Unit)? = null
+
     /**
      * Optional delete callback. When non-null, the delete button on each item
      * is made visible and invokes this lambda with the tapped item.
@@ -29,18 +31,24 @@ class PortfolioAdapter : ListAdapter<PortfolioItem, PortfolioAdapter.ViewHolder>
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), onDeleteClick)
+        holder.bind(getItem(position), onItemClick, onDeleteClick)
     }
 
     class ViewHolder(private val binding: ItemPortfolioVideoBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: PortfolioItem, onDeleteClick: ((PortfolioItem) -> Unit)?) {
+        fun bind(
+            item: PortfolioItem,
+            onItemClick: ((PortfolioItem) -> Unit)?,
+            onDeleteClick: ((PortfolioItem) -> Unit)?
+        ) {
             Glide.with(binding.ivThumbnail)
                 .load(item.thumbnailUrl.ifBlank { item.mediaUrl })
                 .centerCrop()
                 .placeholder(com.aura.app.R.color.colorSurfaceContainerHigh)
                 .into(binding.ivThumbnail)
+
+            binding.root.setOnClickListener { onItemClick?.invoke(item) }
 
             if (onDeleteClick != null) {
                 binding.btnDelete.visibility = View.VISIBLE
