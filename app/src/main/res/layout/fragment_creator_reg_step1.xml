@@ -363,6 +363,7 @@
                     android:layout_height="64dp"
                     android:inputType="none"
                     android:fontFamily="@font/manrope_medium"
+                    android:popupBackground="@color/colorSurfaceContainerHigh"
                     android:textColor="@color/colorOnSurface" />
             </com.google.android.material.textfield.TextInputLayout>
 

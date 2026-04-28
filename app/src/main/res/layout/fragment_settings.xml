@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:fillViewport="true"
+    tools:context="com.aura.app.ui.main.SettingsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/space_xl">
+
+        <!-- ============================================================ -->
+        <!-- TOP APP BAR                                                   -->
+        <!-- ============================================================ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_app_bar_height"
+            android:background="@color/colorSurfaceContainerLowest"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/space_md"
+            android:paddingEnd="@dimen/space_md">
+
+            <ImageButton
+                android:id="@+id/btn_settings_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cd_settings_back"
+                android:padding="@dimen/space_sm"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/space_sm"
+                android:text="@string/settings_title"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_aura_label"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- ============================================================ -->
+        <!-- PROFILE OVERVIEW CARD                                         -->
+        <!-- ============================================================ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_md"
+            android:layout_marginTop="@dimen/space_lg"
+            android:layout_marginEnd="@dimen/space_md"
+            android:background="@drawable/bg_settings_row"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/space_md">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_settings_avatar"
+                    android:layout_width="@dimen/avatar_lg"
+                    android:layout_height="@dimen/avatar_lg"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Aura.Circle"
+                    tools:src="@drawable/bg_avatar_placeholder" />
+
+                <!-- Verified badge -->
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="bottom|end"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_check_circle"
+                    app:tint="@color/colorPrimary" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_md"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_settings_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorOnSurface"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="Alex Rivera" />
+
+                <TextView
+                    android:id="@+id/tv_settings_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="13sp"
+                    tools:text="Pro Member • Aura Elite" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ============================================================ -->
+        <!-- ACCOUNT PREFERENCES SECTION                                   -->
+        <!-- ============================================================ -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_lg"
+            android:layout_marginTop="@dimen/space_xl"
+            android:letterSpacing="0.2"
+            android:text="@string/settings_section_account_preferences"
+            android:textAllCaps="true"
+            android:textColor="@color/colorOnSurfaceVariant"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <!-- Account (enabled — opens Account Settings) -->
+        <LinearLayout
+            android:id="@+id/row_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_md"
+            android:layout_marginTop="@dimen/space_md"
+            android:layout_marginEnd="@dimen/space_md"
+            android:background="@drawable/bg_settings_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_settings_icon_circle">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_account_circle"
+                    app:tint="@color/colorPrimary" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_md"
+                android:layout_weight="1"
+                android:text="@string/settings_account"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="@color/colorOnSurfaceVariant" />
+        </LinearLayout>
+
+        <!-- Edit Profile (enabled) -->
+        <LinearLayout
+            android:id="@+id/row_edit_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_md"
+            android:layout_marginTop="@dimen/space_sm"
+            android:layout_marginEnd="@dimen/space_md"
+            android:background="@drawable/bg_settings_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_settings_icon_circle">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_person"
+                    app:tint="@color/colorPrimary" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_md"
+                android:layout_weight="1"
+                android:text="@string/settings_edit_profile"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="@color/colorOnSurfaceVariant" />
+        </LinearLayout>
+
+        <!-- Privacy (disabled) -->
+        <LinearLayout
+            android:id="@+id/row_privacy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_md"
+            android:layout_marginTop="@dimen/space_sm"
+            android:layout_marginEnd="@dimen/space_md"
+            android:alpha="0.5"
+            android:background="@drawable/bg_settings_row"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_settings_icon_circle">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_lock"
+                    app:tint="@color/colorPrimary" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_md"
+                android:layout_weight="1"
+                android:text="@string/settings_privacy"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="@color/colorOnSurfaceVariant" />
+        </LinearLayout>
+
+        <!-- ============================================================ -->
+        <!-- ACCESS & SAFETY SECTION                                       -->
+        <!-- ============================================================ -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_lg"
+            android:layout_marginTop="@dimen/space_xl"
+            android:letterSpacing="0.2"
+            android:text="@string/settings_section_access_safety"
+            android:textAllCaps="true"
+            android:textColor="@color/colorOnSurfaceVariant"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <!-- Log Out (enabled) -->
+        <LinearLayout
+            android:id="@+id/row_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_md"
+            android:layout_marginTop="@dimen/space_md"
+            android:layout_marginEnd="@dimen/space_md"
+            android:background="@drawable/bg_settings_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_settings_icon_circle">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_logout"
+                    app:tint="@color/colorOnSurfaceVariant" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_md"
+                android:layout_weight="1"
+                android:text="@string/settings_logout"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="@color/colorOnSurfaceVariant" />
+        </LinearLayout>
+
+        <!-- Delete Account (disabled) -->
+        <LinearLayout
+            android:id="@+id/row_delete_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_md"
+            android:layout_marginTop="@dimen/space_sm"
+            android:layout_marginEnd="@dimen/space_md"
+            android:alpha="0.5"
+            android:background="@drawable/bg_settings_row_error"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_settings_icon_circle_error">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_delete_forever"
+                    app:tint="@color/colorError" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_md"
+                android:layout_weight="1"
+                android:text="@string/settings_delete_account"
+                android:textColor="@color/colorError"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="#99F97386" />
+        </LinearLayout>
+
+        <!-- ============================================================ -->
+        <!-- INFO CARD (Glassmorphism)                                     -->
+        <!-- ============================================================ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_md"
+            android:layout_marginTop="@dimen/space_xl"
+            android:layout_marginEnd="@dimen/space_md"
+            android:background="@drawable/bg_settings_info_card"
+            android:orientation="vertical"
+            android:padding="@dimen/space_lg">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_info_title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_sm"
+                android:lineSpacingExtra="4dp"
+                android:text="@string/settings_info_body"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

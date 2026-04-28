@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/space_xs"
+    app:cardCornerRadius="@dimen/corner_radius_lg"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="@color/colorSurfaceContainerHighest"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/colorOutlineVariant">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 4:5 Aspect Ratio Container -->
+        <View
+            android:id="@+id/aspect_ratio_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="4:5"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_creator_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="@id/aspect_ratio_view"
+            app:layout_constraintBottom_toBottomOf="@id/aspect_ratio_view"
+            app:layout_constraintStart_toStartOf="@id/aspect_ratio_view"
+            app:layout_constraintEnd_toEndOf="@id/aspect_ratio_view"
+            tools:src="@tools:sample/backgrounds/scenic" />
+
+        <!-- Gradient overlay -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_gradient_overlay"
+            app:layout_constraintTop_toTopOf="@id/aspect_ratio_view"
+            app:layout_constraintBottom_toBottomOf="@id/aspect_ratio_view"
+            app:layout_constraintStart_toStartOf="@id/aspect_ratio_view"
+            app:layout_constraintEnd_toEndOf="@id/aspect_ratio_view" />
+
+        <!-- Rating pill (Top right) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/bg_pill_surface_stat"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="2dp"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/space_sm"
+            android:layout_marginEnd="@dimen/space_sm"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@drawable/ic_aura_star_filled"
+                app:tint="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/tv_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textAppearance="@style/TextAppearance.Aura.LabelSmall"
+                android:textColor="@color/colorOnSurface"
+                android:textStyle="bold"
+                tools:text="4.8" />
+        </LinearLayout>
+
+        <!-- Content at the bottom -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/space_sm"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_creator_avatar"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearance="@style/ShapeAppearance.Aura.Circle"
+                    tools:src="@tools:sample/avatars" />
+
+                <TextView
+                    android:id="@+id/tv_creator_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_xs"
+                    android:textAppearance="@style/TextAppearance.Aura.LabelMedium"
+                    android:textColor="@color/colorOnSurface"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="\@jessica_vogue" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_creator_headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="@style/TextAppearance.Aura.BodySmall"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:maxLines="2"
+                android:ellipsize="end"
+                tools:text="Fashion &amp; Luxury Tech content creator." />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

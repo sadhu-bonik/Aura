@@ -15,23 +15,34 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.aura.app.R
 import com.aura.app.databinding.FragmentDealDashboardBinding
+import com.aura.app.ui.main.NotificationViewModel
 import com.aura.app.utils.Constants
+import com.aura.app.utils.SessionManager
 import com.aura.app.utils.rootNavController
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
+import com.google.android.material.badge.ExperimentalBadgeUtils
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalBadgeUtils::class)
 class DealDashboardFragment : Fragment() {
 
     private var _binding: FragmentDealDashboardBinding? = null
     private val binding get() = _binding!!
 
-    val viewModel: DealDashboardViewModel by viewModels()
+    val viewModel: DealDashboardViewModel by viewModels {
+        DealDashboardViewModel.Factory(requireContext().applicationContext)
+    }
     private val reviewViewModel: ReviewViewModel by activityViewModels()
+    private val notifViewModel: NotificationViewModel by activityViewModels()
 
     private var pageChangeCallback: ViewPager2.OnPageChangeCallback? = null
+    private var notifBadge: BadgeDrawable? = null
 
     private val authRepository = com.aura.app.data.repository.AuthRepository()
     private val userRepository = com.aura.app.data.repository.UserRepository()
+    private val sessionManager by lazy { SessionManager(requireContext().applicationContext) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDealDashboardBinding.inflate(inflater, container, false)
@@ -75,6 +86,27 @@ class DealDashboardFragment : Fragment() {
                 .show(childFragmentManager, "notifications")
         }
 
+        // Unread badge attached to the dashboard's notification icon. The bottom-nav badge
+        // (HomeContainerFragment) is independent — both observe the same NotificationViewModel.
+        notifBadge = BadgeDrawable.create(requireContext()).apply {
+            backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorError)
+            maxCharacterCount = 3
+            isVisible = false
+        }
+        binding.btnNotifications.post {
+            notifBadge?.let { BadgeUtils.attachBadgeDrawable(it, binding.btnNotifications) }
+        }
+        notifViewModel.unreadCount.observe(viewLifecycleOwner) { count ->
+            notifBadge?.apply {
+                if (count > 0) {
+                    number = count
+                    isVisible = true
+                } else {
+                    isVisible = false
+                }
+            }
+        }
+
         viewModel.activeDeals.observe(viewLifecycleOwner) { items ->
             binding.tvStatActive.text = items.size.toString().padStart(2, '0')
         }
@@ -84,11 +116,16 @@ class DealDashboardFragment : Fragment() {
         viewModel.completedDeals.observe(viewLifecycleOwner) { items ->
             binding.tvStatCompleted.text = items.size.toString().padStart(2, '0')
         }
+        viewModel.error.observe(viewLifecycleOwner) { message ->
+            if (!message.isNullOrBlank()) {
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+            }
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             reviewViewModel.pendingReviewDeal.filterNotNull().collect { deal ->
                 reviewViewModel.markReviewPromptShown(deal.dealId)
-                val currentUserId = authRepository.currentUser?.uid ?: return@collect
+                val currentUserId = resolveUserId() ?: return@collect
                 val otherPartyId = if (currentUserId == deal.creatorId) deal.brandId else deal.creatorId
                 val otherParty = userRepository.getUserProfile(otherPartyId) ?: return@collect
                 ReviewFlow.newInstance(deal.dealId, otherPartyId, otherParty.displayName, otherParty.profileImageUrl)
@@ -104,7 +141,7 @@ class DealDashboardFragment : Fragment() {
 
     private fun applyRoleLabels() {
         viewLifecycleOwner.lifecycleScope.launch {
-            val userId = authRepository.currentUser?.uid ?: return@launch
+            val userId = resolveUserId() ?: return@launch
             val user = userRepository.getUserProfile(userId)
             val isBrand = user?.role == Constants.ROLE_BRAND
             
@@ -116,6 +153,9 @@ class DealDashboardFragment : Fragment() {
             )
         }
     }
+
+    private fun resolveUserId(): String? =
+        authRepository.currentUser?.uid ?: sessionManager.getUserId()
 
     private fun renderPillSelection(position: Int) {
         val ctx = requireContext()
@@ -147,6 +187,8 @@ class DealDashboardFragment : Fragment() {
     override fun onDestroyView() {
         pageChangeCallback?.let { binding.viewPager.unregisterOnPageChangeCallback(it) }
         pageChangeCallback = null
+        notifBadge?.let { BadgeUtils.detachBadgeDrawable(it, binding.btnNotifications) }
+        notifBadge = null
         super.onDestroyView()
         _binding = null
     }

@@ -48,12 +48,15 @@ Authoritative schema. Any change here must be announced in the team chat and ref
 | Field | Type | Req | Notes |
 |---|---|---|---|
 | `userId` | String | ✅ | |
+| `motto` | String | | Short tagline (legacy / Advanced details) |
+| `headline` | String | ✅ | Primary creator headline (e.g. `"Digital Creator"`) |
 | `bio` | String | ✅ | |
 | `niche` | String | ✅ | e.g. `"fashion"`, `"tech"` |
-| `tags` | List\<String\> | | Discoverability keywords |
-| `instagramHandle` | String | | Without `@` |
+| `tags` | List\<String\> | | Categories chosen at setup |
+| `targetAudience` | List\<String\> | | e.g. `["Gen Z", "Millennials"]` |
 | `youtubeHandle` | String | | Without `@` |
 | `tiktokHandle` | String | | Without `@` |
+| `portfolioLink` | String | | External portfolio URL |
 | `followerCount` | Long | | Combined estimate |
 | `averageRating` | Double | | 0.0–5.0, computed from reviews |
 | `totalReviews` | Long | | |
@@ -69,15 +72,32 @@ Authoritative schema. Any change here must be announced in the team chat and ref
 
 | Field | Type | Req | Notes |
 |---|---|---|---|
-| `userId` | String | ✅ | |
-| `companyName` | String | ✅ | |
-| `industry` | String | ✅ | |
-| `companyBio` | String | ✅ | |
+| `uid` | String | ✅ | Matches document ID |
+| `brandName` | String | ✅ | Display name |
+| `legalName` | String | | Legal business name (Advanced details) |
+| `repName` | String | | Representative name (Advanced details) |
+| `companyEmail` | String | | Business email (Advanced details) |
+| `motto` | String | | |
+| `bio` | String | | |
+| `industryTags` | List\<String\> | ✅ | e.g. `["Fashion", "Tech"]` |
+| `targetAudience` | List\<String\> | | e.g. `["Gen Z", "Professionals"]` |
 | `website` | String | | |
+| `linkedinUrl` | String | | Advanced details |
+| `twitterHandle` | String | | Advanced details, without `@` |
+| `city` | String | | |
+| `state` | String | | |
+| `country` | String | | |
+| `firstCampaignName` | String | | Legacy onboarding cache (now stored in `campaigns/`) |
+| `firstCampaignBrief` | String | | Legacy onboarding cache |
 | `logoUrl` | String | | Storage URL |
-| `location` | String | | |
+| `logoPath` | String | | Storage path for rollback |
+| `verificationFileUrl` | String | | Storage URL |
+| `verificationFilePath` | String | | Storage path for rollback |
+| `verificationFileName` | String | | Display name |
+| `verificationMimeType` | String | | |
 | `totalCampaigns` | Long | | |
 | `activeDeals` | Long | | |
+| `industry` | String | | Compatibility shim — derived from `industryTags[0]` |
 | `updatedAt` | Timestamp | ✅ | |
 
 ---
@@ -111,13 +131,15 @@ Authoritative schema. Any change here must be announced in the team chat and ref
 | `brandId` | String | ✅ | |
 | `title` | String | ✅ | |
 | `description` | String | ✅ | |
-| `niche` | String | ✅ | Target creator niche |
-| `budget` | Long | ✅ | USD cents |
-| `deadline` | Timestamp | ✅ | |
-| `status` | String | ✅ | `"active"`, `"paused"`, `"completed"` |
-| `targetFollowerCount` | Long | | Minimum |
+| `goals` | List\<String\> | | e.g. `["Brand Awareness", "Product Launch"]` |
+| `deliverables` | List\<String\> | | e.g. `["Instagram Post", "Reel"]` |
+| `budgetRange` | String | | Display label, e.g. `"$1000 - $5000"` |
+| `budgetMin` | Long | | USD cents |
+| `budgetMax` | Long | | USD cents |
+| `timeline` | Timestamp | | Deadline date |
+| `imageUrl` | String | | Storage URL (post-onboarding edit) |
+| `imagePath` | String | | Storage path |
 | `createdAt` | Timestamp | ✅ | |
-| `updatedAt` | Timestamp | ✅ | |
 
 ---
 
@@ -135,15 +157,16 @@ A deal is one offer the brand sends to one creator under a specific campaign. Th
 | `description` | String | ✅ | Copied from campaign at send time; editable while accepted |
 | `budget` | Long | ✅ | USD cents |
 | `status` | String | ✅ | `"pending"`, `"accepted"`, `"rejected"`, `"completed"`, `"cancelled"`, `"expired"` |
-| `chatUnlocked` | Boolean | ✅ | `true` iff status is `"accepted"` or `"completed"` |
+| `chatUnlocked` | Boolean | ✅ | `true` after acceptance, and remains true for `"completed"` / `"cancelled"` history |
 | `createdAt` | Timestamp | ✅ | |
 | `updatedAt` | Timestamp | ✅ | |
 | `completedAt` | Timestamp | | |
 
 **Invariants** (from `AGENTS.md` §4):
-- `chatUnlocked` flips to `true` only on the `pending → accepted` transition, in the same write as the status change.
+- `chatUnlocked` flips to `true` on acceptance and remains true for readable completed/cancelled history.
 - A deal in `pending` for 7 days transitions to `expired`.
 - The tuple `(campaignId, brandId, creatorId)` is unique among deals in `pending` or `accepted`. Once a deal closes (`rejected`, `cancelled`, `expired`, `completed`), the brand may resend the same campaign to the same creator. Enforced client-side in `DealRepository.createDeal`.
+- Cancellation is unilateral for accepted deals, but the deal remains `accepted` with `cancelRequestedBy` populated until both parties submit review ratings. Completion uses `completionRequestedBy` the same way. Only after both `creatorReviewedAt` and `brandReviewedAt` are set does the deal move to `completed` or `cancelled` history.
 
 ---
 
@@ -189,7 +212,7 @@ Query a conversation with `where("dealId", ==, <id>).orderBy("sentAt", ASCENDING
 | `comment` | String | | |
 | `createdAt` | Timestamp | ✅ | |
 
-Writes only allowed when the referenced deal's status is `"completed"`.
+Writes only allowed when the referenced deal's status is `"completed"` / `"cancelled"`, or while an accepted deal has `completionRequestedBy` or `cancelRequestedBy` populated.
 
 ---
 
@@ -227,5 +250,5 @@ Full rules live in `firestore.rules` (to be written). Key principles:
 - Only brands can write to `deals` (as sender) and `shortlists`.
 - Only creators can write to `portfolioItems`.
 - Both parties in a deal can read/write `messages` for that deal, **only if `chatUnlocked == true`**.
-- `reviews` writes are allowed only when `deals/{dealId}.status == "completed"`.
+- `reviews` writes are allowed only for completed/cancelled deals or accepted deals with a pending completion/cancellation review requirement.
 - `recommendations` are read-only from the client — written by backend/admin only.

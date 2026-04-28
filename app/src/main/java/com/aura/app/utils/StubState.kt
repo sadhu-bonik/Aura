@@ -88,8 +88,28 @@ object StubState {
         _deals.value = _deals.value.map { deal ->
             if (deal.dealId == dealId) {
                 val now = com.google.firebase.Timestamp.now()
-                if (deal.creatorId == userId) deal.copy(creatorReviewedAt = now)
+                val reviewedDeal = if (deal.creatorId == userId) deal.copy(creatorReviewedAt = now)
                 else deal.copy(brandReviewedAt = now)
+
+                if (reviewedDeal.areBothPartiesReviewed() && reviewedDeal.status == Constants.STATUS_ACCEPTED) {
+                    when {
+                        reviewedDeal.completionRequestedBy.isNotBlank() ->
+                            reviewedDeal.copy(
+                                status = Constants.STATUS_COMPLETED,
+                                completedAt = now,
+                                completionRequestedBy = "",
+                            )
+                        reviewedDeal.cancelRequestedBy.isNotBlank() ->
+                            reviewedDeal.copy(
+                                status = Constants.STATUS_CANCELLED,
+                                cancelledBy = reviewedDeal.cancelRequestedBy,
+                                cancelRequestedBy = "",
+                            )
+                        else -> reviewedDeal
+                    }
+                } else {
+                    reviewedDeal
+                }
             } else deal
         }
     }

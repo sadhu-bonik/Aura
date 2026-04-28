@@ -3,9 +3,12 @@ package com.aura.app.ui.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.aura.app.BuildConfig
 import com.aura.app.data.model.User
 import com.aura.app.data.repository.AuthRepository
 import com.aura.app.data.repository.UserRepository
+import com.aura.app.data.repository.YouTubeRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -122,7 +125,33 @@ class AuthViewModel(
                 android.util.Log.w("AuthViewModel", "FCM token fetch failed (non-fatal): ${e.message}")
             }
 
+            // Weekly YouTube analytics refresh — only for creators with a saved handle.
+            // Fire-and-forget on IO; never blocks login navigation. Skips when the cached
+            // analytics are <7 days old (see YouTubeRepository.refreshIfStale).
+            if (userProfile.role == "creator") {
+                refreshYouTubeAnalyticsIfStale(userProfile.userId)
+            }
+
             _authState.value = AuthState.Success(userProfile)
+        }
+    }
+
+    private fun refreshYouTubeAnalyticsIfStale(userId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            runCatching {
+                val creator = userRepository.getCreatorProfile(userId) ?: return@runCatching
+                if (creator.youtubeHandle.isBlank()) return@runCatching
+                val youtube = YouTubeRepository(apiKey = BuildConfig.YOUTUBE_API_KEY)
+                youtube.refreshIfStale(
+                    userId = userId,
+                    handle = creator.youtubeHandle,
+                    lastUpdated = creator.youtubeAnalyticsUpdatedAt,
+                    forceRefresh = false,
+                    userRepository = userRepository
+                )
+            }.onFailure {
+                android.util.Log.w("AuthViewModel", "YT weekly refresh failed (non-fatal): ${it.message}")
+            }
         }
     }
 

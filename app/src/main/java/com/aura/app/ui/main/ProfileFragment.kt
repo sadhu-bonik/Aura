@@ -23,7 +23,9 @@ import com.bumptech.glide.Glide
 import androidx.appcompat.widget.PopupMenu
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.aura.app.R
+import com.aura.app.data.model.Deal
 import com.aura.app.ui.feed.SelectCampaignBottomSheet
+import com.aura.app.utils.rootNavController
 import kotlinx.coroutines.launch
 
 
@@ -98,7 +100,21 @@ class ProfileFragment : Fragment() {
         viewModel.loadProfile(creatorId)
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadProfile(arguments?.getString("creatorId"))
+    }
+
     private fun setupRecyclerViews() {
+        portfolioAdapter.onItemClick = { item ->
+            if (item.mediaUrl.isNotBlank()) {
+                rootNavController().navigate(
+                    R.id.videoPlayerFragment,
+                    Bundle().apply { putString("videoUrl", item.mediaUrl) }
+                )
+            }
+        }
+
         binding.rvPortfolio.apply {
             layoutManager = GridLayoutManager(requireContext(), 3)
             adapter = portfolioAdapter
@@ -128,17 +144,13 @@ class ProfileFragment : Fragment() {
 
     private fun showMoreOptionsMenu(view: View) {
         val popup = PopupMenu(requireContext(), view)
-        popup.menu.add(0, 1, 0, "Edit Profile")
         popup.menu.add(0, 2, 0, "Settings")
         
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                1 -> {
-                    findNavController().navigate(R.id.action_profile_to_editProfile)
-                    true
-                }
+
                 2 -> {
-                    Toast.makeText(requireContext(), "Settings coming soon", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_profile_to_settings)
                     true
                 }
                 else -> false
@@ -296,19 +308,34 @@ class ProfileFragment : Fragment() {
 
                 // Stats: brands show deal/campaign counts; creators show social stats
                 if (isBrand) {
-                    binding.tvStatsFollowers.text = state.brandProfile?.totalCampaigns?.toString() ?: "0"
-                    binding.tvStatsDeals.text = state.brandProfile?.activeDeals?.toString() ?: "0"
-                    binding.tvStatsRating.text = "4.8" // Placeholder rating for now
+                    binding.tvStatsFollowers.text = state.campaigns.size.toString()
+                    binding.tvStatsDeals.text = state.deals.count { 
+                        it.status == com.aura.app.utils.Constants.STATUS_PENDING || 
+                        it.status == com.aura.app.utils.Constants.STATUS_ACCEPTED 
+                    }.toString()
+                    binding.tvStatsRating.text = String.format(java.util.Locale.US, "%.1f", state.brandProfile?.averageRating ?: 0.0)
                     binding.tvStatsFollowersLabel.text = "CAMPAIGNS"
                     binding.tvStatsDealsLabel.text = "DEALS"
                     binding.tvStatsRatingLabel.text = "RATING"
                 } else {
                     binding.tvStatsFollowers.text = state.creatorProfile?.youtubeTotalViews?.let { formatCount(it) } ?: "0"
-                    binding.tvStatsDeals.text = state.creatorProfile?.completedDeals?.toString() ?: "0"
-                    binding.tvStatsRating.text = state.creatorProfile?.averageRating?.toString() ?: "0.0"
+                    binding.tvStatsDeals.text = state.deals.count { 
+                        it.status == com.aura.app.utils.Constants.STATUS_COMPLETED 
+                    }.toString()
+                    binding.tvStatsRating.text = String.format(java.util.Locale.US, "%.1f", state.creatorProfile?.averageRating ?: 0.0)
                     binding.tvStatsFollowersLabel.text = "VIEWS"
                     binding.tvStatsDealsLabel.text = "DEALS"
                     binding.tvStatsRatingLabel.text = "RATING"
+                }
+
+                binding.layoutStatsRating.setOnClickListener {
+                    val bundle = Bundle().apply {
+                        putString("revieweeId", user.userId)
+                        putString("displayName", user.displayName)
+                        putFloat("averageRating", (if (isBrand) state.brandProfile?.averageRating else state.creatorProfile?.averageRating)?.toFloat() ?: 0f)
+                        putLong("totalReviews", (if (isBrand) state.brandProfile?.totalReviews else state.creatorProfile?.totalReviews) ?: 0L)
+                    }
+                    findNavController().navigate(R.id.action_profile_to_userReviews, bundle)
                 }
 
                 binding.btnMoreOptions.visibility =

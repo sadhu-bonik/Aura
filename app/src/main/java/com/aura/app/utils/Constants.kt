@@ -25,6 +25,16 @@ object Constants {
     const val STATUS_CANCELLED = "cancelled"
     const val STATUS_EXPIRED = "expired"
 
+    fun canOpenMessaging(status: String, chatUnlocked: Boolean): Boolean =
+        when (status) {
+            STATUS_ACCEPTED -> chatUnlocked
+            STATUS_COMPLETED, STATUS_CANCELLED -> true
+            else -> false
+        }
+
+    fun canSendChatMessage(status: String, chatUnlocked: Boolean): Boolean =
+        status == STATUS_ACCEPTED && chatUnlocked
+
     // Storage paths
     const val STORAGE_PROFILE_IMAGES = "profileImages"
     const val STORAGE_PORTFOLIO_ITEMS = "portfolioItems"

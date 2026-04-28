@@ -22,5 +22,6 @@ data class User(
     val lastActiveAt: Timestamp = Timestamp.now(),
     @get:PropertyName("isProfileComplete") @set:PropertyName("isProfileComplete")
     var isProfileComplete: Boolean = false,
-    val fcmToken: String = ""
+    val fcmToken: String = "",
+    val shortlistedCreators: List<String> = emptyList()
 )

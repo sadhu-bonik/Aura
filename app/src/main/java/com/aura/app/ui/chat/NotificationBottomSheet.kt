@@ -57,20 +57,41 @@ class NotificationBottomSheet : BottomSheetDialogFragment() {
         binding.tvMarkAllRead.setOnClickListener {
             notifViewModel.markAllRead()
         }
-
-        // Mark all read as soon as the sheet is opened
-        notifViewModel.markAllRead()
     }
 
     private fun onNotifTapped(notif: Notification) {
+        // Mark this single notification as read so the badge count stays accurate.
+        if (!notif.read) notifViewModel.markRead(notif.notifId)
+
         if (notif.dealId.isNotBlank()) {
             dismiss()
-            rootNavController().navigate(
-                R.id.action_homeContainer_to_chat,
-                bundleOf("dealId" to notif.dealId)
-            )
+            if (notif.opensMessaging()) {
+                rootNavController().navigate(
+                    R.id.action_homeContainer_to_chat,
+                    bundleOf(
+                        "dealId" to notif.dealId,
+                        // ChatFragment opens ReviewFlow automatically when this flag is set.
+                        "openReviewPopup" to notif.openReviewPopup,
+                    ),
+                )
+            } else {
+                CampaignInfoBottomSheet.newInstance(notif.dealId)
+                    .show(parentFragmentManager, "campaign_info")
+            }
         }
     }
+
+    private fun Notification.opensMessaging(): Boolean =
+        type in setOf(
+            Notification.TYPE_DEAL_ACCEPTED,
+            Notification.TYPE_DEAL_RETRACTED,
+            Notification.TYPE_DEAL_CANCEL_REQUESTED,
+            Notification.TYPE_DEAL_CANCEL_DECLINED,
+            Notification.TYPE_DEAL_CANCELED,
+            Notification.TYPE_DEAL_COMPLETION_REQUESTED,
+            Notification.TYPE_DEAL_COMPLETED,
+            Notification.TYPE_REVIEW_REQUESTED,
+        )
 
     override fun onDestroyView() {
         super.onDestroyView()

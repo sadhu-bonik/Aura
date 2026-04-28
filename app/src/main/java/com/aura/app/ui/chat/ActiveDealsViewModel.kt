@@ -38,14 +38,19 @@ class ActiveDealsViewModel(
             loadJob = viewModelScope.launch {
                 StubState.dealsFlow.collect { deals ->
                     val activeDeals = deals.filter {
-                        it.chatUnlocked && it.status == Constants.STATUS_ACCEPTED &&
+                        Constants.canSendChatMessage(it.status, it.chatUnlocked) &&
                         (it.creatorId == userId || it.brandId == userId)
                     }
                     val items = activeDeals.map { deal ->
                         val otherUserId = if (role == Constants.ROLE_CREATOR) deal.brandId else deal.creatorId
                         val otherUser = userRepository.getUserLite(otherUserId)
                         val unreadCount = (deal.unreadCounts[userId] ?: 0L).toInt()
-                        ActiveDealItem(deal, otherUser, unreadCount)
+                        ActiveDealItem(
+                            deal = deal,
+                            otherUser = otherUser,
+                            unreadCount = unreadCount,
+                            needsReview = deal.isClosureReviewPending() && !deal.hasUserReviewed(userId),
+                        )
                     }.sortedByDescending {
                         it.deal.lastMessageTime?.seconds ?: it.deal.updatedAt?.seconds ?: 0L
                     }
@@ -70,13 +75,18 @@ class ActiveDealsViewModel(
                 }
                 .collect { deals ->
                     val activeDeals = deals.filter {
-                        it.chatUnlocked && it.status == Constants.STATUS_ACCEPTED
+                        Constants.canSendChatMessage(it.status, it.chatUnlocked)
                     }
                     val items = activeDeals.map { deal ->
                         val otherUserId = if (role == Constants.ROLE_CREATOR) deal.brandId else deal.creatorId
                         val otherUser = userRepository.getUserLite(otherUserId)
                         val unreadCount = (deal.unreadCounts[userId] ?: 0L).toInt()
-                        ActiveDealItem(deal, otherUser, unreadCount)
+                        ActiveDealItem(
+                            deal = deal,
+                            otherUser = otherUser,
+                            unreadCount = unreadCount,
+                            needsReview = deal.isClosureReviewPending() && !deal.hasUserReviewed(userId),
+                        )
                     }.sortedByDescending {
                         it.deal.lastMessageTime?.seconds ?: it.deal.updatedAt?.seconds ?: 0L
                     }

@@ -24,4 +24,14 @@ data class Deal(
     val cancelReason: String = "",
     val creatorReviewedAt: com.google.firebase.Timestamp? = null,
     val brandReviewedAt: com.google.firebase.Timestamp? = null,
-)
+) {
+    fun isClosureReviewPending(): Boolean =
+        status == com.aura.app.utils.Constants.STATUS_ACCEPTED &&
+                (completionRequestedBy.isNotBlank() || cancelRequestedBy.isNotBlank())
+
+    fun hasUserReviewed(userId: String): Boolean =
+        if (userId == creatorId) creatorReviewedAt != null else brandReviewedAt != null
+
+    fun areBothPartiesReviewed(): Boolean =
+        creatorReviewedAt != null && brandReviewedAt != null
+}

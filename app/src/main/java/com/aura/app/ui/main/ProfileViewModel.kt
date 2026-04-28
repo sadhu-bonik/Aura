@@ -11,6 +11,7 @@ import com.aura.app.data.model.Campaign
 import com.aura.app.data.model.CreatorProfile
 import com.aura.app.data.model.PortfolioItem
 import com.aura.app.data.model.User
+import com.aura.app.data.model.Deal
 import com.aura.app.data.repository.CampaignRepository
 import com.aura.app.data.repository.PortfolioRepository
 import com.aura.app.data.repository.StorageRepository
@@ -25,6 +26,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 sealed class ProfileUiState {
@@ -35,6 +37,7 @@ sealed class ProfileUiState {
         val brandProfile: BrandProfile? = null,
         val portfolio: List<PortfolioItem> = emptyList(),
         val campaigns: List<Campaign> = emptyList(),
+        val deals: List<Deal> = emptyList(),
         val isOwner: Boolean = true,
         val viewerRole: String? = null,
         val viewerId: String? = null
@@ -58,6 +61,7 @@ class ProfileViewModel(
     private val portfolioRepository: PortfolioRepository = PortfolioRepository(),
     private val storageRepository: StorageRepository = StorageRepository(),
     private val campaignRepository: CampaignRepository = CampaignRepository(com.google.firebase.firestore.FirebaseFirestore.getInstance()),
+    private val dealRepository: com.aura.app.data.repository.DealRepository = com.aura.app.data.repository.DealRepository(),
     private val sessionManager: SessionManager,
 ) : ViewModel() {
 
@@ -69,6 +73,7 @@ class ProfileViewModel(
 
     /** Guards against double-tap uploads. */
     private var isUploading = false
+    private var loadJob: Job? = null
 
     companion object {
         const val MAX_PORTFOLIO_ITEMS = 10
@@ -77,7 +82,8 @@ class ProfileViewModel(
     }
 
     fun loadProfile(creatorId: String? = null) {
-        viewModelScope.launch {
+        loadJob?.cancel()
+        loadJob = viewModelScope.launch {
             _state.value = ProfileUiState.Loading
             
             val currentUserId = if (Constants.USE_STUBS) {
@@ -125,23 +131,48 @@ class ProfileViewModel(
                 brandProfile = brandProfile,
                 portfolio = emptyList(),
                 campaigns = emptyList(),
+                deals = emptyList(),
                 isOwner = isOwner,
                 viewerRole = viewerRole,
                 viewerId = currentUserId
             )
 
             if (user.role == "brand") {
-                campaignRepository.getCampaignsForBrand(targetId).collect { campaigns ->
-                    val currentState = _state.value
-                    if (currentState is ProfileUiState.Success) {
-                        _state.value = currentState.copy(campaigns = campaigns)
+                // Collect Campaigns
+                launch {
+                    campaignRepository.getCampaignsForBrand(targetId).collect { campaigns ->
+                        val currentState = _state.value
+                        if (currentState is ProfileUiState.Success) {
+                            _state.value = currentState.copy(campaigns = campaigns)
+                        }
+                    }
+                }
+                // Collect Deals
+                launch {
+                    dealRepository.getDealsForBrand(targetId).collect { deals ->
+                        val currentState = _state.value
+                        if (currentState is ProfileUiState.Success) {
+                            _state.value = currentState.copy(deals = deals)
+                        }
                     }
                 }
             } else {
-                portfolioRepository.getCreatorPortfolio(targetId).collect { portfolio ->
-                    val currentState = _state.value
-                    if (currentState is ProfileUiState.Success) {
-                        _state.value = currentState.copy(portfolio = portfolio)
+                // Collect Portfolio
+                launch {
+                    portfolioRepository.getCreatorPortfolio(targetId).collect { portfolio ->
+                        val currentState = _state.value
+                        if (currentState is ProfileUiState.Success) {
+                            _state.value = currentState.copy(portfolio = portfolio)
+                        }
+                    }
+                }
+                // Collect Deals
+                launch {
+                    dealRepository.getDealsForCreator(targetId).collect { deals ->
+                        val currentState = _state.value
+                        if (currentState is ProfileUiState.Success) {
+                            _state.value = currentState.copy(deals = deals)
+                        }
                     }
                 }
             }

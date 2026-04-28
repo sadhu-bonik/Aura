@@ -34,7 +34,10 @@ class MessageRepository(
     ): Result<Unit> = runCatching {
         val dealSnap = deals.document(dealId).get().await()
         val chatUnlocked = dealSnap.getBoolean("chatUnlocked") ?: false
-        check(chatUnlocked) { "Chat is locked — deal must be accepted first" }
+        val status = dealSnap.getString("status").orEmpty()
+        check(Constants.canSendChatMessage(status, chatUnlocked)) {
+            "Messages can only be sent while the deal is active"
+        }
 
         val msgRef = messages.document()
         val dealRef = deals.document(dealId)
@@ -116,6 +119,13 @@ class MessageRepository(
         mediaType: String,
         fileName: String = "",
     ): Result<Unit> = runCatching {
+        val dealSnap = deals.document(dealId).get().await()
+        val chatUnlocked = dealSnap.getBoolean("chatUnlocked") ?: false
+        val status = dealSnap.getString("status").orEmpty()
+        check(Constants.canSendChatMessage(status, chatUnlocked)) {
+            "Messages can only be sent while the deal is active"
+        }
+
         val msgRef = messages.document()
         val dealRef = deals.document(dealId)
         val preview = mediaPreview(downloadUrl, mediaType, fileName)

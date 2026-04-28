@@ -15,6 +15,30 @@ import com.aura.app.data.repository.UserRepository
 import com.aura.app.databinding.FragmentForgotPasswordBinding
 import kotlinx.coroutines.launch
 
+/**
+ * ForgotPasswordFragment — security-question-gated password recovery.
+ *
+ * Flow:
+ *   1. User arrives with an email (passed as nav arg from LoginFragment).
+ *   2. Look up the user's stored security question and answer in Firestore.
+ *   3. User enters answer. We compare against the stored value.
+ *      Three wrong attempts in a session lock the form.
+ *   4. On match, we trigger Firebase Auth's sendPasswordResetEmail(email)
+ *      and the user finishes the reset via the email link.
+ *
+ * SECURITY NOTE — The SRA spec asks for a security-question-gated reset
+ * inside the app. Firebase Auth does NOT permit clients to set another
+ * user's password just because a security answer matched, and we MUST
+ * NOT store plaintext passwords in Firestore as a workaround. The secure
+ * way to bypass the email step would be a Cloud Function using the
+ * Firebase Admin SDK, called only after server-side verification of the
+ * security answer. We don't have a backend in this prototype, so we fall
+ * back to Firebase's email reset link after the security answer matches.
+ *
+ * TODO: When a Cloud Function / Admin SDK backend exists, replace
+ *       sendPasswordResetEmail() with a call to that function so the
+ *       user can set a new password directly inside the app.
+ */
 class ForgotPasswordFragment : Fragment() {
 
     private var _binding: FragmentForgotPasswordBinding? = null

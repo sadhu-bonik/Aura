@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import android.widget.Toast
 import com.aura.app.R
 import com.aura.app.databinding.FragmentRoleSelectionBinding
+import com.aura.app.ui.auth.brand.BrandRegistrationViewModel
 
 /** RoleSelectionFragment — Creator or Brand role picker. */
 class RoleSelectionFragment : Fragment() {
@@ -18,6 +19,10 @@ class RoleSelectionFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val registrationViewModel: RegistrationViewModel by activityViewModels()
+    private val onboardingDraftViewModel: OnboardingDraftViewModel by activityViewModels()
+    private val brandRegistrationViewModel: BrandRegistrationViewModel by activityViewModels {
+        BrandRegistrationViewModel.Factory()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -28,6 +33,10 @@ class RoleSelectionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (registrationViewModel.userRole.value.isNullOrBlank()) {
+            registrationViewModel.setUserRole("creator")
+        }
         
         registrationViewModel.userRole.observe(viewLifecycleOwner) { role ->
             updateCardState(role)
@@ -43,8 +52,16 @@ class RoleSelectionFragment : Fragment() {
 
         binding.btnContinue.setOnClickListener {
             when (registrationViewModel.userRole.value) {
-                "creator" -> findNavController().navigate(R.id.action_role_to_creator_step1)
-                "brand" -> findNavController().navigate(R.id.action_role_to_brand_step1)
+                "creator" -> {
+                    onboardingDraftViewModel.role = "creator"
+                    onboardingDraftViewModel.applyToCreator(registrationViewModel)
+                    findNavController().navigate(R.id.action_role_to_creator_step2)
+                }
+                "brand" -> {
+                    onboardingDraftViewModel.role = "brand"
+                    onboardingDraftViewModel.applyToBrand(brandRegistrationViewModel)
+                    findNavController().navigate(R.id.action_role_to_brand_step2)
+                }
                 else -> Toast.makeText(requireContext(), "Please select a role to continue", Toast.LENGTH_SHORT).show()
             }
         }
@@ -53,33 +70,36 @@ class RoleSelectionFragment : Fragment() {
     }
 
     private fun updateCardState(selected: String) {
-        val dp2 = (2 * resources.displayMetrics.density).toInt()
-        val dp1 = (1 * resources.displayMetrics.density).toInt()
-        val colorPrimary = requireContext().getColor(R.color.colorPrimary)
-        val colorTertiary = requireContext().getColor(R.color.colorTertiary)
-        val colorOutlineVariant = requireContext().getColor(R.color.colorOutlineVariant)
+        val selectedStroke = resources.getDimensionPixelSize(R.dimen.role_card_selected_stroke)
+        val unselectedStroke = resources.getDimensionPixelSize(R.dimen.role_card_unselected_stroke)
+        val selectedColor = requireContext().getColor(R.color.colorRoleViolet)
+        val unselectedColor = requireContext().getColor(R.color.colorRoleBorder)
+        val mutedColor = requireContext().getColor(R.color.colorRoleMuted)
 
-        // Creator card
-        if (selected == "creator") {
-            binding.cardCreator.strokeWidth = dp2
-            binding.cardCreator.strokeColor = colorPrimary
-            binding.ivCreatorCheck.visibility = View.VISIBLE
-        } else {
-            binding.cardCreator.strokeWidth = dp1
-            binding.cardCreator.strokeColor = colorOutlineVariant
-            binding.ivCreatorCheck.visibility = View.GONE
-        }
+        val creatorSelected = selected == "creator"
+        val brandSelected = selected == "brand"
 
-        // Brand card
-        if (selected == "brand") {
-            binding.cardBrand.strokeWidth = dp2
-            binding.cardBrand.strokeColor = colorTertiary
-            binding.ivBrandCheck.visibility = View.VISIBLE
-        } else {
-            binding.cardBrand.strokeWidth = dp1
-            binding.cardBrand.strokeColor = colorOutlineVariant
-            binding.ivBrandCheck.visibility = View.GONE
-        }
+        binding.cardCreator.strokeWidth = if (creatorSelected) selectedStroke else unselectedStroke
+        binding.cardCreator.strokeColor = if (creatorSelected) selectedColor else unselectedColor
+        binding.radioCreator.setBackgroundResource(
+            if (creatorSelected) R.drawable.bg_role_radio_selected else R.drawable.bg_role_radio_unselected
+        )
+        binding.viewCreatorDot.visibility = if (creatorSelected) View.VISIBLE else View.GONE
+        binding.layoutCreatorIcon.setBackgroundResource(
+            if (creatorSelected) R.drawable.bg_role_icon_selected else R.drawable.bg_role_icon_unselected
+        )
+        binding.ivCreatorIcon.setColorFilter(if (creatorSelected) selectedColor else mutedColor)
+
+        binding.cardBrand.strokeWidth = if (brandSelected) selectedStroke else unselectedStroke
+        binding.cardBrand.strokeColor = if (brandSelected) selectedColor else unselectedColor
+        binding.radioBrand.setBackgroundResource(
+            if (brandSelected) R.drawable.bg_role_radio_selected else R.drawable.bg_role_radio_unselected
+        )
+        binding.viewBrandDot.visibility = if (brandSelected) View.VISIBLE else View.GONE
+        binding.layoutBrandIcon.setBackgroundResource(
+            if (brandSelected) R.drawable.bg_role_icon_selected else R.drawable.bg_role_icon_unselected
+        )
+        binding.ivBrandIcon.setColorFilter(if (brandSelected) selectedColor else mutedColor)
     }
 
 

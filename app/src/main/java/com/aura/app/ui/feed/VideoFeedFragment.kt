@@ -25,7 +25,7 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
 
     private val viewModel: VideoFeedViewModel by activityViewModels { VideoFeedViewModel.Factory(requireContext().applicationContext) }
     private val actionsViewModel: FeedActionsViewModel by viewModels { FeedActionsViewModel.Factory() }
-    private val authViewModel: com.aura.app.ui.auth.AuthViewModel by activityViewModels { com.aura.app.ui.auth.AuthViewModel.Factory() }
+
 
     private var pager: ViewPager2? = null
     private var loading: ProgressBar? = null
@@ -136,13 +136,7 @@ class VideoFeedFragment : Fragment(R.layout.fragment_video_feed) {
             }
         }
         
-        view.findViewById<View>(R.id.btn_logout).setOnClickListener {
-            authViewModel.logout(requireContext())
-            val navOptions = androidx.navigation.NavOptions.Builder()
-                .setPopUpTo(R.id.homeContainerFragment, true)
-                .build()
-            requireActivity().findNavController(R.id.nav_host_fragment).navigate(R.id.welcomeFragment, null, navOptions)
-        }
+
     }
 
     private fun render(state: FeedUiState) {

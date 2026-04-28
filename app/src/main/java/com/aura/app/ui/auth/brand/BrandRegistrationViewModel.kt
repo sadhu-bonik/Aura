@@ -6,8 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.aura.app.data.model.Campaign
 import com.aura.app.data.repository.BrandRegistrationRepository
+import com.aura.app.data.repository.CampaignRepository
+import com.aura.app.utils.BudgetRanges
 import com.aura.app.utils.SessionManager
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
 /**
@@ -22,7 +27,8 @@ import kotlinx.coroutines.launch
  *   5. SessionManager.saveUserId()   → persists auth session locally
  */
 class BrandRegistrationViewModel(
-    private val repo: BrandRegistrationRepository = BrandRegistrationRepository()
+    private val repo: BrandRegistrationRepository = BrandRegistrationRepository(),
+    private val campaignRepository: CampaignRepository = CampaignRepository(FirebaseFirestore.getInstance())
 ) : ViewModel() {
 
     // ── In-memory draft ───────────────────────────────────────────────────────
@@ -52,13 +58,19 @@ class BrandRegistrationViewModel(
 
     // Step 4
     var industryTags: List<String> = emptyList()
+    var targetAudience: List<String> = emptyList()
+    var website: String = ""
     var city: String = ""
     var state: String = ""
     var country: String = ""
 
-    // Step 5 (optional — kept for future campaign creation)
+    // Step 5
     var campaignName: String = ""
     var campaignBrief: String = ""
+    var campaignGoals: List<String> = emptyList()
+    var campaignBudgetRange: String = ""
+    var campaignTimeline: Timestamp? = null
+    var campaignDeliverables: List<String> = emptyList()
 
     // ── UI State ──────────────────────────────────────────────────────────────
 
@@ -98,6 +110,8 @@ class BrandRegistrationViewModel(
                 verificationFileName = verificationFileName,
                 verificationFileMimeType = verificationFileMimeType,
                 industryTags = industryTags,
+                targetAudience = targetAudience,
+                website = website,
                 city = city,
                 state = state,
                 country = country,
@@ -108,6 +122,12 @@ class BrandRegistrationViewModel(
             _isLoading.value = false
             result.fold(
                 onSuccess = { uid ->
+                    val campaignResult = createInitialCampaignIfPresent(uid)
+                    if (campaignResult.isFailure) {
+                        _error.value = campaignResult.exceptionOrNull()?.message
+                            ?: "Registration saved, but campaign creation failed."
+                        return@fold
+                    }
                     // Persist session so feed/profile screens recognise the signed-in user
                     SessionManager(context).saveUserId(uid)
                     _registrationComplete.value = true
@@ -120,6 +140,29 @@ class BrandRegistrationViewModel(
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     fun clearError() { _error.value = null }
+
+    private suspend fun createInitialCampaignIfPresent(brandId: String): Result<Unit> {
+        if (campaignName.isBlank() && campaignBrief.isBlank()) return Result.success(Unit)
+        if (campaignName.isBlank() || campaignBrief.isBlank()) {
+            return Result.failure(Exception("Add both campaign title and description."))
+        }
+
+        val budget = BudgetRanges.toMinMaxCents(campaignBudgetRange)
+        val result = campaignRepository.createCampaign(
+            Campaign(
+                brandId = brandId,
+                title = campaignName,
+                description = campaignBrief,
+                goals = campaignGoals,
+                budgetRange = campaignBudgetRange,
+                budgetMin = budget.first,
+                budgetMax = budget.second,
+                timeline = campaignTimeline,
+                deliverables = campaignDeliverables
+            )
+        )
+        return result.map { Unit }
+    }
 
     // ── Factory ───────────────────────────────────────────────────────────────
 

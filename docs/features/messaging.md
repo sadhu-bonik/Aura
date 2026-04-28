@@ -27,10 +27,11 @@ Bottom Nav → ActiveDealsFragment
 
 ### ChatFragment
 - Receives `dealId` as nav argument
+- Opens only for deals whose status is `accepted`, `completed`, or `cancelled`; pending/sent offers open campaign details instead of the messaging interface
 - Streams messages in real time via `MessageRepository.streamMessages(dealId)`
 - Top banner: other party's name + deal title. Tap → opens `CampaignInfoBottomSheet`
 - Message input + send button at bottom
-- Send button disabled when input is empty OR deal status is `completed`
+- Send button disabled/hidden when input is empty OR deal status is not `accepted`
 - Marks all unread messages as read on `onResume`
 - Scrolls to bottom on new message
 
@@ -65,6 +66,9 @@ Bottom Nav → ActiveDealsFragment
 |---|---|
 | No active deals | Empty state illustration + "No active deals yet" |
 | Deal status = `completed` | Chat visible, send input hidden/disabled, banner shows "Completed" badge |
+| Deal status = `cancelled` | Chat visible as read-only history, send input hidden/disabled, review popup remains required until submitted |
+| Accepted deal has pending completion/cancellation | Deal stays in Active with an exclamation review marker until both parties submit ratings |
+| Deal status = `pending` | Messaging does not open; dashboard/notifications show the campaign details instead |
 | `chatUnlocked == false` reached somehow | `sendMessage` returns failure, show snackbar error |
 | Empty message input | Send button disabled — no Firestore write |
 | Offline | Firestore cache serves existing messages; send fails gracefully with snackbar |
@@ -74,5 +78,7 @@ Bottom Nav → ActiveDealsFragment
 
 ## Invariants touched (from AGENTS.md §4)
 
-- **§4.1** — Chat is only accessible when `chatUnlocked == true`. `MessageRepository.sendMessage()` re-checks the flag before every write.
+- **§4.1** — Chat sending is only allowed when `status == accepted` and `chatUnlocked == true`. `MessageRepository.sendMessage()` re-checks this before every write.
 - **§4.1** — Completed deals remain readable (chat history) but not writable.
+- Cancelled deals remain readable as closed chat history; pending/sent deals do not open the messaging interface.
+- Completion/cancellation does not move a deal to history until both parties submit review ratings.

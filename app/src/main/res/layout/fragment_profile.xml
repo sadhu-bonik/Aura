@@ -81,7 +81,8 @@
                 style="@style/Widget.Material3.Button.IconButton.Filled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@android:drawable/ic_menu_more"
+                android:contentDescription="@string/settings_title"
+                app:icon="@drawable/ic_settings"
                 app:backgroundTint="@color/colorSurface"
                 app:iconTint="@color/colorOnSurface"
                 app:cornerRadius="@dimen/corner_radius_full" />
@@ -219,13 +220,16 @@
 
             <!-- Rating Stat -->
             <LinearLayout
+                android:id="@+id/layout_stats_rating"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center"
                 android:background="@drawable/bg_pill_surface_stat"
-                android:paddingVertical="@dimen/space_md">
+                android:paddingVertical="@dimen/space_md"
+                android:clickable="true"
+                android:focusable="true">
 
                 <ImageView
                     android:layout_width="20dp"

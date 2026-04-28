@@ -156,4 +156,14 @@
 
     <!-- Feed action rail -->
     <color name="colorFeedActionBg">#33000000</color>
+
+    <!-- Role selection reference colors -->
+    <color name="colorRoleViolet">#8B5CF6</color>
+    <color name="colorRoleVioletIconBg">#338B5CF6</color>
+    <color name="colorRoleCard">#18181B</color>
+    <color name="colorRoleBorder">#27272A</color>
+    <color name="colorRoleMuted">#71717A</color>
+    <color name="colorCreatorGradientStart">#645889</color>
+    <color name="colorCreatorGradientEnd">#584C7D</color>
+    <color name="colorOutlineVariant30">#4D494650</color>
 </resources>

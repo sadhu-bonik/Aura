@@ -4,6 +4,7 @@ import android.util.Log
 import com.aura.app.data.model.YouTubeAnalytics
 import com.aura.app.data.remote.VideoItem
 import com.aura.app.data.remote.YouTubeApiService
+import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -105,6 +106,37 @@ class YouTubeRepository(
         }
     }
 
+    /**
+     * Refreshes the cached YouTube analytics for [userId] if either:
+     *   - [forceRefresh] is true (e.g. handle just changed), or
+     *   - the cached analytics are older than [ANALYTICS_TTL_MS] (7 days).
+     *
+     * Safe to fire-and-forget from a background coroutine — caller does not
+     * need to wait. Returns true when a refresh wrote new data to Firestore.
+     */
+    suspend fun refreshIfStale(
+        userId: String,
+        handle: String,
+        lastUpdated: Timestamp,
+        forceRefresh: Boolean = false,
+        userRepository: UserRepository = UserRepository()
+    ): Boolean {
+        if (handle.isBlank()) return false
+        if (!forceRefresh) {
+            val lastMs = lastUpdated.toDate().time
+            val ageMs = System.currentTimeMillis() - lastMs
+            if (lastMs > 0 && ageMs < ANALYTICS_TTL_MS) {
+                Log.d(TAG, "YT analytics fresh (${ageMs / MS_PER_DAY.toLong()}d old) — skip")
+                return false
+            }
+        }
+        Log.d(TAG, "Refreshing YT analytics for $userId (force=$forceRefresh)")
+        val analytics = fetchAndScore(handle) ?: return false
+        return userRepository
+            .updateCreatorProfilePartial(userId, analytics.toFirestoreMap())
+            .isSuccess
+    }
+
     // ── Score formulas ────────────────────────────────────────────────────────
 
     /**
@@ -188,5 +220,7 @@ class YouTubeRepository(
         const val ENGAGEMENT_CEILING    = 0.08   // 8% avg → score 100
         const val TARGET_INTERVAL_DAYS  = 7.0    // weekly uploads → frequency score 100
         const val MS_PER_DAY            = 86_400_000.0
+        // Cached analytics expire after 7 days; lazy refresh-on-load keeps them current.
+        const val ANALYTICS_TTL_MS      = 7L * 24 * 60 * 60 * 1000
     }
 }

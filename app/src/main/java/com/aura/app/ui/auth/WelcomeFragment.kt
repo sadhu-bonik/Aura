@@ -26,6 +26,7 @@ class WelcomeFragment : Fragment() {
 
     private val authViewModel: AuthViewModel by activityViewModels()
     private val registrationViewModel: RegistrationViewModel by activityViewModels()
+    private val onboardingDraftViewModel: OnboardingDraftViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -37,15 +38,6 @@ class WelcomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sessionManager = com.aura.app.utils.SessionManager(requireContext())
-        if (sessionManager.getUserId() != null) {
-            val navOptions = androidx.navigation.NavOptions.Builder()
-                .setPopUpTo(R.id.welcomeFragment, true)
-                .build()
-            findNavController().navigate(R.id.homeContainerFragment, null, navOptions)
-            return
-        }
-
         binding.btnContinue.setOnClickListener {
             val email = binding.etEmail.text?.toString()?.trim() ?: ""
             if (!isValidEmail(email)) {
@@ -54,12 +46,21 @@ class WelcomeFragment : Fragment() {
             }
             binding.tilEmail.error = null
             registrationViewModel.email = email
+            onboardingDraftViewModel.email = email
             authViewModel.checkEmail(email)
         }
 
         binding.tvSignUpLink.setOnClickListener {
+            val email = binding.etEmail.text?.toString()?.trim() ?: ""
+            if (!isValidEmail(email)) {
+                binding.tilEmail.error = "Please enter a valid email address"
+                return@setOnClickListener
+            }
+            binding.tilEmail.error = null
             registrationViewModel.resetDraft()
-            findNavController().navigate(R.id.action_welcome_to_role_selection)
+            onboardingDraftViewModel.reset()
+            onboardingDraftViewModel.email = email
+            findNavController().navigate(R.id.action_welcome_to_create_password)
         }
 
         observeEmailCheck()
@@ -88,7 +89,9 @@ class WelcomeFragment : Fragment() {
                             binding.btnContinue.isEnabled = true
                             binding.btnContinue.alpha = 1.0f
                             registrationViewModel.resetDraft()
-                            findNavController().navigate(R.id.action_welcome_to_role_selection)
+                            onboardingDraftViewModel.reset()
+                            onboardingDraftViewModel.email = binding.etEmail.text?.toString()?.trim() ?: ""
+                            findNavController().navigate(R.id.action_welcome_to_create_password)
                         }
                         is EmailCheckState.Error -> {
                             authViewModel.resetEmailCheck()

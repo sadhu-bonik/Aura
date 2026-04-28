@@ -47,9 +47,9 @@ class ActiveDealAdapter(
                 .fallback(R.drawable.bg_avatar_placeholder)
                 .into(binding.ivAvatar)
 
-            if (deal.status == Constants.STATUS_COMPLETED) {
+            if (item.needsReview) {
                 binding.chipStatus.visibility = View.VISIBLE
-                binding.chipStatus.text = ctx.getString(R.string.chip_review_required)
+                binding.chipStatus.text = ctx.getString(R.string.review_required_indicator)
                 binding.chipStatus.setBackgroundResource(R.drawable.chip_status_accepted)
                 binding.chipStatus.setTextColor(ctx.getColor(R.color.colorPrimary))
                 binding.viewUnreadDot.isVisible = false

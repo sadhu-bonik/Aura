@@ -76,6 +76,18 @@
         <item name="android:textColor">@color/colorOnSurface</item>
     </style>
 
+    <style name="TextAppearance.Aura.RoleCardTitle" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textSize">24sp</item>
+        <item name="fontFamily">@font/manrope_bold</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextAppearance.Aura.RoleFooterButton" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textSize">18sp</item>
+        <item name="fontFamily">@font/manrope_bold</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="TextAppearance.Aura.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
         <item name="android:textSize">16sp</item>
         <item name="fontFamily">@font/manrope</item>
@@ -360,6 +372,25 @@
     <style name="ShapeAppearance.Aura.BottomSheet.SetupCampaign" parent="ShapeAppearance.Aura.BottomSheet">
         <item name="cornerSizeTopLeft">20dp</item>
         <item name="cornerSizeTopRight">20dp</item>
+    </style>
+
+    <!-- Circle shape overlay for ShapeableImageView avatars -->
+    <style name="ShapeAppearance.Aura.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- Account Settings: section field label (uppercase, tracked-out) -->
+    <style name="AccountSettings.FieldLabel" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/space_md</item>
+        <item name="android:layout_marginBottom">@dimen/space_xs</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.15</item>
+        <item name="android:textColor">@color/colorOnSurfaceVariant</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

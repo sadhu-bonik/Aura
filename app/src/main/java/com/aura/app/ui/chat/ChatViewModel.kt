@@ -87,6 +87,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private var dealId: String = ""
     private var currentUserId: String = ""
     private var dealObserveJob: Job? = null
+    private var loadJob: Job? = null
 
     private fun rebuildChatItems() {
         val confirmed = _firestoreMessages.value?.map { ChatListItem.RegularMessage(it) } ?: emptyList()
@@ -99,6 +100,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         this.currentUserId = currentUserId
         _isLoading.value = true
         _error.value = null
+        loadJob?.cancel()
 
         if (Constants.USE_STUBS) {
             dealObserveJob?.cancel()
@@ -119,11 +121,16 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                 _isLoading.value = false
                 return
             }
+            if (!Constants.canOpenMessaging(deal.status, deal.chatUnlocked)) {
+                _error.value = "Messaging is only available for active, completed, or cancelled deals"
+                _isLoading.value = false
+                return
+            }
             _deal.value = deal
             updateCompletionState(deal, currentUserId)
             updateCancellationState(deal, currentUserId)
 
-            viewModelScope.launch {
+            loadJob = viewModelScope.launch {
                 val otherUserId = if (deal.creatorId == currentUserId) deal.brandId else deal.creatorId
                 _otherUser.value = userRepository.getUserLite(otherUserId)
 
@@ -141,10 +148,15 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
             return
         }
 
-        viewModelScope.launch {
+        loadJob = viewModelScope.launch {
             val deal = dealRepository.getDeal(dealId).getOrNull()
             if (deal == null) {
                 _error.value = "Deal not found"
+                _isLoading.value = false
+                return@launch
+            }
+            if (!Constants.canOpenMessaging(deal.status, deal.chatUnlocked)) {
+                _error.value = "Messaging is only available for active, completed, or cancelled deals"
                 _isLoading.value = false
                 return@launch
             }
@@ -181,15 +193,8 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun updateCancellationState(deal: Deal, myUserId: String) {
-        _cancellationRequest.value = when {
-            deal.cancelRequestedBy.isEmpty() -> CancellationRequestState.None
-            deal.cancelRequestedBy == myUserId -> CancellationRequestState.OutgoingFromMe
-            else -> {
-                val name = _otherUser.value?.displayName ?: "The other party"
-                CancellationRequestState.IncomingFromOther(name, deal.cancelReason)
-            }
-        }
+    private fun updateCancellationState(_deal: Deal, _myUserId: String) {
+        _cancellationRequest.value = CancellationRequestState.None
     }
 
     fun respondToCompletion(accepted: Boolean) {
@@ -198,8 +203,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
             if (accepted) {
                 // Optimistic: immediately show closed state
                 _deal.value = previousDeal.copy(
-                    status = Constants.STATUS_COMPLETED,
-                    completionRequestedBy = "",
+                    completionRequestedBy = previousDeal.completionRequestedBy.ifBlank { currentUserId },
                 )
                 _completionRequest.value = CompletionRequestState.None
 
@@ -273,6 +277,8 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
     fun sendMessage(content: String, senderId: String, receiverId: String) {
         if (content.isBlank() || _isUploading.value == true) return
+        val deal = _deal.value
+        if (deal == null || !Constants.canSendChatMessage(deal.status, deal.chatUnlocked)) return
         viewModelScope.launch {
             val result = if (Constants.USE_STUBS) {
                 val res = messageRepository.sendMessageDirect(dealId, senderId, receiverId, content.trim())
@@ -295,6 +301,8 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun retryFailed(item: ChatListItem.FailedMessage) {
+        val deal = _deal.value
+        if (deal == null || !Constants.canSendChatMessage(deal.status, deal.chatUnlocked)) return
         removeFailedMessage(item.tempId)
         viewModelScope.launch {
             val result = if (Constants.USE_STUBS) {
@@ -310,6 +318,8 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
     fun sendAttachment(uri: Uri, mimeType: String, fileName: String, senderId: String, receiverId: String) {
         if (_isUploading.value == true) return
+        val deal = _deal.value
+        if (deal == null || !Constants.canSendChatMessage(deal.status, deal.chatUnlocked)) return
         _isUploading.value = true
         viewModelScope.launch {
             storageManager.uploadChatAttachment(dealId, uri, mimeType)

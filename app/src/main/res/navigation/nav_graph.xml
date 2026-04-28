@@ -30,6 +30,14 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_welcome_to_create_password"
+            app:destination="@id/auraCreatePasswordFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -79,6 +87,36 @@
     <!-- ===================== -->
 
     <fragment
+        android:id="@+id/auraCreatePasswordFragment"
+        android:name="com.aura.app.ui.auth.AuraCreatePasswordFragment"
+        android:label="Create Password"
+        tools:layout="@layout/fragment_create_password">
+
+        <action
+            android:id="@+id/action_create_password_to_common_profile"
+            app:destination="@id/commonProfileSetupFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/commonProfileSetupFragment"
+        android:name="com.aura.app.ui.auth.CommonProfileSetupFragment"
+        android:label="Profile Setup"
+        tools:layout="@layout/fragment_common_profile_setup">
+
+        <action
+            android:id="@+id/action_common_profile_to_role_selection"
+            app:destination="@id/roleSelectionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
         android:id="@+id/roleSelectionFragment"
         android:name="com.aura.app.ui.auth.RoleSelectionFragment"
         android:label="Role Selection"
@@ -91,8 +129,20 @@
             app:exitAnim="@anim/slide_out_left" />
 
         <action
+            android:id="@+id/action_role_to_creator_step2"
+            app:destination="@id/creatorRegStep2Fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+
+        <action
             android:id="@+id/action_role_to_brand_step1"
             app:destination="@id/brandRegStep1Fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+
+        <action
+            android:id="@+id/action_role_to_brand_step2"
+            app:destination="@id/brandRegStep2Fragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left" />
     </fragment>
@@ -107,7 +157,7 @@
 
         <action
             android:id="@+id/action_creator_step1_to_step3"
-            app:destination="@id/creatorRegStep3Fragment"
+            app:destination="@id/creatorRegStep2Fragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -121,10 +171,8 @@
         tools:layout="@layout/fragment_creator_reg_step2">
 
         <action
-            android:id="@+id/action_creator_step2_to_home"
-            app:destination="@id/homeContainerFragment"
-            app:popUpTo="@id/welcomeFragment"
-            app:popUpToInclusive="true"
+            android:id="@+id/action_creator_step2_to_step3"
+            app:destination="@id/creatorRegStep3Fragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -138,8 +186,10 @@
         tools:layout="@layout/fragment_creator_reg_step3">
 
         <action
-            android:id="@+id/action_creator_step3_to_step2"
-            app:destination="@id/creatorRegStep2Fragment"
+            android:id="@+id/action_creator_step3_to_home"
+            app:destination="@id/homeContainerFragment"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="true"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -172,22 +222,7 @@
         tools:layout="@layout/fragment_brand_reg_step2">
 
         <action
-            android:id="@+id/action_brand_step2_to_step3"
-            app:destination="@id/brandRegStep3Fragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/brandRegStep3Fragment"
-        android:name="com.aura.app.ui.auth.brand.BrandRegStep3Fragment"
-        android:label="Brand - Step 3"
-        tools:layout="@layout/fragment_brand_reg_step3">
-
-        <action
-            android:id="@+id/action_brand_step3_to_step4"
+            android:id="@+id/action_brand_step2_to_step4"
             app:destination="@id/brandRegStep4Fragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -198,16 +233,8 @@
     <fragment
         android:id="@+id/brandRegStep4Fragment"
         android:name="com.aura.app.ui.auth.brand.BrandRegStep4Fragment"
-        android:label="Brand - Step 4"
+        android:label="Brand - Step 3"
         tools:layout="@layout/fragment_brand_reg_step4">
-
-        <action
-            android:id="@+id/action_brand_step4_to_step5"
-            app:destination="@id/brandRegStep5Fragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
 
         <action
             android:id="@+id/action_brand_step4_to_home"
@@ -278,6 +305,10 @@
             android:name="dealId"
             app:argType="string"
             android:defaultValue="" />
+        <argument
+            android:name="openReviewPopup"
+            app:argType="boolean"
+            android:defaultValue="false" />
         <action
             android:id="@+id/action_chatFragment_to_videoPlayerFragment"
             app:destination="@id/videoPlayerFragment" />
@@ -298,6 +329,9 @@
             app:argType="string"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_profile_to_userReviews"
+            app:destination="@id/navigation_user_reviews" />
     </fragment>
 
     <fragment
@@ -307,6 +341,27 @@
         <argument
             android:name="videoUrl"
             app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_user_reviews"
+        android:name="com.aura.app.ui.main.UserReviewsFragment"
+        android:label="Reviews"
+        tools:layout="@layout/fragment_user_reviews">
+        <argument
+            android:name="revieweeId"
+            app:argType="string" />
+        <argument
+            android:name="displayName"
+            app:argType="string" />
+        <argument
+            android:name="averageRating"
+            app:argType="float"
+            android:defaultValue="0.0" />
+        <argument
+            android:name="totalReviews"
+            app:argType="long"
+            android:defaultValue="0L" />
     </fragment>
 
 </navigation>

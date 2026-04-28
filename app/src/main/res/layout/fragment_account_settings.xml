@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    tools:context="com.aura.app.ui.main.AccountSettingsFragment">
+
+    <!-- Top app bar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBackground"
+        app:elevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_app_bar_height"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/space_md"
+            android:paddingEnd="@dimen/space_md">
+
+            <ImageButton
+                android:id="@+id/btn_account_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cd_settings_back"
+                android:padding="@dimen/space_sm"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_sm"
+                android:layout_weight="1"
+                android:text="@string/account_settings_title"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_aura_label"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/space_lg"
+            android:paddingBottom="120dp">
+
+            <!-- Avatar hero -->
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/space_md"
+                android:layout_marginBottom="@dimen/space_lg">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_account_avatar"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:background="@color/colorSurfaceContainerHighest"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_avatar_placeholder"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Aura.Circle" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/space_lg"
+                android:text="@string/account_settings_subtitle"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="13sp" />
+
+            <!-- ============ COMMON FIELDS ============ -->
+
+            <TextView
+                style="@style/AccountSettings.FieldLabel"
+                android:text="@string/account_settings_full_name" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_full_name"
+                style="@style/Widget.Aura.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_md"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_full_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName|textCapWords"
+                    android:maxLines="1"
+                    android:textColor="@color/colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/AccountSettings.FieldLabel"
+                android:text="@string/account_settings_email" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_email"
+                style="@style/Widget.Aura.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_md"
+                app:helperText="@string/account_settings_email_readonly_helper"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:focusable="false"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:textColor="@color/colorOnSurfaceVariant" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/AccountSettings.FieldLabel"
+                android:text="@string/account_settings_phone" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_phone"
+                style="@style/Widget.Aura.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_md"
+                android:hint="@string/account_settings_phone_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:textColor="@color/colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/AccountSettings.FieldLabel"
+                android:text="@string/account_settings_security_question" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_security_question"
+                style="@style/Widget.Aura.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_md"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/et_security_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:maxLines="1"
+                    android:popupBackground="@color/colorSurfaceContainerHigh"
+                    android:textColor="@color/colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/AccountSettings.FieldLabel"
+                android:text="@string/account_settings_security_answer" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_security_answer"
+                style="@style/Widget.Aura.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_md"
+                android:hint="@string/account_settings_security_answer_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_security_answer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="@color/colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- ============ CREATOR-ONLY ============ -->
+            <LinearLayout
+                android:id="@+id/layout_creator_fields"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/AccountSettings.FieldLabel"
+                    android:text="@string/account_settings_youtube" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_youtube"
+                    style="@style/Widget.Aura.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/space_md"
+                    android:hint="@string/account_settings_youtube_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_youtube"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textUri"
+                        android:maxLines="1"
+                        android:textColor="@color/colorOnSurface" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <!-- ============ BRAND-ONLY ============ -->
+            <LinearLayout
+                android:id="@+id/layout_brand_fields"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/AccountSettings.FieldLabel"
+                    android:text="@string/account_settings_website" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_website"
+                    style="@style/Widget.Aura.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/space_md"
+                    android:hint="@string/account_settings_website_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_website"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textUri"
+                        android:maxLines="1"
+                        android:textColor="@color/colorOnSurface" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    style="@style/AccountSettings.FieldLabel"
+                    android:text="@string/account_settings_linkedin" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_linkedin"
+                    style="@style/Widget.Aura.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/space_md"
+                    android:hint="@string/account_settings_linkedin_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_linkedin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textUri"
+                        android:maxLines="1"
+                        android:textColor="@color/colorOnSurface" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <!-- Save button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_account_save"
+                style="@style/Widget.Aura.Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_lg"
+                android:text="@string/account_settings_save_btn" />
+
+            <!-- ============ CHANGE PASSWORD SECTION ============ -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:layout_marginBottom="@dimen/space_md"
+                android:letterSpacing="0.2"
+                android:text="@string/account_settings_change_password_section"
+                android:textAllCaps="true"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/AccountSettings.FieldLabel"
+                android:text="@string/account_settings_current_password" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_current_password"
+                style="@style/Widget.Aura.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_md"
+                app:endIconMode="password_toggle"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_current_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:textColor="@color/colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/AccountSettings.FieldLabel"
+                android:text="@string/account_settings_new_password" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_new_password"
+                style="@style/Widget.Aura.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_md"
+                app:endIconMode="password_toggle"
+                app:helperText="@string/creator_reg_password_hint"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_new_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:textColor="@color/colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/AccountSettings.FieldLabel"
+                android:text="@string/account_settings_confirm_password" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_confirm_password"
+                style="@style/Widget.Aura.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_md"
+                app:endIconMode="password_toggle"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_confirm_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:textColor="@color/colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_change_password"
+                style="@style/Widget.Aura.Button.Outlined"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_sm"
+                android:text="@string/account_settings_change_password_btn" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progress_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/colorPrimary"
+        android:visibility="gone" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

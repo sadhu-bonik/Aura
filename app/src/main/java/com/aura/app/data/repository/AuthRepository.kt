@@ -1,6 +1,8 @@
 package com.aura.app.data.repository
 
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.tasks.await
 
@@ -57,9 +59,56 @@ class AuthRepository(
     }
 
     /**
+     * Re-authenticates the currently signed-in user with their existing password.
+     * Required by Firebase before sensitive operations like updatePassword().
+     */
+    suspend fun reauthenticate(currentPassword: String): Result<Unit> {
+        val user = auth.currentUser
+            ?: return Result.failure(IllegalStateException("Not signed in"))
+        val email = user.email
+            ?: return Result.failure(IllegalStateException("No email on this account"))
+        return try {
+            val credential = EmailAuthProvider.getCredential(email, currentPassword)
+            user.reauthenticate(credential).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Updates the signed-in user's password via Firebase Auth.
+     * Caller MUST have re-authenticated first — Firebase rejects otherwise.
+     * Plaintext passwords are NEVER persisted in Firestore or local storage.
+     */
+    suspend fun updatePassword(newPassword: String): Result<Unit> {
+        val user = auth.currentUser
+            ?: return Result.failure(IllegalStateException("Not signed in"))
+        return try {
+            user.updatePassword(newPassword).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    /**
      * Logs the current user out.
      */
     fun logout() {
         auth.signOut()
+    }
+
+    suspend fun deleteCurrentUser(): Result<Unit> {
+        return try {
+            val user = auth.currentUser
+                ?: return Result.failure(Exception("No signed-in user found."))
+            user.delete().await()
+            Result.success(Unit)
+        } catch (e: FirebaseAuthRecentLoginRequiredException) {
+            Result.failure(Exception("Please log out and log back in before deleting this account."))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

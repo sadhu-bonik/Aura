@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_home"
-    app:startDestination="@id/navigation_deals">
+    app:startDestination="@id/navigation_profile">
 
     <fragment
         android:id="@+id/navigation_profile"
@@ -18,6 +18,27 @@
         <action
             android:id="@+id/action_profile_to_editProfile"
             app:destination="@id/navigation_edit_profile" />
+        <action
+            android:id="@+id/action_profile_to_setupCampaign"
+            app:destination="@id/navigation_setup_campaign" />
+        <action
+            android:id="@+id/action_profile_to_settings"
+            app:destination="@id/navigation_settings" />
+        <action
+            android:id="@+id/action_profile_to_userReviews"
+            app:destination="@id/navigation_user_reviews" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_setup_campaign"
+        android:name="com.aura.app.ui.main.SetupCampaignFragment"
+        android:label="Setup Campaign"
+        tools:layout="@layout/fragment_setup_campaign">
+        <argument
+            android:name="campaignId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
     <fragment
@@ -48,6 +69,9 @@
             app:argType="string"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_profile_to_userReviews"
+            app:destination="@id/navigation_user_reviews" />
     </fragment>
 
     <fragment
@@ -72,12 +96,59 @@
             app:argType="string"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_profile_to_userReviews"
+            app:destination="@id/navigation_user_reviews" />
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_search"
-        android:name="com.aura.app.ui.main.DiscoverFragment"
-        android:label="@string/tab_search"
-        tools:layout="@layout/fragment_discover" />
+        android:id="@+id/navigation_saved"
+        android:name="com.aura.app.ui.main.SavedFragment"
+        android:label="Saved"
+        tools:layout="@layout/fragment_saved">
+        <action
+            android:id="@+id/action_saved_to_creator_profile"
+            app:destination="@id/navigation_creator_public_profile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.aura.app.ui.main.SettingsFragment"
+        android:label="@string/settings_title"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settings_to_editProfile"
+            app:destination="@id/navigation_edit_profile" />
+        <action
+            android:id="@+id/action_settings_to_accountSettings"
+            app:destination="@id/navigation_account_settings" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_account_settings"
+        android:name="com.aura.app.ui.main.AccountSettingsFragment"
+        android:label="@string/account_settings_title"
+        tools:layout="@layout/fragment_account_settings" />
+
+    <fragment
+        android:id="@+id/navigation_user_reviews"
+        android:name="com.aura.app.ui.main.UserReviewsFragment"
+        android:label="Reviews"
+        tools:layout="@layout/fragment_user_reviews">
+        <argument
+            android:name="revieweeId"
+            app:argType="string" />
+        <argument
+            android:name="displayName"
+            app:argType="string" />
+        <argument
+            android:name="averageRating"
+            app:argType="float"
+            android:defaultValue="0.0" />
+        <argument
+            android:name="totalReviews"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
 
 </navigation>
