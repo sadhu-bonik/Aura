@@ -71,7 +71,7 @@
             android:background="@drawable/bg_dashboard_icon_button"
             android:contentDescription="@string/notif_title"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_deals"
+            android:src="@drawable/ic_notification_bell"
             app:tint="@color/colorPrimary" />
     </LinearLayout>
 
